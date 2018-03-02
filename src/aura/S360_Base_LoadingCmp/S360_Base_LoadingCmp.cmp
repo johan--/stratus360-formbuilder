@@ -1,0 +1,22 @@
+<aura:component >
+    <aura:attribute name="Show" type="boolean" default="false"/>
+    <aura:attribute name="CompId" type="String"/>
+    <aura:method name="showLoading" action="{!c.setLoading}" access="public">
+        <aura:attribute name="isShow" type="boolean"/>
+    </aura:method>
+    
+    <style>
+        .slds-spinner_container{
+        	<!--position: fixed !important;-->
+            position: fixed;
+        }
+    </style>
+    <div class="slds-spinner_container" style="{! 'display: ' + (v.Show ? 'block' : 'none')}" id="loading">
+        <div role="status" class="slds-spinner slds-spinner--small">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+	
+</aura:component>

@@ -1,0 +1,42 @@
+<aura:component >
+
+	<!-- method called by parent-->
+  <aura:attribute name="message" type="String" default="Loading page..."/>
+    <aura:method name="showWait" action="{!c.showWait}" access="PUBLIC">
+    	<aura:attribute name="showWait" type="Boolean" default="" required="true"/>
+      <aura:attribute name="message" type="String" default="Loading page..."/>
+    </aura:method>
+
+	<!--div aura:id="S360_Base_Wait" class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-header">
+            <h1>{!$Label.c.Processing}</h1>
+        </div>
+        <div class="modal-body">
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 100%;"></div>
+            </div>
+        </div>
+    </div-->
+  <div class="background-filter" aura:id="S360_Base_Wait">
+    <div id="myModal" class="show" role="dialog">
+      <div class="modal-dialog loading-modal ">
+        <div class="modal-content">
+           <div class="modal-header">
+              
+              <h4 class="modal-title">{!v.message}</h4>
+           </div>
+           <div class="progress prog-bar" >
+            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+            style="width:100%;">
+            </div>
+          </div>
+           
+        </div>
+      </div>
+    </div>
+    <!-- <div class="loading-modal">
+      <p>Some text</p>
+    </div>  -->
+  </div>
+
+</aura:component>

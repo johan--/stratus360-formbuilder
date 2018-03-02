@@ -1,0 +1,41 @@
+<aura:component controller="S360_Welcome_Modal_Controller">
+    <aura:attribute name="show" type="Boolean" default="false"/>
+    <aura:attribute name="title" type="String" default=""/>
+
+    <aura:if isTrue="{!v.show}">
+        <div style="position:fixed; top:0; bottom:0; height:100%; width:100%; background-color:rgba(0,0,0,0.5); z-index:2;"/>
+        <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-body">   
+                    <!-- HEADER -->
+                    <aura:if isTrue="">
+                        <div class="modal-header">
+                            <h3 class="text-center" id="myModalLabel"> This is a title </h3>
+                        </div>
+                    </aura:if>
+
+                    <div class="modal-body uploads-notes">
+                        <!-- Standard Form -->
+                        We're no strangers to love You know the rules and so do I A full commitment's what I'm thinking of You wouldn't get this from any other guy I just wanna tell you how I'm feeling Gotta make you understand Never Gonna Give You Up Never Gonna Let You Down Never Gonna Run Around and Desert You
+                    </div>
+                    
+                    <div class="row" style='margin-left:5px'>
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 form-group" style='margin-top:8px;'>
+                            
+                            <c:S360_B_Base_Checkbox CompId="WelcomeModalShowOnLoginButton"
+                                IsChecked="true" 
+                                InputLabel="Don't show again" 
+                            />
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4 form-group ">
+                            <button type="button" class="btn btn-primary" onclick="{!c.close}">Continue</button>
+                                
+                        </div>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+
+</aura:component>

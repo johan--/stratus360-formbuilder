@@ -1,0 +1,6 @@
+<aura:event type="APPLICATION" description="event to notify LightningPaginationComponent when data to paging ready">
+    <aura:attribute name="CompId" type="String" required="true"/>
+    <aura:attribute name="length" type="integer" required="true"/>
+    <aura:attribute name="pageSize" type="integer" required="true"/>
+    <aura:attribute name="offset" type="integer" required="true"/>
+</aura:event>

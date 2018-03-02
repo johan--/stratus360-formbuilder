@@ -1,0 +1,30 @@
+<aura:component >
+    <aura:attribute name="CompId" type="String" default=""/>
+    <aura:attribute name="name" type="string" default=""/>
+    <aura:attribute name="value" type="String" default=""/>
+    <aura:attribute name="label" type="String" default=""/>
+    <aura:attribute name="VerticalAlign" type="Boolean" default="true"/>
+    <aura:attribute name="IsDisabled" type="Boolean" default="false" />
+
+    <!-- additional attributes -->
+    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="SideClass" type="String" default=""/>
+
+    <aura:registerEvent name="rbOnChange" type="c:S360_B_Base_Evt_onChange" />
+    <!--
+    <aura:handler name="rbOnChange" type="c:S360_B_Base_Evt_onChange" action="{!c.onChange}" />
+	-->
+    
+    <div class="{!v.VerticalAlign ? 'radio' : 'radio-inline'}">
+    
+        <ui:inputRadio text="{!v.label}"
+            change="{!c.onSelectChange}"
+            name="{!v.name}"
+            value="{!v.value}"
+            disabled="{!v.IsDisabled}"
+        />
+        <p class="{!(v.IsDisabled ? 'disabled-text' : '' )}">{!v.label}</p>
+        
+    </div>
+
+</aura:component>

@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="event when pagination changed">
+    <aura:attribute name="CompId" type="String"/>
+    <aura:attribute name="IsShow" type="Boolean" />
+</aura:event>

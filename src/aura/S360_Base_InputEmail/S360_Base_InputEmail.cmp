@@ -1,0 +1,25 @@
+<aura:component >
+	
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
+    <aura:attribute name="PlaceholderText" type="string" default=""/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:onChange" />
+
+    <div >
+        <label class="labelClass" for="{!v.CompId}">
+            <abbr  title="required">*</abbr>
+            {!v.InputLabel}
+        </label>
+        <div class="form">
+            <ui:inputText required="{!v.IsRequired}" aura:id="CompId" disabled="{!v.IsDisabled || v.IsReadOnly}"  class="form-control"  placeholder="{!v.PlaceholderText}" change="{!c.handleOnChange}" value="{!v.Value}"/>
+        </div>
+    </div>
+
+</aura:component>

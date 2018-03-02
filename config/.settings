@@ -1,0 +1,12 @@
+{
+    "projectName": "FormBuilder",
+    "username": "formbuilder@stratus360.com",
+    "id": "4f3e8770-1e13-11e8-80c6-2f177d5f875d",
+    "namespace": "S360_FA",
+    "environment": "developer",
+    "loginUrl": "https://login.salesforce.com/",
+    "workspace": "/Users/ds/Documents/Data/Work/mavensmate",
+    "subscription": [
+        "AuraDefinitionBundle"
+    ]
+}

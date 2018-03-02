@@ -1,0 +1,65 @@
+<aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+    <!-- default stylesheet is bootstrap -->
+    <ltng:require styles="{!$Resource.bootstrap400beta2 + '/bootstrap.min.css'}"
+                  scripts="{!join(',', 
+                           $Resource.bootstrap400beta2 + '/jquery3_2_1.js',
+                           $Resource.bootstrap400beta2 + '/popper1_12_3.js',
+                           $Resource.bootstrap400beta2 + '/bootstrap.min.js')}"/>
+    
+    <!-- user defined stylesheet -->
+    <aura:if isTrue="{!and(v.cssResource != '', v.cssResource != null)}">
+    	<ltng:require styles="{!v.cssResource}"/>
+        <!--ltng:require styles="{!$Resource.TMX_CSS}"/--> 
+        <!--ltng:require styles="{!$Resource.TMX_CSS_Mobile}"/--> 
+    </aura:if>
+    
+    <aura:if isTrue="{!v.scriptResource != ''}">
+    	<ltng:require scripts="{!v.scriptResource}" afterScriptsLoaded="{!c.afterScriptLoaded}"/>    
+    </aura:if>
+    
+    <!-- component parameter -->
+    <aura:attribute name="FormConfig" type="Object" default="{}"/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="RelatedData" type="Object" default="{}"/>
+    <aura:attribute name="FieldInfo" type="Object" default="{}"/>
+    
+    <aura:attribute name="cssResource" type="String" default=""/>
+    <aura:attribute name="scriptResource" type="String" default=""/>
+
+	<!-- this object stores all components rendered in the form
+		 use Field API name to access the component
+	 -->    
+    <aura:attribute name="componentData" type="Object"/>
+    <!-- save button id which has submit as its action type -->
+    <aura:attribute name="submittedButton" type="string[]"/>
+    <!-- save button id which has action other than sumbit -->
+    <!-- if action equal to event save like this pattern {compAPI : {actionType, actionName, actionTarget}} -->
+    <!-- if action equal to custom save like this pattern {compAPI : {actionType, action}} -->
+    <aura:attribute name="actionButton" type="Object"/>
+    
+    <!-- registered events -->
+    <aura:registerEvent name="S360_FormBuilderEvt" type="c:S360_FormBuilderEvt" />
+    
+    <!-- handler button click -->
+    <aura:handler name="OnClick" event="c:S360_B_Base_Evt_onClick" action="{!c.handleButtonClick}"/>
+    
+    <aura:method name="setup" action="{!c.setup}" 
+                 description="setup stuff to render"> 
+        <aura:attribute name="config" type="Object"/> 
+        <aura:attribute name="data" type="Object" /> 
+        <aura:attribute name="fieldInfo" type="Object" /> 
+    </aura:method>
+    
+    <!-- this method is called after S360_FormBuilderMain finish its server operation -->
+    <aura:method name="afterSubmit" action="{!c.handleAfterSubmit}">
+        <!-- sender is submit buttom CompId who trigger submit action -->
+        <aura:attribute name="sender" type="String" default=""/>
+        <!-- status is server operation status, it could be true or false -->
+        <aura:attribute name="status" type="boolean" default="false"/>
+        <!-- message is server message -->
+        <aura:attribute name="message" type="string" default=""/>
+    </aura:method>
+    
+    <!-- this component body store rendered component -->
+    {!v.body}
+</aura:component>

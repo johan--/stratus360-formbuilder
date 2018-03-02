@@ -1,0 +1,11 @@
+.THIS .textRightAlign {
+	text-align: right;
+}
+
+.THIS .show-tooltip{
+    display: inline-block;
+}
+
+.THIS .hide-tooltip{
+    display: none;
+}

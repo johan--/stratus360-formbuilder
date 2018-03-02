@@ -1,0 +1,7 @@
+.THIS .show-tooltip{
+    display: inline-block;
+}
+
+.THIS .hide-tooltip{
+    display: none;
+}

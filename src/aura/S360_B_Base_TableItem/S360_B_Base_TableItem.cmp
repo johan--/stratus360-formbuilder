@@ -1,0 +1,43 @@
+<aura:component >
+	<aura:attribute name="Item" type="sObject"/>
+	<aura:attribute name="Index" type="object"/>
+	<aura:attribute name="ShowRecordSelector" type="Boolean" default="false" />
+	<aura:attribute name="ShowRecordDeletion" type="Boolean" default="false" />
+	<aura:attribute name="CompId" type="String"/>
+	<aura:attribute name="HeaderFields" type="String[]" default=""/>
+	<aura:attribute name="ItemFields" type="String[]" default=""/>
+	<aura:attribute name="Value" type="string" default="" description="Salesforce Record Id" />
+
+	<aura:handler name="init" value="{!this}" action="{!c.initialize}" />
+
+	<aura:registerEvent name="OnTextClick" type="c:S360_B_Base_Evt_onClick" />
+
+	<!-- component ID attribute -->
+	<!-- <aura:registerEvent name="notifyItemTableChanged" type="c:LightningItemTableChangedEvent"/> -->
+
+	<!-- handler clicked component -->
+	<!-- <aura:handler name="OnClick" event="c:S360_B_Base_Evt_onClick" action="{!c._handleOnClick}"/> -->
+	
+	<!-- handler on change component -->
+	<aura:handler name="OnChange" event="c:S360_B_Base_Evt_onChange" action="{!c._handleOnChange}"/>
+
+	<tr style="height:40px">
+		<aura:if isTrue="{!v.ShowRecordSelector}">
+			<td width="20px" class="text-left">
+				<c:S360_B_Base_Checkbox CompId="{!v.CompId}" Value="{!v.Value}" ShowRecordDeletion="{!v.ShowRecordDeletion}" />
+			</td>
+		</aura:if>
+
+		<aura:iteration items="{!v.ItemFields}"
+			var="itemField"
+			indexVar="i">
+			<td class="text-left">
+				<div onclick="{!c._handleOnTextClick}">
+					<strong>{!itemField} {!itemField.PIF_Note_Attachment__c}</strong>
+					<span class="{!'fa fa-times ' + i == 1 ? '' : 'hidden'}" style="color:red" onclick="{!c.onClickClearTag}" />
+				</div>
+			</td>
+		</aura:iteration>
+	</tr>
+
+</aura:component>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>FormNotFound</fullName>
+        <categories>FA</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FormNotFound</shortDescription>
+        <value>Form is not found.</value>
+    </labels>
+    <labels>
+        <fullName>Language</fullName>
+        <categories>FA</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Language</shortDescription>
+        <value>en</value>
+    </labels>
+    <labels>
+        <fullName>ObjectNotAccessible</fullName>
+        <categories>FA</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ObjectNotAccessible</shortDescription>
+        <value>you do not have access permission to this object</value>
+    </labels>
+    <labels>
+        <fullName>ObjectNotCreatable</fullName>
+        <categories>FA</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ObjectNotCreatable</shortDescription>
+        <value>you do not have access to create this object</value>
+    </labels>
+    <labels>
+        <fullName>ObjectNotFound</fullName>
+        <categories>FA</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ObjectNotFound</shortDescription>
+        <value>Object is not found</value>
+    </labels>
+    <labels>
+        <fullName>ObjectNotUpdatable</fullName>
+        <categories>FA</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ObjectNotUpdatable</shortDescription>
+        <value>you do not have access to update this object</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_captcha_domain</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base captcha domain</shortDescription>
+        <value>https://s360-fa-dev-ed.lightning.force.com</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_captcha_loading_message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base captcha loading message</shortDescription>
+        <value>Loading...</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_captcha_site_key</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base captcha site key</shortDescription>
+        <value>6Lcj-kkUAAAAAJDg49ci6QO72p_m5uz2tLlnoaRy</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,95 @@
+<aura:component controller="LookupSObjectController" >
+    <!-- Attributes -->
+     <aura:attribute name="CompId" type="String" required="true"
+        description="The unique name of the Lookup Component" />
+     <aura:attribute name="sObjectAPIName" type="String" required="true"
+        description="The API name of the SObject to search" />
+    <aura:attribute name="instanceId" type="String" required="true"
+        description="An id to identify the instance the component" />
+    <aura:attribute name="label" type="String" required="true"
+        description="The label to assign to the lookup, eg: Account" />
+    <aura:attribute name="pluralLabel" type="String" required="true"
+        description="The plural label to assign to the lookup, eg: Accounts" />
+    <aura:attribute name="listIconSVGPath" type="String" default="/resource/SLDSv213/assets/icons/custom-sprite/svg/symbols.svg#custom11"
+        description="The static resource path to the svg icon to use." />
+    <aura:attribute name="listIconClass" type="String" default="slds-icon-custom-11"
+        description="The SLDS class to use for the icon." />
+    <aura:attribute name="searchString" type="String" description="The search string to find." />
+    <aura:attribute name="matches" type="LookupSObjectController.Result[]" description="The resulting matches returned by the Apex controller." />
+    <aura:attribute name="prepId" type="String" description="The prepopulated Id." />
+    <aura:attribute name="labelClass" type="String" description="The label Class" />
+    <aura:attribute name="dependantField" type="String" default="" description="comma separated list of dependant field" />
+    <aura:attribute name="dependantFieldType" type="String" default="" description="comma separated list of dependant field Type correspond to dependantField" />
+    <aura:attribute name="dependantFieldValue" type="String" default="" description="comma separated list of dependant field Value correspond to dependantField" />
+    <aura:attribute name="showDropdownList" type="boolean" default="false" />
+    <aura:attribute name="readOnly" type="boolean" default="false" />
+    <aura:attribute name="IsRequired" type="Boolean" default="false" />
+    <aura:attribute name="helpText" type="String" default="" />
+    <aura:attribute name="fieldDesc" type="Object"/>
+    
+    <!-- Events -->
+    <aura:registerEvent name="AutoFillExchange" type="c:S360_B_Base_Evt_onChange" />
+    <aura:registerEvent name="LookupSObjectUpdateEvt" type="c:S360_B_Base_Evt_onLookupSObjectUpdate" />
+    <aura:registerEvent name="LookupSObjectClearIdEvt" type="c:S360_B_Base_Evt_onLookupSObjectClear"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.prepId}" action="{!c.handleValueChange}"/>
+    <aura:handler name="change" value="{!v.matches}" action="{!c.onMatchesUpdate}"/>
+    <!-- <aura:handler name="render" value="{!this}" action="{!c.onRender}"/> -->
+
+ 
+  <div>
+  <!-- This is the Input form markup -->
+    <aura:if isTrue="{!v.readOnly}">
+        <p>{!v.searchString}</p>
+        <aura:set attribute="else">
+
+            <div class="form">
+              <label class="{!(v.IsRequired 
+                ? (!(v.readOnly)
+                    ? ((v.searchString.length == 0 || !v.searchString)
+                        ? 'error' 
+                        : '') 
+                    : '') 
+                : '')}">
+                  {!v.label}
+              </label>
+                    
+                <aura:if isTrue="{!v.helpText==''?false:true}">    
+                    <p  data-aura-rendered-by="9:1460;a" style="font-size: 11px">
+                         {!v.helpText}
+                    </p>
+                </aura:if>
+                
+
+                <div id="lookup" class="formcontrol">
+                 <!-- This markup is for when searching for a string -->
+                    <ui:inputText class="form-control pull-left" aura:id="lookup" value="{!v.searchString}" placeholder="Search For..." updateOn="keyup" keyup="{!c.search}" change="{!c.inputTextChanged}" />
+                    <button class="pull-left button-size" onclick="{!c.clear}">Clear</button>
+                </div>  
+                  
+                <div class="dropdown" style="{!(v.showDropdownList)?'':'display:none'}">
+                    <ul class="dropdown-menu act pull-left" aura:id="lookuplist-items"  id="hideclass" role="menu">
+                        <aura:iteration aura:id="lookup-dropdown" items="{!v.matches}" var="match" indexVar="i">
+                            <li  id="{!globalId + '_id_' + match.SObjectId}" role="menuitem" onclick="{!c.select}">
+                                <a  class="{!'allLabels ' + 'objLabel' + i}" href="">{!match.SObjectLabel}</a>
+                            </li>
+                        </aura:iteration>
+                    </ul>
+                </div>
+                   
+                <ul aura:id="lookuplist-items"  role="menu">
+                    <aura:iteration items="{!v.matches}" var="match" >
+                        <div onclick="{!c.select}">
+                            <a id="{!globalId + '_id_' + match.SObjectId}" >
+                                <span class="{!'allLabels '+'objLabel'+i}">
+                                </span>
+                            </a>
+                        </div>
+                    </aura:iteration>
+                </ul>
+        
+            </div>
+        </aura:set>
+    </aura:if>       
+  </div>
+</aura:component>

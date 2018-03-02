@@ -1,0 +1,49 @@
+<aura:component >
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
+    <aura:attribute name="PlaceholderText" type="string" default=""/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="IsMissingValue" type="boolean" default="true"/>
+    <aura:attribute name="IsValidateRequired" type="boolean" default="true"/>
+    <aura:attribute name="DefaultValue" type="string" default=""/>
+    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="ErrorMessage" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:S360_B_Base_Evt_onChange" />
+
+    <!-- Component Attribute -->
+    <aura:attribute name="IsMissingValueLocal" type="boolean" default="false"/>
+
+    <!-- Component Handler -->
+    <aura:handler name="change" value="{!v.Value}" action="{!c.itemsChange}"/>
+    <aura:handler name="change" value="{!v.IsReadOnly}" action="{!c.itemsChange}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+ 
+ 
+    <div class="{!(v.IsHidden ? 'hidden' : '')}">
+        <label class="{!v.InputLabel.length ? '' : 'hidden'}" for="{!v.CompId}" >
+            <span class="{!v.IsReadOnly? '' : (v.IsRequired ? (v.IsMissingValueLocal ? 'error' : '' ) : '')}">
+                <strong class="{!(v.IsDisabled ? 'disabled-text' : '')}">
+                    {!v.InputLabel}
+                </strong>
+            </span>
+        </label>
+        <aura:if isTrue="{!v.IsReadOnly}">
+            <p class="{(v.IsReadOnly ? '' : 'hidden')}">
+                {!v.Value}
+            </p>
+            <aura:set attribute="else">
+                <div class="{'form-element ' + (v.IsReadOnly ? 'hidden' : '')}">
+                    <ui:inputPhone required="{!v.IsRequired}" aura:id="inputPhone" disabled="{!v.IsDisabled || v.IsReadOnly}" class="{!v.Class ? v.Class : 'form-control'}" change="{!c.handleOnChange}" value="{!v.Value}" placeholder="{!v.PlaceholderText}" />
+                </div>
+            </aura:set>
+        </aura:if>
+
+    </div>
+  
+
+</aura:component>

@@ -1,0 +1,48 @@
+<aura:component controller="S360_Base_FileUploadController">
+	<!-- Component Parameter -->
+    <aura:attribute name="CompId" type="string"/>
+    <aura:attribute name="SobjectType" type="string" default=""/>
+    
+    <aura:attribute name="FileLabel" type="String" default="Choose File"/>
+
+    <aura:attribute name="ParentId" type="Id"/>
+    <aura:attribute name="ParentFieldName" type="String"/>
+    
+    <aura:attribute name="SObject" type="sObject[]"/>
+    
+    <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
+
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    
+    <aura:method name="upload" action="{!c.save}" access="public"/>
+    <aura:method name="clear" action="{!c.clear}" access="public"/>
+
+    <div class="slds-grid">
+      <div class="slds-col slds-size--2-of-9">
+      </div>
+      <div class="slds-col slds-size--7-of-9">
+          <div class="slds-file-selector slds-file-selector_files">
+              <div class="slds-file-selector__dropzone">
+                  <input aura:id="fileSelected" type="file" class="slds-file-selector__input slds-assistive-text" id="{!v.CompId}" aria-describedby="{!v.CompId}" onchange="{!c.change}"/>
+                  <label class="slds-file-selector__body" for="{!v.CompId}">
+                      <span class="slds-file-selector__button slds-button slds-button_neutral">
+                          <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#upload'}" 
+                                     Class="slds-button__icon slds-button__icon_left icon-color"
+                                     Name="upload" Category="utility" Size="xx-small"/>
+                          {!v.FileLabel}
+                      </span>
+                  </label>
+              </div>
+          </div>
+          
+          <div class="slds-spinner_container slds-hide" aura:id="spinner">
+              <div role="status" class="slds-spinner slds-spinner--x-small">
+                  <span class="slds-assistive-text">Loading</span>
+                  <div class="slds-spinner__dot-a"></div>
+                  <div class="slds-spinner__dot-b"></div>
+              </div>
+          </div>
+      </div>
+    </div>  
+</aura:component>

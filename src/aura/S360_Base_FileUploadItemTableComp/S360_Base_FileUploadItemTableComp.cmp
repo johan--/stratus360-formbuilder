@@ -1,0 +1,39 @@
+<aura:component controller="S360_Base_FileUploadTableController">
+    <aura:attribute name="allData" type="Object[]" />
+    <aura:attribute name="data" type="Object" />
+    <aura:attribute name="index" type="object"/>
+    <aura:attribute name="CompId" type="string"/>
+    
+    <!--Toast Attribute -->
+    <aura:attribute name="TextMessage" type="String" default=""/>
+    <aura:attribute name="ToastType" type="String" default=""/>
+    <aura:attribute name="showToast" type="String" default="True"/>
+    
+    <!-- loading attribute -->
+    <aura:attribute name="showLoading" type="boolean" default="false"/>
+    
+    <!-- handler on click component -->
+    <aura:handler name="OnClick" event="c:onClick" action="{!c.handleOnClick}"/>
+    
+    <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" svgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" showToast="{!v.showToast}"/>
+    
+    <tr class="slds-hint-parent">
+        
+        <td role="gridcell" class="slds-text-align--left">
+            <div class="slds-truncate" title="{!v.index + 1}">
+                {!v.index + 1}
+            </div>
+        </td>
+        
+        <td role="gridcell" class="slds-text-align--center">
+            <c:ButtonCmp ButtonLabel="Delete" IsHidden="false"
+                                     IsDisabled="false" ButtonClass="slds-button"  CompId="{! 'btn_delete_attach_' + v.CompId}"/>
+        </td>
+        
+        <td role="gridcell" class="slds-text-align--left">
+            <a target="_blank" href="{!'/servlet/servlet.FileDownload?file='+v.data.objects.Id}">{!v.data.objects.Name}</a>
+        </td>
+    </tr>
+    
+    <c:LightningLoadingComponent show="{!v.showLoading}" CompId="{!'E_Rep_View_loading'}"/>
+</aura:component>

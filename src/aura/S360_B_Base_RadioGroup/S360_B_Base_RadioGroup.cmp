@@ -1,0 +1,70 @@
+<aura:component >
+	<aura:attribute name="CompId" type="string" default="InputTextId"/>
+	<aura:attribute name="InputLabel" type="String" default=""/>
+	<aura:attribute name="IsHidden" type="boolean" default="false"/>
+	<aura:attribute name="IsRequired" type="boolean" default="true"/>
+	<aura:attribute name="IsDisabled" type="boolean" default="false"/>
+	<aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+	<aura:attribute name="Stages" type="String[]" default=""/>
+	<aura:attribute name="VerticalAlign" type="Boolean" default=""/>
+	<aura:attribute name="Value" type="String" default=""/>
+	<aura:attribute name="Layout" type="String" default="row" />
+
+	<!-- additional attributes -->
+	<aura:attribute name="Class" type="String" default=""/>
+	<aura:attribute name="SideClass" type="String" default=""/>
+
+    <!-- note/attachment attributes -->
+    <aura:attribute name="VaultId" type="string" default="Id" />
+	<aura:attribute name="QuestionId" type="string" default="Q?" />
+	<aura:attribute name="Order" type="Integer" default="0" />
+	<aura:attribute name="TagId" type="string" default="TAG" />
+	<aura:attribute name="NoteAttachmentRequired" type="boolean" default="false" />
+
+	<!--
+	<aura:registerEvent name="S360_B_Base_Evt_onChange" type="c:S360_B_Base_Evt_onChange" />
+	<aura:handler name="S360_B_Base_Evt_onChange" type="c:S360_B_Base_Evt_onChange" action="{!c.onChange}" />
+	-->
+	<aura:handler name="rbOnChange" event="c:S360_B_Base_Evt_onChange" action="{!c.rbOnChange}" />
+
+	<aura:registerEvent name="ValueModified" type="c:S360_B_Base_Evt_onChange" />
+	
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+	<div class="{!v.Class + ' ' + (v.IsHidden ? 'hidden' : '')}">
+		<label class="{!v.InputLabel.length? '' : 'hidden'}"
+			for="{!v.CompId}" >
+			<!-- <strong class="{!v.IsRequired ? (v.IsMissingValueLocal ? 'error' : '') : ''}"> -->
+			<span class="{!v.IsRequired ? (!v.IsReadOnly ? (v.Value == '' ? 'error' : ''): '') : ''}">
+				<strong class="{!(v.IsDisabled ? 'disabled-text' : '' )}">
+                    <aura:unescapedHtml value="{!v.InputLabel}"/>
+                </strong>
+				<!-- <strong class="{!(v.IsRequired ? (v.Value == '' ? '' : 'hidden') : 'hidden')}">*</strong> -->
+			</span>
+		</label>
+		<form class="{!'row '+ v.Class + ' ' + (v.IsReadOnly ? 'hidden' : '')}">
+			<div class="col-lg-12
+				col-md-12
+				col-sm-12
+				col-xs-12" >
+				<aura:iteration items="{!v.Stages}"
+					var="stage"
+					indexVar="i" >
+					<c:S360_B_Base_RadioItem CompId="{!v.CompId}"
+						label="{!stage}"
+						name="stages"
+						value="{!(v.Value == stage ? true : false)}"
+						VerticalAlign="{!v.VerticalAlign}"
+						IsDisabled="{!v.IsDisabled}" />
+					<aura:if isTrue="{!v.Layout == 'column'}">
+						<br />
+					</aura:if>
+				</aura:iteration>
+			</div>
+		</form>
+        
+		<p class="{!(v.IsReadOnly ? '' : 'hidden')}"> {!v.Value} </p>
+	</div>
+
+</aura:component>

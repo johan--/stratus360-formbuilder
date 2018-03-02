@@ -1,0 +1,43 @@
+<aura:component >
+    
+    <!-- Input Parameter -->
+    <aura:attribute name="CompId" type="string" default="InputTextId" required="true"
+                    description="Unique Id for this component"/>
+    <aura:attribute name="TextMessage" type="string" default="Message display to user" required="true"
+                    description="Message display to user"/>
+    <aura:attribute name="Type" type="String" default="success" required="true"
+                    description="Toast type. available value = [success, error, warning]"/>
+    <aura:attribute name="SvgPath" type="String" default=""/>
+    <aura:attribute name="ShowToast" type="Boolean" default=""/>
+    <aura:attribute name="cssLoaded" type="Boolean"/>
+    
+    <!-- handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.ShowToast}" action="{!c.showToast}"/>
+    
+    
+    <!-- additional event registration -->
+    <aura:registerEvent name="OnClick" type="c:onClick" />
+    
+        <div aura:id="ToastID" class="slds-notify_container slds-hide" style="position:fixed;z-index:10000">
+            <aura:if isTrue="{!v.cssLoaded}">
+                <div class="{!'slds-notify slds-notify--toast slds-theme--'+ v.Type}" role="alert">
+                    <span class="slds-assistive-text">{v.Type}</span>
+                    <button class="slds-button slds-notify__close slds-button--icon-inverse" title="Close" onclick="{!c.close}">
+                        <c:S360_Base_SvgIconCmp Name="close" Category="utility" Size="small"
+                                   SvgPath="{!v.SvgPath}" Class="slds-button__icon">
+                        </c:S360_Base_SvgIconCmp>
+                        <span class="slds-assistive-text">Close</span>
+                        
+                    </button>
+                    <div class="slds-notify__content slds-grid">
+                        <div class="slds-col slds-align-middle">
+                            <h2 class="slds-text-heading--small "><aura:unescapedHtml value="{!v.TextMessage}"/></h2>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+        </div>
+    
+    
+</aura:component>

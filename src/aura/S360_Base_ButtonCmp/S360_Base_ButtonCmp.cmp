@@ -1,0 +1,28 @@
+<aura:component >
+    
+    <aura:attribute name="CompId" type="string" default="ButtonId"	required="true"
+                    description="Unique Id for this component. This id used to identity 
+                                 the component when event fired, exp: when click event fired"/>
+    <aura:attribute name="ButtonLabel" type="string" default="Button Label" required="true"
+                    description="Label to display on button"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+                    description="Hide the button by change display to none"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+                    description="Disable the button"/>
+    
+    <!-- additional attributes -->
+    <aura:attribute name="Class" type="String" default=""
+                    description="CSS class to style the button container"/>
+    <aura:attribute name="ButtonClass" type="String" default=""
+                    description="CSS class to style the button"/>
+    <aura:attribute name="Payload" type="Object"
+                    description="payload carried by this button"/>
+    
+    <!-- additional event registration -->
+    <aura:registerEvent name="OnClick" type="c:S360_Base_onClick" />
+    
+    
+    <button class="{!'slds-button ' + (v.Class != '' ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}" 
+            disabled="{!v.IsDisabled}" onclick="{!c.onClick}">{!v.ButtonLabel}</button>
+    
+</aura:component>

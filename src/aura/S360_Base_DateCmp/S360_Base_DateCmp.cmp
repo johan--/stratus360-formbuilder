@@ -1,0 +1,54 @@
+<aura:component >
+    <aura:attribute name="CompId" type="string" default="DateId" required="true"
+                    description="Unique Id for this component. This id used to identity 
+                                 the component when event fired, exp: when date changed"/>
+    <aura:attribute name="InputLabel" type="string" default="" 
+                    description="Label to display to user"/>
+    <aura:attribute name="HelpText" type="string" default=""/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+                    description="Hide the component"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+                    description="Display required label"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+                    description="Disable component"/>
+    <aura:attribute name="Date" type="Date" default=""
+                    description="Date to supply by user"/>
+    <aura:attribute name="Class" type="String" default=""
+                    description="style for date component container"/>
+    <aura:attribute name="InitDate" type="Date" default=""/>
+    <aura:attribute name="DefaultDate" type="Date" default=""/>
+    
+    <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <div class="{!(v.IsHidden ? 'slds-hide ' : 'slds-show slds-form-element ' + v.Class) }">
+        <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
+            <abbr class="slds-required" 
+                  style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
+            <aura:unescapedHtml value="{!v.InputLabel}"/>
+        </label>
+        
+        <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
+        
+		<div class="slds-form-element__control label-inactive">
+            <!--ui:inputDate class="DateWidth slds-input input uiInput uiInputText uiInput-|-default uiInput-|-input" required="{!v.IsRequired}" 
+			value="{!v.Date}" displayDatePicker="true" disabled="{!v.IsDisabled}" 
+			aura:id="{!v.CompId}" label="" focus="{!c.handleOnChange}"/-->
+            
+            <aura:if isTrue="{!v.IsDisabled}">
+                <ui:outputDate class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input"
+                               value="{!v.Date}" format="MMM dd, yyyy"/>
+                
+                <aura:set attribute="else">
+                    <ui:inputDate class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input" 
+                                  required="{!v.IsRequired}" 
+                          value="{!v.Date}" displayDatePicker="true" aura:id="{!v.CompId}" 
+                          label="" focus="{!c.handleOnChange}" format="MMM dd, yyyy"/>
+                </aura:set>
+            </aura:if>
+        </div>
+	</div>
+    
+    
+</aura:component>

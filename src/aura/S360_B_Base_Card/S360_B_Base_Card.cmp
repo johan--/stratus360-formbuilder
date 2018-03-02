@@ -1,0 +1,13 @@
+<aura:component >
+	<aura:attribute name="Title" type="String" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+    
+    <div class="{!'card ' + v.Class}">
+        <div class="card-body">
+            <h4 class="card-title">
+                <aura:unescapedHtml value="{!v.Title}"/>
+            </h4>
+            {!v.body}
+        </div>
+    </div>
+</aura:component>

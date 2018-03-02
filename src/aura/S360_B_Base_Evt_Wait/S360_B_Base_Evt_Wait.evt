@@ -1,0 +1,7 @@
+<aura:event type="COMPONENT" description="Event template">
+
+	<aura:attribute name="CompId" type="string" />
+    <aura:attribute name="ShowModal" type="Boolean"/>
+    <aura:attribute name="Message" type="string"/>
+
+</aura:event>

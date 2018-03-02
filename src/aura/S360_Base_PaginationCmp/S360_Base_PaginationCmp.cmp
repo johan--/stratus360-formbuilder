@@ -1,0 +1,89 @@
+<aura:component >
+    <aura:attribute name="CompId" type="String" required="true"/>
+    <aura:attribute name="length" type="integer" default="0"/>
+    <aura:attribute name="offset" type="integer" default="0"/>
+    <aura:attribute name="pageSize" type="integer" default="0"/>
+    <aura:attribute name="numberOfPage" type="String" default=""/>
+    <aura:attribute name="currentPage" type="integer" default="0"/>
+    
+    <!-- component ID attribute -->
+    <aura:attribute name="recordPerPagePicklist" type="String" default="pagination_component_record_per_page"/>
+    <aura:attribute name="pageNumberPicklist" type="String" default="pagination_component_page_number"/>
+    
+    <aura:attribute name="isNext" type="boolean" default="false"/>
+    <aura:attribute name="isPrev" type="boolean" default="false"/>
+    
+    <!-- component ID attribute -->
+    <aura:attribute name="buttonPrev" type="String" default="pagination_btn_prev"/>
+    <aura:attribute name="buttonNext" type="String" default="pagination_btn_next"/>
+    
+    <!-- notify parent that something change in pagination -->
+    <aura:registerEvent name="paginationEvent" type="c:LightningPaginationEvent"/>
+    <!-- notify page number picklist that data ready -->
+    <aura:registerEvent name="notifyPicklistComponent" type="c:NotifyPicklistCmp" />
+    
+    <!-- handler clicked component -->
+    <aura:handler name="OnClick" event="c:onClick" action="{!c.handleOnClick}"/>
+    <!-- handler on change component -->
+    <aura:handler name="OnChange" event="c:onChange" action="{!c.handleOnChange}"/>
+    
+    <!-- define methods -->
+    <aura:method name="handlePageReady" action="{!c.methodHandlePageReady}" access="public" 
+                 description="method to notify pagination that data is already served and ready to handle">
+    	<aura:attribute name="length" type="integer" default="{!v.integer}" required="true"/>
+    	<aura:attribute name="offset" type="integer" default="{!v.offset}" required="true"/>
+    	<aura:attribute name="pageSize" type="integer" default="{!v.pageSize}" required="true"/>
+    </aura:method>
+    
+    <style>
+        .lightning_pagination_component-select {
+        	width: inherit !important;
+        }
+        
+        #lightning_pagination_component-container {
+        	padding: 10px;
+        }
+        
+        #lightning_pagination_component-record-info {
+        	float: left;
+        }
+        
+        #lightning_pagination_component-nav-container {
+        	float: right;
+        }
+        
+        .nav-item {
+        	margin-right: 10px !important;
+        }
+        
+        .inline-button, .inline-picklist{
+        	display: inline-block !important;
+        }
+    </style>
+    
+    <div class="slds-grid slds-grid--align-center" style="width:100%">
+        <div id="lightning_pagination_component-container">
+            <label id="lightning_pagination_component-record-info" class="nav-item slds-grid slds-grid--vertical-align-center">
+                <p>Show</p> &nbsp;&nbsp;
+                <c:PicklistCmp CompId="{!v.recordPerPagePicklist}" Class="inline-picklist" InputLabel="" PlaceholderText="" PicklistKV="10,25,50,100,200" DefaultK="25" SideClass="slds-grid slds-grid--vertical-align-center" />
+                &nbsp;&nbsp;<p class="slds-medium-show">record per page</p>
+            </label>
+            
+            <div id="lightning_pagination_component-nav-container" class="slds-grid slds-grid--vertical-align-center">
+                <c:ButtonCmp ButtonLabel="Prev" Class="inline-button nav-item" CompId="{!v.buttonPrev}" IsDisabled="{! !v.isPrev}"/>
+                
+                <label class="nav-item slds-grid slds-grid--vertical-align-center">
+                    <p class="slds-small-show">Page:&nbsp;&nbsp;</p>
+                    <!--<ui:inputSelect class="slds-select lightning_pagination_component-select" change="{!c.changePage}" options="{!v.numberOfPage}" aura:id="page_number"></ui:inputSelect>-->
+                    <c:PicklistCmp CompId="{!v.pageNumberPicklist}" Class=" slds-small-show" InputLabel="" PlaceholderText="" PicklistKV="{!v.numberOfPage}" DefaultK="{!(v.currentPage + 1) + ''}" SideClass="slds-grid slds-grid--vertical-align-center" />
+                </label>
+                
+                <label class="nav-item slds-small-show">
+                   {! (v.length > 0) ? ((v.currentPage * v.pageSize) + 1) : 0 } - {! ((v.currentPage * v.pageSize) + v.pageSize > v.length) ? v.length : ((v.currentPage * v.pageSize) + v.pageSize)} of {!v.length}
+                </label>
+                
+                <c:ButtonCmp ButtonLabel="Next" Class="inline-button nav-item" CompId="{!v.buttonNext}" IsDisabled="{! !v.isNext}"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,34 @@
+<aura:component >
+	<!-- This toaster isn't powerful enough to run LoL -->
+	<aura:attribute name="switch" type="boolean" default="false" />
+	<!-- Types are red, yellow, green, blue -->
+	<aura:attribute name="type" type="string" default="blue"/>
+	<aura:attribute name="message" type="string" default="alert" />
+
+	<!-- Overwritten by init - won't do anything when passed by parent -->
+	<aura:attribute name="class" type="string" />
+	<aura:attribute name="visible" type="Boolean" default="false" />
+	<aura:attribute name="backgroundClass" type="string" default="" />
+
+	<!-- Handlers -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:handler name="change" value="{!v.switch}" action="{!c._invoke}"/>
+
+	<aura:if isTrue="{!v.visible}">
+		<div class="butter-toast">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+				<div class="{!'alert ' + v.class }">
+					<a class="close" onclick="{!c._hideSelf}">&times;</a>
+					<aura:unescapedHtml value="{!v.message}"/>
+				</div>
+			</div>		
+		</div>
+		<!-- <div class="slds-notify-container slds-is-relative">
+			<div class="slds-notify slds-notify_toast slds-theme_success" role="alert">
+				asdfjkl
+			</div>
+		</div>
+		 -->
+	</aura:if>
+
+</aura:component>

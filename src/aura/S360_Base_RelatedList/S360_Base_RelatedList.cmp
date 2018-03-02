@@ -1,0 +1,92 @@
+<aura:component controller="S360_Form_Builder_Controller">
+    <aura:attribute name="Title" type="String" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+    
+    <aura:attribute name="ParentId" type="String" default=""/>
+    <aura:attribute name="FormName" type="String" default=""/>
+    <aura:attribute name="RelatedField" type="String" default=""/>
+    <!--aura:attribute name="FormConfig" type="sobject[]" default="[]"/-->
+    <!--aura:attribute name="FieldInfo" type="sobject[]" default="[]"/-->
+    <aura:attribute name="Data" type="sobject[]" default="[]"/>
+    
+    <aura:attribute name="FormConfigTemplate" type="sobject" default="{}"/>
+    <aura:attribute name="FieldInfoTemplate" type="sobject" default="{}"/>
+    <aura:attribute name="DataTemplate" type="sobject" default="{}"/>
+    <aura:attribute name="IsReady" type="boolean" default="false"/>
+    
+    <aura:attribute name="componentData" type="Object"/>
+    
+    <!--Toast Attribute -->
+    <aura:attribute name="TextMessage" type="String" default=""/>
+    <aura:attribute name="ToastType" type="String" default=""/>
+    <aura:attribute name="showToast" type="Boolean" default="false"/>
+    
+    <aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.handleButtonClick}"/>
+    
+    <aura:handler name="change" value="{!v.FormConfigTemplate}" action="{!c.handleTemplateRetrieved}"/>
+    
+    <div>
+        <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" ShowToast="{!v.showToast}"/>
+        
+        <article class="{!'slds-card ' + v.Class}">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2>
+                            <a href="javascript:void(0);" class="slds-card__header-link" title="{!v.Title}">
+                                <span class="slds-text-heading_small">
+                                    <aura:unescapedHtml value="{!v.Title}"/>
+                                </span>
+                            </a>
+                        </h2>
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <aura:if isTrue="{!(v.FormName != '')}">
+                    <aura:if isTrue="{!v.IsReady}">
+                        <div>
+                            <aura:iteration items="{!v.body}" var="b" indexVar="index">
+                                <div class="slds-border_bottom slds-m-around_xx-small">
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-size_1-of-1 slds-large-size_11-of-12">
+                                            <div class="slds-p-around_xxx-small">
+                                                {!b}
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-1 slds-large-size_1-of-12">
+                                            <div class="slds-grid> slds-grid_align-end slds-p-right_medium">
+                                                <c:S360_Base_ButtonCmp ButtonLabel="x" CompId="{! 'remove_' + v.FormName + '_' + v.ParentId}" Payload="{!index}" Class="slds-button slds-button_destructive slds-m-arround_small"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:iteration>
+                            
+                            <c:S360_Base_ButtonCmp ButtonLabel="+ add" CompId="{! 'new_' + v.FormName + '_' + v.ParentId}" 
+                                                   aura:id="btnAdd" Class="slds-button slds-button_brand slds-m-top_small"/>
+                        </div>
+                        
+                        <aura:set attribute="else">
+                            <h2>Loading...</h2>
+                        </aura:set>
+                    </aura:if>
+                    
+                    
+                    <!-- gain the template -->
+                    <div style="display:none">
+                        <c:S360_FormBuilderMain formConfigName="{!v.FormName}" 
+                                                componentData="{!v.componentData}"
+                                                FormConfig="{!v.FormConfigTemplate}"
+                                                FieldInfo="{!v.FieldInfoTemplate}"
+                                                Data="{!v.DataTemplate}"/>
+                    </div>
+                </aura:if>
+                
+            </div>
+            
+        </article>
+    </div>
+    
+</aura:component>

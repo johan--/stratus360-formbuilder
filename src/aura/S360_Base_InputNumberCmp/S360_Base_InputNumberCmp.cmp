@@ -1,0 +1,38 @@
+<aura:component >
+
+    <aura:attribute name="CompId" type="string" default=""/>
+    <aura:attribute name="InputLabel" type="string" default=""/>
+    <aura:attribute name="HelpText" type="string" default=""/>
+    <aura:attribute name="PlaceholderText" type="string" default=""/>
+    <aura:attribute name="Format" type="string" default="" 
+                    description="number format"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsError" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="Class" type="String" default=""
+                    description="Style for input container"/>
+    <aura:attribute name="DefaultValue" type="String" default="0"/>
+
+    <!-- Component init handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.Value}" action="{!c.onValueChange}"/>
+
+    <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
+ 
+	<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
+        <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
+            <abbr class="slds-required" 
+                  style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
+            <aura:unescapedHtml value="{!v.InputLabel}"/>			
+        </label>
+        
+        <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
+        
+        <div class="{!'slds-form-element__control ' + (v.IsError ? 'slds-has-error' : '')}">
+            <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}" class="slds-input textRightAlign" placeholder="{!v.PlaceholderText}" value="{!v.Value}" format="{!v.Format}"/>
+        </div>
+	</div>	
+
+</aura:component>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value><!-- Insider Participation --></value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value><!-- Insider Participation --></value>
+    </caseValues>
+    <fields>
+        <label><!-- Name of Insider --></label>
+        <name>Name_of_Insider__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number of Securities --></label>
+        <name>Number_of_Securities__c</name>
+    </fields>
+    <fields>
+        <label><!-- Percentage of Issued --></label>
+        <name>Percentage_of_Issued__c</name>
+    </fields>
+    <fields>
+        <label><!-- Percentage of Securities --></label>
+        <name>Percentage_of_Securities__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reservation Form --></label>
+        <name>Reservation_Form__c</name>
+        <relationshipLabel><!-- Insider Participations --></relationshipLabel>
+    </fields>
+    <gender><!-- Masculine --></gender>
+    <nameFieldLabel><!-- Insider Participation Name --></nameFieldLabel>
+    <startsWith><!-- Consonant --></startsWith>
+</CustomObjectTranslation>

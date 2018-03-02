@@ -1,0 +1,80 @@
+<aura:component controller="S360_Base_FileUploadTableController">
+    <aura:attribute name="objectPermission" type="Object"/>
+    <aura:attribute name="ReportId" type="String" default=""/>
+    <aura:attribute name="buttonAttachReceiptId" type="String" default="Exp_Attach_Table_buttonAttachReceiptId"/>
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    
+    <!-- loading attribute -->
+    <aura:attribute name="showLoading" type="boolean" default="false"/>
+    
+    <!-- table management attribute -->
+    <aura:attribute name="objectWrapper" type="Object[]"/>
+    <aura:attribute name="sort" type="String" default="desc"/>
+    <aura:attribute name="orderBy" type="String" default="Name"/>
+    <aura:attribute name="tableReportAttachmentId" type="String" default="E_Rep_Attachment_Table_id"/>
+    
+    <!-- pagination attribute -->
+    <aura:attribute name="paginationId" type="String" default="E_Rep_Attachment_Pagination_id"/>
+    <aura:attribute name="length" type="integer" />
+    <aura:attribute name="offset" type="integer" default="0"/>
+    <aura:attribute name="pageSize" type="integer" default="25"/>
+    
+    <!--Toast Attribute -->
+    <aura:attribute name="TextMessage" type="String" default=""/>
+    <aura:attribute name="ToastType" type="String" default=""/>
+    <aura:attribute name="showToast" type="String" default="True"/>
+    
+    <!-- notify pagination that data was ready -->
+    <!-- aura:registerEvent name="notifyPagination" type="c:LightningAppPaginationEvent"/-->
+    <!-- notify table should resize it's dimention -->
+    <aura:registerEvent name="LightningAppResizeTableEvent" type="c:LightningAppResizeTableEvent"/>
+    
+    <!-- handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!-- handler when something changed in table component -->
+    <aura:handler name="notifyTableCanged" event="c:LightningTableChangedEvent" action="{!c.handleTableCanged}"/>
+    <!-- handler when something changed in pagination component -->
+    <aura:handler name="paginationEvent" event="c:LightningPaginationEvent" action="{!c.handlePagination}" />
+    <!-- handler on change component -->
+    <aura:handler name="OnChange" event="c:onChange" action="{!c.handleOnChange}"/>
+    
+    <aura:method name="invalidateHeight" action="{!c.invalidateHeight}" access="public"/>
+    <aura:method name="refreshTable" action="{!c.refreshTable}" access="public">
+        <aura:attribute name="message" type="string" default=""></aura:attribute>
+    </aura:method>
+    
+    <style>
+        .footer {
+           <!--position:fixed;-->
+           left:0px;
+           bottom:0px;
+           height:50px;
+           width:100%;
+           <!--background:#e2e2e2;-->
+        }
+    </style>
+    
+    <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" svgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" showToast="{!v.showToast}"/>
+    
+    <aura:if isTrue="{!v.objectPermission.isAccessible}">
+        <aura:if isTrue="{!v.objectPermission.isCreateable}">
+            <div class="slds-m-around--x-small">
+                <article class="slds-card">
+                    <div class="slds-p-around--small">
+                        <c:S360_Base_OpenCameraCmp Class="inline-button" Label="Attach Receipt" CompId="{!v.buttonAttachReceiptId}"/>             
+                        <!--c:FileUpload parentId="{!v.expenseId}" CompId="E_Report_upload_file"/-->
+                    </div>
+                </article>
+            </div>
+        </aura:if>
+        
+        <div class="slds-m-left_small slds-m-right_small">
+            <c:S360_Base_FileUploadTableComp CompId="{!v.tableReportAttachmentId}" aura:id="E_Rep_Attachment_Table_id" />
+        </div>
+        <div class="footer slds-grid slds-grid--vertical-align-center">
+            <c:LightningPaginationComponent CompId="{!v.paginationId}" aura:id="E_Rep_Attachment_Pagination_id"/>
+        </div>    
+    </aura:if>
+    
+    <c:LightningLoadingComponent show="{!v.showLoading}" CompId="{!'E_Rep_View_loading'}"/>
+</aura:component>

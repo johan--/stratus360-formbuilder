@@ -1,0 +1,77 @@
+<aura:component >
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
+    <aura:attribute name="PlaceholderText" type="string" default="Placeholder Text"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="Boolean" default="false"/>
+    <aura:attribute name="IsDayPresent" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="DayDisabled" type="boolean" default="false"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="PicklistMonth" type="string[]" default=""/>
+    <aura:attribute name="PicklistDay" type="string[]" default=""/>
+    <aura:attribute name="PicklistYear" type="string[]" default=""/>
+    <aura:attribute name="DefaultDay" type="String" default=""/>
+    <aura:attribute name="DefaultMonth" type="String" default=""/>
+    <aura:attribute name="DefaultYear" type="String" default=""/>
+    
+    <aura:attribute name="DateString" type="String" default="Date not specified"/>
+
+    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="SideClass" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:S360_B_Base_Evt_onChange" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.IsDisabled}" action="{!c.disabledChange}"/>    
+    <aura:handler name="change" value="{!v.DefaultDay}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.DefaultMonth}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.DefaultYear}" action="{!c.doInit}"/>
+
+    <aura:handler name="change" value="{!v.PicklistDay}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.PicklistMonth}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.PicklistYear}" action="{!c.doInit}"/>
+    
+
+    <div class="{!v.Class + ' ' + (v.IsHidden ? 'slds-hide' : 'slds-show')}">
+        <label class="" for="{!v.CompId}" >
+            
+        </label>
+        <form class="{!'row '+ v.Class + ' ' + (v.IsReadOnly ? 'hidden' : '')}">
+            <strong class="{!v.IsRequired ? ( v.DefaultMonth == '' ? 'error' : (v.DefaultYear == '' ? 'error' : (v.IsDayPresent ? (v.DefaultDay == '' ? 'error' : '') : '')) ) : ''}">
+                Month
+            </strong>
+            <div class="{!'form-group '+(v.IsDayPresent? 'col-lg-4 col-md-4 col-sm-4 col-xs-12' : 'col-lg-6 col-md-6 col-sm-6 col-xs-12')}">
+                <ui:inputSelect class="form-control heightAdjustment"
+                    aura:id="InputMonth"
+                    required="{!v.IsRequired}"
+                    disabled="{!v.IsDisabled}"
+                    change="{!c.changeMonth}"
+                />
+            </div>
+            <div class="{!'col-lg-4 col-ms-4 col-sm-4 col-xs-12 form-group '+(v.IsDayPresent? '' : 'hidden')}">
+                <strong class="{!v.IsRequired ? ( v.DefaultMonth == '' ? 'error' : (v.DefaultYear == '' ? 'error' : (v.IsDayPresent ? (v.DefaultDay == '' ? 'error' : '') : '')) ) : ''}"> 
+                    Day
+                </strong>
+                <ui:inputSelect class="form-control heightAdjustment"
+                    aura:id="InputDay"
+                    disabled="{!v.DayDisabled}"
+                    change="{!c.changeDay}"
+                />
+            </div>
+            <strong class="{!v.IsRequired ? ( v.DefaultMonth == '' ? 'error' : (v.DefaultYear == '' ? 'error' : (v.IsDayPresent ? (v.DefaultDay == '' ? 'error' : '') : '')) ) : ''}"> 
+                Year
+            </strong>
+            <div class="{!'form-group '+(v.IsDayPresent? 'col-lg-4 col-md-4 col-sm-4 col-xs-12' : 'col-lg-6 col-md-6 col-sm-6 col-xs-12')}">
+                <ui:inputSelect class="form-control heightAdjustment"
+                    aura:id="InputYear"
+                    required="{!v.IsRequired}"
+                    disabled="{!v.IsDisabled}"
+                    change="{!c.changeYear}"
+                />
+            </div>
+        </form>
+        <p class="{!(v.IsReadOnly ? '' : 'hidden')}">{!v.DefaultMonth}{!v.IsDayPresent ? ' ' + v.DefaultDay : ''}&nbsp;{!v.DefaultYear}</p>
+    </div>
+
+</aura:component>

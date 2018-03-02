@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="event to notify that table should rerender it's dimention">
+    <aura:attribute name="CompId" type="String" required="true" />
+</aura:event>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customApplications>
+        <label><!-- Stratus360 Form Builder --></label>
+        <name>Stratus360_Form_Builder</name>
+    </customApplications>
+    <customLabels>
+        <label><!-- FormNotFound --></label>
+        <name>FormNotFound</name>
+    </customLabels>
+    <customLabels>
+        <label>fr</label>
+        <name>Language</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotAccessible --></label>
+        <name>ObjectNotAccessible</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotCreatable --></label>
+        <name>ObjectNotCreatable</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotFound --></label>
+        <name>ObjectNotFound</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotUpdatable --></label>
+        <name>ObjectNotUpdatable</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha domain --></label>
+        <name>S360_base_captcha_domain</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha loading message --></label>
+        <name>S360_base_captcha_loading_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha site key --></label>
+        <name>S360_base_captcha_site_key</name>
+    </customLabels>
+</Translations>

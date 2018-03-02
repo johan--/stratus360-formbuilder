@@ -1,0 +1,28 @@
+.THIS .boxsize{
+    /*width:200px;*/
+    /*height:20px;*/
+}
+.THIS .input{
+    /*width:200px;*/
+    width:80%;
+    /*height:25px;*/
+}
+
+.THIS .form{
+    margin-left: 30px;
+}
+
+.THIS .act{
+   display:block!important;
+   }
+
+.THIS .act>li>:hover{
+    background:#0097cf;
+}
+.THIS .form-control:focus {
+    border: 2px solid #0097cf;
+}
+
+.THIS .button-size {
+    height:34px;
+}

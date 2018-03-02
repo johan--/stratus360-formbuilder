@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value><!-- Reservation Form --></value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value><!-- Reservation Form --></value>
+    </caseValues>
+    <fields>
+        <label><!-- Date Completed --></label>
+        <name>Date_Completed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Issued and Outstanding --></label>
+        <name>Issued_and_Outstanding__c</name>
+    </fields>
+    <fields>
+        <label><!-- Issuer Text --></label>
+        <name>Issuer_Text__c</name>
+    </fields>
+    <fields>
+        <label><!-- Proposed Price --></label>
+        <name>Proposed_Prices__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tier --></label>
+        <name>Tier__c</name>
+        <picklistValues>
+            <masterLabel>Tier 1</masterLabel>
+            <translation><!-- Tier 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tier 2</masterLabel>
+            <translation><!-- Tier 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tier 3</masterLabel>
+            <translation><!-- Tier 3 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Trading_Ticker --></label>
+        <name>Trading_Ticker__c</name>
+        <picklistValues>
+            <masterLabel>AAB</masterLabel>
+            <translation><!-- AAB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AAV</masterLabel>
+            <translation><!-- AAV --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ABK</masterLabel>
+            <translation><!-- ABK --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ABT</masterLabel>
+            <translation><!-- ABT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AC</masterLabel>
+            <translation><!-- AC --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ACD</masterLabel>
+            <translation><!-- ACD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ACO</masterLabel>
+            <translation><!-- ACO --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ACR</masterLabel>
+            <translation><!-- ACR --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ACZ</masterLabel>
+            <translation><!-- ACZ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AD</masterLabel>
+            <translation><!-- AD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ADN</masterLabel>
+            <translation><!-- ADN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ADW</masterLabel>
+            <translation><!-- ADW --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AEF</masterLabel>
+            <translation><!-- AEF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AEM</masterLabel>
+            <translation><!-- AEM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AEZS</masterLabel>
+            <translation><!-- AEZS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AF</masterLabel>
+            <translation><!-- AF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AFN</masterLabel>
+            <translation><!-- AFN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AGF</masterLabel>
+            <translation><!-- AGF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AGI</masterLabel>
+            <translation><!-- AGI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AGT</masterLabel>
+            <translation><!-- AGT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AGU</masterLabel>
+            <translation><!-- AGU --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AHY</masterLabel>
+            <translation><!-- AHY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AI</masterLabel>
+            <translation><!-- AI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AIF</masterLabel>
+            <translation><!-- AIF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AIM</masterLabel>
+            <translation><!-- AIM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AJX</masterLabel>
+            <translation><!-- AJX --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AKG</masterLabel>
+            <translation><!-- AKG --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AKT</masterLabel>
+            <translation><!-- AKT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ALA</masterLabel>
+            <translation><!-- ALA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ALB</masterLabel>
+            <translation><!-- ALB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ALC</masterLabel>
+            <translation><!-- ALC --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ALO</masterLabel>
+            <translation><!-- ALO --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ALS</masterLabel>
+            <translation><!-- ALS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AMI</masterLabel>
+            <translation><!-- AMI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AMM</masterLabel>
+            <translation><!-- AMM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ANX</masterLabel>
+            <translation><!-- ANX --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AOI</masterLabel>
+            <translation><!-- AOI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AP</masterLabel>
+            <translation><!-- AP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>APH</masterLabel>
+            <translation><!-- APH --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>APS</masterLabel>
+            <translation><!-- APS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>APY</masterLabel>
+            <translation><!-- APY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AQA</masterLabel>
+            <translation><!-- AQA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AQN</masterLabel>
+            <translation><!-- AQN --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AQY</masterLabel>
+            <translation><!-- AQY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AR</masterLabel>
+            <translation><!-- AR --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ARE</masterLabel>
+            <translation><!-- ARE --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ARG</masterLabel>
+            <translation><!-- ARG --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ARX</masterLabel>
+            <translation><!-- ARX --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ARZ</masterLabel>
+            <translation><!-- ARZ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ASND</masterLabel>
+            <translation><!-- ASND --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ASP</masterLabel>
+            <translation><!-- ASP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ASR</masterLabel>
+            <translation><!-- ASR --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ATA</masterLabel>
+            <translation><!-- ATA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ATD</masterLabel>
+            <translation><!-- ATD --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ATH</masterLabel>
+            <translation><!-- ATH --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ATL</masterLabel>
+            <translation><!-- ATL --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ATP</masterLabel>
+            <translation><!-- ATP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ATZ</masterLabel>
+            <translation><!-- ATZ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AUP</masterLabel>
+            <translation><!-- AUP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AW</masterLabel>
+            <translation><!-- AW --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AX</masterLabel>
+            <translation><!-- AX --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AXR</masterLabel>
+            <translation><!-- AXR --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AXY</masterLabel>
+            <translation><!-- AXY --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AYM</masterLabel>
+            <translation><!-- AYM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AZ</masterLabel>
+            <translation><!-- AZ --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>AZP</masterLabel>
+            <translation><!-- AZP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>BOS</masterLabel>
+            <translation><!-- BOS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DRX</masterLabel>
+            <translation><!-- DRX --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FAP</masterLabel>
+            <translation><!-- FAP --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>HOT</masterLabel>
+            <translation><!-- HOT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IRON</masterLabel>
+            <translation><!-- IRON --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ORA</masterLabel>
+            <translation><!-- ORA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>RGX</masterLabel>
+            <translation><!-- RGX --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>USA</masterLabel>
+            <translation><!-- USA --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>VNP</masterLabel>
+            <translation><!-- VNP --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Transaction Details --></label>
+        <name>Transaction_Details__c</name>
+    </fields>
+    <gender><!-- Masculine --></gender>
+    <layouts>
+        <layout>Reservation Form Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel><!-- Reservation Form Name --></nameFieldLabel>
+    <startsWith><!-- Consonant --></startsWith>
+</CustomObjectTranslation>

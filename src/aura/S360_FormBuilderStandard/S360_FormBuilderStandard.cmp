@@ -1,0 +1,81 @@
+<aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+    <ltng:require styles="{!$Resource.SLDS231 + '/assets/styles/salesforce-lightning-design-system.min.css'}" 
+        afterScriptsLoaded="{!c.afterScriptLoaded}"/>
+    
+    <!-- component parameter -->
+    <aura:attribute name="FormConfig" type="Object" default="{}"/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <!-- save related data by formName|relatedField as the key -->
+    <aura:attribute name="RelatedData" type="Object" default="{}" />
+    <aura:attribute name="FieldInfo" type="Object" default="{}"/>
+    
+    <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
+    <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
+    
+    <!-- 
+		form pattern mapping
+		used to map position and child parent position
+	 -->
+    <aura:attribute name="FormPattern" type="Object" default="{}"/>
+
+	<!-- this object stores all components rendered in the form
+		 use Field API name to access the component
+	 -->    
+    <aura:attribute name="componentData" type="Object" default="{}"/>
+    <!-- save button id which has submit as its action type -->
+    <aura:attribute name="submittedButton" type="string[]"/>
+
+    <!-- Show component when CSS is loaded -->
+    <aura:attribute name="cssLoaded" type="Boolean" default="false"/>
+
+    <!-- save button id which has action other than sumbit -->
+    <!-- if action equal to event save like this pattern {compAPI : {actionType, actionName, actionTarget}} -->
+    <!-- if action equal to custom save like this pattern {compAPI : {actionType, action}} -->
+    <aura:attribute name="actionButton" type="Object"/>
+    <!-- mapping button who trigger next and previous panel -->
+    <aura:attribute name="slidingPanelButton" type="sObject" default="{}"/>
+    
+    <!--Toast Attribute -->
+    <aura:attribute name="TextMessage" type="String" default=""/>
+    <aura:attribute name="ToastType" type="String" default=""/>
+    <aura:attribute name="showToast" type="Boolean" default="false"/>
+    
+    <!-- registered events -->
+    <aura:registerEvent name="S360_FormBuilderEvt" type="c:S360_FormBuilderEvt" />
+    
+    <!-- handler button click -->
+    <aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.handleButtonClick}"/>
+    <aura:handler name="OnCaptcha" event="c:S360_B_Base_Evt_Captcha" action="{!c.handleCaptcha}"/>
+    
+    <aura:method name="setup" action="{!c.setup}" 
+                 description="setup stuff to render"> 
+        <aura:attribute name="config" type="Object"/> 
+        <aura:attribute name="data" type="Object" /> 
+        <aura:attribute name="fieldInfo" type="Object" /> 
+    </aura:method>
+    
+    <!-- this method is called after S360_FormBuilderMain finish its server operation -->
+    <aura:method name="afterSubmit" action="{!c.handleAfterSubmit}">
+        <!-- sender is submit buttom CompId who trigger submit action -->
+        <aura:attribute name="sender" type="String" default=""/>
+        <!-- status is server operation status, it could be true or false -->
+        <aura:attribute name="status" type="boolean" default="false"/>
+        <!-- message is server message -->
+        <aura:attribute name="message" type="string" default=""/>
+    </aura:method>
+    
+    <!-- this component body store rendered component -->
+    
+        <div class='slds'>
+            {!v.body}
+            <c:S360_Base_LoadingCmp aura:id="loading" CompId="loading"/>
+            <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" 
+                                  SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
+                                  Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}"/>
+            
+            <!--S360_FA:S360_Base_LookupSObject aura:id="Company__c" sObjectAPIName="User" label="test" instanceId="test" pluralLabel="" searchString="aa"
+											CompId="test" IsHidden="false" IsDisabled="false"/-->
+        </div>
+   
+    
+</aura:component>

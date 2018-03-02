@@ -1,0 +1,15 @@
+.THIS .heightAdjustment{
+	height: calc(1.875rem + (1px * 2))!important;
+}
+
+.THIS .minSize{
+	min-width: 50px; 
+}
+
+.THIS .show-tooltip{
+    display: inline-block;
+}
+
+.THIS .hide-tooltip{
+    display: none;
+}

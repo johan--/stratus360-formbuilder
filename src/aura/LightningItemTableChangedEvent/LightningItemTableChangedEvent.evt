@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="event to notify parent that data on row x was changed">
+    <aura:attribute name="index" type="integer" required="true"/>
+    <aura:attribute name="data" type="object" required="true"/>
+    <aura:attribute name="isSelectRow" type="boolean" default="false"/>
+</aura:event>

@@ -1,0 +1,50 @@
+<aura:component >
+	<aura:attribute name="CompId" type="string" default="CheckboxId"/>
+	<aura:attribute name="InputLabel" type="string" default=""/>
+	<aura:attribute name="IsHidden" type="boolean" default="false"/>
+	<aura:attribute name="IsRequired" type="boolean" default="false"/>
+	<aura:attribute name="IsDisabled" type="boolean" default="false"/>
+	<aura:attribute name="IsChecked" type="boolean" default="false"/>
+	<aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+	<aura:attribute name="ReadOnlyValue" type="string" default="false"/>
+	<aura:attribute name="Value" type="string" default="" description="Salesforce Record Id" />
+	<aura:attribute name="ShowRecordDeletion" type="Boolean" default="false" />
+	<aura:attribute name="class" type="string" default=""/>
+	
+	<!-- additional event registration -->
+	<aura:registerEvent name="OnChange" type="c:S360_B_Base_Evt_onChange" />
+	<aura:registerEvent name="OnClick" type="c:S360_B_Base_Evt_onClick" />
+
+	<div class="{!v.IsHidden ? 'slds-hide' : 'slds-show slds-form-element'}">
+		<aura:if isTrue="{!!v.IsReadOnly}">
+			<div class="slds-form-element__control">
+	<!--
+				<span class="slds-checkbox">
+	-->
+				<span class="">
+					<abbr class="{!v.IsRequired ? 'slds-show slds-required' : 'slds-hide'}" title="required">*</abbr>
+
+					<aura:if isTrue="{!v.ShowRecordDeletion}">
+						<span class="fa fa-times-circle" onclick="{!c.onClickDelete}" />
+					</aura:if>
+
+					<input class="{!(v.IsReadOnly || v.ShowRecordDeletion) ? 'hidden' : ''}" type="checkbox" value="{!v.Value}" name="options" id="{!v.CompId}" checked="{!v.IsChecked}" disabled="{!v.IsDisabled}" onchange="{!c.onChange}"/>
+					<p class="{!v.IsReadOnly ? '' : 'hidden'}">{!v.ReadOnlyValue}</p>
+					<label class="" for="{!v.CompId}">
+	<!--
+					<label class="slds-checkbox__label" for="{!v.CompId}">
+						<span class="slds-checkbox~~faux"></span> 
+						<span class="slds-form-element__label"> {!v.InputLabel}</span>
+	-->
+						<span style="{!v.class == 'text-white' ? 'color:white' : ''}">&nbsp;{!v.InputLabel}</span>
+					</label>
+				</span>
+			</div>
+			<aura:set attribute="else">
+				<div style="{!v.class == 'text-white' ? 'color:white' : ''}" class="{!v.IsChecked? '' : 'hidden'}">
+					{!v.InputLabel}
+				</div>
+			</aura:set>
+		</aura:if>
+	</div>
+</aura:component>

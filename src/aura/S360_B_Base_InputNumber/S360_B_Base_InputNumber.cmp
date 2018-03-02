@@ -1,0 +1,30 @@
+<aura:component >
+
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
+    <aura:attribute name="PlaceholderText" type="string" default=""/>
+    <aura:attribute name="Format" type="string" default=""/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsError" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:S360_B_Base_Evt_onChange" />
+
+    <div class="{!v.Class + ' '}">
+        <label class="{!v.Class + ' ' + (v.InputLabel == '' ? 'slds-hide' : 'slds-show slds-form-element__label')}" for="{!v.CompId}">
+            <abbr class="{! 'slds-required ' + (v.IsRequired ? 'slds-show' : 'slds-hide')}" title="required">*</abbr>
+            {!v.InputLabel}
+        </label>
+        <div class="{!'slds-form-element__control ' + (v.IsReadOnly ? 'hidden' : '')}">
+            <ui:inputNumber required="{!v.IsRequired}" aura:id="{!v.CompId}" disabled="{!v.IsDisabled || v.IsReadOnly}" class="{!'form-control textRightAlign'}" placeholder="{!v.PlaceholderText}" change="{!c.handleOnChange}" value="{!v.Value}" format="{!v.Format}" />
+        </div>
+        <p class="{!v.IsReadOnly ? '' : 'hidden'}">
+            {!v.Value}
+        </p>
+    </div>
+
+</aura:component>

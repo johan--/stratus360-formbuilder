@@ -1,0 +1,52 @@
+<aura:component controller="PicklistDescriber">
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
+    <aura:attribute name="PlaceholderText" type="string" default="Placeholder Text"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="PicklistKV" type="string" default=""/>
+    <aura:attribute name="DefaultK" type="string" />
+    <aura:attribute name="SObjectName" type="string" default=""/>
+    <aura:attribute name="recordTypeName" type="string" default=""/>
+    <aura:attribute name="FieldName" type="string" default=""/>
+
+    <!-- additional attributes -->
+    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="SideClass" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:onChange" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:NotifyPicklistCmp" action="{!c.handleNotify}" />
+
+    <!-- define methods -->
+    <aura:method name="invalidatePicklist" action="{!c.methodHandleNotify}" access="public"
+                 description="method to invalidate picklist comp"/>
+
+
+        <article class="{!v.Class + ' ' + (v.IsHidden ? 'slds-hide slds-is-relative' : 'slds-show slds-is-relative')}">
+            <div aura:id="picklistID" class="{!v.SideClass}">
+                <label class="{!v.Class + ' ' + (v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-show slds-form-element__label')}" for="{!v.CompId}">
+                    <abbr class="{!v.IsRequired ? 'slds-show slds-required' : 'slds-hide' }" title="required">*</abbr>
+                    {!v.InputLabel}
+                </label>
+                <div class="slds-form-element__control" id="{!v.CompId}">
+                    <ui:inputSelect aura:id="InputSelectId" required="{!v.IsRequired}" disabled="{!v.IsDisabled}" class="slds-select heightAdjustment" labelClass="slds-form-element__label" change="{!c.onSelectChangeExpType}">
+                    </ui:inputSelect>
+                </div>
+            </div>
+            <div aura:id="loadingIcon" class="slds-spinner_container" >
+                <div role="status" class="slds-spinner slds-spinner--small">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+
+        </article>
+
+
+
+
+</aura:component>

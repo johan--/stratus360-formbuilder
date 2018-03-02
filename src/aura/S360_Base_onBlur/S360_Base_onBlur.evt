@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="event which fired when blurred component">
+    <aura:attribute name="CompId" type="string" required="true"/>
+    <aura:attribute name="Payload" type="object"/>
+</aura:event>

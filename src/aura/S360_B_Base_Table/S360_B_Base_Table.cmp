@@ -1,0 +1,61 @@
+<aura:component >
+	<aura:attribute name="CompId" type="String" default=""/>
+	<aura:attribute name="InputLabel" type="String" default=""/>
+	<aura:attribute name="Items" type="sObject[]" default=""/>
+	<aura:attribute name="HeaderFields" type="String[]" default=""/>
+	<aura:attribute name="ShowRecordSelector" type="Boolean" default="false" />
+	<aura:attribute name="ShowRecordDeletion" type="Boolean" default="false" />
+	<aura:attribute name="ShowHeader" type="Boolean"/>
+
+	<!-- table attribute -->
+	<aura:attribute name="initTableWidth" type="integer" default="1905"/>
+	<aura:attribute name="tableWidth" type="integer" default="1905"/>
+	<aura:attribute name="tableHeight" type="integer" default="420"/>
+
+	<!-- handler clicked component -->
+	<aura:handler name="OnClick" event="c:S360_B_Base_Evt_onClick" action="{!c._handleOnClick}"/>
+	<!-- handler on change component -->
+	<aura:handler name="OnChange" event="c:S360_B_Base_Evt_onChange" action="{!c._handleOnChange}"/>
+
+	<div class="{!v.Class + ' ' + (v.IsHidden ? 'hidden' : '')}">
+		<div class="panel
+			panel-default"
+		>
+			<div class="{!v.InputLabel.length ? 'panel-heading' : 'hidden'}">
+				{!v.InputLabel}
+			</div>
+			<table class="table
+				table-hover
+				table-bordered"
+			>
+				<aura:if isTrue="{!v.ShowHeader}">
+					<thead>
+						<tr>
+							<aura:iteration items="{!v.HeaderFields}"
+								var="headerField"
+								indexVar="i"
+							>
+								<th>
+									{!headerField}
+								</th>
+							</aura:iteration>
+						</tr>
+					</thead>
+				</aura:if>
+				<tbody>
+					<aura:iteration items="{!v.Items}"
+						var="Item"
+						indexVar="i">
+						<c:S360_B_Base_TableItem CompId="{!v.CompId}" ShowRecordSelector="{!v.ShowRecordSelector}" ShowRecordDeletion="{!v.ShowRecordDeletion}" HeaderFields="{!v.HeaderFields}" Item="{!Item}" 
+							Index="{!i}"
+						/>
+					</aura:iteration>
+				</tbody>
+			</table>
+			<div class="{!v.items.length ? 'text-left' : 'hidden'}">
+				<br/>
+				Empty Table
+			</div>
+		</div>
+	</div>
+</aura:component>

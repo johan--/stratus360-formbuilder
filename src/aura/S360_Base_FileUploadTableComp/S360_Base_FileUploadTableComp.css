@@ -1,0 +1,47 @@
+.THIS .no-select{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.THIS .th-hidden{
+    height: 0;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: transparent;
+    border: none;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* table styling */
+
+.THIS .table-head-container{
+    width: 100%;
+    overflow: hidden;
+}
+
+.THIS .table-body-container{
+    overflow: auto;
+}
+
+.THIS .slds-th__action{
+    -webkit-user-drag: none !important;
+}
+
+.THIS .table-header{
+    background: white;
+    z-index: 2;
+}
+
+.THIS .table-body{
+    
+}
+
+.THIS .slds-table td {
+    padding: .2rem .5rem !important;
+}

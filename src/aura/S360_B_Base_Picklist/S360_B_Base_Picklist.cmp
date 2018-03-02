@@ -1,0 +1,75 @@
+<aura:component controller="PicklistDescriber">
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default=""/>
+    <aura:attribute name="PlaceholderText" type="string" default="Placeholder Text"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="true"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="PicklistKV" type="string" default="Male,Female"/>
+    <aura:attribute name="DefaultK" type="string" default=""/>
+    <aura:attribute name="SObjectName" type="string" default=""/>
+    <aura:attribute name="recordTypeName" type="string" default=""/>
+    <aura:attribute name="FieldName" type="string" default=""/>
+    <aura:attribute name="DefaultValue" type="string" default=""/>
+    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="DisplayValue" type="string" default=""/>
+    <aura:attribute name="showBlank" type="boolean" default="true"/>
+    <aura:attribute name="helpText" type="String" default=""/>
+    <aura:attribute name="helpTextSpacingClass" type="String" default=""/>
+
+    <!-- component attributes -->
+    <aura:attribute name="IsMissingValueLocal" type="boolean" default="true"/>
+
+    <aura:attribute name="IsCreatePIF" type="boolean" default="false"/>
+
+    <!-- additional attributes -->
+    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="SideClass" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:S360_B_Base_Evt_onChange"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.Value}" action="{!c.serverChange}" />
+    <aura:handler name="change" value="{!v.DefaultValue}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.PicklistKV}" action="{!c.doInit}" />
+    <!-- <aura:handler event="c:S360_B_Base_Evt_notifyPicklist" action="{!c.handleNotify}" /> -->
+
+    <!-- define methods -->
+
+    <aura:method name="invalidatePicklist" action="{!c.methodHandleNotify}" access="public"
+                 description="method to invalidate picklist comp"/>
+    <div class="{!v.Class + ' ' + (v.IsHidden ? 'hidden' : 'show') + ' ' + v.IsRequired ? 'form-group required' : ''}">
+        <label class="{!v.Class + ' ' + (v.InputLabel == '' ? 'hidden' : 'show')}" for="{!v.CompId}">
+            <strong class="{!(v.IsRequired
+                ? (!(v.IsReadOnly)
+                    ? (v.Value == '' 
+                        ? 'error' 
+                        : '') 
+                    : '') 
+                : '')}">
+                {!v.InputLabel}
+            </strong>
+        </label>
+
+        <aura:if isTrue="{!v.helpText == '' ? false : (v.IsReadOnly ? false : true ) }">    
+            <p data-aura-rendered-by="9:1460;a" style="font-size: 11px">
+                {!v.helpText} <br class="{!v.helpTextSpacingClass}" /><br class="{!v.helpTextSpacingClass}" />
+            </p>
+        </aura:if>
+
+        <form class="{!'row '+ v.Class + ' ' + (v.IsReadOnly ? 'hidden' : '')}">
+            <div class="col-lg-12 col-xs-12 col-md-12">
+                <!--label class="sr-only" for="InputSelectId">InputSelectId</label-->
+                <ui:inputSelect class="form-control heightAdjustment"
+                    aura:id="InputSelectId"
+                    required="{!v.isRequired}"
+                    disabled="{!v.IsDisabled}"
+                    change="{!c.onSelectChangeExpType}"
+                />
+            </div>
+        </form>
+        <p class="{!v.IsReadOnly ? '' : 'hidden'}">{!v.DisplayValue || v.Value}</p>
+    </div>
+
+</aura:component>

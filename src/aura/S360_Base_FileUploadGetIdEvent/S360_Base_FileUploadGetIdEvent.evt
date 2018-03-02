@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Event when File Id is available" >
+    <aura:attribute name="CompId" type="String" required="true" description="The Id of the component which send this event." />
+    <aura:attribute name="XFileId" type="String" required="true" description="The Id of the File." />
+</aura:event>

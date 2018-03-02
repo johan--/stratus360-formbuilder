@@ -1,0 +1,51 @@
+.THIS .label-inactive .uiInputDateTime .dateTime-inputDate,
+.THIS .label-active .uiInputDateTime .dateTime-inputDate {
+    position: relative;
+}
+
+.THIS .label-inactive .uiInputDateTime .dateTime-inputTime,
+.THIS .label-active .uiInputDateTime .dateTime-inputTime {
+    position: relative;
+}
+
+.THIS .label-active .uiInputDateTime .dateTime-inputDate .datePicker-openIcon {
+	position: absolute;
+    left: 80%;
+    top: 50%;
+}
+
+.THIS .label-inactive .uiInputDateTime .dateTime-inputDate .datePicker-openIcon {
+    position: absolute;
+    left: 90%;
+    top: 25%;
+}
+
+.THIS .label-active .uiInputDateTime .dateTime-inputTime .timePicker-openIcon {
+	position: absolute;
+    left: 80%;
+    top: 50%;
+}
+
+.THIS .label-inactive .uiInputDateTime .dateTime-inputTime .timePicker-openIcon {
+    position: absolute;
+    left: 90%;
+    top: 25%;
+}
+
+.THIS .label-active .uiInputDateTime .form-element__label,
+.THIS .label-inactive .uiInputDateTime .form-element__label {
+    display: none;
+}
+
+.THIS .uiInputDateTime{
+    max-width: 325px;
+    min-width: 110px;
+}
+
+.THIS .show-tooltip{
+    display: inline-block;
+}
+
+.THIS .hide-tooltip{
+    display: none;
+}

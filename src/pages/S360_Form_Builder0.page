@@ -1,0 +1,190 @@
+<apex:page showHeader="false" docType="html-5.0" standardController="S360_Form_Config__c">
+    
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        
+        <link rel="stylesheet" href="https://cdn.rawgit.com/odra/ng-json-explorer/f7236fa8/dist/angular-json-explorer.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="https://cdn.rawgit.com/formio/ngFormBuilder/d7e545a3/dist/ngFormBuilder-full.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    </head>   
+    <body ng-app="formBuilder">
+        <style>
+            .formbuilder {
+            height: 600px;
+            }
+            
+            .formcomponents {
+            width: 30%;
+            }
+            
+            .formarea {
+            width: 70%;
+            }
+            
+            .component-settings .nav-link {
+            font-size: 0.6em;
+            }
+            
+            .jsonviewer {
+            max-height: 600px;
+            overflow: scroll;
+            }
+            
+            .form-type-select {
+            display: inline-block;
+            width: 100px;
+            height: 28px;
+            vertical-align: top;
+            }
+            .visibilityHiddenClass{
+            visibility: hidden
+            }
+        </style>
+        <apex:form >
+            <!--apex:actionFunction action="{!Save}" name="standardSave"/-->
+            <apex:pageBlock mode="edit">
+                <apex:pageBlockButtons >
+                    <apex:commandButton styleClass="slds-button slds-button--brand slds-not-selected" value="Save" action="{!save}" onclick="getUsedFields()"/>
+                </apex:pageBlockButtons>
+                
+                
+                <div class="page-content" ng-app="formioApp">
+                    <div class="container-fluid">
+                        <div>
+                            <div class="row">
+                                
+                                <div class="well" style="background-color: #fdfdfd;">
+                                    <form-builder form="form"></form-builder>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </apex:pageBlock>
+            <div class="visibilityHiddenClass">
+                
+                
+                <apex:inputField value="{!S360_Form_Config__c.Name}"/> <p/>
+                <apex:inputField id="Form_Config_JSON" value="{!S360_Form_Config__c.JSON__c}" /> <p/>
+                <apex:inputField id="Form_Config_Field" value="{!S360_Form_Config__c.Field__c}" /> <p/>
+            </div>
+        </apex:form>
+        <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+        <script src="https://unpkg.com/signature_pad@1.5.3/signature_pad.min.js"></script>
+        <script src="https://cdn.rawgit.com/mkoo21/ngFormBuilder/f47e6776/dist/ngFormBuilder-full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+        <script src="https://cdn.rawgit.com/odra/ng-json-explorer/master/dist/angular-json-explorer.min.js"></script>
+        <script type="text/javascript">
+            
+            angular
+        .module("formBuilder", ["ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer"])
+        .run([
+            "$rootScope",
+            'formioComponents',
+            '$timeout',
+            function(
+                $rootScope,
+                formioComponents,
+                $timeout
+            ) {
+                $rootScope.displays = [{
+                    name: 'form',
+                    title: 'Form'
+                }, {
+                    name: 'wizard',
+                    title: 'Wizard'
+                }];
+                
+                debugger;
+                
+                var unescapeJSON = '{!JSENCODE(S360_Form_Config__c.JSON__c)}';
+                
+                
+                //$rootScope.form = JSON.parse('{!S360_Form_Config__c.JSON__c}');
+                if(unescapeJSON!='')
+                {
+                    $rootScope.form = JSON.parse(unescapeJSON);
+                }  
+                
+                $rootScope.renderForm = true;
+                
+                $rootScope.$on('formUpdate', function(event, form) {
+                    angular.merge($rootScope.form, form);
+                    $rootScope.renderForm = false;
+                    setTimeout(function() {
+                        $rootScope.renderForm = true;
+                    }, 10);
+                    
+                    var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
+                    jsonFieldElement.value = JSON.stringify($rootScope.form);
+                    
+                });
+                
+                if(unescapeJSON!='')
+                {
+                    var originalComps = _.cloneDeep($rootScope.form.components);
+                    originalComps.push(angular.copy(formioComponents.components.button.settings));
+                    $rootScope.jsonCollapsed = true;
+                    $timeout(function() {
+                        $rootScope.jsonCollapsed = false;
+                    }, 200);
+                }
+                
+                var currentDisplay = 'form';
+                $rootScope.$watch('form.display', function(display) {
+                    debugger;
+                    if (display && (display !== currentDisplay)) {
+                        currentDisplay = display;
+                        if (display === 'form') {
+                            $rootScope.form.components = originalComps;
+                        } else {
+                            $rootScope.form.components = [{
+                                type: 'panel',
+                                input: false,
+                                title: 'Page 1',
+                                theme: 'default',
+                                components: originalComps
+                            }];
+                        }
+                    }
+                });
+            }
+        ]);
+        
+        function getUsedFields(){
+            var jsonConfigElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
+            var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
+            
+            var config = JSON.parse(jsonConfigElement.value);
+            var fields = collectField(config);
+            console.log(fields);
+            debugger;
+            fieldsConfig.value = fields.join(',');
+        }
+        
+        function collectField(data){
+            var fields = [];
+            data.components.forEach(function(cmp){
+                if(cmp.type == 'columns'){
+                    cmp.columns.forEach(function(col){
+                        fields = fields.concat(collectField(col));
+                    });
+                }else if(cmp.type == 'fieldset' || cmp.type == 'well' || cmp.type == 'panel'){
+                    fields = fields.concat(collectField(cmp));
+                }else if(cmp.type != 'button' && cmp.type != 'htmlelement'){
+                    fields.push(cmp.key);
+                }
+            });
+            
+            return fields;
+        }
+        
+        </script>
+        
+    </body>
+</apex:page>

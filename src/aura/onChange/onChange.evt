@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="send event to parent when component value changed">
+    <aura:attribute name="CompId" type="string" required="true"/>
+    <aura:attribute name="payload" type="object"/>
+</aura:event>

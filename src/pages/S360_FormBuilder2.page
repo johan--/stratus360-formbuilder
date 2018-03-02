@@ -1,0 +1,325 @@
+<apex:page showHeader="false" docType="html-5.0" standardController="S360_Form_Config__c" extensions="S360_Form_Builder_Ext" standardStyleSheets="false">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Form.io Form Builder</title>
+        <meta name="viewport" content="width=device-width"/>
+        
+        <!--link rel="stylesheet" href="https://cdn.rawgit.com/odra/ng-json-explorer/master/dist/angular-json-explorer.min.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/bootswatch@3.3.7/yeti/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /-->
+        <!--link rel="stylesheet" href="dist/ngFormBuilder-full.css" /-->
+        <!--link rel="stylesheet" href="https://cdn.rawgit.com/formio/ngFormBuilder/d7e545a3/dist/ngFormBuilder-full.css"/-->
+        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" /-->
+        
+        <link rel="stylesheet" href="{!URLFOR($Resource.formio, '/css/angular-json-explorer.min.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR($Resource.Bootstrap337, '/dist/css/bootstrap.min.css.yeti.css')}" />
+        <link rel="stylesheet" href="{!URLFOR($Resource.FontAwesome470, '/css/font-awesome.min.css')}" />
+        <link rel="stylesheet" href="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR($Resource.FontAwesome463, '/css/font-awesome.min.css')}" />
+        
+        <!--apex:stylesheet value="{!URLFOR($Resource.formio, '/css/angular-json-explorer.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.Bootstrap337, '/dist/css/bootstrap.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.FontAwesome470, '/css/font-awesome.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.FontAwesome463, '/css/font-awesome.min.css')}"/-->
+    </head>
+    <body ng-app="formBuilder">
+        <!-- BROWSE HAPPY BEGINS HERE -->
+        <style>
+            .browsehappy {
+            display:block;
+            width:100%;
+            height:100px;
+            background-color:#f2dede;
+            margin: 0 0 10px;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 22px;
+            line-height: 1.4;
+            color: #333;
+            padding-top: 15px;
+            vertical-align:middle;
+            }
+            .browsehappy span {
+            vertical-align:middle;
+            margin:20px 20px 20px 20px;
+            background:url("https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png") no-repeat;
+            height:64px;
+            width:64px;
+            display:inline-block;
+            }
+            
+            .formbuilder {
+            height: 600px;
+            }
+            
+            .formcomponents {
+            width: 30%;
+            }
+            
+            .formarea {
+            width: 70%;
+            }
+            
+            .component-settings .nav-link {
+            font-size: 0.6em;
+            }
+            
+            .jsonviewer {
+            max-height: 600px;
+            overflow: scroll;
+            }
+            
+            .form-type-select {
+            display: inline-block;
+            width: 100px;
+            height: 28px;
+            vertical-align: top;
+            }
+            
+            
+            .visibilityHiddenClass{
+            	visibility: hidden;
+            }
+            
+            a.nav-link.ng-binding{
+            	font-size: 0.9em;
+            }
+        </style>
+        <!--[if IE 6]><p class="browsehappy"><img />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+        <!--[if IE 7]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+        <!--[if IE 8]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+        <!--[if IE 9]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+        <!-- BROWSE HAPPY ENDS HERE -->
+        
+        <apex:form >
+            <!--apex:actionFunction action="{!Save}" name="standardSave"/-->
+            <apex:pageBlock mode="edit">
+                <apex:pageBlockButtons >
+                    <apex:commandButton styleClass="slds-button slds-button--brand slds-not-selected" value="Save" action="{!save}" onclick="getUsedFields()"/>
+                </apex:pageBlockButtons>
+                
+                <div class="page-content" ng-app="formioApp">
+                    <div class="container-fluid">
+                        <div>
+                            <div class="row">
+                                <div class="well" style="background-color: #fdfdfd;">
+                                    <form-builder form="form"></form-builder>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </apex:pageBlock>
+            
+            <div class="visibilityHiddenClass">
+                <apex:inputField value="{!S360_Form_Config__c.Name}"/> <p/>
+                <apex:inputField id="Form_Config_Primary_Object" value="{!S360_Form_Config__c.Primary_Object__c}" /> <p/>
+                <apex:inputField id="Form_Config_JSON" value="{!S360_Form_Config__c.JSON__c}" /> <p/>
+                <apex:inputField id="Form_Config_Field" value="{!S360_Form_Config__c.Field__c}" /> <p/>
+            </div>
+        </apex:form>
+        
+        
+        <!--script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+        <script src="https://unpkg.com/signature_pad@1.5.3/signature_pad.min.js"></script-->
+        <!--script src="dist/ngFormBuilder-full.js"></script-->
+        <!--script src="https://cdn.rawgit.com/formio/ngFormBuilder/d7e545a3/dist/ngFormBuilder-full.min.js"></script-->
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+        <script src="https://cdn.rawgit.com/odra/ng-json-explorer/master/dist/angular-json-explorer.min.js"></script-->
+        
+        
+        <apex:includeScript value="{!URLFOR($Resource.formio, '/js/ckeditor.4.5.11.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.formio, '/js/signature_pad.min.1.5.3.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.formio, '/js/lodash.min.4.17.4.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.formio, '/js/angular-json-explorer.min.js')}"/>
+        
+        
+        <script type="text/javascript">
+            angular
+        .module("formBuilder", ["ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer"])
+        .run(run).config(config);
+
+		run.$inject = ['$rootScope', 'formioComponents', '$timeout', '$templateCache'];
+    	config.$inject = ['formioComponentsProvider'];
+
+		function config(formioComponentsProvider){
+            formioComponentsProvider.register('captcha', {
+                title: 'captcha',
+                template: 'formio/components/captcha.html',
+                group: 'advanced',
+                settings: {
+                    input: false
+                },
+                viewTemplate: 'formio/componentsView/captcha.html'
+            });
+            
+            formioComponentsProvider.register('captcha', {
+                fbtemplate: 'formio/formbuilder/captcha.html',
+                icon: 'fa fa-code',
+                noDndOverlay: true,
+                confirmRemove: true,
+                views: [
+                    {
+                        name: 'Display',
+                        template: 'formio/components/captcha/display.html'
+                    },
+                    {
+                        name: 'API',
+                        template: 'formio/components/common/api.html'
+                    }
+                ]
+            });
+        }
+		
+        function run($rootScope, formioComponents, $timeout, $templateCache){
+            $rootScope.displays = [{
+                name: 'form',
+                title: 'Form'
+            }, {
+                name: 'wizard',
+                title: 'Wizard'
+            }];
+            
+            
+            formioComponents.components.container.title = 'Related List';
+            formioComponents.components.fieldset.title = 'Panel';
+            formioComponents.components.panel.title = 'Wizard';
+            //formioComponents.components.resource.title = 'Captcha';
+            
+            //disabled components
+            formioComponents.components.textarea.disabled = true;
+            formioComponents.components.selectboxes.disabled = true;
+            formioComponents.components.radio.disabled = true;
+            formioComponents.components.content.disabled = true;
+            formioComponents.components.email.disabled = true;
+            formioComponents.components.phoneNumber.disabled = true;
+            formioComponents.components.address.disabled = true;
+            formioComponents.components.day.disabled = true;
+            formioComponents.components.time.disabled = true;
+            formioComponents.components.currency.disabled = true;
+            formioComponents.components.resource.disabled = true;
+            formioComponents.components.form.disabled = true;
+            formioComponents.components.signature.disabled = true;
+            formioComponents.components.custom.disabled = true;
+            formioComponents.components.datagrid.disabled = true;
+            formioComponents.components.editgrid.disabled = true;
+            formioComponents.components.survey.disabled = true;
+            formioComponents.components.table.disabled = true;
+            
+            var unescapeJSON = '{!JSENCODE(S360_Form_Config__c.JSON__c)}';
+            if(unescapeJSON!='')
+            {
+                $rootScope.form = JSON.parse(unescapeJSON);
+            }  
+            
+            $rootScope.renderForm = true;
+            
+            $rootScope.$on('formUpdate', function(event, form) {
+                debugger;
+                angular.merge($rootScope.form, form);
+                debugger;
+                
+                var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
+                jsonFieldElement.value = JSON.stringify($rootScope.form);
+                console.log(jsonFieldElement.value);
+                debugger;
+                
+                $rootScope.renderForm = false;
+                setTimeout(function() {
+                    $rootScope.renderForm = true;
+                }, 10);
+                
+                
+                
+            });
+            
+            if(unescapeJSON!='')
+            {
+                var originalComps = _.cloneDeep($rootScope.form.components);
+                originalComps.push(angular.copy(formioComponents.components.button.settings));
+                $rootScope.jsonCollapsed = true;
+                $timeout(function() {
+                    $rootScope.jsonCollapsed = false;
+                }, 200);
+            }
+            
+            var currentDisplay = 'form';
+            $rootScope.$watch('form.display', function(display) {
+                debugger;
+                if (display && (display !== currentDisplay)) {
+                    currentDisplay = display;
+                    if (display === 'form') {
+                        $rootScope.form.components = originalComps;
+                    } else {
+                        $rootScope.form.components = [{
+                            type: 'panel',
+                            input: false,
+                            title: 'Page 1',
+                            theme: 'default',
+                            components: originalComps
+                        }];
+                    }
+                }
+            });
+            
+            
+            // generate captcha
+            $templateCache.put('formio/components/captcha.html',
+                               '<p>This is components Captcha</p>'
+                              );
+            
+            $templateCache.put('formio/componentsView/captcha.html',
+                               '<p>This is componentsView Captcha</p>'
+                              );
+            
+            $templateCache.put('formio/formbuilder/captcha.html',
+                               '<p>This is formbuilder Captcha</p>'
+                              );
+            
+            // Create the settings markup.
+            $templateCache.put('formio/components/captcha/display.html',
+                               '<ng-form>' +
+                               '<form-builder-option property="siteKey"></form-builder-option>' +
+                               '<form-builder-option property="language"></form-builder-option>' +
+                               '<form-builder-option property="customClass"></form-builder-option>' +
+                               '</ng-form>'
+                              );
+        }
+        
+        function getUsedFields(){
+            debugger;
+            var jsonConfigElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
+            var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
+            
+            var config = JSON.parse(jsonConfigElement.value);
+            var fields = collectField(config);
+            if(fields.indexOf('Name') == -1){
+                //Not sure why we add name here
+               // fields.push('Name');
+            }
+            fieldsConfig.value = fields.join(',');
+        }
+        
+        function collectField(data){
+            var acceptedFields = {!objectFields};
+            var fields = [];
+            data.components.forEach(function(cmp){
+                if(cmp.type == 'columns'){
+                    cmp.columns.forEach(function(col){
+                        fields = fields.concat(collectField(col));
+                    });
+                }else if(cmp.type == 'fieldset' || cmp.type == 'well' || cmp.type == 'panel'){
+                    fields = fields.concat(collectField(cmp));
+                }else if(cmp.type != 'button' && cmp.type != 'htmlelement'){
+                    if(acceptedFields.indexOf(cmp.key) != -1 || acceptedFields.indexOf(cmp.key.split('__r')[0] + '__r') != -1){
+                        fields.push(cmp.key);
+                    }
+                }
+            });
+            
+            return fields;
+        }
+        </script>
+    </body>
+</apex:page>

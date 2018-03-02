@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value><!-- Dummy Object --></value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value><!-- Dummy Object --></value>
+    </caseValues>
+    <fields>
+        <help><!-- How old are you? --></help>
+        <label><!-- Age --></label>
+        <name>Age__c</name>
+    </fields>
+    <fields>
+        <help><!-- Choose your favorite date time --></help>
+        <label><!-- Date Time --></label>
+        <name>Date_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date --></label>
+        <name>Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- First Name --></label>
+        <name>First_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Game type --></label>
+        <name>Game_type__c</name>
+        <picklistValues>
+            <masterLabel>CsCz</masterLabel>
+            <translation><!-- CsCz --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Game1</masterLabel>
+            <translation><!-- Game1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pes</masterLabel>
+            <translation><!-- Pes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Describe your hobby in max 100 character --></help>
+        <label><!-- Hobby --></label>
+        <name>Hobby__c</name>
+    </fields>
+    <fields>
+        <label><!-- Interest --></label>
+        <name>Interest__c</name>
+    </fields>
+    <fields>
+        <help><!-- Please enter your last name --></help>
+        <label><!-- Last Name --></label>
+        <name>Last_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Password --></label>
+        <name>Password__c</name>
+    </fields>
+    <fields>
+        <label><!-- User --></label>
+        <name>User__c</name>
+        <relationshipLabel><!-- Dummy Objects --></relationshipLabel>
+    </fields>
+    <gender><!-- Masculine --></gender>
+    <layouts>
+        <layout>Dummy Object Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel><!-- Dummy Object Name --></nameFieldLabel>
+    <recordTypes>
+        <label><!-- Record Type A --></label>
+        <name>Record_Type_A</name>
+    </recordTypes>
+    <startsWith><!-- Consonant --></startsWith>
+</CustomObjectTranslation>

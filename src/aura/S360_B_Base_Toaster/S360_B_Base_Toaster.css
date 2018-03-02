@@ -1,0 +1,19 @@
+.THIS.butter-toast {
+	position:fixed;
+	width:450px;
+	left:50%;
+	margin-left:-200px;
+	top:50px;
+	z-index:10;
+}
+
+.THIS.cream-cheese-toast {
+	background-color:white;
+}
+
+@media (max-width : 736px){
+	.THIS .alert {
+		width:70%;
+		margin-left: 10%;
+	}
+}

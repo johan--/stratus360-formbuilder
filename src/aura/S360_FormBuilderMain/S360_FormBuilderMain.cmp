@@ -1,0 +1,56 @@
+<aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"  
+                controller="S360_Form_Builder_Controller">
+    
+    <!-- config attributes -->
+    <aura:attribute name="FormConfig" type="Object" default="{}"/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="RelatedData" type="Object" default="{}"/>
+    <aura:attribute name="FieldInfo" type="Object" default="{}"/>
+    
+    <!-- captcha attributes -->
+    <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
+    <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
+    
+    <!-- Input parameter -->
+    <aura:attribute name="formConfigName" type="String" default="" access="global"/>
+    <aura:attribute name="formConfigID" type="String" default="" access="global"/>
+    <!-- this could be form record id or object to display id -->
+    <aura:attribute name="recordId" type="String" default="" access="global"/>
+    
+    <!--aura:attribute name="dataId" type="String" default="" /-->
+    
+    <!-- Component style type -->
+    <aura:attribute name="componentType" type="String" default="" />
+
+	<!-- this object stores all components rendered in the form
+		 use Field API name to access the component
+	 -->
+    <aura:attribute name="componentData" type="Object"/>
+    <aura:attribute name="submittedStandardButton" type="string[]" default="[]"
+                    description="compid of button that has submit type. this one that able to create/update without external handling"/>
+    <aura:attribute name="submittedCustomButton" type="string[]" default="[]"
+                    description="compid of button that has submit type. this one that able to create/update without external handling"/>
+    
+    <!-- Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler name="change" value="{!v.componentType}" action="{!c.changeComponentType}"/>
+    
+    <!-- handler of form submit click -->
+    <aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.handleStandardOnClick}"/>
+    <aura:handler name="OnClick" event="c:S360_B_Base_Evt_onClick" action="{!c.handleCustomOnClick}"/>
+    
+    <!-- handler S360_FormBuilderEvt from S360_FormBuilderStandard or S360_FormBuilderCustom2 -->
+    <aura:handler name="S360_FormBuilderEvt" event="c:S360_FormBuilderEvt" action="{!c.handleEvent}"/>
+    
+    <aura:if isTrue="{!v.componentType == 'Standard'}">
+        <c:S360_FormBuilderStandard Data="{!v.Data}" RelatedData="{!v.RelatedData}" 
+                                          componentData="{!v.componentData}" submittedButton="{!v.submittedStandardButton}" 
+                                          aura:id="S360_FormBuilderStandard"
+                                          isCaptchaEnabled="{!v.isCaptchaEnabled}"
+                                          isCaptchaSuccess="{!v.isCaptchaSuccess}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.componentType == 'Custom'}">
+        <c:S360_FormBuilderCustom Data="{!v.Data}" RelatedData="{!v.RelatedData}" componentData="{!v.componentData}" submittedButton="{!v.submittedCustomButton}" aura:id="S360_FormBuilderCustom"/>
+    </aura:if>
+</aura:component>

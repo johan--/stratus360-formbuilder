@@ -1,0 +1,33 @@
+<aura:component >
+    <!-- Bootstrap Styling -->
+	<ltng:require styles="{!join(',',
+                           $Resource.Jquery224 , 
+    $Resource.Bootstrap + '/css/bootstrap.min.css',
+    $Resource.Bootstrap + '/css/font-awesome.min.css',
+    $Resource.Bootstrap + '/css/OpenSans.css',
+    $Resource.Bootstrap + '/css/style.css')}"
+    afterScriptsLoaded="{!c.scriptsLoaded}" />
+    
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
+    <aura:attribute name="PlaceholderText" type="string" default=""/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+
+    <aura:registerEvent name="OnChange" type="c:onChange" />
+
+    <div >
+        <label for="{!v.CompId}">
+            <abbr class="labelDetails" title="required">*</abbr>
+            {!v.InputLabel}
+        </label>
+        <div class="form">
+            <ui:inputText required="{!v.IsRequired}" aura:id="CompId" disabled="{!v.IsDisabled || v.IsReadOnly}" class="form-control"  placeholder="{!v.PlaceholderText}" change="{!c.handleOnChange}" value="{!v.Value}"/>
+        </div>
+    </div>
+
+</aura:component>

@@ -1,0 +1,20 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <!-- attribute definition -->
+    <aura:attribute name='CompId' type='String'/>
+    <aura:attribute name='Lang' type='String' default=''/>
+    <aura:attribute name='SiteKey' type='String' default=''/>
+    
+    <!-- event definition -->
+    <aura:registerEvent name="OnCaptcha" type="c:S360_B_Base_Evt_Captcha" />
+    
+    <!-- handler definition -->
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}"/>
+    
+    <div aura:id="loading">
+        {!$Label.c.S360_base_captcha_loading_message}
+    </div>
+    
+	<!-- open captcha -->
+    <!-- add src -->
+    <iframe aura:id="vfFrame" src="{!'/apex/S360_Base_Captcha_VF?l=' + v.Lang + '&amp;sk=' + v.SiteKey}" scrolling="no" frameborder="0" allowtransparency="true" style='height:58px;width:100%' onload="{!c.frameLoaded}"/>
+</aura:component>

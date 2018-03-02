@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" 
+            description="event fired to send captcha status when captcha hit" >
+    <aura:attribute name='CompId' type='String' required='false' default=''/>
+    <aura:attribute name='Status' type='Boolean' required='true' default='false'/>
+</aura:event>

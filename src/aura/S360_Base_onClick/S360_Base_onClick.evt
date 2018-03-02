@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="send event to parent when component clicked">
+    <aura:attribute name="CompId" type="string" required="true"/>
+    <aura:attribute name="Payload" type="object"/>
+</aura:event>

@@ -1,0 +1,26 @@
+<aura:component >
+	<aura:attribute name="Title" type="String" default=""/>
+    <aura:attribute name="Class" type="String" default=""/>
+    
+    <aura:attribute name="displayPosition" type="Integer" default="0" access="private"/>
+    <aura:attribute name="counter" type="Integer" default="0"/>
+    <aura:attribute name="isReady" type="boolean" default="false"/>
+    
+    <aura:handler name="change" value="{!v.body}" action="{!c.onChange}"/>
+    <aura:handler name="change" value="{!v.counter}" action="{!c.onChange}"/>
+    
+    <aura:method name="next" action="{!c.next}"/>
+    <aura:method name="previous" action="{!c.previous}"/>
+    
+    <div class="{!'card ' + v.Class}">
+        <div class="card-body">
+            <h4 class="card-title">
+                <aura:unescapedHtml value="{!v.Title}"/>
+            </h4>
+            <div>
+                <div style="{!'display:' + (v.isReady ? 'none' : 'block') }">Loading...</div>
+            	<div style="{!'display:' + (v.isReady ? 'block' : 'none') }">{!v.body}</div>
+            </div>
+        </div>
+    </div>
+</aura:component>

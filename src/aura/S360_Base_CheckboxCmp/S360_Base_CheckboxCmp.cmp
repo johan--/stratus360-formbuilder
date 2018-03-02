@@ -1,0 +1,45 @@
+<aura:component >
+    
+    <aura:attribute name="CompId" type="string" default="" required="true"
+                    description="Unique Id for this component. This id used to identity 
+                                 the component when event fired, exp: when change checkbox value"/>
+    <aura:attribute name="InputLabel" type="string" default=""
+                    description="Label that display to user"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+                    description="Hide the component"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+                    description="Show required label"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+                    description="disable the component"/>
+    <aura:attribute name="IsChecked" type="boolean" default="false"
+                    description="Set checkbox value"/>
+    <aura:attribute name="InputClass" type="String" default=""
+                    description="Set input checkbox style"/>
+    <aura:attribute name="HelpText" type="string" default=""/>
+    
+    <!-- additional event registration -->
+    <aura:registerEvent name="OnClick" type="c:S360_Base_onClick" />
+    
+    <div class="{!v.IsHidden ? 'slds-hide' : 'slds-show slds-form-element'}">	
+        <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
+            <abbr class="slds-required" 
+                  style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
+            <aura:unescapedHtml value="{!v.InputLabel}"/>	
+        </label>
+        <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
+        
+        <div class="slds-form-element__control">
+            <!--ui:inputCheckbox click="{!c.onClick}" value="{!v.IsChecked}" class="slds-input"/-->
+            <span class="slds-checkbox">
+                <abbr class="{!v.IsRequired ? 'slds-show slds-required' : 'slds-hide'}" title="required">*</abbr>
+                <input type="checkbox" name="options" id="{!v.CompId}" checked="{!v.IsChecked}" disabled="{!v.IsDisabled}" 
+                       onclick="{!c.onClick}" aura:id="checkbox" class="{!v.InputClass}"/>
+                <label class="slds-checkbox__label" for="{!v.CompId}">
+                    <span class="slds-checkbox--faux"></span>
+                    <!--span class="slds-form-element__label"> {!v.InputLabel}</span-->
+                </label>
+            </span>
+        </div>
+    </div>	
+    
+</aura:component>

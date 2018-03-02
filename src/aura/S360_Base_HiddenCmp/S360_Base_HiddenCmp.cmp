@@ -1,0 +1,13 @@
+<aura:component >
+    <aura:attribute name="CompId" type="string" default=""/>
+    <aura:attribute name="Value" type="String" default=""/>
+    <aura:attribute name="DefaultValue" type="string" default=""/>
+    
+    <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
+    
+    <!-- Component Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.Value}" action="{!c.onValueChange}"/>
+    
+    <input type="hidden" value="{!v.Value}"/>
+</aura:component>

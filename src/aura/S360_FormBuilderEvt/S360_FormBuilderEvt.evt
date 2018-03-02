@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" 
+            description="event used by S360_FormBuilderStandard or S360_FormBuilderCustom to interact with S360_FormBuilderMain">
+    <aura:attribute name="action" type="String" description="Action type, basicly submit"/>
+    <aura:attribute name="sender" type="String" description="CompId which trigger this event"/>
+</aura:event>

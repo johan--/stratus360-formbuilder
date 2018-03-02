@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="make toast">
+    <aura:attribute name="CompId" type="string" />
+    <aura:attribute name="payload" type="object"/>
+    <aura:attribute name="msg" type="string"/>
+</aura:event>

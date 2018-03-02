@@ -1,0 +1,11 @@
+<aura:component >
+    <!--aura:handler name="init" value="{!this}" action="{!c.init}"/-->
+    <!--aura:attribute name="Config" type="list" default="[]" /-->
+    
+    <div>
+        <div class="slds-grid slds-wrap">
+            {!v.body}
+        </div>
+    </div>
+	
+</aura:component>
