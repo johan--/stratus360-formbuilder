@@ -5,26 +5,26 @@ module.exports = function(app) {
       formioComponentsProvider.register('signature', {
         icon: 'fa fa-pencil',
         views: [
-          {
+          /*{
             name: 'Display',
             template: 'formio/components/signature/display.html'
           },
           {
             name: 'Validation',
             template: 'formio/components/signature/validate.html'
-          },
+          },*/
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/signature/api.html'
           },
-          {
+          /*{
             name: 'Layout',
             template: 'formio/components/common/layout.html'
           },
           {
             name: 'Conditional',
             template: 'formio/components/common/conditional.html'
-          }
+          }*/
         ],
         documentation: 'http://help.form.io/userguide/#signature'
       });
@@ -49,6 +49,12 @@ module.exports = function(app) {
           '<form-builder-option property="encrypted" class="form-builder-premium"></form-builder-option>' +
           '<form-builder-option property="hidden"></form-builder-option>' +
           '<form-builder-option property="tableView"></form-builder-option>' +
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/signature/api.html',
+        '<ng-form>' +
+          '<form-builder-option-key></form-builder-option-key>' +
         '</ng-form>'
       );
 

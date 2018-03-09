@@ -108,7 +108,101 @@
 
 
   function config(formioComponentsProvider){
-      
+      formioComponentsProvider.register('tool', {
+        title: 'tool',
+                template: 'formio/components/tool.html',
+                group: 'advanced',
+                settings: {
+
+                    /**
+                     * my custom definition
+                     */
+                    actions: [
+                      {
+                        name: 'standard',
+                        title: 'Standard'
+                      },
+                      {
+                        name: 'custom',
+                        title: 'Custom'
+                      },
+                    ],
+
+                    standardActions: [
+                      {
+                        name: 'show',
+                        title: 'Show'
+                      },
+                      {
+                        name: 'hide',
+                        title: 'Hide'
+                      },
+                      {
+                        name: 'toggleShowHide',
+                        title: 'Toggle Show Hide'
+                      },
+                      {
+                        name: 'next',
+                        title: 'Next'
+                      },
+                      {
+                        name: 'previous',
+                        title: 'Previous'
+                      },
+                      {
+                        name: 'redirect',
+                        title: 'Redirect'
+                      },
+                      {
+                        name: 'submit',
+                        title: 'Submit'
+                      },
+                    ],
+
+                    submitSucess: false,
+                    submitFailed: false,
+                    submitRedirect: false,
+
+
+
+                    action:'',
+                    event:'',
+                    target: '',
+
+                    /**
+                     *end of my custom definition
+                     */
+
+                    
+                    input: false,
+                    captchaImagePreview: ''
+                },
+                onEdit: ['$scope', function($scope) {
+                  $scope.toggle = function(index) {
+                    console.log(index);
+                  };
+                }],
+                viewTemplate: 'formio/componentsView/tool.html',
+                fbtemplate: 'formio/formbuilder/tool.html',
+                icon: 'fa fa-code',
+                views: [
+                    {
+                        name: 'Display',
+                        template: 'formio/components/tool/display.html'
+                    },
+                    {
+                        name: 'API',
+                        template: 'formio/components/common/api.html'
+                    },
+
+                    // my custom definition
+                    {
+                        name: 'Action',
+                        template: 'formio/components/tool/action.html'
+                    }
+                    // end of my custom definition
+                ]
+      });
   }
 
   function run($rootScope, formioComponents, $timeout, $templateCache, FormioUtils) {
@@ -159,6 +253,65 @@
           }
         });
 
+
+
+        $templateCache.put('formio/components/tool.html',
+                               '<p>test</p>'
+                              );
+            
+            $templateCache.put('formio/componentsView/tool.html',
+                               '<p>test</p>'
+                              );
+            
+            $templateCache.put('formio/formbuilder/tool.html',
+                               '<p>test</p>'
+                              );
+            
+            $templateCache.put('formio/components/tool/display.html',
+                               '<ng-form>' +
+                               '<form-builder-option property="siteKey"></form-builder-option>' +
+                               '<form-builder-option property="language"></form-builder-option>' +
+                               '<form-builder-option property="customClass"></form-builder-option>' +
+                               '</ng-form>'
+                              );
+
+
+            $templateCache.put('formio/components/tool/action.html',
+                               '<ng-form>' +
+                               '<div class="form-group">' +
+                               '<label for="action" form-builder-tooltip="This is the action to be performed by this button.">{{\'Action\' | formioTranslate}}</label>' +
+                                '<select class="form-control" id="action" name="action" ng-options="action.name as action.title | formioTranslate for action in component.actions" ng-model="component.action"></select>' +
+                               '</div>' +
+
+                                // if standard action
+                                '<div class="form-group" ng-if="component.action === \'standard\'">' +
+                                '<label for="standard" form-builder-tooltip="This is the standard action.">{{\'Standard Action\' | formioTranslate}}</label>' +
+                                '<select class="form-control" id="standard" name="standard" ng-options="action.name as action.title | formioTranslate for action in component.standardActions" ng-model="component.event"></select>' +
+                                '</div>' +
+
+                                '<div class="form-group" ng-if="component.action === \'standard\'">' +
+                                '  <label for="target" form-builder-tooltip="The target action">{{\'Action Target\' | formioTranslate}}</label>' +
+                                '  <input type="text" class="form-control" id="target" name="target" ng-model="component.target" placeholder="target" />' +
+                                '</div>' +
+
+
+                                '<div class="form-group" ng-if="component.event === \'submit\'">' +
+                                '  <label for="target" form-builder-tooltip="The target action">{{\'Submit Callback\' | formioTranslate}}</label>' +
+                                '  <div>' +
+                                    '<md-checkbox ng-click="toggle(0)">Success Callback</md-checkbox>'+
+                                    '<md-checkbox ng-click="toggle(1)">Failed Callback</md-checkbox>'+
+                                    '<input type="checkbox" ng-click="toggle(2)"><span>Redirect</span></input>'+
+                                '  </div>' +
+                                '</div>' +
+
+
+                                // if custom action
+                                '<div class="form-group" ng-if="component.action === \'custom\'">' +
+                                '  <label for="custom" form-builder-tooltip="The custom logic to evaluate when the button is clicked.">{{\'Button Custom Logic\' | formioTranslate}}</label>' +
+                                '  <formio-script-editor rows="10" id="custom" name="custom" ng-model="component.custom" placeholder="/*** Example Code ***/\ndata[\'mykey\'] = data[\'anotherKey\'];"></formio-script-editor>' +
+                                '</div>' +
+                               '</ng-form>'
+                              );
         
   }
 

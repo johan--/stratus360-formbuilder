@@ -18,7 +18,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/textfield/api.html'
           }
           /*{
             name: 'Layout',
@@ -45,6 +45,12 @@ module.exports = function(app) {
           '<form-builder-option property="customClass"></form-builder-option>' +
           '<form-builder-option property="hidden"></form-builder-option>' +
           '<form-builder-option property="disabled"></form-builder-option>' +
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/textfield/api.html',
+        '<ng-form>' +
+          '<form-builder-option-key></form-builder-option-key>' +
         '</ng-form>'
       );
 

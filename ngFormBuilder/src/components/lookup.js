@@ -33,6 +33,10 @@ module.exports = function(app) {
         {
           name: 'API',
           template: 'formio/components/common/api.html'
+        },
+        {
+          name: 'Validate',
+          template: 'formio/components/lookup/validate.html'
         }
         ]  
       });
@@ -107,6 +111,14 @@ module.exports = function(app) {
          '</div>' +
        '</ng-form>'
        );
+
+
+      $templateCache.put('formio/components/lookup/validate.html',
+              '<ng-form>' +
+                '<form-builder-option property="validate.required"></form-builder-option>' +
+                '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+              '</ng-form>'
+      );
     }
   ]);
 };

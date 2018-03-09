@@ -1,18 +1,18 @@
 module.exports = {
   actions: [
-    {
+    /*{
       name: 'submit',
       title: 'Submit'
-    },
+    },*/
     {
       name: 'event',
-      title: 'Event'
+      title: 'Standard'
     },
     {
       name: 'custom',
       title: 'Custom'
     },
-    {
+    /*{
       name: 'reset',
       title: 'Reset'
     },
@@ -23,7 +23,7 @@ module.exports = {
     {
       name: 'oauth',
       title: 'OAuth'
-    }
+    }*/
   ],
   themes: [
     {

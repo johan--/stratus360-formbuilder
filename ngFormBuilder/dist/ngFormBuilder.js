@@ -32429,26 +32429,26 @@ module.exports = function(app) {
       formioComponentsProvider.register('signature', {
         icon: 'fa fa-pencil',
         views: [
-          {
+          /*{
             name: 'Display',
             template: 'formio/components/signature/display.html'
           },
           {
             name: 'Validation',
             template: 'formio/components/signature/validate.html'
-          },
+          },*/
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/signature/api.html'
           },
-          {
+          /*{
             name: 'Layout',
             template: 'formio/components/common/layout.html'
           },
           {
             name: 'Conditional',
             template: 'formio/components/common/conditional.html'
-          }
+          }*/
         ],
         documentation: 'http://help.form.io/userguide/#signature'
       });
@@ -32473,6 +32473,12 @@ module.exports = function(app) {
           '<form-builder-option property="encrypted" class="form-builder-premium"></form-builder-option>' +
           '<form-builder-option property="hidden"></form-builder-option>' +
           '<form-builder-option property="tableView"></form-builder-option>' +
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/signature/api.html',
+        '<ng-form>' +
+          '<form-builder-option-key></form-builder-option-key>' +
         '</ng-form>'
       );
 
@@ -32769,7 +32775,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/textfield/api.html'
           }
           /*{
             name: 'Layout',
@@ -32796,6 +32802,12 @@ module.exports = function(app) {
           '<form-builder-option property="customClass"></form-builder-option>' +
           '<form-builder-option property="hidden"></form-builder-option>' +
           '<form-builder-option property="disabled"></form-builder-option>' +
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/textfield/api.html',
+        '<ng-form>' +
+          '<form-builder-option-key></form-builder-option-key>' +
         '</ng-form>'
       );
 
@@ -33293,19 +33305,19 @@ module.exports = {
 "use strict";
 module.exports = {
   actions: [
-    {
+    /*{
       name: 'submit',
       title: 'Submit'
-    },
+    },*/
     {
       name: 'event',
-      title: 'Event'
+      title: 'Standard'
     },
     {
       name: 'custom',
       title: 'Custom'
     },
-    {
+    /*{
       name: 'reset',
       title: 'Reset'
     },
@@ -33316,7 +33328,7 @@ module.exports = {
     {
       name: 'oauth',
       title: 'OAuth'
-    }
+    }*/
   ],
   themes: [
     {

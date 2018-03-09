@@ -50,6 +50,7 @@ module.exports = function(app) {
                                '<form-builder-option property="customClass"></form-builder-option>' +
                                '</ng-form>'
                               );
+            
     }
   ]);
 };
