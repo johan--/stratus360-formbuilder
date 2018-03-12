@@ -33,6 +33,7 @@ require('./editgrid')(app);
 require('./survey')(app);
 require('./lookup')(app);
 require('./captcha')(app);
+require('./carousel')(app);
 
 // Layout
 require('./columns')(app);

@@ -29797,6 +29797,179 @@ module.exports = function(app) {
 module.exports = function(app) {
   app.config([
     'formioComponentsProvider',
+    function(
+      formioComponentsProvider
+    ) {
+      formioComponentsProvider.register('carousel', {
+        title: 'Carousel',
+        template: 'formio/components/carousel.html',
+        group: 'advanced',
+        settings: {
+          input: false,
+          resources: [
+          {
+            name: 'localDefinition',
+            title: 'Local Definition'
+          },
+          {
+            name: 'salesforce',
+            title: 'Salesforce'
+          },
+          ],
+          resource: '',
+          resourceType: [
+          {
+            name: 'image',
+            title: 'Image'
+          },
+          {
+            name: 'video',
+            title: 'Video'
+          },
+          ],
+          videoResourceType: [
+          {
+            name: 'youtube',
+            title: 'Youtube'
+          },
+          {
+            name: 'vimeo',
+            title: 'Vimeo'
+          },
+          {
+            name: 'vidyard',
+            title: 'Vidyard'
+          },
+          {
+            name: 'brainshark',
+            title: 'Brainshark'
+          },
+          ],
+          localDefinitions: [
+          ],
+          salesforce: {
+            carouselObject: '',
+            carouselCaptionField: '',
+            carouselParentField: '',
+            carouselTypeField: '',
+            carouselVideoTypeField: '',
+            carouselVideoIdField: ''
+          }
+        },
+        onEdit: ['$scope', function($scope) {
+          $scope.removeColumn = function(index) {
+            if($scope.component.resource === 'localDefinition'){
+              $scope.component.localDefinitions.splice(index, 1);
+            }
+          };
+          $scope.addColumn = function() {
+            if($scope.component.resource === 'localDefinition'){
+              $scope.component.localDefinitions.push({});  
+            }
+          };
+        }],
+        viewTemplate: 'formio/componentsView/carousel.html',
+        fbtemplate: 'formio/formbuilder/carousel.html',
+        icon: 'fa fa-desktop',
+        views: [
+        {
+          name: 'Display',
+          template: 'formio/components/carousel/display.html'
+        },
+        {
+          name: 'API',
+          template: 'formio/components/common/api.html'
+        }
+        ]
+      });
+    }
+  ]);
+  app.run([
+    '$templateCache',
+    function($templateCache) {
+      $templateCache.put('formio/components/carousel.html',
+                               '<p>carousel components</p>'
+                              );
+            
+            $templateCache.put('formio/componentsView/carousel.html',
+                               '<p>carousel componentsView</p>'
+                              );
+            
+            $templateCache.put('formio/formbuilder/carousel.html',
+                               '<p>carousel formbuilder</p>'
+                              );
+            
+            $templateCache.put('formio/components/carousel/display.html',
+                               '<ng-form>' +
+                               '  <div class="form-group">' +
+                               '    <label for="resource" form-builder-tooltip="Resource of this carousel">'+
+                               '      {{\'Resource\' | formioTranslate}}'+
+                               '    </label>' +
+                               '    <select class="form-control" id="resource" name="resource" ng-options="resource.name as resource.title | formioTranslate for resource in component.resources" ng-model="component.resource"></select>' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'localDefinition\'">' +
+                               '    <label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Dependent Field\' | formioTranslate}}</label>' +
+                               '      <table class="table table-condensed">' +
+                               '        <thead>' +
+                               '          <tr>' +
+                               '            <th class="col-xs-4">{{\'Caption\' | formioTranslate}}</th>' +
+                               '            <th class="col-xs-3">{{\'Type\' | formioTranslate}}</th>' +
+                               '            <th class="col-xs-4">{{\'Value\' | formioTranslate}}</th>' +
+                               '            <th class="col-xs-1"></th>' +
+                               '          </tr>' +
+                               '        </thead>' +
+                               '        <tbody>' +
+                               '          <tr ng-repeat="row in component.localDefinitions">' +
+                               '            <td class="col-xs-4"><input type="text" class="form-control" ng-model="row.caption"/></td>' +
+                               '            <td class="col-xs-3"><select class="form-control" ng-options="opp.name as opp.title for opp in component.resourceType" ng-model="row.type"></select></td>' +
+                               '            <td class="col-xs-4">'+
+                               '              <input type="text" class="form-control" ng-if="row.type === \'image\'" ng-model="row.imageUrl" placeholder="Image url"/>'+
+                               '              <div ng-if="row.type === \'video\'">'+
+                               '                <select class="form-control" ng-options="vt.name as vt.title | formioTranslate for vt in component.videoResourceType" ng-model="row.videoType"></select>'+
+                               '                <input type="text" class="form-control" ng-model="row.videoId" placeholder="Video ID"/>'+
+                               '              </div>'+
+                               '            </td>' +
+                               '            <td class="col-xs-1"><button type="button" class="btn btn-danger btn-xs" ng-click="removeColumn($index)" tabindex="-1"><span class="glyphicon glyphicon-remove-circle"></span></button></td>' +
+                               '          </tr>' +
+                               '        </tbody>' +
+                               '      </table>' +
+                               '    <button type="button" class="btn btn-default" ng-click="addColumn()">{{\'Add Resource\' | formioTranslate}}</button>' +
+                               '  </div>'+
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselObject" form-builder-tooltip="The child object related to this object which will save the carousel information">{{\'Carousel Object\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselObject" name="carouselObject" ng-model="component.salesforce.carouselObject" placeholder="Carousel Object" />' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselParentField" form-builder-tooltip="The child object field that store relation to this object">{{\'Carousel Parent Field\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselParentField" name="carouselParentField" ng-model="component.salesforce.carouselParentField" placeholder="Carousel Parent Field" />' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselCaptionField" form-builder-tooltip="The field which will save carousel caption information">{{\'Carousel Caption Field\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselCaptionField" name="carouselCaptionField" ng-model="component.salesforce.carouselCaptionField" placeholder="Carousel Caption Field" />' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselTypeField" form-builder-tooltip="The field which will save carousel type information">{{\'Carousel Type Field\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselTypeField" name="carouselTypeField" ng-model="component.salesforce.carouselTypeField" placeholder="Carousel Type Field" />' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselVideoTypeField" form-builder-tooltip="The field which will save carousel video type information">{{\'Carousel Video Type Field\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselVideoTypeField" name="carouselVideoTypeField" ng-model="component.salesforce.carouselVideoTypeField" placeholder="Carousel Video Type Field" />' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselVideoIdField" form-builder-tooltip="The field which will save carousel video id information">{{\'Carousel Video Id Field\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselVideoIdField" name="carouselVideoIdField" ng-model="component.salesforce.carouselVideoIdField" placeholder="Carousel Video Id Field" />' +
+                               '  </div>' +
+                               '</ng-form>'
+                              );
+    }
+  ]);
+};
+
+},{}],234:[function(_dereq_,module,exports){
+"use strict";
+module.exports = function(app) {
+  app.config([
+    'formioComponentsProvider',
     function(formioComponentsProvider) {
       formioComponentsProvider.register('checkbox', {
         icon: 'fa fa-check-square',
@@ -29924,7 +30097,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],234:[function(_dereq_,module,exports){
+},{}],235:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30009,7 +30182,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],235:[function(_dereq_,module,exports){
+},{}],236:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.run([
@@ -30162,7 +30335,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],236:[function(_dereq_,module,exports){
+},{}],237:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30226,7 +30399,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],237:[function(_dereq_,module,exports){
+},{}],238:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30297,7 +30470,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],238:[function(_dereq_,module,exports){
+},{}],239:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30377,7 +30550,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],239:[function(_dereq_,module,exports){
+},{}],240:[function(_dereq_,module,exports){
 "use strict";
 var _assign = _dereq_('lodash/assign');
 
@@ -30443,7 +30616,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/assign":177}],240:[function(_dereq_,module,exports){
+},{"lodash/assign":177}],241:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30542,7 +30715,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],241:[function(_dereq_,module,exports){
+},{}],242:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30713,7 +30886,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],242:[function(_dereq_,module,exports){
+},{}],243:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30799,7 +30972,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],243:[function(_dereq_,module,exports){
+},{}],244:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -30908,7 +31081,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],244:[function(_dereq_,module,exports){
+},{}],245:[function(_dereq_,module,exports){
 "use strict";
 var _cloneDeep = _dereq_('lodash/cloneDeep');
 var _each = _dereq_('lodash/each');
@@ -30958,7 +31131,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/cloneDeep":181,"lodash/each":185}],245:[function(_dereq_,module,exports){
+},{"lodash/cloneDeep":181,"lodash/each":185}],246:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31018,7 +31191,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],246:[function(_dereq_,module,exports){
+},{}],247:[function(_dereq_,module,exports){
 "use strict";
 var _map = _dereq_('lodash/map');
 module.exports = function(app) {
@@ -31115,7 +31288,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/map":210}],247:[function(_dereq_,module,exports){
+},{"lodash/map":210}],248:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31241,7 +31414,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],248:[function(_dereq_,module,exports){
+},{}],249:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31302,7 +31475,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],249:[function(_dereq_,module,exports){
+},{}],250:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31364,7 +31537,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],250:[function(_dereq_,module,exports){
+},{}],251:[function(_dereq_,module,exports){
 "use strict";
 var app = angular.module('ngFormBuilder');
 
@@ -31401,6 +31574,7 @@ _dereq_('./editgrid')(app);
 _dereq_('./survey')(app);
 _dereq_('./lookup')(app);
 _dereq_('./captcha')(app);
+_dereq_('./carousel')(app);
 
 // Layout
 _dereq_('./columns')(app);
@@ -31411,7 +31585,7 @@ _dereq_('./panel')(app);
 _dereq_('./table')(app);
 _dereq_('./well')(app);
 
-},{"./address":230,"./button":231,"./captcha":232,"./checkbox":233,"./columns":234,"./components":235,"./container":236,"./content":237,"./currency":238,"./custom":239,"./datagrid":240,"./datetime":241,"./day":242,"./editgrid":243,"./email":244,"./fieldset":245,"./file":246,"./form":247,"./hidden":248,"./htmlelement":249,"./lookup":251,"./number":252,"./page":253,"./panel":254,"./password":255,"./phonenumber":256,"./radio":257,"./resource":258,"./select":259,"./selectboxes":260,"./signature":261,"./survey":262,"./table":263,"./textarea":264,"./textfield":265,"./time":266,"./well":267}],251:[function(_dereq_,module,exports){
+},{"./address":230,"./button":231,"./captcha":232,"./carousel":233,"./checkbox":234,"./columns":235,"./components":236,"./container":237,"./content":238,"./currency":239,"./custom":240,"./datagrid":241,"./datetime":242,"./day":243,"./editgrid":244,"./email":245,"./fieldset":246,"./file":247,"./form":248,"./hidden":249,"./htmlelement":250,"./lookup":252,"./number":253,"./page":254,"./panel":255,"./password":256,"./phonenumber":257,"./radio":258,"./resource":259,"./select":260,"./selectboxes":261,"./signature":262,"./survey":263,"./table":264,"./textarea":265,"./textfield":266,"./time":267,"./well":268}],252:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31538,7 +31712,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],252:[function(_dereq_,module,exports){
+},{}],253:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31622,7 +31796,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],253:[function(_dereq_,module,exports){
+},{}],254:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31643,7 +31817,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],254:[function(_dereq_,module,exports){
+},{}],255:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31754,7 +31928,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],255:[function(_dereq_,module,exports){
+},{}],256:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31830,7 +32004,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],256:[function(_dereq_,module,exports){
+},{}],257:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31911,7 +32085,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],257:[function(_dereq_,module,exports){
+},{}],258:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31991,7 +32165,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],258:[function(_dereq_,module,exports){
+},{}],259:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32096,7 +32270,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],259:[function(_dereq_,module,exports){
+},{}],260:[function(_dereq_,module,exports){
 "use strict";
 var _clone = _dereq_('lodash/clone');
 module.exports = function(app) {
@@ -32357,7 +32531,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/clone":180}],260:[function(_dereq_,module,exports){
+},{"lodash/clone":180}],261:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32440,7 +32614,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],261:[function(_dereq_,module,exports){
+},{}],262:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32513,7 +32687,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],262:[function(_dereq_,module,exports){
+},{}],263:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32586,7 +32760,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],263:[function(_dereq_,module,exports){
+},{}],264:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32658,7 +32832,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],264:[function(_dereq_,module,exports){
+},{}],265:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32773,7 +32947,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],265:[function(_dereq_,module,exports){
+},{}],266:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32847,7 +33021,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],266:[function(_dereq_,module,exports){
+},{}],267:[function(_dereq_,module,exports){
 "use strict";
 var _cloneDeep = _dereq_('lodash/cloneDeep');
 var _each = _dereq_('lodash/each');
@@ -32900,7 +33074,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/cloneDeep":181,"lodash/each":185}],267:[function(_dereq_,module,exports){
+},{"lodash/cloneDeep":181,"lodash/each":185}],268:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32947,7 +33121,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],268:[function(_dereq_,module,exports){
+},{}],269:[function(_dereq_,module,exports){
 "use strict";
 /**
   * These are component options that can be reused
@@ -33321,7 +33495,7 @@ module.exports = {
   }
 };
 
-},{}],269:[function(_dereq_,module,exports){
+},{}],270:[function(_dereq_,module,exports){
 "use strict";
 module.exports = {
   actions: [
@@ -33396,7 +33570,7 @@ module.exports = {
   ]
 };
 
-},{}],270:[function(_dereq_,module,exports){
+},{}],271:[function(_dereq_,module,exports){
 "use strict";
 /*eslint max-statements: 0*/
 var _cloneDeep = _dereq_('lodash/cloneDeep');
@@ -33811,7 +33985,7 @@ module.exports = ['debounce', function(debounce) {
   };
 }];
 
-},{"lodash/capitalize":179,"lodash/cloneDeep":181,"lodash/each":185,"lodash/groupBy":189,"lodash/merge":212,"lodash/omitBy":214,"lodash/upperFirst":225}],271:[function(_dereq_,module,exports){
+},{"lodash/capitalize":179,"lodash/cloneDeep":181,"lodash/each":185,"lodash/groupBy":189,"lodash/merge":212,"lodash/omitBy":214,"lodash/upperFirst":225}],272:[function(_dereq_,module,exports){
 "use strict";
 /**
  * Create the form-builder-component directive.
@@ -33827,7 +34001,7 @@ module.exports = [
   }
 ];
 
-},{}],272:[function(_dereq_,module,exports){
+},{}],273:[function(_dereq_,module,exports){
 "use strict";
 'use strict';
 var utils = _dereq_('formiojs/utils');
@@ -33922,7 +34096,7 @@ module.exports = [
   }
 ];
 
-},{"formiojs/utils":3,"lodash/get":188,"lodash/reject":218}],273:[function(_dereq_,module,exports){
+},{"formiojs/utils":3,"lodash/get":188,"lodash/reject":218}],274:[function(_dereq_,module,exports){
 "use strict";
 var _isNumber = _dereq_('lodash/isNumber');
 var _camelCase = _dereq_('lodash/camelCase');
@@ -34276,7 +34450,7 @@ module.exports = [
   }
 ];
 
-},{"lodash/assign":177,"lodash/camelCase":178,"lodash/isNumber":200}],274:[function(_dereq_,module,exports){
+},{"lodash/assign":177,"lodash/camelCase":178,"lodash/isNumber":200}],275:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   'formioElementDirective',
@@ -34301,7 +34475,7 @@ module.exports = [
   }
 ];
 
-},{}],275:[function(_dereq_,module,exports){
+},{}],276:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -34326,7 +34500,7 @@ module.exports = [
   }
 ];
 
-},{}],276:[function(_dereq_,module,exports){
+},{}],277:[function(_dereq_,module,exports){
 "use strict";
 /**
 * This directive creates a field for tweaking component options.
@@ -34410,7 +34584,7 @@ module.exports = ['COMMON_OPTIONS', '$filter', function(COMMON_OPTIONS, $filter)
   };
 }];
 
-},{}],277:[function(_dereq_,module,exports){
+},{}],278:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for editing a component's custom validation.
@@ -34451,7 +34625,7 @@ module.exports = function() {
   };
 };
 
-},{}],278:[function(_dereq_,module,exports){
+},{}],279:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component inputs' label position.
@@ -34493,7 +34667,7 @@ module.exports = function() {
     };
   };
 
-},{}],279:[function(_dereq_,module,exports){
+},{}],280:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's key.
@@ -34539,7 +34713,7 @@ module.exports = function() {
   };
 };
 
-},{}],280:[function(_dereq_,module,exports){
+},{}],281:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's label position.
@@ -34603,7 +34777,7 @@ module.exports = function() {
     };
   };
 
-},{}],281:[function(_dereq_,module,exports){
+},{}],282:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component options' label position.
@@ -34645,7 +34819,7 @@ module.exports = function() {
     };
   };
 
-},{}],282:[function(_dereq_,module,exports){
+},{}],283:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's shortcut.
@@ -34667,7 +34841,7 @@ module.exports = function() {
   };
 };
 
-},{}],283:[function(_dereq_,module,exports){
+},{}],284:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's tags.
@@ -34711,7 +34885,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/map":210}],284:[function(_dereq_,module,exports){
+},{"lodash/map":210}],285:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -34733,7 +34907,7 @@ module.exports = [
   }
 ];
 
-},{}],285:[function(_dereq_,module,exports){
+},{}],286:[function(_dereq_,module,exports){
 "use strict";
 /**
  * A directive for a table builder
@@ -34787,7 +34961,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/merge":212}],286:[function(_dereq_,module,exports){
+},{"lodash/merge":212}],287:[function(_dereq_,module,exports){
 "use strict";
 /**
 * Invokes Bootstrap's popover jquery plugin on an element
@@ -34828,7 +35002,7 @@ module.exports = ['$filter', function($filter) {
   };
 }];
 
-},{}],287:[function(_dereq_,module,exports){
+},{}],288:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -34891,7 +35065,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/camelCase":178,"lodash/map":210}],288:[function(_dereq_,module,exports){
+},{"lodash/camelCase":178,"lodash/map":210}],289:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function() {
   return {
@@ -34928,7 +35102,7 @@ module.exports = function() {
   };
 };
 
-},{}],289:[function(_dereq_,module,exports){
+},{}],290:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function () {
   return {
@@ -34951,7 +35125,7 @@ module.exports = function () {
   };
 }
 
-},{}],290:[function(_dereq_,module,exports){
+},{}],291:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add key-value pair object.
@@ -35024,7 +35198,7 @@ module.exports = function() {
   };
 };
 
-},{}],291:[function(_dereq_,module,exports){
+},{}],292:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for an input mask for default value.
@@ -35074,7 +35248,7 @@ module.exports = function() {
   };
 };
 
-},{"formiojs/utils":3,"vanilla-text-mask":229}],292:[function(_dereq_,module,exports){
+},{"formiojs/utils":3,"vanilla-text-mask":229}],293:[function(_dereq_,module,exports){
 "use strict";
 /*
 * Prevents user inputting invalid api key characters.
@@ -35097,7 +35271,7 @@ module.exports = function() {
   };
 };
 
-},{}],293:[function(_dereq_,module,exports){
+},{}],294:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -35179,7 +35353,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/camelCase":178,"lodash/map":210}],294:[function(_dereq_,module,exports){
+},{"lodash/camelCase":178,"lodash/map":210}],295:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -35301,7 +35475,7 @@ module.exports = ['BuilderUtils', function(BuilderUtils) {
   }
 ];
 
-},{"lodash/camelCase":178,"lodash/difference":184,"lodash/map":210,"lodash/without":226}],295:[function(_dereq_,module,exports){
+},{"lodash/camelCase":178,"lodash/difference":184,"lodash/map":210,"lodash/without":226}],296:[function(_dereq_,module,exports){
 "use strict";
 'use strict';
 
@@ -35460,7 +35634,7 @@ module.exports = ['FormioUtils', function(FormioUtils) {
   };
 }];
 
-},{"lodash/difference":184,"lodash/range":217}],296:[function(_dereq_,module,exports){
+},{"lodash/difference":184,"lodash/range":217}],297:[function(_dereq_,module,exports){
 "use strict";
 // Create an AngularJS service called debounce
 module.exports = ['$timeout','$q', function($timeout, $q) {
@@ -35494,7 +35668,7 @@ module.exports = ['$timeout','$q', function($timeout, $q) {
   };
 }];
 
-},{}],297:[function(_dereq_,module,exports){
+},{}],298:[function(_dereq_,module,exports){
 "use strict";
 /*! ng-formio-builder v2.30.1 | https://unpkg.com/ng-formio-builder@2.30.1/LICENSE.txt */
 /*global window: false, console: false, jQuery: false */
@@ -35676,5 +35850,5 @@ app.run([
 
 _dereq_('./components');
 
-},{"./components":250,"./constants/commonOptions":268,"./constants/formOptions":269,"./directives/formBuilder":270,"./directives/formBuilderComponent":271,"./directives/formBuilderConditional":272,"./directives/formBuilderDnd":273,"./directives/formBuilderElement":274,"./directives/formBuilderList":275,"./directives/formBuilderOption":276,"./directives/formBuilderOptionCustomValidation":277,"./directives/formBuilderOptionInputsLabelPosition":278,"./directives/formBuilderOptionKey":279,"./directives/formBuilderOptionLabelPosition":280,"./directives/formBuilderOptionOptionsLabelPosition":281,"./directives/formBuilderOptionShortcut":282,"./directives/formBuilderOptionTags":283,"./directives/formBuilderRow":284,"./directives/formBuilderTable":285,"./directives/formBuilderTooltip":286,"./directives/headersBuilder":287,"./directives/jsonInput":288,"./directives/labelValidator":289,"./directives/objectBuilder":290,"./directives/textMask":291,"./directives/validApiKey":292,"./directives/valueBuilder":293,"./directives/valueBuilderWithShortcuts":294,"./factories/BuilderUtils":295,"./factories/debounce":296}]},{},[297])(297)
+},{"./components":251,"./constants/commonOptions":269,"./constants/formOptions":270,"./directives/formBuilder":271,"./directives/formBuilderComponent":272,"./directives/formBuilderConditional":273,"./directives/formBuilderDnd":274,"./directives/formBuilderElement":275,"./directives/formBuilderList":276,"./directives/formBuilderOption":277,"./directives/formBuilderOptionCustomValidation":278,"./directives/formBuilderOptionInputsLabelPosition":279,"./directives/formBuilderOptionKey":280,"./directives/formBuilderOptionLabelPosition":281,"./directives/formBuilderOptionOptionsLabelPosition":282,"./directives/formBuilderOptionShortcut":283,"./directives/formBuilderOptionTags":284,"./directives/formBuilderRow":285,"./directives/formBuilderTable":286,"./directives/formBuilderTooltip":287,"./directives/headersBuilder":288,"./directives/jsonInput":289,"./directives/labelValidator":290,"./directives/objectBuilder":291,"./directives/textMask":292,"./directives/validApiKey":293,"./directives/valueBuilder":294,"./directives/valueBuilderWithShortcuts":295,"./factories/BuilderUtils":296,"./factories/debounce":297}]},{},[298])(298)
 });
