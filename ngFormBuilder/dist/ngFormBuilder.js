@@ -29787,6 +29787,7 @@ module.exports = function(app) {
                                '<form-builder-option property="customClass"></form-builder-option>' +
                                '</ng-form>'
                               );
+            
     }
   ]);
 };
@@ -29841,7 +29842,7 @@ module.exports = function(app) {
           },
           {
             name: 'Data',
-            template: 'formio/components/common/data.html'
+            template: 'formio/components/checkbox/data.html'
           },
           {
             name: 'Validation',
@@ -29906,11 +29907,17 @@ module.exports = function(app) {
         '</ng-form>'
       );
 
+      $templateCache.put('formio/components/checkbox/data.html',
+        '<ng-form>' +
+          '<form-builder-option property="defaultValue"></form-builder-option>' +
+        '</ng-form>'
+      );
+
       $templateCache.put('formio/components/checkbox/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
-          /*'<form-builder-option property="validate.customMessage"></form-builder-option>' +
-          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +*/
+          /*'<form-builder-option property="validate.customMessage"></form-builder-option>' +*/
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'
       );
     }
@@ -30698,8 +30705,8 @@ module.exports = function(app) {
       $templateCache.put('formio/components/datetime/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
-          /*'<form-builder-option property="validate.customMessage"></form-builder-option>' +
-          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +*/
+          /*'<form-builder-option property="validate.customMessage"></form-builder-option>' +*/
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'
       );
     }
@@ -31100,6 +31107,7 @@ module.exports = function(app) {
       $templateCache.put('formio/components/file/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
           //'<form-builder-option property="validate.customMessage"></form-builder-option>' +
         '</ng-form>'
       );
@@ -31440,6 +31448,10 @@ module.exports = function(app) {
         {
           name: 'API',
           template: 'formio/components/common/api.html'
+        },
+        {
+          name: 'Validate',
+          template: 'formio/components/lookup/validate.html'
         }
         ]  
       });
@@ -31514,6 +31526,14 @@ module.exports = function(app) {
          '</div>' +
        '</ng-form>'
        );
+
+
+      $templateCache.put('formio/components/lookup/validate.html',
+              '<ng-form>' +
+                '<form-builder-option property="validate.required"></form-builder-option>' +
+                '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+              '</ng-form>'
+      );
     }
   ]);
 };
@@ -31594,8 +31614,8 @@ module.exports = function(app) {
           '<form-builder-option property="validate.required"></form-builder-option>' +
           /*'<form-builder-option property="validate.min" type="number" label="Minimum Value" placeholder="Minimum Value" title="The minimum value this field must have before the form can be submitted."></form-builder-option>' +
           '<form-builder-option property="validate.max" type="number" label="Maximum Value" placeholder="Maximum Value" title="The maximum value this field must have before the form can be submitted."></form-builder-option>' +
-          '<form-builder-option property="validate.customMessage"></form-builder-option>' +
-          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +*/
+          '<form-builder-option property="validate.customMessage"></form-builder-option>' +*/
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'
       );
     }
@@ -32329,8 +32349,8 @@ module.exports = function(app) {
           '<form-builder-option property="validate.required"></form-builder-option>' +
           /*'<form-builder-option ng-show="!!component.searchField" property="validate.select"></form-builder-option>' +
           '<form-builder-option property="unique"></form-builder-option>' +
-          '<form-builder-option property="validate.customMessage"></form-builder-option>' +
-          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +*/
+          '<form-builder-option property="validate.customMessage"></form-builder-option>' +*/
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'
       );
     }

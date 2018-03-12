@@ -46,7 +46,7 @@ module.exports = function(app) {
           },
           {
             name: 'Data',
-            template: 'formio/components/common/data.html'
+            template: 'formio/components/checkbox/data.html'
           },
           {
             name: 'Validation',
@@ -108,6 +108,12 @@ module.exports = function(app) {
           '<form-builder-option property="disabled"></form-builder-option>' +
           /*'<form-builder-option property="dataGridLabel"></form-builder-option>' +
           '<form-builder-option property="tableView"></form-builder-option>' +*/
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/checkbox/data.html',
+        '<ng-form>' +
+          '<form-builder-option property="defaultValue"></form-builder-option>' +
         '</ng-form>'
       );
 
