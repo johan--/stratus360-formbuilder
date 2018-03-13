@@ -159,7 +159,7 @@
                       },
                     ],
 
-                    submitSucess: false,
+                    submitSuccess: false,
                     submitFailed: false,
                     submitRedirect: false,
 
@@ -168,6 +168,10 @@
                     action:'',
                     event:'',
                     target: '',
+                    redirectUri: '',
+                    redirectTarget:'',
+                    submitSuccessCallback: '',
+                    submitFailedCallback: '',
 
                     /**
                      *end of my custom definition
@@ -179,7 +183,21 @@
                 },
                 onEdit: ['$scope', function($scope) {
                   $scope.toggle = function(index) {
-                    console.log(index);
+                    switch(index){
+                      case 0:
+                        $scope.component.submitSuccess = !$scope.component.submitSuccess;
+                        $scope.component.submitRedirect = false;
+                        break;
+                      case 1:
+                        $scope.component.submitFailed = !$scope.component.submitFailed;
+                        $scope.component.submitRedirect = false;
+                        break;
+                      case 2:
+                        $scope.component.submitRedirect = !$scope.component.submitRedirect;
+                        $scope.component.submitSuccess = false;
+                        $scope.component.submitFailed = false;
+                        break;
+                    }
                   };
                 }],
                 viewTemplate: 'formio/componentsView/tool.html',
@@ -205,86 +223,7 @@
       });
 
 
-      /*formioComponentsProvider.register('carousel', {
-        title: 'Carousel',
-                template: 'formio/components/carousel.html',
-                group: 'advanced',
-                settings: {
-                    input: false,
-                    resources: [
-                      {
-                        name: 'localDefinition',
-                        title: 'Local Definition'
-                      },
-                      {
-                        name: 'salesforce',
-                        title: 'Salesforce'
-                      },
-                    ],
-                    resource: '',
-                    resourceType: [
-                      {
-                        name: 'image',
-                        title: 'Image'
-                      },
-                      {
-                        name: 'video',
-                        title: 'Video'
-                      },
-                    ],
-                    videoResourceType: [
-                      {
-                        name: 'youtube',
-                        title: 'Youtube'
-                      },
-                      {
-                        name: 'vimeo',
-                        title: 'Vimeo'
-                      },
-                      {
-                        name: 'vidyard',
-                        title: 'Vidyard'
-                      },
-                      {
-                        name: 'brainshark',
-                        title: 'Brainshark'
-                      },
-                    ],
-                    localDefinitions: [
-                    ],
-                    salesforce: {
-                      carouselObject: '',
-                      carouselTypeField: '',
-                      carouselVideoTypeField: '',
-                      carouselVideoIdField: ''
-                    }
-                },
-                onEdit: ['$scope', function($scope) {
-                  $scope.removeColumn = function(index) {
-                    if($scope.component.resource === 'localDefinition'){
-                      $scope.component.localDefinitions.splice(index, 1);
-                    }
-                  };
-                  $scope.addColumn = function() {
-                    if($scope.component.resource === 'localDefinition'){
-                      $scope.component.localDefinitions.push({});  
-                    }
-                  };
-                }],
-                viewTemplate: 'formio/componentsView/carousel.html',
-                fbtemplate: 'formio/formbuilder/carousel.html',
-                icon: 'fa fa-code',
-                views: [
-                    {
-                        name: 'Display',
-                        template: 'formio/components/carousel/display.html'
-                    },
-                    {
-                        name: 'API',
-                        template: 'formio/components/common/api.html'
-                    }
-                ]
-      });*/
+      
   }
 
   function run($rootScope, formioComponents, $timeout, $templateCache, FormioUtils) {
@@ -371,99 +310,55 @@
                                 '<select class="form-control" id="standard" name="standard" ng-options="action.name as action.title | formioTranslate for action in component.standardActions" ng-model="component.event"></select>' +
                                 '</div>' +
 
-                                '<div class="form-group" ng-if="component.action === \'standard\'">' +
+                                // for standard action->standard event
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event != \'\' && component.event != \'submit\' && component.event != \'redirect\'">' +
                                 '  <label for="target" form-builder-tooltip="The target action">{{\'Action Target\' | formioTranslate}}</label>' +
-                                '  <input type="text" class="form-control" id="target" name="target" ng-model="component.target" placeholder="target" />' +
+                                '  <input type="text" class="form-control" id="target" name="target" ng-model="component.target" placeholder="Action Target" />' +
                                 '</div>' +
 
-
-                                '<div class="form-group" ng-if="component.event === \'submit\'">' +
-                                '  <label for="target" form-builder-tooltip="The target action">{{\'Submit Callback\' | formioTranslate}}</label>' +
-                                '  <div>' +
-                                    '<md-checkbox ng-click="toggle(0)">Success Callback</md-checkbox>'+
-                                    '<md-checkbox ng-click="toggle(1)">Failed Callback</md-checkbox>'+
-                                    '<input type="checkbox" ng-click="toggle(2)"><span>Redirect</span></input>'+
-                                '  </div>' +
+                                // for standard action->submit event
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'submit\'">' +
+                                ' <label for="target" form-builder-tooltip="The target action">{{\'Submit Callback\' | formioTranslate}}</label>' +
+                                ' <div class="form-control">'+
+                                '   <input type="checkbox" ng-click="toggle(0)" ng-checked="component.submitSuccess"><span>Success Callback</span></input>'+
+                                '   <input type="checkbox" ng-click="toggle(1)" ng-checked="component.submitFailed"><span>Failed Callback</span></input>'+
+                                '   <input type="checkbox" ng-click="toggle(2)" ng-checked="component.submitRedirect"><span>Redirect</span></input>'+
+                                ' </div>' +
                                 '</div>' +
 
+                                // for standard action->redirect event or submit event with redirect
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'redirect\' || (component.event === \'submit\' && component.submitRedirect == true)">' +
+                                '  <label for="redirectUri" form-builder-tooltip="Redirect URL">{{\'Redirect URL\' | formioTranslate}}</label>' +
+                                '  <input type="text" class="form-control" id="redirectUri" name="redirectUri" ng-model="component.redirectUri" placeholder="Redirect URL" />' +
+                                '</div>' +
+
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'redirect\' || (component.event === \'submit\' && component.submitRedirect == true)">' +
+                                '  <label for="redirectTarget" form-builder-tooltip="Redirect Target">{{\'Redirect Target\' | formioTranslate}}</label>' +
+                                '  <select class="form-control" id="redirectTarget" name="redirectTarget" ng-options="t for t in [\'_self\', \'_blank\']" ng-model="component.redirectTarget"></select>' +
+                                '</div>' +
+
+                                // if submitSuccessCallback 
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'submit\' && component.submitSuccess === true">' +
+                                '  <label for="submitSuccessCallback" form-builder-tooltip="The custom logic to evaluate when success submit.">{{\'Success Callback Logic\' | formioTranslate}}</label>' +
+                                '  <formio-script-editor rows="3" id="submitSuccessCallback" name="submitSuccessCallback" ng-model="component.submitSuccessCallback" placeholder=""></formio-script-editor>' +
+                                '</div>' +
+                               '</ng-form>' +
+
+                               // if submitFailedCallback 
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'submit\' && component.submitFailed === true">' +
+                                '  <label for="submitFailedCallback" form-builder-tooltip="The custom logic to evaluate when success submit.">{{\'Failed Callback Logic\' | formioTranslate}}</label>' +
+                                '  <formio-script-editor rows="3" id="submitFailedCallback" name="submitFailedCallback" ng-model="component.submitFailedCallback" placeholder=""></formio-script-editor>' +
+                                '</div>' +
+                               '</ng-form>' +
 
                                 // if custom action
                                 '<div class="form-group" ng-if="component.action === \'custom\'">' +
                                 '  <label for="custom" form-builder-tooltip="The custom logic to evaluate when the button is clicked.">{{\'Button Custom Logic\' | formioTranslate}}</label>' +
-                                '  <formio-script-editor rows="10" id="custom" name="custom" ng-model="component.custom" placeholder="/*** Example Code ***/\ndata[\'mykey\'] = data[\'anotherKey\'];"></formio-script-editor>' +
+                                '  <formio-script-editor rows="3" id="custom" name="custom" ng-model="component.custom" placeholder=""></formio-script-editor>' +
                                 '</div>' +
                                '</ng-form>'
                               );
 
-
-
-
-            /*$templateCache.put('formio/components/carousel.html',
-                               '<p>carousel components</p>'
-                              );
-            
-            $templateCache.put('formio/componentsView/carousel.html',
-                               '<p>carousel componentsView</p>'
-                              );
-            
-            $templateCache.put('formio/formbuilder/carousel.html',
-                               '<p>carousel formbuilder</p>'
-                              );
-            
-            $templateCache.put('formio/components/carousel/display.html',
-                               '<ng-form>' +
-                               '  <div class="form-group">' +
-                               '    <label for="resource" form-builder-tooltip="Resource of this carousel">'+
-                               '      {{\'Resource\' | formioTranslate}}'+
-                               '    </label>' +
-                               '    <select class="form-control" id="resource" name="resource" ng-options="resource.name as resource.title | formioTranslate for resource in component.resources" ng-model="component.resource"></select>' +
-                               '  </div>' +
-                               '  <div class="form-group" ng-if="component.resource === \'localDefinition\'">' +
-                               '    <label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Dependent Field\' | formioTranslate}}</label>' +
-                               '      <table class="table table-condensed">' +
-                               '        <thead>' +
-                               '          <tr>' +
-                               '            <th class="col-xs-4">{{\'Caption\' | formioTranslate}}</th>' +
-                               '            <th class="col-xs-3">{{\'Type\' | formioTranslate}}</th>' +
-                               '            <th class="col-xs-4">{{\'Value\' | formioTranslate}}</th>' +
-                               '            <th class="col-xs-1"></th>' +
-                               '          </tr>' +
-                               '        </thead>' +
-                               '        <tbody>' +
-                               '          <tr ng-repeat="row in component.localDefinitions">' +
-                               '            <td class="col-xs-4"><input type="text" class="form-control" ng-model="row.caption"/></td>' +
-                               '            <td class="col-xs-3"><select class="form-control" ng-options="opp.name as opp.title for opp in component.resourceType" ng-model="row.type"></select></td>' +
-                               '            <td class="col-xs-4">'+
-                               '              <input type="text" class="form-control" ng-if="row.type === \'image\'" ng-model="row.imageUrl" placeholder="Image url"/>'+
-                               '              <div ng-if="row.type === \'video\'">'+
-                               '                <select class="form-control" ng-options="vt.name as vt.title | formioTranslate for vt in component.videoResourceType" ng-model="row.videoType"></select>'+
-                               '                <input type="text" class="form-control" ng-model="row.videoId" placeholder="Video ID"/>'+
-                               '              </div>'+
-                               '            </td>' +
-                               '            <td class="col-xs-1"><button type="button" class="btn btn-danger btn-xs" ng-click="removeColumn($index)" tabindex="-1"><span class="glyphicon glyphicon-remove-circle"></span></button></td>' +
-                               '          </tr>' +
-                               '        </tbody>' +
-                               '      </table>' +
-                               '    <button type="button" class="btn btn-default" ng-click="addColumn()">{{\'Add Resource\' | formioTranslate}}</button>' +
-                               '  </div>'+
-                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
-                               '    <label for="carouselObject" form-builder-tooltip="The child object related to this object which will save the carousel information">{{\'Carousel Object\' | formioTranslate}}</label>' +
-                               '    <input type="text" class="form-control" id="carouselObject" name="carouselObject" ng-model="component.salesforce.carouselObject" placeholder="Carousel Object" />' +
-                               '  </div>' +
-                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
-                               '    <label for="carouselTypeField" form-builder-tooltip="The field which will save carousel type information">{{\'Carousel Type Field\' | formioTranslate}}</label>' +
-                               '    <input type="text" class="form-control" id="carouselTypeField" name="carouselTypeField" ng-model="component.salesforce.carouselTypeField" placeholder="Carousel Type Field" />' +
-                               '  </div>' +
-                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
-                               '    <label for="carouselVideoTypeField" form-builder-tooltip="The field which will save carousel video type information">{{\'Carousel Video Type Field\' | formioTranslate}}</label>' +
-                               '    <input type="text" class="form-control" id="carouselVideoTypeField" name="carouselVideoTypeField" ng-model="component.salesforce.carouselVideoTypeField" placeholder="Carousel Video Type Field" />' +
-                               '  </div>' +
-                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
-                               '    <label for="carouselVideoIdField" form-builder-tooltip="The field which will save carousel video id information">{{\'Carousel Video Id Field\' | formioTranslate}}</label>' +
-                               '    <input type="text" class="form-control" id="carouselVideoIdField" name="carouselVideoIdField" ng-model="component.salesforce.carouselVideoIdField" placeholder="Carousel Video Id Field" />' +
-                               '  </div>' +
-                               '</ng-form>'
-                              );*/
         
   }
 
