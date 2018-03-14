@@ -18,6 +18,12 @@ Where ```myform``` would be a form object that is placed on the scope of the con
 Installation
 ================
 To install this within your application, you will first need to include the following 
+installation steps:
+1. run npm install
+2. run bower install
+3. run the index.html
+
+if there is a change, run gulp build, than you can see the 
 
 
 Adding Components
