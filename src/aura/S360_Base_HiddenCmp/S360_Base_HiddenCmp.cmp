@@ -2,6 +2,10 @@
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="Value" type="String" default=""/>
     <aura:attribute name="DefaultValue" type="string" default=""/>
+    <aura:attribute name="Valid" type="boolean" default="true"/>
+    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
     
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
     

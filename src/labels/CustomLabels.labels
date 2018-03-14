@@ -49,6 +49,13 @@
         <value>you do not have access to update this object</value>
     </labels>
     <labels>
+        <fullName>S360_Empty_Carousel</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 Empty Carousel</shortDescription>
+        <value>No view to display</value>
+    </labels>
+    <labels>
         <fullName>S360_base_captcha_domain</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -63,10 +70,45 @@
         <value>Loading...</value>
     </labels>
     <labels>
+        <fullName>S360_base_captcha_message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base captcha message</shortDescription>
+        <value>Please Complete the Captcha</value>
+    </labels>
+    <labels>
         <fullName>S360_base_captcha_site_key</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>S360 base captcha site key</shortDescription>
         <value>6Lcj-kkUAAAAAJDg49ci6QO72p_m5uz2tLlnoaRy</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_default_error_message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base default error message</shortDescription>
+        <value>Operation Failed</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_default_success_message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base default success message</shortDescription>
+        <value>Operation Succeed</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_error_message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base error message</shortDescription>
+        <value>Error Message</value>
+    </labels>
+    <labels>
+        <fullName>S360_base_offline_message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 base offline message</shortDescription>
+        <value>You might be offline</value>
     </labels>
 </CustomLabels>

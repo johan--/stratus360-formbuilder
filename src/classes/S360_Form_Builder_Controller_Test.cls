@@ -34,7 +34,7 @@ public class S360_Form_Builder_Controller_Test {
 
         testList.add(testChild);
         testMap.put('Child|id|Test', testList);
-        S360_Form_Builder_Controller.saveUpsertRecord(testAcc, testMap);
+        S360_Form_Builder_Controller.saveUpsertRecord(testAcc, testMap, false, '');
     }
 
     @isTest

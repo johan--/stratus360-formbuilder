@@ -17,6 +17,10 @@
                     description="style for date component container"/>
     <aura:attribute name="InitDate" type="Date" default=""/>
     <aura:attribute name="DefaultDate" type="Date" default=""/>
+    <aura:attribute name="Valid" type="boolean" default="true"/>
+    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
     
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
     

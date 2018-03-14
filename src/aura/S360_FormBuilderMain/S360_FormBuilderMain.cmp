@@ -1,5 +1,8 @@
 <aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"  
                 controller="S360_Form_Builder_Controller">
+
+    <!--Load external resources-->
+    <ltng:require scripts="{!$Resource.jsonlogic}"/>
     
     <!-- config attributes -->
     <aura:attribute name="FormConfig" type="Object" default="{}"/>
@@ -10,6 +13,11 @@
     <!-- captcha attributes -->
     <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
     <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
+    
+    <!-- signature attributes -->
+    <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
+    <aura:attribute name="signatureData" type="Object"/>
+    <aura:attribute name="canvas" type="Object"/>
     
     <!-- Input parameter -->
     <aura:attribute name="formConfigName" type="String" default="" access="global"/>
@@ -47,7 +55,10 @@
                                           componentData="{!v.componentData}" submittedButton="{!v.submittedStandardButton}" 
                                           aura:id="S360_FormBuilderStandard"
                                           isCaptchaEnabled="{!v.isCaptchaEnabled}"
-                                          isCaptchaSuccess="{!v.isCaptchaSuccess}"/>
+                                          isCaptchaSuccess="{!v.isCaptchaSuccess}"
+                                    	  isSignatureEnabled="{!v.isSignatureEnabled}"
+                                          signatureData="{!v.signatureData}"
+                                    	  canvas="{!v.canvas}"/>
     </aura:if>
     
     <aura:if isTrue="{!v.componentType == 'Custom'}">

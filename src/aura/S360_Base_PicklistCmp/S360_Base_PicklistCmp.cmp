@@ -11,6 +11,11 @@
     <aura:attribute name="SObjectName" type="string" default=""/>
     <aura:attribute name="RecordTypeName" type="string" default=""/>
     <aura:attribute name="FieldName" type="string" default=""/>
+
+    <aura:attribute name="Valid" type="boolean" default="true"/>
+    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
  
     <!-- additional attributes -->
     <aura:attribute name="Class" type="String" default=""/>
@@ -54,6 +59,12 @@
                     <div class="slds-spinner__dot-b"></div>
                 </div>
             </div>
+
+            <aura:renderIf isTrue="{!v.Valid != true}">
+                <ui:message title="Warning" severity="warning" closable="true">
+                    <aura:unescapedHtml value="{!v.Message}"/>
+                </ui:message>
+            </aura:renderIf>
         
         </article>
         

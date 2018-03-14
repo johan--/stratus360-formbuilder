@@ -65,6 +65,14 @@
         <name>User__c</name>
         <relationshipLabel><!-- Dummy Objects --></relationshipLabel>
     </fields>
+    <fields>
+        <label><!-- email --></label>
+        <name>email__c</name>
+    </fields>
+    <fields>
+        <label><!-- phone --></label>
+        <name>phone__c</name>
+    </fields>
     <gender><!-- Masculine --></gender>
     <layouts>
         <layout>Dummy Object Layout</layout>

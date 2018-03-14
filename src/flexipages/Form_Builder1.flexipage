@@ -17,18 +17,21 @@
             <componentName>flexipage:visualforcePage</componentName>
         </componentInstances>
         <name>facet-cf2c83b0-f3a2-4e74-a094-03db53be6069</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
             <componentName>force:detailPanel</componentName>
         </componentInstances>
         <name>facet-a63b2eb6-6c67-4950-81ec-e788ad5013f0</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
             <componentName>S360_FormBuilderMain</componentName>
         </componentInstances>
         <name>facet-f197f3c8-3aa1-41d5-b18e-8e573e169884</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
@@ -69,6 +72,7 @@
             <componentName>flexipage:tab</componentName>
         </componentInstances>
         <name>facet-753fb17e-1069-483e-9368-01368628eb38</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
@@ -90,6 +94,7 @@
             <componentName>flexipage:tabset</componentName>
         </componentInstances>
         <name>main</name>
+        <type>Region</type>
     </flexiPageRegions>
     <masterLabel>Form Builder</masterLabel>
     <pageTemplate>flexipage:recordHomeSingleColNoHeaderTemplateDesktop</pageTemplate>

@@ -5,3 +5,15 @@
 .THIS .hide-tooltip{
     display: none;
 }
+
+.THIS .label-top{
+    display: block;
+}
+
+.THIS .label-left{
+    display: inline-block;
+}
+
+.THIS .label-right{
+    display: inline-block;
+}

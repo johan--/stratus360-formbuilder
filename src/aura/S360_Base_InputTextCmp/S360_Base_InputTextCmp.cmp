@@ -1,4 +1,5 @@
 <aura:component >
+    
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="InputLabel" type="string" default=""/>
     <aura:attribute name="HelpText" type="string" default=""/>
@@ -8,9 +9,13 @@
     <aura:attribute name="IsDisabled" type="boolean" default="false"/>
     <aura:attribute name="Value" type="string" default=""/>
     <aura:attribute name="DefaultValue" type="string" default=""/>
+    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="Valid" type="boolean" default="true"/>
     <aura:attribute name="MaxLength" type="decimal" default="10000000000000"/>
     <aura:attribute name="Class" type="String" default=""
                     description="Style of input container"/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
     
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
     <aura:registerEvent name="OnBlur" type="c:S360_Base_onBlur" />
@@ -22,9 +27,9 @@
     <div>
 	<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
+            <aura:unescapedHtml value="{!v.InputLabel}"/>
             <abbr class="slds-required" 
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
-            <aura:unescapedHtml value="{!v.InputLabel}"/>
         </label>
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
 
@@ -38,6 +43,11 @@
                           blur="{!c.handleOnBlur}"
                           maxlength="{!v.MaxLength ? v.MaxLength : 10000000000000}"/>
         </div>
+        <aura:renderIf isTrue="{!v.Valid != true}">
+            <ui:message title="Warning" severity="warning" closable="true">
+                <aura:unescapedHtml value="{!v.Message}"/>
+            </ui:message>
+        </aura:renderIf>
 	</div>
         </div>
 

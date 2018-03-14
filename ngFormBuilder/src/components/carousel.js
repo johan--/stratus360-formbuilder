@@ -100,7 +100,16 @@ module.exports = function(app) {
                               );
             
             $templateCache.put('formio/formbuilder/carousel.html',
-                               '<p>carousel formbuilder</p>'
+                               '<div style="width: 100%;height: 360px;background: #4c4c4c;display: flex;flex-direction: column;flex-wrap: wrap;justify-content:center;align-items: center;">'+
+                                    '<p style="color: white;font-size: 3.5em;text-align: center;">This is Carousel</p>'+
+                                    '<div style="width: 100%;height: 30px;background: #4286f5;position: absolute;bottom: 0;padding: 7px;">'+
+                                        '<i class="fa fa-play" style="color: white;display: inline;position: absolute;right: 5px;"></i>'+
+                                        '<div style="position: absolute;width: 100%;height: 100%;top: 0;left: 0;display: flex;flex-direction: column;justify-content: center;text-align: center;">'+
+                                            '<label style="color: white;">Captions</label>'+
+                                        '</div>'+
+                                        '<i class="fa fa-play" style="color: white;transform: scaleX(-1);position: absolute;left: 5px;"></i>'+
+                                    '</div>'+
+                                '</div>'
                               );
             
             $templateCache.put('formio/components/carousel/display.html',

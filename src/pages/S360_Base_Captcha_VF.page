@@ -1,0 +1,89 @@
+<apex:page showHeader="false" standardStylesheets="false">
+    <body>
+    
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl={!$CurrentPage.parameters.l}"/>
+   
+    <div>
+        <label id="message_captcha" style='display:none;color:red'>Failed loading captcha</label>
+        <div id="widgetId1" class="g-recaptcha" style="transform: scale(0.74);transform-origin: 0 0;-webkit-transform:scale(0.74);-webkit-transform-origin: 0 0"></div>
+    </div>
+    
+    <style>
+        body, div{
+            background:transparent !important;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+        var onloadCallback = function() {
+            
+            grecaptcha.render('widgetId1', {
+                'sitekey' : '{!$CurrentPage.parameters.sk}', 
+                'data-size' : 'compact',
+                'data-theme' : 'light',
+                'callback' : function(value){
+                    var hostURL = '*';
+                    if (value == ""){
+                        grecaptcha.reset();
+                        parent.postMessage({ action: "responseCAPTCHA", status : false }, hostURL);
+                    }else{
+                        parent.postMessage({ action: "responseCAPTCHA", status : true },  hostURL);
+                    }
+                }
+            });
+            
+            // add event click
+            // find captcha image div
+            var captchaOptionObject = function(counter, callback){
+                setTimeout(function(){
+                    counter++;
+                    var t = document.getElementsByTagName('Body')[0].children;
+                    console.log(t);
+                    
+                    if(t.length != 5 && counter <= 25){ // limit to 5 seconds
+                        captchaOptionObject(counter, callback);
+                    }else{
+                       
+                        if(t.length != 5 && isMobile){
+                            callback(false);
+                        }else{
+                            callback(true, t[4]);
+                        }
+                    }
+                },200);
+                
+            }
+            
+            // if loaded in mobile, call captchaOptionObject function to increase the iframe height from parent;
+            // we need this because in mobile device, captcha will load image
+            debugger;
+            //if(isMobile == true){
+                captchaOptionObject(0, function(status, obj){
+                    debugger;
+                    if(status == true){
+                        var observer = new MutationObserver(function(mutations) {
+                            if(mutations.length > 0){
+                                var mutationRecord = mutations[mutations.length-1];
+                                var hostURL = '*';
+                                
+                                if(mutationRecord.target.style.visibility == 'visible'){
+                                    parent.postMessage({ action: "openOptionsCAPTCHA" }, hostURL);
+                                }else if(mutationRecord.target.style.visibility == 'hidden'){
+                                    parent.postMessage({ action: "closeOptionsCAPTCHA" }, hostURL);
+                                }
+                            }
+                        });
+                        
+                        observer.observe(obj, { attributes : true, attributeFilter : ['style'] });
+                    }else{
+                        document.getElementById('message_captcha').style.display = 'block';
+                        document.getElementById('widgetId1').style.display = 'none';
+                    }
+                });
+            //}
+        };
+    </script>
+    </body>
+</apex:page>

@@ -16,30 +16,52 @@
     <aura:attribute name="InputClass" type="String" default=""
                     description="Set input checkbox style"/>
     <aura:attribute name="HelpText" type="string" default=""/>
+    <aura:attribute name="Valid" type="boolean" default="true"/>
+    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    
+    <aura:attribute name="LabelPosition" type="String" default="right"/>
     
     <!-- additional event registration -->
     <aura:registerEvent name="OnClick" type="c:S360_Base_onClick" />
     
     <div class="{!v.IsHidden ? 'slds-hide' : 'slds-show slds-form-element'}">	
-        <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
-            <abbr class="slds-required" 
-                  style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
-            <aura:unescapedHtml value="{!v.InputLabel}"/>	
-        </label>
-        <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
+        <!--div>
+            <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
+                <abbr class="slds-required" 
+                      style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
+                <aura:unescapedHtml value="{!v.InputLabel}"/>	
+            </label>
+            <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
+        </div-->
         
         <div class="slds-form-element__control">
-            <!--ui:inputCheckbox click="{!c.onClick}" value="{!v.IsChecked}" class="slds-input"/-->
             <span class="slds-checkbox">
-                <abbr class="{!v.IsRequired ? 'slds-show slds-required' : 'slds-hide'}" title="required">*</abbr>
                 <input type="checkbox" name="options" id="{!v.CompId}" checked="{!v.IsChecked}" disabled="{!v.IsDisabled}" 
                        onclick="{!c.onClick}" aura:id="checkbox" class="{!v.InputClass}"/>
+                <!--label class="slds-checkbox__label" for="{!v.CompId}">
+                    <span class="slds-checkbox-|-faux"></span>
+                </label-->
                 <label class="slds-checkbox__label" for="{!v.CompId}">
-                    <span class="slds-checkbox--faux"></span>
-                    <!--span class="slds-form-element__label"> {!v.InputLabel}</span-->
+                    <span class="slds-checkbox_faux" style="{! 'display:' + (v.LabelPosition == 'top' || v.LabelPosition == 'left' ? 'none' : '')}"></span>
+                    
+                    <div class="{! (v.LabelPosition == 'top' ? 'label-top': (v.LabelPosition == 'left' ? 'label-left' : (v.LabelPosition == 'right' ? 'label-right' : '')))}">
+                        <abbr class="slds-required" style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
+                        <span class="slds-form-element__label"><aura:unescapedHtml value="{!v.InputLabel}"/></span>
+                        <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
+                    </div>
+                    
+                    <span class="slds-checkbox_faux" style="{! 'display:' + (and(v.LabelPosition != 'top', v.LabelPosition != 'left') ? 'none' : '')}"></span>
                 </label>
             </span>
         </div>
+
+        <aura:renderIf isTrue="{!v.Valid != true}">
+            <ui:message title="Warning" severity="warning" closable="true">
+                <aura:unescapedHtml value="{!v.Message}"/>
+            </ui:message>
+        </aura:renderIf>
     </div>	
     
 </aura:component>

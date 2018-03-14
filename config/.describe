@@ -32,6 +32,13 @@
             "xmlName": "Scontrol"
         },
         {
+            "directoryName": "certs",
+            "inFolder": false,
+            "metaFile": true,
+            "suffix": "crt",
+            "xmlName": "Certificate"
+        },
+        {
             "directoryName": "aura",
             "inFolder": false,
             "metaFile": false,
@@ -87,6 +94,13 @@
             "xmlName": "Group"
         },
         {
+            "directoryName": "globalPicklists",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "globalPicklist",
+            "xmlName": "GlobalPicklist"
+        },
+        {
             "directoryName": "customPermissions",
             "inFolder": false,
             "metaFile": false,
@@ -138,6 +152,13 @@
             "metaFile": false,
             "suffix": "snapshot",
             "xmlName": "AnalyticSnapshot"
+        },
+        {
+            "directoryName": "feedFilters",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "feedFilter",
+            "xmlName": "CustomFeedFilter"
         },
         {
             "directoryName": "layouts",
@@ -221,6 +242,20 @@
             "metaFile": false,
             "suffix": "flowDefinition",
             "xmlName": "FlowDefinition"
+        },
+        {
+            "directoryName": "eventSubscriptions",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "subscription",
+            "xmlName": "EventSubscription"
+        },
+        {
+            "directoryName": "eventDeliveries",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "delivery",
+            "xmlName": "EventDelivery"
         },
         {
             "childXmlNames": [
@@ -437,6 +472,13 @@
             "xmlName": "AppMenu"
         },
         {
+            "directoryName": "delegateGroups",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "delegateGroup",
+            "xmlName": "DelegateGroup"
+        },
+        {
             "directoryName": "siteDotComSites",
             "inFolder": false,
             "metaFile": true,
@@ -484,6 +526,20 @@
             "metaFile": false,
             "suffix": "pathAssistant",
             "xmlName": "PathAssistant"
+        },
+        {
+            "directoryName": "LeadConvertSettings",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "LeadConvertSetting",
+            "xmlName": "LeadConvertSettings"
+        },
+        {
+            "directoryName": "cachePartitions",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "cachePartition",
+            "xmlName": "PlatformCachePartition"
         },
         {
             "directoryName": "settings",

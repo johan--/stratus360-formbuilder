@@ -47,7 +47,7 @@ public class S360_Form_Builder_Controller {
         
         // initialize server response
         serverResponse.put('message', '');
-        serverResponse.put('status', false);
+        serverResponse.put('status', true);
         serverResponse.put('data', null);
         serverResponse.put('fieldInfo', null);
         serverResponse.put('formConfig', null);
@@ -58,96 +58,87 @@ public class S360_Form_Builder_Controller {
             return serverResponse;
         }else{
             S360_FA__S360_Form_Config__c config = formConfigs[0];
-            System.debug('debug = ' + config.Primary_Object__c.toLowerCase());
+            
             serverResponse.put('formConfig', config);
             
-            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe(); 
-            if(globalDescribe.get(config.Primary_Object__c.toLowerCase()) != null){
-                Schema.DescribeSObjectResult objectDescribe = globalDescribe.get(config.S360_FA__Primary_Object__c.toLowerCase()).getDescribe();
-            	
-                // check is user has access permission to this object
-                if(!objectDescribe.isAccessible()){
-                    serverResponse.put('status', false);
-                    serverResponse.put('message', Label.ObjectNotAccessible);
-                    return serverResponse;
-                }
-                
-                // if dataId is empty check is user has creatable permission
-                if(dataId == ''){
-                	if(!objectDescribe.isCreateable()){
-                        serverResponse.put('status', false);
-                        serverResponse.put('message', Label.ObjectNotCreatable );
-                        return serverResponse;
-                    }   
-                }
-                // if not check is user has updateable permission
-                else if(!objectDescribe.isUpdateable()){
-                    serverResponse.put('status', false);
-                    serverResponse.put('message', Label.ObjectNotUpdatable );
-                    return serverResponse;
-                }
-                
-                //Get all fields exist in Object
-                Map<String, FieldInformation> fieldInformations = new Map<String, FieldInformation>();
-                Map<String, Schema.SobjectField> fieldInfo = objectDescribe.fields.getMap();
-                
-                //Built array for fields and take out fields that are not a real fields
-                /*List<String> lstOfFields = config.Field__c.split(',');
-                String strRealFields = '';
-                Integer sizeOfFields = lstOfFields.size();
-                for(String s:lstOfFields)
-                {	
-                    if((s.contains('__c') || s.contains('__C') || s.contains('__r.') || s.contains('__R.'))  ){
-                        strRealFields = strRealFields + s + ',';
-                    }
-                }*/
-                
-                //Remove the last comma
-                //Integer lengthStrRealFields = strRealFields.length();
-                
-                //strRealFields = strRealFields.left(lengthStrRealFields-1);
-                
-				                
-                // get record data
-                String strRealFields = '';
-                if(config.S360_FA__Field__c == null || config.S360_FA__Field__c == ''){
-                    strRealFields = 'Name';
-                }else{
-                    strRealFields = config.Field__c;
-                }
-                
-                String sql = 'SELECT ' + strRealFields + '  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
-                
-                List<SObject> data = Database.query(sql);
-                
-                system.debug('Main Data :'  + data);
-                if(data.size() > 0){
-                	serverResponse.put('data', data[0]);    
-                }
-                
-                
-                // get field description
-                for(Schema.SobjectField f: fieldInfo.values()){
-                    DescribeFieldResult dfr = f.getDescribe();
+            if(config.S360_FA__Primary_Object__c != null){
+                Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe(); 
+                //if(globalDescribe.get(config.Primary_Object__c.toLowerCase()) != null){
+                    Schema.DescribeSObjectResult objectDescribe = globalDescribe.get(config.S360_FA__Primary_Object__c.toLowerCase()).getDescribe();
                     
-                    fieldInformations.put(dfr.getName(), new FieldInformation(
-                        dfr.getLabel(),
-                        dfr.getInlineHelpText(),
-                        dfr.isAccessible(),
-                        dfr.isCreateable(),
-                        dfr.isUpdateable(),
-                        dfr.isUnique(),
-                        dfr.getRelationshipName()
-                    ));
-                }
-                serverResponse.put('fieldInfo', fieldInformations);
-                serverResponse.put('status', true);
-                
-                return serverResponse;
-            }else{
-                serverResponse.put('status', false);
-                serverResponse.put('message', Label.ObjectNotFound);
-                return serverResponse;
+                    // check is user has access permission to this object
+                    if(!objectDescribe.isAccessible()){
+                        serverResponse.put('status', false);
+                        serverResponse.put('message', Label.ObjectNotAccessible);
+                        return serverResponse;
+                    }
+                    
+                    // if dataId is empty check is user has creatable permission
+                    if(dataId == ''){
+                        if(!objectDescribe.isCreateable()){
+                            serverResponse.put('status', false);
+                            serverResponse.put('message', Label.ObjectNotCreatable );
+                            return serverResponse;
+                        }   
+                    }
+                    // if not check is user has updateable permission
+                    else if(!objectDescribe.isUpdateable()){
+                        serverResponse.put('status', false);
+                        serverResponse.put('message', Label.ObjectNotUpdatable );
+                        return serverResponse;
+                    }
+                    
+                    //Get all fields exist in Object
+                    Map<String, FieldInformation> fieldInformations = new Map<String, FieldInformation>();
+                    Map<String, Schema.SobjectField> fieldInfo = objectDescribe.fields.getMap();
+                    
+                    // get field description
+                    for(Schema.SobjectField f: fieldInfo.values()){
+                        DescribeFieldResult dfr = f.getDescribe();
+                        
+                        fieldInformations.put(dfr.getName(), new FieldInformation(
+                            dfr.getLabel(),
+                            dfr.getInlineHelpText(),
+                            dfr.isAccessible(),
+                            dfr.isCreateable(),
+                            dfr.isUpdateable(),
+                            dfr.isUnique(),
+                            dfr.getRelationshipName()
+                        ));
+                    }
+                    serverResponse.put('fieldInfo', fieldInformations);                
+                    
+                    // get record data
+                    String strRealFields = '';
+                    if(config.S360_FA__Field__c == null || config.S360_FA__Field__c == ''){
+                        strRealFields = 'Name';
+                    }else{
+                        strRealFields = config.Field__c;
+                    }
+                    
+                    // generate field which refference
+                    for(String name : fieldInformations.keySet()){
+                        if(fieldInformations.get(name).relationshipApi != null && fieldInformations.get(name).relationshipApi != ''){
+                            strRealFields += ', ' + fieldInformations.get(name).relationshipApi + '.Name';
+                        }
+                    }
+                    
+                    String sql = 'SELECT ' + strRealFields + '  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
+                    
+                    List<SObject> data = Database.query(sql);
+                    
+                    if(data.size() > 0){
+                        serverResponse.put('data', data[0]);    
+                    }
+                    
+                    serverResponse.put('status', true);
+                    
+                    return serverResponse;
+                /*}else{
+                    serverResponse.put('status', false);
+                    serverResponse.put('message', Label.ObjectNotFound);
+                    return serverResponse;
+                }*/
             }
             
         }
@@ -156,7 +147,11 @@ public class S360_Form_Builder_Controller {
     }
     
     @AuraEnabled
-    public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData){
+    public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData, boolean isSignatureEnabled, string signatureData){
+        System.debug(data);
+        System.debug(relatedData);
+        System.debug(isSignatureEnabled);
+        System.debug(signatureData);
         
         Map<String, Object> serverResponse = new Map<String, Object>();
         try{
@@ -201,7 +196,21 @@ public class S360_Form_Builder_Controller {
                 }
             }
             
+            // upsert signature data
+            if(isSignatureEnabled){
+                String res = S360_Signature_Ctrl.upsertSignature(data.Id, signatureData);
+                System.debug(res);
+                if(res != ''){
+            		serverResponse.put('status', false);
+            		serverResponse.put('data', data);        
+                    serverResponse.put('message', res);
+                    
+                    return serverResponse;
+                }
+            }
+            
             serverResponse.put('status', true);
+            serverResponse.put('data', data);
         }catch(DMLException e){
             serverResponse.put('status', false);
             serverResponse.put('message', e.getMessage());

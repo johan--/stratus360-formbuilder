@@ -23,7 +23,7 @@ module.exports = function(app) {
       $templateCache.put('formio/components/email/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
-          '<form-builder-option property="unique"></form-builder-option>' +
+          /*'<form-builder-option property="unique"></form-builder-option>' +
           '<div class="panel panel-default">' +
             '<div class="panel-heading"><h3 class="panel-title">{{\'Kickbox\' | formioTranslate}}</h3></div>' +
             '<div class="panel-body">' +
@@ -38,7 +38,7 @@ module.exports = function(app) {
           '<form-builder-option property="validate.minLength"></form-builder-option>' +
           '<form-builder-option property="validate.maxLength"></form-builder-option>' +
           '<form-builder-option property="validate.pattern"></form-builder-option>' +
-          '<form-builder-option property="validate.customMessage"></form-builder-option>' +
+          '<form-builder-option property="validate.customMessage"></form-builder-option>' +*/
           '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'
       );

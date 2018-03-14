@@ -8,5 +8,7 @@
     "workspace": "/Users/ds/Documents/Data/Work/mavensmate",
     "subscription": [
         "AuraDefinitionBundle"
-    ]
+    ],
+    "orgType": "developer",
+    "instanceUrl": "https://s360-fa-dev-ed.my.salesforce.com"
 }

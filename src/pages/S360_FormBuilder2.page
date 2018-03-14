@@ -144,32 +144,7 @@
     	config.$inject = ['formioComponentsProvider'];
 
 		function config(formioComponentsProvider){
-            formioComponentsProvider.register('captcha', {
-                title: 'captcha',
-                template: 'formio/components/captcha.html',
-                group: 'advanced',
-                settings: {
-                    input: false
-                },
-                viewTemplate: 'formio/componentsView/captcha.html'
-            });
             
-            formioComponentsProvider.register('captcha', {
-                fbtemplate: 'formio/formbuilder/captcha.html',
-                icon: 'fa fa-code',
-                noDndOverlay: true,
-                confirmRemove: true,
-                views: [
-                    {
-                        name: 'Display',
-                        template: 'formio/components/captcha/display.html'
-                    },
-                    {
-                        name: 'API',
-                        template: 'formio/components/common/api.html'
-                    }
-                ]
-            });
         }
 		
         function run($rootScope, formioComponents, $timeout, $templateCache){
@@ -185,22 +160,23 @@
             formioComponents.components.container.title = 'Related List';
             formioComponents.components.fieldset.title = 'Panel';
             formioComponents.components.panel.title = 'Wizard';
-            //formioComponents.components.resource.title = 'Captcha';
+            
+            // set captcha image
+           	formioComponents.components.captcha.settings.captchaImagePreview = '{!URLFOR($Resource.ngFormBuilder, "images/recaptcha-image.png")}';
             
             //disabled components
             formioComponents.components.textarea.disabled = true;
             formioComponents.components.selectboxes.disabled = true;
             formioComponents.components.radio.disabled = true;
             formioComponents.components.content.disabled = true;
-            formioComponents.components.email.disabled = true;
-            formioComponents.components.phoneNumber.disabled = true;
+            //formioComponents.components.email.disabled = true;
+            //formioComponents.components.phoneNumber.disabled = true;
             formioComponents.components.address.disabled = true;
             formioComponents.components.day.disabled = true;
             formioComponents.components.time.disabled = true;
             formioComponents.components.currency.disabled = true;
             formioComponents.components.resource.disabled = true;
             formioComponents.components.form.disabled = true;
-            formioComponents.components.signature.disabled = true;
             formioComponents.components.custom.disabled = true;
             formioComponents.components.datagrid.disabled = true;
             formioComponents.components.editgrid.disabled = true;
@@ -264,27 +240,7 @@
             });
             
             
-            // generate captcha
-            $templateCache.put('formio/components/captcha.html',
-                               '<p>This is components Captcha</p>'
-                              );
             
-            $templateCache.put('formio/componentsView/captcha.html',
-                               '<p>This is componentsView Captcha</p>'
-                              );
-            
-            $templateCache.put('formio/formbuilder/captcha.html',
-                               '<p>This is formbuilder Captcha</p>'
-                              );
-            
-            // Create the settings markup.
-            $templateCache.put('formio/components/captcha/display.html',
-                               '<ng-form>' +
-                               '<form-builder-option property="siteKey"></form-builder-option>' +
-                               '<form-builder-option property="language"></form-builder-option>' +
-                               '<form-builder-option property="customClass"></form-builder-option>' +
-                               '</ng-form>'
-                              );
         }
         
         function getUsedFields(){

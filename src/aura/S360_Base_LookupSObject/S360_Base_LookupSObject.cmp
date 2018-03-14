@@ -12,7 +12,7 @@
         description="An id to identify the instance the component" />
     <aura:attribute name="label" type="String" required="true" 
         description="The label to assign to the lookup, eg: Account" />
-    <aura:attribute name="pluralLabel" type="String" required="true" 
+    <aura:attribute name="pluralLabel" type="String"
         description="The plural label to assign to the lookup, eg: Accounts" />
     <aura:attribute name="listIconSVGPath" type="String" default="/resource/SLDSv213/assets/icons/custom-sprite/svg/symbols.svg#custom11" 
         description="The static resource path to the svg icon to use." />
@@ -20,7 +20,7 @@
         description="The SLDS class to use for the icon." />
     <aura:attribute name="searchString" type="String"
         description="The search string to find." />
-    <aura:attribute name="matches" type="LookupSObjectController.Result[]"
+    <aura:attribute name="matches" type="Object[]"
         description="The resulting matches returned by the Apex controller." />
     <aura:attribute name="prepId" type="String" 
         description="The prepopulated Id." />

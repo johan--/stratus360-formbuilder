@@ -1,16 +1,15 @@
 ({
 	generateForm : function(component, event, config) {
-        component.set('v.FormPattern', this.mappingThePattern(config));
-        console.log(this.mappingThePattern(config));
-        debugger;
+        component.set('v.FormPattern', this.mappingThePattern(component, config));
         var self = this;
         config.forEach(function(item){
+            console.log(item.key);
+            
             self.generatorMapping(component, item);
         });
 	},
     
     callbackHandler: function(config, component, newComponent, status, errorMessage){
-        debugger;
         var formPattern = component.get('v.FormPattern');
         var configKey = config['$$hashKey']+''+config['key'];
         var patternObj = formPattern[configKey];
@@ -21,12 +20,10 @@
         if(patternObj.parent == undefined){
             var body = component.get("v.body");
             
-            // set index in parent in new created component base on pattern mapping
             newComponent.indexInParent = patternObj.indexInParent;
             
             body = self.pushAndSortMappingConfig(newComponent, body);
             
-            //body.push(newComponent);
             component.set("v.body", body);
         }else if(formPattern[patternObj.parent].body != undefined){
             var parentComp = formPattern[patternObj.parent].body;
@@ -36,8 +33,6 @@
             newComponent.indexInParent = patternObj.indexInParent;
             
             body = self.pushAndSortMappingConfig(newComponent, body);
-            
-            //body.push(newComponent);
             
             parentComp.set("v.body", body);
         }
@@ -127,8 +122,16 @@
             this.generateInputFile(component, item);
         }else if(item.type === 'captcha'){
             this.generateCaptcha(component, item);
-        }else if(item.type === 'address'){
-            //this.generateLookup(component, item);
+        }else if(item.type === 'lookup'){
+            this.generateLookup(component, item);
+        }else if(item.type === 'signature'){
+            this.generateSignature(component, item);
+        }else if(item.type === 'carousel'){
+            this.generateCarousel(component, item);
+        }else if(item.type === 'email'){
+            this.generateInputEmail(component, item);
+        }else if(item.type === 'phoneNumber'){
+            this.generateInputPhoneNumber(component, item);
         }else if(item.type == undefined && formPattern[item['$$hashKey']+''+item['key']].type === 'column_item'){
             this.generateColumnItem(component, item);
         }
@@ -157,12 +160,82 @@
                 "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
                 "PlaceholderText": config.placeholder ? config.placeholder : '',
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
-                "IsRequired": config.validate.required,
+                "IsRequired": config.validate ? config.validate.required : false,
                 "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
                 "Value": value,
+                "Data": component.getReference('v.Data'),
                 "Class": config.customClass ? config.customClass : '',
                 "MaxLength": config.validate ? config.validate.maxLength : undefined,
-                "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue
+                "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
+                "Json": config.validate ? config.validate.json : ''
+            }, 
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    
+    /*
+     * Function : display input email
+     * 
+     * 
+     */
+    generateInputEmail : function(component, config){    
+        var serverFieldInfo = component.get('v.FieldInfo');
+        var self = this;
+        
+        // set value and get it reference
+        component.set('v.Data['+ config.key +']', 
+                      component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
+        var value = component.getReference('v.Data['+ config.key +']');
+        
+        $A.createComponent(
+            'c:S360_Base_InputEmail',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "InputLabel": config.label ? config.label : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].label ? serverFieldInfo[config.key].label : '') : ''),
+                "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
+                "PlaceholderText": config.placeholder ? config.placeholder : '',
+                "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
+                "IsRequired": config.validate ? config.validate.required : false,
+                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "Value": value,
+                "Class": config.customClass ? config.customClass : ''
+            }, 
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    
+    /*
+     * Function : display input phone number
+     * 
+     * 
+     */
+    generateInputPhoneNumber : function(component, config){    
+        var serverFieldInfo = component.get('v.FieldInfo');
+        var self = this;
+        
+        // set value and get it reference
+        component.set('v.Data['+ config.key +']', 
+                      component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
+        var value = component.getReference('v.Data['+ config.key +']');
+        
+        $A.createComponent(
+            'c:S360_Base_InputPhone',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "InputLabel": config.label ? config.label : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].label ? serverFieldInfo[config.key].label : '') : ''),
+                "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
+                "PlaceholderText": config.placeholder ? config.placeholder : '',
+                "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
+                "IsRequired": config.validate ? config.validate.required : false,
+                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "Value": value,
+                "Class": config.customClass ? config.customClass : ''
             }, 
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -180,28 +253,44 @@
         var self = this;
         
         // set value and get it reference
-        component.set('v.Data['+ config.key +']', 
-                      component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
-        var value = component.getReference('v.Data['+ config.key +']');
+        var field = config.key.substr(0, config.key.lastIndexOf("__c")) + '__r';
+        
+        // build dependent field
+        var dependantField = [];
+        var dependantFieldType = [];
+        var dependantFieldValue = [];
+        
+        config.dependents.forEach(function(d){
+            dependantField.push(d.field + d.operator);
+            dependantFieldType.push(d.type);
+            dependantFieldValue.push(d.value);
+        });
         
         $A.createComponent(
-            'c:S360_Base_LookupSObject',
+            'c:S360_Base_Lookup',
             {
                 "aura:id": config.key,
                 "CompId": config.key,
                 "instanceId" : config.key,
                 "label": config.label ? config.label : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].label ? serverFieldInfo[config.key].label : '') : ''),
-                "sObjectAPIName" : "User",
-                "searchString" : "",
+                "sObjectAPIName" : config.parentObject,
+                "searchString" : component.get('v.Data')[field] ? component.get('v.Data')[field].Name : '',
+                "dependantField" : dependantField.join(','),
+                "dependantFieldType" : dependantFieldType.join(','),
+                "dependantFieldValue" : dependantFieldValue.join(',')
             }, 
             function(newComponent, status, errorMessage){
+                if(component.get('v.Data') && component.get('v.Data')[config.key]){
+                	newComponent.prepareLookup();    
+                }
+                
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             });
     },
     
     
     /*
-     * Function : display lookup
+     * Function : display captcha
      * 
      * 
      */
@@ -224,6 +313,96 @@
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             });
     },
+    
+    
+    /*
+     * Function : display signature
+     * 
+     * 
+     */
+    generateSignature : function(component, config){    
+        var serverFieldInfo = component.get('v.FieldInfo');
+        var self = this;
+        
+        var id = component.getReference('v.Data[Id]');
+        var signatureData = component.getReference('v.signatureData');
+        var canvas = component.getReference('v.canvas');
+        
+        $A.createComponent(
+            'c:S360_Signature',
+            {
+                "aura:id": config.key,
+                "recordId": id,
+                "signaturePad" : signatureData,
+                "canvas" : canvas,
+                "showControllButton" : false
+            }, 
+            function(newComponent, status, errorMessage){
+                component.set('v.isSignatureEnabled', true);
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    
+    /*
+     * Function : display Carousel
+     * 
+     * 
+     */
+    generateCarousel : function(component, config){
+        var self = this;
+        var id = component.getReference('v.Data[Id]');
+        
+        // if local definition
+        var slidersList = [];
+        var captionsList = [];
+        if(config.resource === 'localDefinition'){
+            if(config.localDefinitions){
+                config.localDefinitions.forEach(function(ld){
+                    var slide = {};
+                    if(ld.type === 'image'){
+                        slide.imageURL = ld.imageUrl;
+                        slide.isFocused = false;
+                        slide.isImage = true;
+                    }else{
+                        slide.videoType = ld.videoType;
+                        slide.videoEmbedId = ld.videoId;
+                        slide.isFocused = false;
+                        slide.isImage = false;
+                    }
+                    slidersList.push(slide);
+                    if(ld.caption){
+                    	captionsList.push(ld.caption);    
+                    }else{
+                        captionsList.push('');
+                    }
+                    
+                });   
+            }
+        }
+        
+        debugger;
+        
+        $A.createComponent(
+            'c:S360_Base_Carousel',
+            {
+                "aura:id": config.key,
+                "parentId": id,
+                "slidersList" : slidersList,
+                "captionsList" : captionsList,
+                "lookupParentField" : config.salesforce.carouselParentField,
+                "carouselObject" : config.salesforce.carouselObject,
+                "carouselCaptionField" : config.salesforce.carouselCaptionField,
+                "carouselTypeField" : config.salesforce.carouselTypeField,
+                "carouselVideoTypeField" : config.salesforce.carouselVideoTypeField,
+                "carouselVideoIdField" : config.salesforce.carouselVideoIdField
+            }, 
+            function(newComponent, status, errorMessage){
+                component.set('v.isSignatureEnabled', true);
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
     
     /*
      * Function : display number input
@@ -252,7 +431,9 @@
                 "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
                 "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
                 "Value": value,
-                "Class": config.customClass ? config.customClass : ''
+                "Class": config.customClass ? config.customClass : '',
+                "Json": config.validate ? config.validate.json : '',
+                "Data": component.getReference('v.Data')
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -287,7 +468,9 @@
                 "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
                 "Value": value,
                 "Class": config.customClass ? config.customClass : '',
-                "MaxLength": config.validate ? config.validate.maxLength : undefined
+                "MaxLength": config.validate ? config.validate.maxLength : undefined,
+                "Json": config.validate ? config.validate.json : '',
+                "Data": component.getReference('v.Data')
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -347,7 +530,10 @@
                 "IsRequired": config.validate ? config.validate.required : false,
                 "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
                 "IsChecked": value,
-                "InputClass": config.customClass ? config.customClass : ''
+                "InputClass": config.customClass ? config.customClass : '',
+                "Json": config.validate ? config.validate.json : '',
+                "Data": component.getReference('v.Data'),
+                "LabelPosition" : config.labelPosition
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -380,12 +566,13 @@
             recordType = config.data.custom.split(',')[1];
             field = config.data.custom.split(',')[2] ? config.data.custom.split(',')[2] : config.key;
         }else if(picklistKeyVal == '' && config.data.custom == ''){
-            sobject = component.get('v.FormConfig').Primary_Object__c;
+            sobject = component.get('v.FormConfig').S360_FA__Primary_Object__c ;
             field = config.key;
         }
         
         // if field is not correct
         // reset sobject to empty so it will not perform server call
+        debugger;
         if(component.get('v.FieldInfo')[field] == undefined){
             sobject = '';
         }
@@ -442,34 +629,26 @@
                 "Class": config.customClass ? config.customClass : ''
             },
             function(newComponent, status, errorMessage){
+                
                 /**
                  * if action type of this button is submit, put this button to submittedButton, 
                  * so it will be able to upsert record from this main form builder
                  * 
                  */
-                if(config.action == 'submit' || (config.action == 'event' && config.event == 'submit')){
+                if(config.action == 'standard' && config.event == 'submit'){
                     var successCallback;
                     var failedCallback;
                     var redirect;
                     var target;
                     
-                    for(var key in config.properties){
-                        if(key != '' && config.properties.hasOwnProperty(key)){
-                            switch(key){
-                                case 'success':
-                                    successCallback = config.properties[key];
-                                    break;
-                               	case 'failed':
-                                    failedCallback = config.properties[key];
-                                    break;
-                                case 'redirect':
-                                    redirect = config.properties[key];
-                                    break;
-                                case 'target':
-                                    target = config.properties[key];
-                                    break;
-                            }
-                        }
+                    if(config.submitSuccess || config.submitFailed){
+                    	successCallback = config.submitSuccessCallback;
+                    	failedCallback = config.submitFailedCallback;    
+                    }
+                    
+                    if(config.submitRedirect){
+                    	redirect=config.redirectUri;
+                    	target=config.redirectTarget;    
                     }
                     
                     if(target != undefined && redirect == undefined){
@@ -506,27 +685,38 @@
                         action: buildCustomSubmitAction
                     }
                     
-                    component.set('v.actionButton', actionButton); 
                     debugger;
+                    
+                    component.set('v.actionButton', actionButton); 
+                    
                     
                     
                     //var submittedButton = component.get('v.submittedButton');
                     //submittedButton.push(config.key);
                     //component.set('v.submittedButton', submittedButton);
-                }else if(config.action == 'event'){
+                }else if(config.action == 'standard'){
                     if(config.event != '' && config.event != undefined){
                         var actionType = config.event;
-                        var targetApi = config.properties ? config.properties.target : undefined;
+                        var targetApi = config.target ? config.target : undefined;
                         
                         var actionButton = component.get('v.actionButton');
                         if(actionButton == undefined || actionButton == ''){
                             actionButton = {};
                         }
                         
-                        actionButton[config.key] = {
-                            actionType: 'event',
-                            actionName: actionType,
-                            actionTarget: targetApi
+                        if(actionType === 'redirect'){
+                            actionButton[config.key] = {
+                                actionType: 'event',
+                                actionName: actionType,
+                                actionUri: config.redirectUri ? config.redirectUri : undefined,
+                                actionTarget: config.redirectTarget ? config.redirectTarget : undefined,
+                            }
+                        }else{
+                        	actionButton[config.key] = {
+                                actionType: 'event',
+                                actionName: actionType,
+                                actionTarget: targetApi
+                            }
                         }
                         
                         // check is button has next or prev event, if yes put on the slidingPanelButton
@@ -562,6 +752,39 @@
                             actionButton = {};
                         }
                         
+                        // check is custom event is next/previous
+                        var eventName = config.custom.match(/[\w\s]+(?=\()/);
+                        var hasChainEvent = config.custom.match(/,/) == null ? false : true;
+                        var targetPanel;
+                        if(eventName[0] == 'next' || eventName[0] == 'previous'){
+                            if(hasChainEvent){
+                                targetPanel = config.custom.match(/[\w\s]+(?=,)/);
+                            }else{
+                                targetPanel = config.custom.match(/[\w\s]+(?=\))/);
+                            }
+                            
+                            // check is button has next or prev event, if yes put on the slidingPanelButton
+                            var slidingPanelButton = component.get('v.slidingPanelButton');
+                            
+                            if(slidingPanelButton[targetPanel] == undefined){
+                                slidingPanelButton[targetPanel] = {};   
+                            }
+                            
+                            if(eventName[0] === 'next'){
+                                slidingPanelButton[targetPanel].next = config.key;
+                                component.set('v.slidingPanelButton', slidingPanelButton);
+                            }
+                            
+                            if(eventName[0] === 'previous'){
+                                slidingPanelButton[targetPanel].previous = config.key;
+                                component.set('v.slidingPanelButton', slidingPanelButton);
+                                
+                                // disabled previous button
+                                newComponent.set('v.IsDisabled', true);
+                            }   
+                        }
+                        // end check is custom event is next/previous
+                        
                         actionButton[config.key] = {
                             actionType: 'custom',
                             action: config.custom
@@ -570,6 +793,7 @@
                         component.set('v.actionButton', actionButton); 
                     }
                 }
+                
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             }
         );
@@ -582,7 +806,7 @@
      */
     generateColumn : function(component, config){
         var self = this;
-        //debugger;
+        //
         $A.createComponent(
                 'c:S360_Base_ColumnCmp',
                 {
@@ -825,7 +1049,7 @@
 	/**
 	 * this function map the component structre
 	 */    
-    mappingThePattern: function(itemConfig){
+    mappingThePattern: function(component, itemConfig){
         var childObj = function(){
             this.key;
             this.parent;
@@ -836,6 +1060,8 @@
         }
         
         let collections = {};
+        let configMapping = {};
+        
         function generatePattern(parent, compParent){
             var patterns = {};
             compParent.forEach(function(compItem, indexA){
@@ -861,13 +1087,16 @@
                         columnObj.child[colChild.key] = (colChild);    
                         patterns[colChild.key] = colChild;
                         collections[colChild.key] = colChild;
+                        
+                        // put to configMapping
+                        configMapping[colItem['key']] = colItem;
                     });
                     
                     patterns[columnObj.key] = columnObj;
                     collections[columnObj.key] = columnObj;
                     
-                    //if(columnObj.key == 'object:460')
-                    //debugger;
+                    // put to configMapping
+                    configMapping[compItem['key']] = compItem;
                 }else if(compItem.type == 'well' || compItem.type == 'fieldset' || compItem.type == 'panel'){
                     var compObj = new childObj();
                     compObj.key = compItem['$$hashKey']+''+compItem['key'];
@@ -879,6 +1108,9 @@
                     compObj.child = generatePattern(compObj.key, compItem.components);
                     patterns[compObj.key] = compObj;
                     collections[compObj.key] = compObj;
+                    
+                    // put to configMapping
+                    configMapping[compItem['key']] = compItem;
                 }else{
                     var child = new childObj();
                     child.key = compItem['$$hashKey']+''+compItem['key'];
@@ -889,6 +1121,9 @@
                     
                     patterns[child.key] = child;
                     collections[child.key] = child;
+                    
+                    // put to configMapping
+                    configMapping[compItem['key']] = compItem;
                 }
             });
             
@@ -896,7 +1131,10 @@
         }
         
         generatePattern(undefined, itemConfig);
-        //debugger;
+        
+        // save config mapping
+        component.set('v.configMapping', configMapping);
+        
         return collections;
     },
     
@@ -912,7 +1150,7 @@
     },
     
     customEventHandler: function(component, sender, customEvent, serverResultEvent){
-        debugger;
+        
         if(customEvent == undefined || customEvent == ''){
             return;
         }
@@ -923,13 +1161,13 @@
                 customEvent = customEvent.trim();
                 // check is we dont care about the server submit result
                 // if yes we out
-                debugger;
+                
                 if((customEvent.match(/submit\s*\(\s*\)/) != null && customEvent.match(/submit\s*\(\s*\)/).length > 0) || 
                    (customEvent.match(/submit\s*\(\s*null\s*\)/) != null && customEvent.match(/submit\s*\(\s*null\s*\)/).length > 0) ||
                    (customEvent.match(/submit\s*\(\s*null\s*,\s*null\s*\)/) != null && customEvent.match(/submit\s*\(\s*null\s*,\s*null\s*\)/).length > 0)){
                     return;
                 }
-                debugger;
+                
                 var isHasSuccessCallback = true;
                 var isHasFailedCallback = true;
                 var submitCallback = customEvent.match(/submit\s*\((.*?)\)\s*$/);
@@ -952,7 +1190,7 @@
                     }
                 }
                 
-                debugger;
+                
                 if(serverResultEvent.status == 'SUCCESS'){
                     // if we don't have success callback to handle this success
                     // response, just return it
@@ -976,7 +1214,7 @@
                     
                     // replace customEvent with successCallback, so we process the callback
                     customEvent = successCallback;
-                    debugger;
+                    
                 }else{
                     // if we don't have failed callback to handle this failed
                     // response, just return it
@@ -998,7 +1236,7 @@
                     
                     // replace customEvent with failedCallback, so we process the callback
                     customEvent = failedCallback;
-                    debugger;
+                    
                 }
             }
         }
@@ -1015,7 +1253,7 @@
          * if eventName equals to submit, we skip the rest block of code and go to eventHandler
          * in order to send event to S360_FormBuilderMain to interact with server
          */
-        debugger;
+        
         if(eventName == 'submit'){
             this.eventHandler(component, sender, eventName, undefined, undefined);
             return;
@@ -1085,7 +1323,6 @@
             }else if(eventName === 'redirect' && target != undefined && target != ''){
                 // chainingEvents is standard javascript target redirect
                 // default is _blank
-                
                 this.redirectEvent(component, sender, target, chainingEvents);
             }else if(eventName === 'submit'){
                 this.submitEvent(component, sender, target);
@@ -1139,6 +1376,7 @@
         target.next();
         
         // undisable previous button sender
+        
         var prevButtonSender = component.get('v.slidingPanelButton')[targetAPI].previous;
         componentData[prevButtonSender].getElement().disabled  = false;
         
@@ -1156,7 +1394,6 @@
         var target = componentData[targetAPI];
         
         target.previous();
-        
         // undisable next button sender
         
         var nextButtonSender = component.get('v.slidingPanelButton')[targetAPI].next;
@@ -1171,12 +1408,17 @@
     },
     
     redirectEvent: function(component, sender, uri, target){
-        debugger;
+        
         window.open(uri, target);
         //window.location.href = uri;
     },
     
     submitEvent: function(component, sender){
+        if(component.get('v.isCaptchaEnabled') && !component.get('v.isCaptchaSuccess')){
+            this.showToast(component, 'warning', $A.get("$Label.c.S360_base_captcha_message"));
+            return;
+        }
+        
         var evt = component.getEvent('S360_FormBuilderEvt');
         evt.setParams({
             "sender": sender,

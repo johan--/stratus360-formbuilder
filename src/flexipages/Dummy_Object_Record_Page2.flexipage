@@ -8,19 +8,25 @@
             </componentInstanceProperties>
             <componentName>force:highlightsPanel</componentName>
         </componentInstances>
+        <mode>Replace</mode>
         <name>header</name>
+        <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
             <componentName>force:relatedListContainer</componentName>
         </componentInstances>
+        <mode>Replace</mode>
         <name>relatedTabContent</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
             <componentName>force:detailPanel</componentName>
         </componentInstances>
+        <mode>Replace</mode>
         <name>detailTabContent</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
@@ -49,7 +55,9 @@
             </componentInstanceProperties>
             <componentName>flexipage:tab</componentName>
         </componentInstances>
+        <mode>Replace</mode>
         <name>maintabs</name>
+        <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
@@ -59,13 +67,18 @@
             </componentInstanceProperties>
             <componentName>flexipage:tabset</componentName>
         </componentInstances>
+        <mode>Replace</mode>
         <name>main</name>
+        <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <mode>Replace</mode>
         <name>sidebar</name>
+        <type>Region</type>
     </flexiPageRegions>
     <masterLabel>Dummy Object Record Page</masterLabel>
     <pageTemplate>flexipage:recordHomeTemplateDesktop</pageTemplate>
+    <parentFlexiPage>flexipage__default_rec_L</parentFlexiPage>
     <sobjectType>Dummy_Object__c</sobjectType>
     <type>RecordPage</type>
 </FlexiPage>

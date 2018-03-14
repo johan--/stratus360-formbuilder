@@ -30051,7 +30051,16 @@ module.exports = function(app) {
                               );
             
             $templateCache.put('formio/formbuilder/carousel.html',
-                               '<p>carousel formbuilder</p>'
+                               '<div style="width: 100%;height: 360px;background: #4c4c4c;display: flex;flex-direction: column;flex-wrap: wrap;justify-content:center;align-items: center;">'+
+                                    '<p style="color: white;font-size: 3.5em;text-align: center;">This is Carousel</p>'+
+                                    '<div style="width: 100%;height: 30px;background: #4286f5;position: absolute;bottom: 0;padding: 7px;">'+
+                                        '<i class="fa fa-play" style="color: white;display: inline;position: absolute;right: 5px;"></i>'+
+                                        '<div style="position: absolute;width: 100%;height: 100%;top: 0;left: 0;display: flex;flex-direction: column;justify-content: center;text-align: center;">'+
+                                            '<label style="color: white;">Captions</label>'+
+                                        '</div>'+
+                                        '<i class="fa fa-play" style="color: white;transform: scaleX(-1);position: absolute;left: 5px;"></i>'+
+                                    '</div>'+
+                                '</div>'
                               );
             
             $templateCache.put('formio/components/carousel/display.html',
@@ -31263,7 +31272,7 @@ module.exports = function(app) {
       $templateCache.put('formio/components/email/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
-          '<form-builder-option property="unique"></form-builder-option>' +
+          /*'<form-builder-option property="unique"></form-builder-option>' +
           '<div class="panel panel-default">' +
             '<div class="panel-heading"><h3 class="panel-title">{{\'Kickbox\' | formioTranslate}}</h3></div>' +
             '<div class="panel-body">' +
@@ -31278,7 +31287,7 @@ module.exports = function(app) {
           '<form-builder-option property="validate.minLength"></form-builder-option>' +
           '<form-builder-option property="validate.maxLength"></form-builder-option>' +
           '<form-builder-option property="validate.pattern"></form-builder-option>' +
-          '<form-builder-option property="validate.customMessage"></form-builder-option>' +
+          '<form-builder-option property="validate.customMessage"></form-builder-option>' +*/
           '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'
       );
@@ -32182,17 +32191,20 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/phoneNumber/api.html'
           },
-          {
+          /*{
             name: 'Layout',
             template: 'formio/components/common/layout.html'
           },
           {
             name: 'Conditional',
             template: 'formio/components/common/conditional.html'
-          }
+          }*/
         ],
+        settings:{
+          inputMask: ''
+        },
         documentation: 'http://help.form.io/userguide/#phonenumber'
       });
     }
@@ -32204,27 +32216,27 @@ module.exports = function(app) {
       $templateCache.put('formio/components/phoneNumber/display.html',
         '<ng-form>' +
           '<form-builder-option property="label"></form-builder-option>' +
-          '<form-builder-option property="hideLabel"></form-builder-option>' +
-          '<form-builder-option-label-position></form-builder-option-label-position>' +
+          /*'<form-builder-option property="hideLabel"></form-builder-option>' +
+          '<form-builder-option-label-position></form-builder-option-label-position>' +*/
           '<form-builder-option property="placeholder"></form-builder-option>' +
-          '<form-builder-option property="description"></form-builder-option>' +
+          /*'<form-builder-option property="description"></form-builder-option>' +*/
           '<form-builder-option property="tooltip"></form-builder-option>' +
-          '<form-builder-option property="errorLabel"></form-builder-option>' +
-          '<form-builder-option property="inputMask"></form-builder-option>' +
-          '<form-builder-option property="prefix"></form-builder-option>' +
-          '<form-builder-option property="suffix"></form-builder-option>' +
+          /*'<form-builder-option property="errorLabel"></form-builder-option>' +*/
+          /*'<form-builder-option property="inputMask"></form-builder-option>' +*/
+          /*'<form-builder-option property="prefix"></form-builder-option>' +
+          '<form-builder-option property="suffix"></form-builder-option>' +*/
           '<form-builder-option property="customClass"></form-builder-option>' +
-          '<form-builder-option property="tabindex"></form-builder-option>' +
+          /*'<form-builder-option property="tabindex"></form-builder-option>' +
           '<form-builder-option property="multiple"></form-builder-option>' +
           '<form-builder-option property="clearOnHide"></form-builder-option>' +
           '<form-builder-option property="protected"></form-builder-option>' +
           '<form-builder-option property="persistent"></form-builder-option>' +
-          '<form-builder-option property="encrypted" class="form-builder-premium"></form-builder-option>' +
+          '<form-builder-option property="encrypted" class="form-builder-premium"></form-builder-option>' +*/
           '<form-builder-option property="hidden"></form-builder-option>' +
-          '<form-builder-option property="autofocus" type="checkbox" label="Initial Focus" tooltip="Make this field the initially focused element on this form."></form-builder-option>' +
+          /*'<form-builder-option property="autofocus" type="checkbox" label="Initial Focus" tooltip="Make this field the initially focused element on this form."></form-builder-option>' +*/
           '<form-builder-option property="disabled"></form-builder-option>' +
-          '<form-builder-option property="dataGridLabel"></form-builder-option>' +
-          '<form-builder-option property="tableView"></form-builder-option>' +
+          /*'<form-builder-option property="dataGridLabel"></form-builder-option>' +
+          '<form-builder-option property="tableView"></form-builder-option>' +*/
         '</ng-form>'
       );
 
@@ -32232,8 +32244,14 @@ module.exports = function(app) {
       $templateCache.put('formio/components/phoneNumber/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
-          '<form-builder-option property="unique"></form-builder-option>' +
-          '<form-builder-option property="validate.customMessage"></form-builder-option>' +
+          /*'<form-builder-option property="unique"></form-builder-option>' +*/
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/phoneNumber/api.html',
+        '<ng-form>' +
+          '<form-builder-option-key></form-builder-option-key>' +
         '</ng-form>'
       );
     }

@@ -29,6 +29,10 @@
         <name>ObjectNotUpdatable</name>
     </customLabels>
     <customLabels>
+        <label><!-- S360 Empty Carousel --></label>
+        <name>S360_Empty_Carousel</name>
+    </customLabels>
+    <customLabels>
         <label><!-- S360 base captcha domain --></label>
         <name>S360_base_captcha_domain</name>
     </customLabels>
@@ -37,7 +41,27 @@
         <name>S360_base_captcha_loading_message</name>
     </customLabels>
     <customLabels>
+        <label><!-- S360 base captcha message --></label>
+        <name>S360_base_captcha_message</name>
+    </customLabels>
+    <customLabels>
         <label><!-- S360 base captcha site key --></label>
         <name>S360_base_captcha_site_key</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base default error message --></label>
+        <name>S360_base_default_error_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base default success message --></label>
+        <name>S360_base_default_success_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base error message --></label>
+        <name>S360_base_error_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base offline message --></label>
+        <name>S360_base_offline_message</name>
     </customLabels>
 </Translations>

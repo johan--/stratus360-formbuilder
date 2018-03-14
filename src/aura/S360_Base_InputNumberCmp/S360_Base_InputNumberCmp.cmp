@@ -14,6 +14,10 @@
     <aura:attribute name="Class" type="String" default=""
                     description="Style for input container"/>
     <aura:attribute name="DefaultValue" type="String" default="0"/>
+    <aura:attribute name="Valid" type="boolean" default="true"/>
+    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
 
     <!-- Component init handler -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -33,6 +37,11 @@
         <div class="{!'slds-form-element__control ' + (v.IsError ? 'slds-has-error' : '')}">
             <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}" class="slds-input textRightAlign" placeholder="{!v.PlaceholderText}" value="{!v.Value}" format="{!v.Format}"/>
         </div>
+        <aura:renderIf isTrue="{!v.Valid != true}">
+            <ui:message title="Warning" severity="warning" closable="true">
+                <aura:unescapedHtml value="{!v.Message}"/>
+            </ui:message>
+        </aura:renderIf>
 	</div>	
 
 </aura:component>

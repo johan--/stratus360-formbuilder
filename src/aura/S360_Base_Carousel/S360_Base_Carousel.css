@@ -1,0 +1,220 @@
+.THIS {
+	margin-bottom: 42px;
+}
+
+.THIS .no-carousel{
+	padding: 10px;
+    color: white;
+    font-family: Lato;
+    line-height: 1.5;
+    display: block;
+    text-align: center;
+}
+
+.THIS .css-slider-wrapper {
+    display: block;
+    background: #4c4c4c;
+    overflow: hidden;
+    position: relative;
+    height:100%;
+    width:100%;
+}
+.THIS .button-controll {
+	height: 32px;
+    padding: 8px;
+    cursor: pointer;
+}
+.THIS  .slider {
+    width: 100%;
+    height: 100%;
+    background: #4c4c4c;
+    position: absolute; 
+    opacity: 1;
+    z-index: 0; 
+    display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center; 
+    -webkit-transition: -webkit-transform 500ms;
+    transition: -webkit-transform 500ms, transform 500ms;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.THIS .scrollbarStyleVideo{
+    width:100%;
+    height:100%;
+    /*display: flex;
+    justify-content: center;
+    align-content: center;*/
+}
+
+.THIS .slider > div {
+    text-align: center;
+}
+.THIS .css-slider-wrapper input[type="radio"]{
+    display:none;
+}
+.THIS .slider .bodyContent{ 
+    font-size: 1rem;
+}
+.THIS .slider h2 { 
+    font-weight: 500; 
+    font-size: 3rem;
+    line-height: 120%; 
+} 
+.THIS .slider-pagination {
+    background: #4286f5;
+    width: 100%;
+    height:32px;
+    left: 0;
+    text-align: center;
+    z-index: 1000;
+}
+.THIS .slider-pagination label {
+    /*width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    margin: 0 2px;
+    border: solid 1px rgba(255,255,255,0.4);
+    cursor: pointer;*/
+    color:white;
+    padding: 8px;
+    height: 32px;
+    display: inline-block;
+}
+
+
+/* display respective checkboxes selected on slide change */
+.THIS .slide-radio1:checked ~ .slider-pagination .page1, 
+.THIS .slide-radio2:checked ~ .slider-pagination .page2, 
+.THIS .slide-radio3:checked ~ .slider-pagination .page3, 
+.THIS .slide-radio4:checked ~ .slider-pagination .page4,
+.THIS .slide-radio5:checked ~ .slider-pagination .page5,
+.THIS .slide-radio6:checked ~ .slider-pagination .page6,
+.THIS .slide-radio7:checked ~ .slider-pagination .page7,
+.THIS .slide-radio8:checked ~ .slider-pagination .page8,
+.THIS .slide-radio9:checked ~ .slider-pagination .page9,
+.THIS .slide-radio10:checked ~ .slider-pagination .page10 {
+    background: rgba(255,255,255,1)
+} 
+/* Only 10 slides supported */
+.THIS  .slide-radio1:checked ~ .slider {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+}
+.THIS  .slide-radio2:checked ~ .slider {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+.THIS  .slide-radio3:checked ~ .slider {
+    -webkit-transform: translateX(-200%);
+    transform: translateX(-200%);
+}
+.THIS  .slide-radio4:checked ~ .slider {
+    -webkit-transform: translateX(-300%);
+    transform: translateX(-300%);
+}
+.THIS  .slide-radio5:checked ~ .slider {
+    -webkit-transform: translateX(-400%);
+    transform: translateX(-400%);
+}
+.THIS  .slide-radio6:checked ~ .slider {
+    -webkit-transform: translateX(-500%);
+    transform: translateX(-500%);
+}
+.THIS  .slide-radio7:checked ~ .slider {
+    -webkit-transform: translateX(-600%);
+    transform: translateX(-600%);
+}
+.THIS  .slide-radio8:checked ~ .slider {
+    -webkit-transform: translateX(-700%);
+    transform: translateX(-700%);
+}
+.THIS  .slide-radio9:checked ~ .slider {
+    -webkit-transform: translateX(-800%);
+    transform: translateX(-800%);
+}
+.THIS  .slide-radio10:checked ~ .slider {
+    -webkit-transform: translateX(-900%);
+    transform: translateX(-900%);
+}
+
+.THIS .imageHeight{
+    height: 100%;
+}
+
+.THIS .imageWidth{
+    width: 100%;
+}
+
+.THIS .scroll img{
+    /*max-width: 100%;
+    height: 100%;*/
+}	
+
+.THIS .scrollbarStyle::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(216, 237, 255, 1);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.THIS .scrollbarStyle::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.THIS .scrollbarStyle::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(216, 237, 255, 1);
+    background-color: #999;
+}
+
+/*Smaller Screens*/
+@media only screen and (max-width: 767px) {
+    .THIS .slider h2 {
+        font-size: 1.5em;
+    }
+    .THIS .slider > div {
+        padding: 0 2%
+    } 
+    .THIS .slider .bodyContent{ 
+        font-size: 0.8rem;
+    }
+    .THIS.listing-carousel{
+    	width: 100%;
+        height: 360px;
+	}
+}
+
+@media only screen and (min-width: 1220px){
+	.THIS.listing-carousel{
+		height: 530px;
+    	width: 100%;
+	}
+}
+
+@media only screen and (max-width: 1219px) and (min-width: 984px){
+	.THIS.listing-carousel{
+		height: 450px;
+    	width: 100%;
+	}
+}
+
+@media only screen and (max-width: 983px) and (min-width: 768px){
+	.THIS.listing-carousel{
+		height: 360px;
+    	width: 100%;
+	}
+}

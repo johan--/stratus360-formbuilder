@@ -1,15 +1,7 @@
-.THIS .form-element__help {
-    font-size: 10px;
-    color: rgb(194, 57, 52);
-    font-weight: bold;
+.THIS .show-tooltip{
+    display: inline-block;
 }
-.THIS .form{
-    margin-left:30px;
-}
-.THIS .labelDetails{
-    margin-left:30px;
-}
-.THIS .form-control{
-    width:200px;
-    height:25px;
+
+.THIS .hide-tooltip{
+    display: none;
 }

@@ -3,6 +3,7 @@
     <height>250</height>
     <label>Launch Form</label>
     <lightningComponent>S360_FA__FormBuilder</lightningComponent>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
     <type>LightningComponent</type>
     <width>-100</width>
 </QuickAction>

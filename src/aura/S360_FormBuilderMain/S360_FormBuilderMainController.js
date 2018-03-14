@@ -1,6 +1,6 @@
 ({
 	init : function(component, event, helper) {
-        debugger;
+        
         if(component.get('v.FormConfig').S360_FA__Component_Type__c != undefined){
             component.set('v.componentType', component.get('v.FormConfig').S360_FA__Component_Type__c);
             return;
@@ -14,14 +14,15 @@
         action.setCallback(this, function(response){
             if(component.isValid() && response.getState() == 'SUCCESS'){
                 var res = response.getReturnValue();
+                console.log(res);
                 
                 if(res.status == true){
                     var formConfig = res.formConfig
                     var data = res.data;
-                    var fieldInfo = res.fieldInfo;
+                    var fieldInfo = res.fieldInfo | {};
                     
                     data = helper.populateData(formConfig, data);
-                    debugger;
+                    
                     component.set('v.Data', data);
                     component.set('v.FieldInfo', fieldInfo);
                     component.set('v.FormConfig', formConfig);

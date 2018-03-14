@@ -1,0 +1,35 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+        controller="S360_Signature_Ctrl" access="global">
+    <ltng:require scripts="{!$Resource.SignaturePad}" afterScriptsLoaded="{!c.doInit}" />
+    
+    <!-- Id of the Account the page hosting this component is showing -->
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="signaturePad" type="Object" />
+    <aura:attribute name="canvas" type="Object" />
+    
+    <aura:attribute name="showControllButton" type="boolean" default="true"/>
+    
+    <div class="slds slds-grid slds-wrap" style="margin-bottom:4px;">
+        <!--ui:outputText value="aaa"/-->
+    </div>
+    <div class="slds slds-grid slds-wrap">
+        <div class="slds-size--1-of-1">
+            <button class="slds-button slds-button_icon btn-refresh" onclick="{!c.clearSignatureOnClick}">
+                @
+                <!--S360_FA:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#refresh'}"  Name="refresh" Category="utility" Size="small"/>
+                <span class="slds-assistive-text">Refresh</span-->
+            </button>
+            <canvas id="signature-pad" aura:id="signature-pad"></canvas>
+            
+        </div>
+        
+        <aura:if isTrue="{!v.showControllButton}">
+            <div class="slds-size--1-of-2 slds-m-top--small slds-p-right--small">
+                <button class="slds-size--1-of-1 slds-button slds-button--neutral" onclick="{!c.clearSignatureOnClick}">test1</button>
+            </div>
+            <div class="slds-size--1-of-2 slds-m-top--small slds-p-left--small">
+                <button class="slds-size--1-of-1 slds-button slds-button--neutral" onclick="{!c.saveSignatureOnClick}">test2</button>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

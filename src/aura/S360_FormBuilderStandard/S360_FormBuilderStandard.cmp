@@ -2,6 +2,7 @@
     <ltng:require styles="{!$Resource.SLDS231 + '/assets/styles/salesforce-lightning-design-system.min.css'}" 
         afterScriptsLoaded="{!c.afterScriptLoaded}"/>
     
+    
     <!-- component parameter -->
     <aura:attribute name="FormConfig" type="Object" default="{}"/>
     <aura:attribute name="Data" type="Object" default="{}"/>
@@ -12,11 +13,17 @@
     <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
     <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
     
+    <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
+    <aura:attribute name="signatureData" type="Object"/>
+    <aura:attribute name="canvas" type="Object"/>
+    
     <!-- 
 		form pattern mapping
 		used to map position and child parent position
 	 -->
     <aura:attribute name="FormPattern" type="Object" default="{}"/>
+    
+    <aura:attribute name="configMapping" type="Object" default="{}"/>
 
 	<!-- this object stores all components rendered in the form
 		 use Field API name to access the component
@@ -47,6 +54,10 @@
     <aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.handleButtonClick}"/>
     <aura:handler name="OnCaptcha" event="c:S360_B_Base_Evt_Captcha" action="{!c.handleCaptcha}"/>
     
+    <!-- handler lookup -->
+    <aura:handler name="LookupSObjectUpdateEvt" event="c:LookupSObjectUpdateEvt" action="{!c.handleLookupSObjectUpdateEvt}"/>
+    <aura:handler name="LookupSObjectClearIdEvt" event="c:LookupSObjectClearIdEvt" action="{!c.handleSObjectClear}"/>
+    
     <aura:method name="setup" action="{!c.setup}" 
                  description="setup stuff to render"> 
         <aura:attribute name="config" type="Object"/> 
@@ -59,9 +70,15 @@
         <!-- sender is submit buttom CompId who trigger submit action -->
         <aura:attribute name="sender" type="String" default=""/>
         <!-- status is server operation status, it could be true or false -->
-        <aura:attribute name="status" type="boolean" default="false"/>
+        <aura:attribute name="status" type="string" default=""/>
         <!-- message is server message -->
         <aura:attribute name="message" type="string" default=""/>
+    </aura:method>
+    
+    <aura:method name="showToastMethod" action="{!c.handleShowToast}" 
+                 description="display toast message"> 
+        <aura:attribute name="type" type="string"/> 
+        <aura:attribute name="message" type="string" />
     </aura:method>
     
     <!-- this component body store rendered component -->
@@ -73,8 +90,6 @@
                                   SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
                                   Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}"/>
             
-            <!--S360_FA:S360_Base_LookupSObject aura:id="Company__c" sObjectAPIName="User" label="test" instanceId="test" pluralLabel="" searchString="aa"
-											CompId="test" IsHidden="false" IsDisabled="false"/-->
         </div>
    
     

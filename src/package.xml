@@ -1,131 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>FormBuilder</members>
-        <members>FormBuilder_Test</members>
-        <members>LookupSObjectController</members>
-        <members>LookupSObjectController_Test</members>
-        <members>PickListDescController</members>
-        <members>PickListDescController_Test</members>
-        <members>PicklistDescriber</members>
-        <members>PicklistDescriber_Test</members>
-        <members>S360_Base_FileUploadController</members>
-        <members>S360_Base_FileUploadController_Test</members>
-        <members>S360_Base_FileUploadTableController</members>
-        <members>S360_Base_FileUploadTableController_Test</members>
-        <members>S360_Base_ObjectCommon</members>
-        <members>S360_Base_ObjectCommon_Test</members>
-        <members>S360_Base_ServerResult</members>
-        <members>S360_Base_ServerResult_Test</members>
-        <members>S360_Form_Builder_Controller</members>
-        <members>S360_Form_Builder_Controller_Test</members>
-        <members>S360_Form_Builder_Ext</members>
-        <members>S360_Form_Builder_Ext_Test</members>
-        <members>S360_Welcome_Modal_Controller</members>
-        <members>S360_Welcome_Modal_Controller_Test</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>PicklistDesc</members>
-        <members>S360_FormBuilder2</members>
-        <members>S360_Form_Builder</members>
-        <members>S360_Form_Builder0</members>
+        <members>*</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>ButtonCmp</members>
-        <members>FormBuilder</members>
-        <members>LightningAppPaginationEvent</members>
-        <members>LightningAppResizeTableEvent</members>
-        <members>LightningItemTableChangedEvent</members>
-        <members>LightningLoadingComponent</members>
-        <members>LightningLoadingEvent</members>
-        <members>LightningPaginationComponent</members>
-        <members>LightningPaginationEvent</members>
-        <members>LightningTableChangedEvent</members>
-        <members>LookupSObjectClearIdEvt</members>
-        <members>LookupSObjectUpdateEvt</members>
-        <members>NotifyPicklistCmp</members>
-        <members>PicklistCmp</members>
-        <members>S360_B_Base_Button</members>
-        <members>S360_B_Base_Captcha</members>
-        <members>S360_B_Base_Card</members>
-        <members>S360_B_Base_Checkbox</members>
-        <members>S360_B_Base_Checkbox_With_Alert</members>
-        <members>S360_B_Base_DatePicklist</members>
-        <members>S360_B_Base_Evt_Captcha</members>
-        <members>S360_B_Base_Evt_FileUpload</members>
-        <members>S360_B_Base_Evt_Toast</members>
-        <members>S360_B_Base_Evt_Wait</members>
-        <members>S360_B_Base_Evt_notifyPicklist</members>
-        <members>S360_B_Base_Evt_onChange</members>
-        <members>S360_B_Base_Evt_onClick</members>
-        <members>S360_B_Base_Evt_onLookupSObjectClear</members>
-        <members>S360_B_Base_Evt_onLookupSObjectUpdate</members>
-        <members>S360_B_Base_FileUpload_VF</members>
-        <members>S360_B_Base_Generic_Message</members>
-        <members>S360_B_Base_InputEmail</members>
-        <members>S360_B_Base_InputNumber</members>
-        <members>S360_B_Base_InputPhone</members>
-        <members>S360_B_Base_InputText</members>
-        <members>S360_B_Base_LookupSObject</members>
-        <members>S360_B_Base_Mobile_Captcha</members>
-        <members>S360_B_Base_MonthYearLabelPicklist</members>
-        <members>S360_B_Base_PanelCmp</members>
-        <members>S360_B_Base_Picklist</members>
-        <members>S360_B_Base_PopupOptions</members>
-        <members>S360_B_Base_RadioGroup</members>
-        <members>S360_B_Base_RadioItem</members>
-        <members>S360_B_Base_Table</members>
-        <members>S360_B_Base_TableItem</members>
-        <members>S360_B_Base_Textarea</members>
-        <members>S360_B_Base_Toaster</members>
-        <members>S360_B_Base_Wait</members>
-        <members>S360_Base_ButtonCmp</members>
-        <members>S360_Base_Card</members>
-        <members>S360_Base_CheckboxCmp</members>
-        <members>S360_Base_ColumnCmp</members>
-        <members>S360_Base_ColumnItemCmp</members>
-        <members>S360_Base_DateCmp</members>
-        <members>S360_Base_DateTimeCmp</members>
-        <members>S360_Base_Div</members>
-        <members>S360_Base_Evt_onTableChanged</members>
-        <members>S360_Base_FileParseUploadCmp</members>
-        <members>S360_Base_FileUploadCmp</members>
-        <members>S360_Base_FileUploadGetIdEvent</members>
-        <members>S360_Base_FileUploadItemTableComp</members>
-        <members>S360_Base_FileUploadTableComp</members>
-        <members>S360_Base_FileUploadTableContainer</members>
-        <members>S360_Base_FileUpload_VF</members>
-        <members>S360_Base_HiddenCmp</members>
-        <members>S360_Base_HtmlElement</members>
-        <members>S360_Base_InputEmail</members>
-        <members>S360_Base_InputNumberCmp</members>
-        <members>S360_Base_InputPhone</members>
-        <members>S360_Base_InputSecret</members>
-        <members>S360_Base_InputTextCmp</members>
-        <members>S360_Base_LoadingCmp</members>
-        <members>S360_Base_LookupSObject</members>
-        <members>S360_Base_OpenCameraCmp</members>
-        <members>S360_Base_PaginationCmp</members>
-        <members>S360_Base_PanelCmp</members>
-        <members>S360_Base_PicklistCmp</members>
-        <members>S360_Base_RelatedList</members>
-        <members>S360_Base_SvgIconCmp</members>
-        <members>S360_Base_ToastCmp</members>
-        <members>S360_Base_onBlur</members>
-        <members>S360_Base_onChange</members>
-        <members>S360_Base_onClick</members>
-        <members>S360_FormBuilder</members>
-        <members>S360_FormBuilderApp</members>
-        <members>S360_FormBuilderAppTemplate</members>
-        <members>S360_FormBuilderCustom</members>
-        <members>S360_FormBuilderEvt</members>
-        <members>S360_FormBuilderMain</members>
-        <members>S360_FormBuilderStandard</members>
-        <members>SvgIconCmp</members>
-        <members>onChange</members>
-        <members>onClick</members>
+        <members>*</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
@@ -266,5 +150,5 @@
         <members>S360_Form_Config__c.Open_Form</members>
         <name>WebLink</name>
     </types>
-    <version>34.0</version>
+    <version>36.0</version>
 </Package>

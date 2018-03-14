@@ -2,6 +2,7 @@
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
     <height>512</height>
     <label>Form Builder</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
     <page>S360_Form_Builder</page>
     <type>VisualforcePage</type>
     <width>-100</width>
