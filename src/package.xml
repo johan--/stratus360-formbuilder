@@ -61,12 +61,7 @@
         <name>CustomField</name>
     </types>
     <types>
-        <members>FormNotFound</members>
-        <members>Language</members>
-        <members>ObjectNotAccessible</members>
-        <members>ObjectNotCreatable</members>
-        <members>ObjectNotFound</members>
-        <members>ObjectNotUpdatable</members>
+        <members>*</members>
         <name>CustomLabel</name>
     </types>
     <types>
