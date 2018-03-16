@@ -1,4 +1,5 @@
 .bower.json
 .idea
+debug
 ngFormBuilder/bower_components
 ngFormBuilder/node_modules

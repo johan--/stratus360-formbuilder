@@ -88,6 +88,7 @@
         if(captions.length > 0){
             component.set("v.navigator", (selecIndex + 1) + " of " + captions.length + ' ' + captions[selecIndex]);
         }
+        
     } ,
     
     
@@ -219,5 +220,29 @@
         component.set("v.slidersList",slideInfo);
     },
     
-    
+    thumbnailControllButtonManager: function(component, thumbnailParent, thumbnailScroller){
+        var thumbnailParent = component.find('carouselThumbnailsContainer').getElement();
+        var thumbnailScroller = component.find('carouselThumbnailsScroller').getElement();
+        var prevButton = component.find('thumbnailPrevBtn').getElement();
+        var nextButton = component.find('thumbnailNextBtn').getElement();
+        var size = component.get('v.thumbnailScrollPos');
+        
+        if(thumbnailParent.offsetWidth > thumbnailScroller.scrollWidth){
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+        }else{
+            if(thumbnailScroller.scrollWidth - Math.abs(size) - thumbnailParent.offsetWidth == 0){
+            	prevButton.style.display = 'none';    
+            }else{
+                prevButton.style.display = 'block';
+            }
+            
+            
+            if(component.get('v.thumbnailScrollPos') >= 0){
+             	nextButton.style.display = 'none';
+            }else{
+                nextButton.style.display = 'block';
+            }
+        }
+    }
 })

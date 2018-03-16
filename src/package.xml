@@ -17,10 +17,6 @@
         <name>CompactLayout</name>
     </types>
     <types>
-        <members>Stratus360_logo_colour</members>
-        <name>ContentAsset</name>
-    </types>
-    <types>
         <members>Stratus360_Form_Builder</members>
         <name>CustomApplication</name>
     </types>

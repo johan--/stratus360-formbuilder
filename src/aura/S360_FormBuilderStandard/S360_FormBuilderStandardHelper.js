@@ -381,8 +381,6 @@
             }
         }
         
-        debugger;
-        
         $A.createComponent(
             'c:S360_Base_Carousel',
             {
@@ -684,8 +682,6 @@
                         actionType: 'custom',
                         action: buildCustomSubmitAction
                     }
-                    
-                    debugger;
                     
                     component.set('v.actionButton', actionButton); 
                     

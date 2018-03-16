@@ -1,6 +1,6 @@
 ({
 	doInit : function(component, event, helper) {
-		helper.doInit(component, event, helper);		
+		helper.doInit(component, event, helper);
 	},
     changePageNumber : function(component, event, helper){
         helper.changePageNumber(component, event, helper);
@@ -50,6 +50,60 @@
             }
             
         }
+    },
+    
+    thumbnailLoaded: function(component, event, helper){
+        helper.thumbnailControllButtonManager(component);
+        window.onresize = function(){
+            component.find('carouselThumbnailsScroller').getElement().style.transform = 'translateX('+ 0 +'px)';
+            component.set('v.thumbnailScrollPos', 0);
+            helper.thumbnailControllButtonManager(component);
+        }
+    },
+    
+    prevThumbnailButton: function(component, event, helper){
+        var thumbnailScroller = component.find('carouselThumbnailsScroller').getElement();
+        var thumbnailParent = component.find('carouselThumbnailsContainer').getElement();
+        var scrollSize = component.get('v.thumbnailScrollSize');
+        var size = component.get('v.thumbnailScrollPos');
+        
+        if(thumbnailScroller.scrollWidth - Math.abs(size + (scrollSize * -1)) - thumbnailParent.offsetWidth > 0){
+        	size = size + (scrollSize * -1);    
+        }else{
+            if(thumbnailScroller.scrollWidth - size - thumbnailParent.offsetWidth != 0){
+                size = size + ((thumbnailScroller.scrollWidth - Math.abs(size) - thumbnailParent.offsetWidth) * -1);    
+            }else{
+            	return;    
+            }
+            
+        }
+        
+        thumbnailScroller.style.transform = 'translateX('+ size +'px)';
+        component.set('v.thumbnailScrollPos', size);
+        
+        helper.thumbnailControllButtonManager(component);
+    },
+    
+    nextThumbnailButton: function(component, event, helper){
+        var thumbnailScroller = component.find('carouselThumbnailsScroller').getElement();
+        var thumbnailParent = component.find('carouselThumbnailsContainer').getElement();
+        var scrollSize = component.get('v.thumbnailScrollSize');
+        var size = component.get('v.thumbnailScrollPos');
+        
+        if(Math.abs(size) - scrollSize >= 0){
+            size = size + scrollSize;
+        }else{
+            if(scrollSize - Math.abs(size) != 0){
+                size += Math.abs(size);
+            }else{
+                return;
+            }
+        }
+        
+        thumbnailScroller.style.transform = 'translateX('+ size +'px)';
+        component.set('v.thumbnailScrollPos', size);
+        
+        helper.thumbnailControllButtonManager(component);
     }
     
 })

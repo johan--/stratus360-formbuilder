@@ -19,11 +19,13 @@
     <aura:Attribute name="carouselVideoIdField" type="string" default="" />
     
     
+    <aura:Attribute name="thumbnailScrollPos" type="integer" default="0" />
+    <aura:Attribute name="thumbnailScrollSize" type="integer" default="182" />
+    
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler name="change" value="{!v.body}" action="{!c.doInit}"/>
      
     <div class="listing-carousel">
-        
         <div class="css-slider-wrapper"> 
             
             <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">  
@@ -77,17 +79,65 @@
             </aura:if>
         </div>
         <div class="slider-pagination forceCommunityGlobalNavigation">
-        		<div style="float:left;width:50px;height:50px">
-        			<img src="{!$Resource.carousel_left}" class="button-controll" onclick="{!c.prev}"/>
-        		</div>
-        		
-                <label>{!v.navigator}</label>
-                
-                <div style="float:right;width:50px;height:50px">
-                	<img src="{!$Resource.carousel_right}" class="button-controll" onclick="{!c.next}"/>
-                </div>
-                 
+            <div style="float:left;width:50px;height:50px">
+                <img src="{!$Resource.carousel_left}" class="button-controll" onclick="{!c.prev}"/>
             </div>
+            
+            <label>{!v.navigator}</label>
+            
+            <div style="float:right;width:50px;height:50px">
+                <img src="{!$Resource.carousel_right}" class="button-controll" onclick="{!c.next}"/>
+            </div>
+            
+        </div>
+        
+        <div class="carousel-thumbnails-container" aura:id="carouselThumbnailsContainer">
+            <div class="carousel-thumbnails-scroller" aura:id="carouselThumbnailsScroller">
+                <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
+                    <aura:if isTrue="{!s.isImage}">
+                        <div class="carousel-thumbnails-item">
+                            <img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>  
+                        </div>
+                        
+                        <aura:set attribute="else">
+                            <div class="carousel-thumbnails-item">
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'youtube') ? true : false}">
+                                    <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId}" 
+                                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"
+                                            style="width:100%;height:100%"></iframe>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vimeo') ? true : false}">
+                                    <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId}" 
+                                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"></iframe>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'brainshark') ? true : false}">
+                                    <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%"></iframe>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vidyard') ? true : false}">
+                                    <iframe style="width:100%;height:100%"
+                                            scrolling="no"
+                                            src="{! 'https://play.vidyard.com/'+ s.videoEmbedId +'.html'}"
+                                            frameborder="0"
+                                            allowfullscreen="true"
+                                            allowtransparency="true">
+                                    </iframe>
+                                </aura:if>
+                            </div>
+                        </aura:set>
+                        
+                    </aura:if>
+                    
+                    <aura:if isTrue="{! (v.slidersList.length-1) == i}">
+                        <img src="" onerror="{!c.thumbnailLoaded}"/>
+                    </aura:if>
+            	</aura:iteration>
+            </div>
+            <input type="button" value="Prev" class="carousel-thumbnails-controll" aura:id="thumbnailPrevBtn" onclick="{!c.prevThumbnailButton}"/>
+            <input type="button" value="Next" class="carousel-thumbnails-controll carousel-thumbnails-controll-next" onclick="{!c.nextThumbnailButton}" aura:id="thumbnailNextBtn"/>
+        </div>
         
     </div>
     
