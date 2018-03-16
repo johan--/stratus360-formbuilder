@@ -6,10 +6,12 @@ public class S360_Base_Carousel {
                                                  String carouselCaptionField,
                                                  String carouselTypeField,
                                                  String carouselVideoTypeField,
-                                                 String carouselVideoIdField){
+                                                 String carouselVideoIdField,
+                                                 String carouselImageRedirectLinkField){
                                                      Map<String, Object> data = new Map<String, Object>();
                                                      
-                                                     String query = 'select ' + carouselCaptionField + ',' + carouselTypeField + ',' + carouselVideoTypeField + ',' + carouselVideoIdField 
+                                                     String query = 'select ' + carouselCaptionField + ',' + carouselTypeField + ',' + carouselVideoTypeField + ',' + carouselVideoIdField
+                                                         + ',' + carouselImageRedirectLinkField
                                                          + ', (select id, Name from Attachments) attc from ' + carouselObject + ' where ' + lookupParentField + '= \'' + parentId + '\'';
                                                      List<sObject> carousels = Database.query(query);
                                                      /*data.put('carousel', carousels);

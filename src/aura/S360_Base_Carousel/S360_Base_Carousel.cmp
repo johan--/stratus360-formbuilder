@@ -15,10 +15,11 @@
     <aura:Attribute name="carouselObject" type="string" default="" />
     <aura:Attribute name="carouselCaptionField" type="string" default="" />
     <aura:Attribute name="carouselTypeField" type="string" default="" />
+    <aura:Attribute name="carouselImageRedirectLinkField" type="string" default="" />
     <aura:Attribute name="carouselVideoTypeField" type="string" default="" />
     <aura:Attribute name="carouselVideoIdField" type="string" default="" />
     
-    
+    <aura:Attribute name="showThumbnails" type="boolean" default="false" />
     <aura:Attribute name="thumbnailScrollPos" type="integer" default="0" />
     <aura:Attribute name="thumbnailScrollSize" type="integer" default="182" />
     
@@ -36,7 +37,8 @@
                 <div class="{# 'slider slide'+(i+1)}" style="{# 'background :'+s.bgColor+';left:'+(i*100)+'%'}">
                         <aura:if isTrue="{!s.isImage}">
                             <div class="scroll scrollbarStyle">
-                            	<img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>  
+                            	<img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>
+                                <a href="{!s.redirectURL}"/>
                             </div>
                             
                             <aura:set attribute="else">
@@ -79,65 +81,81 @@
             </aura:if>
         </div>
         <div class="slider-pagination forceCommunityGlobalNavigation">
-            <div style="float:left;width:50px;height:50px">
+            <div style="float:left;">
                 <img src="{!$Resource.carousel_left}" class="button-controll" onclick="{!c.prev}"/>
             </div>
             
             <label>{!v.navigator}</label>
             
-            <div style="float:right;width:50px;height:50px">
+            <div style="float:right;">
                 <img src="{!$Resource.carousel_right}" class="button-controll" onclick="{!c.next}"/>
             </div>
             
         </div>
         
-        <div class="carousel-thumbnails-container" aura:id="carouselThumbnailsContainer">
-            <div class="carousel-thumbnails-scroller" aura:id="carouselThumbnailsScroller">
-                <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
-                    <aura:if isTrue="{!s.isImage}">
-                        <div class="carousel-thumbnails-item">
-                            <img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>  
-                        </div>
-                        
-                        <aura:set attribute="else">
-                            <div class="carousel-thumbnails-item">
-                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'youtube') ? true : false}">
-                                    <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId}" 
-                                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"
-                                            style="width:100%;height:100%"></iframe>
-                                </aura:if>
+        <aura:if isTrue="{!v.showThumbnails}">
+            <div class="carousel-thumbnails">
+                <div class="carousel-thumbnails-controll-container">
+                    <button class="carousel-thumbnails-controll carousel-thumbnails-controll-left" aura:id="thumbnailPrevBtn" onclick="{!c.prevThumbnailButton}">
+                        <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#chevronleft'}" 
+                                                      Name="chevronleft" Category="utility" Size="xx-small" Class="circle-icon-button-left"/>
+                    </button>
+                    <button class="carousel-thumbnails-controll carousel-thumbnails-controll-next" aura:id="thumbnailNextBtn" onclick="{!c.nextThumbnailButton}">
+                        <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#chevronright'}" 
+                                                      Name="chevronright" Category="utility" Size="xx-small" Class="circle-icon-button-right"/>
+                    </button>
+                </div>
+                
+                <div class="carousel-thumbnails-container" aura:id="carouselThumbnailsContainer">
+                    <div class="carousel-thumbnails-scroller" aura:id="carouselThumbnailsScroller">
+                        <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
+                            <aura:if isTrue="{!s.isImage}">
+                                <div class="carousel-thumbnails-item">
+                                    <img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>  
+                                    <span data-selected-Index="{!i}" onclick="{!c.showInCarousel}"></span>
+                                </div>
                                 
-                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vimeo') ? true : false}">
-                                    <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId}" 
-                                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"></iframe>
-                                </aura:if>
+                                <aura:set attribute="else">
+                                    <div class="carousel-thumbnails-item" data-selected-Index="{!i}" onclick="{!c.showInCarousel}" >
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'youtube') ? true : false}">
+                                            <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId}" 
+                                                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"
+                                                    style="width:100%;height:100%"></iframe>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vimeo') ? true : false}">
+                                            <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId}" 
+                                                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"></iframe>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'brainshark') ? true : false}">
+                                            <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%"></iframe>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vidyard') ? true : false}">
+                                            <iframe style="width:100%;height:100%"
+                                                    scrolling="no"
+                                                    src="{! 'https://play.vidyard.com/'+ s.videoEmbedId +'.html'}"
+                                                    frameborder="0"
+                                                    allowfullscreen="true"
+                                                    allowtransparency="true">
+                                            </iframe>
+                                        </aura:if>
+                                        
+                                        <span data-selected-Index="{!i}" onclick="{!c.showInCarousel}"></span>
+                                    </div>
+                                </aura:set>
                                 
-                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'brainshark') ? true : false}">
-                                    <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%"></iframe>
-                                </aura:if>
-                                
-                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vidyard') ? true : false}">
-                                    <iframe style="width:100%;height:100%"
-                                            scrolling="no"
-                                            src="{! 'https://play.vidyard.com/'+ s.videoEmbedId +'.html'}"
-                                            frameborder="0"
-                                            allowfullscreen="true"
-                                            allowtransparency="true">
-                                    </iframe>
-                                </aura:if>
-                            </div>
-                        </aura:set>
-                        
-                    </aura:if>
-                    
-                    <aura:if isTrue="{! (v.slidersList.length-1) == i}">
-                        <img src="" onerror="{!c.thumbnailLoaded}"/>
-                    </aura:if>
-            	</aura:iteration>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{! (v.slidersList.length-1) == i}">
+                                <img src="" onerror="{!c.thumbnailLoaded}"/>
+                            </aura:if>
+                        </aura:iteration>
+                    </div>
+                </div>
             </div>
-            <input type="button" value="Prev" class="carousel-thumbnails-controll" aura:id="thumbnailPrevBtn" onclick="{!c.prevThumbnailButton}"/>
-            <input type="button" value="Next" class="carousel-thumbnails-controll carousel-thumbnails-controll-next" onclick="{!c.nextThumbnailButton}" aura:id="thumbnailNextBtn"/>
-        </div>
+        </aura:if>
         
     </div>
     

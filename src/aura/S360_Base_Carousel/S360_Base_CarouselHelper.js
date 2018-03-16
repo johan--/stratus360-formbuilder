@@ -49,6 +49,7 @@
                         isImage : body[j].get("v.isImage"),
                         videoType : body[j].get("v.videoType"),
                         videoEmbedId : body[j].get("v.videoEmbedId"),
+                        redirectURL : body[j].get("v.redirectURL"),
                     };      
                     slides.push(singleSlide);
                     
@@ -69,6 +70,7 @@
                     isImage : slidefacet[i].get("v.isImage"),
                     videoType : body[j].get("v.videoType"),
                     videoEmbedId : body[j].get("v.videoEmbedId"),
+                    redirectURL : body[j].get("v.redirectURL"),
                 };      
                 slides.push(singleSlide);
                 
@@ -114,6 +116,7 @@
              "carouselTypeField":component.get('v.carouselTypeField'),
              "carouselVideoTypeField":component.get('v.carouselVideoTypeField'),
              "carouselVideoIdField":component.get('v.carouselVideoIdField'),
+             "carouselImageRedirectLinkField":component.get('v.carouselImageRedirectLinkField'),
          });
         action.setStorable();
         
@@ -145,6 +148,7 @@
                                         imageURL : "/servlet/servlet.FileDownload?file="+ attch.Id,
                                         isImage : true,
                                         isFocused: false,
+                                        redirectURL : carousel[component.get('v.carouselImageRedirectLinkField')],
                                     });
                                     
                                     if(carousel[component.get('v.carouselCaptionField')]){
@@ -200,6 +204,7 @@
             slideInfo[selecIndex].isFocused = true;
         }
         component.set("v.slidersList",slideInfo);
+        component.set('v.position', selecIndex); 
     },
     
     changePageNumber2 : function(component, event, helper){

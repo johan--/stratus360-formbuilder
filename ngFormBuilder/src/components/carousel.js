@@ -10,6 +10,7 @@ module.exports = function(app) {
         group: 'advanced',
         settings: {
           input: false,
+          showThumbnails: false,
           resources: [
           {
             name: 'localDefinition',
@@ -56,6 +57,7 @@ module.exports = function(app) {
             carouselCaptionField: '',
             carouselParentField: '',
             carouselTypeField: '',
+            carouselImageRedirectLinkField: '',
             carouselVideoTypeField: '',
             carouselVideoIdField: ''
           }
@@ -114,6 +116,11 @@ module.exports = function(app) {
             
             $templateCache.put('formio/components/carousel/display.html',
                                '<ng-form>' +
+                               '<div class="checkbox">' +
+                               '  <label form-builder-tooltip="Display Thumbnails for this carousel.">' +
+                               '    <input type="checkbox" id="showThumbnails" name="showThumbnails" ng-model="component.showThumbnails" ng-checked="component.showThumbnails"> {{\'Display Thumbnails\' | formioTranslate}}' +
+                               '  </label>' +
+                               '  </div>' +
                                '  <div class="form-group">' +
                                '    <label for="resource" form-builder-tooltip="Resource of this carousel">'+
                                '      {{\'Resource\' | formioTranslate}}'+
@@ -132,17 +139,26 @@ module.exports = function(app) {
                                '          </tr>' +
                                '        </thead>' +
                                '        <tbody>' +
-                               '          <tr ng-repeat="row in component.localDefinitions">' +
+                               '          <tr ng-repeat-start="row in component.localDefinitions">' +
                                '            <td class="col-xs-4"><input type="text" class="form-control" ng-model="row.caption"/></td>' +
                                '            <td class="col-xs-3"><select class="form-control" ng-options="opp.name as opp.title for opp in component.resourceType" ng-model="row.type"></select></td>' +
                                '            <td class="col-xs-4">'+
                                '              <input type="text" class="form-control" ng-if="row.type === \'image\'" ng-model="row.imageUrl" placeholder="Image url"/>'+
                                '              <div ng-if="row.type === \'video\'">'+
                                '                <select class="form-control" ng-options="vt.name as vt.title | formioTranslate for vt in component.videoResourceType" ng-model="row.videoType"></select>'+
-                               '                <input type="text" class="form-control" ng-model="row.videoId" placeholder="Video ID"/>'+
                                '              </div>'+
                                '            </td>' +
                                '            <td class="col-xs-1"><button type="button" class="btn btn-danger btn-xs" ng-click="removeColumn($index)" tabindex="-1"><span class="glyphicon glyphicon-remove-circle"></span></button></td>' +
+                               '          </tr>' +
+                               '          <tr ng-repeat-end>' +
+                               '            <td colspan="2" class="col-xs-7">'+
+                               '              <span ng-if="row.type === \'image\'">Redirect link</span>'+
+                               '              <span ng-if="row.type === \'video\'">Video ID</span>'+
+                               '            </td>' +
+                               '            <td class="col-xs-4">'+
+                               '               <input ng-if="row.type === \'image\'" type="text" class="form-control" ng-model="row.redirectLink" placeholder="Redirect Link"/>'+
+                               '               <input ng-if="row.type === \'video\'" type="text" class="form-control" ng-model="row.videoId" placeholder="Video ID"/>'+
+                               '            </td>'+
                                '          </tr>' +
                                '        </tbody>' +
                                '      </table>' +
@@ -163,6 +179,10 @@ module.exports = function(app) {
                                '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
                                '    <label for="carouselTypeField" form-builder-tooltip="The field which will save carousel type information">{{\'Carousel Type Field\' | formioTranslate}}</label>' +
                                '    <input type="text" class="form-control" id="carouselTypeField" name="carouselTypeField" ng-model="component.salesforce.carouselTypeField" placeholder="Carousel Type Field" />' +
+                               '  </div>' +
+                               '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
+                               '    <label for="carouselImageRedirectLinkField" form-builder-tooltip="The field which will save carousel redirect link when image clicked">{{\'Carousel Redirect Link Field\' | formioTranslate}}</label>' +
+                               '    <input type="text" class="form-control" id="carouselImageRedirectLinkField" name="carouselImageRedirectLinkField" ng-model="component.salesforce.carouselImageRedirectLinkField" placeholder="Carousel Redirect Link Field" />' +
                                '  </div>' +
                                '  <div class="form-group" ng-if="component.resource === \'salesforce\'">' +
                                '    <label for="carouselVideoTypeField" form-builder-tooltip="The field which will save carousel video type information">{{\'Carousel Video Type Field\' | formioTranslate}}</label>' +

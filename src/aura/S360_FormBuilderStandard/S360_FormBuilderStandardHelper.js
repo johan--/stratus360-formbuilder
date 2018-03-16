@@ -364,6 +364,7 @@
                         slide.imageURL = ld.imageUrl;
                         slide.isFocused = false;
                         slide.isImage = true;
+                        slide.redirectURL = ld.redirectLink;
                     }else{
                         slide.videoType = ld.videoType;
                         slide.videoEmbedId = ld.videoId;
@@ -393,7 +394,8 @@
                 "carouselCaptionField" : config.salesforce.carouselCaptionField,
                 "carouselTypeField" : config.salesforce.carouselTypeField,
                 "carouselVideoTypeField" : config.salesforce.carouselVideoTypeField,
-                "carouselVideoIdField" : config.salesforce.carouselVideoIdField
+                "carouselVideoIdField" : config.salesforce.carouselVideoIdField,
+                "showThumbnails" : config.showThumbnails
             }, 
             function(newComponent, status, errorMessage){
                 component.set('v.isSignatureEnabled', true);

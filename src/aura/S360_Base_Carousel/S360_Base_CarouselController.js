@@ -104,6 +104,10 @@
         component.set('v.thumbnailScrollPos', size);
         
         helper.thumbnailControllButtonManager(component);
+    },
+    
+    showInCarousel: function(component, event, helper){
+        helper.changePageNumber(component, event, helper);
     }
     
 })

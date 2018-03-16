@@ -1,4 +1,0 @@
-<design:component >
-	<design:attribute name="formConfigName" label="Form Config Name" description="Name of the Form you want to display" />
-    <design:attribute name="formConfigID" label="Form Config Id" />
-</design:component>

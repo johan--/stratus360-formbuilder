@@ -1,5 +1,5 @@
 .THIS {
-	margin-bottom: 42px;
+	/*margin-bottom: 42px;*/
 }
 
 .THIS .no-carousel{
@@ -156,10 +156,22 @@
     width: 100%;
 }
 
+.THIS .scroll{
+    position: relative;
+}
+
+.THIS .scroll a{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
 .THIS .scroll img{
     /*max-width: 100%;
     height: 100%;*/
-}	
+}
 
 .THIS .scrollbarStyle::-webkit-scrollbar-track
 {
@@ -192,28 +204,28 @@
     .THIS .slider .bodyContent{ 
         font-size: 0.8rem;
     }
-    .THIS.listing-carousel{
+    .THIS .css-slider-wrapper{
     	width: 100%;
         height: 360px;
 	}
 }
 
 @media only screen and (min-width: 1220px){
-	.THIS.listing-carousel{
+	.THIS .css-slider-wrapper{
 		height: 530px;
     	width: 100%;
 	}
 }
 
 @media only screen and (max-width: 1219px) and (min-width: 984px){
-	.THIS.listing-carousel{
+	.THIS .css-slider-wrapper{
 		height: 450px;
     	width: 100%;
 	}
 }
 
 @media only screen and (max-width: 983px) and (min-width: 768px){
-	.THIS.listing-carousel{
+	.THIS .css-slider-wrapper{
 		height: 360px;
     	width: 100%;
 	}
@@ -225,14 +237,20 @@
  * Thumbnail
  */
 
+.THIS .carousel-thumbnails{
+    /*padding-left: 15px;
+    padding-right: 15px;*/
+    background: rgb(24, 26, 27);
+    position: relative;
+}
+
 .THIS .carousel-thumbnails-container{
-    width: 100%;
+    /*width: 100%;*/
     height: 102px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: rgb(24, 26, 27);
+    position: relative;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .THIS .carousel-thumbnails-scroller{
@@ -242,6 +260,7 @@
 }
 
 .THIS .carousel-thumbnails-item{
+    cursor: pointer;
     width: 176px;
     height: 96px;
     background: rgba(255,255,255,0.3);
@@ -250,6 +269,7 @@
     text-align: center;
     display: inline-flex;
     justify-content: center;
+    position: relative;
 }
 
 .THIS .carousel-thumbnails-item img{
@@ -257,10 +277,48 @@
     max-height: 96px;
 }
 
+.THIS .carousel-thumbnails-item span{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.THIS .carousel-thumbnails-controll-container{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .THIS .carousel-thumbnails-controll{
     position: absolute;
+    background: #333;
+    border-radius: 50%;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    height: 32px;
+    position: absolute;
+    width: 32px;
+    border: none;
+    outline: none;
+    z-index: 1000;
+}
+
+.THIS .carousel-thumbnails-controll-left{
+    margin-left: 3px;
 }
 
 .THIS .carousel-thumbnails-controll-next{
     right:0px;
+    margin-right: 3px;
+}
+
+.THIS .circle-icon-button-left{
+    margin-left: -3px;
+}
+
+.THIS .circle-icon-button-right{
+    margin-left: 3px;
 }
