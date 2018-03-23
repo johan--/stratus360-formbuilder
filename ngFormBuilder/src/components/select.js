@@ -152,6 +152,11 @@ module.exports = function(app) {
       // Create the settings markup.
       $templateCache.put('formio/components/select/display.html',
         '<ng-form>' +
+        ' <div class="checkbox">' +
+        '  <label form-builder-tooltip="Dislpaly multiple select.">' +
+        '    <input type="checkbox" id="multiple" name="multiple" ng-model="component.multiple"> {{\'Display Multiple Select\' | formioTranslate}}' +
+        '  </label>' +
+        ' </div>' +
           '<form-builder-option property="label"></form-builder-option>' +
           /*'<form-builder-option property="hideLabel"></form-builder-option>' +
           '<form-builder-option-label-position></form-builder-option-label-position>' +*/

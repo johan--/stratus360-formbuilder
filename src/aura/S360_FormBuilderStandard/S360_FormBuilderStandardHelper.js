@@ -216,6 +216,7 @@
      */
     generateInputPhoneNumber : function(component, config){    
         var serverFieldInfo = component.get('v.FieldInfo');
+        debugger;
         var self = this;
         
         // set value and get it reference
@@ -577,6 +578,7 @@
         if(component.get('v.FieldInfo')[field] == undefined){
             sobject = '';
         }
+        debugger;
         
         var serverFieldInfo = component.get('v.FieldInfo');
         var self = this;
@@ -602,7 +604,8 @@
                 "RecordTypeName": recordType,
                 "FieldName": field,
                 "Class": config.customClass ? config.customClass : '',
-                "ShowBlank": true
+                "ShowBlank": true,
+                "Multiple" : config.multiple ? true : false
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);

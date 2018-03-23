@@ -160,6 +160,7 @@
             var state = response.getState();
             if (state === "SUCCESS") {
                 var optionsMap = response.getReturnValue();
+                debugger;
                 var picklistKV = [];
                 var newPicklistKV = [];
                 var defaultKeyK = component.get("v.DefaultK");

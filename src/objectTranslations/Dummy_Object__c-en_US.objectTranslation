@@ -57,8 +57,52 @@
         <name>Last_Name__c</name>
     </fields>
     <fields>
+        <label><!-- Multi Select --></label>
+        <name>Multi_Select__c</name>
+        <picklistValues>
+            <masterLabel>V</masterLabel>
+            <translation><!-- V --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>W</masterLabel>
+            <translation><!-- W --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>X</masterLabel>
+            <translation><!-- X --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Y</masterLabel>
+            <translation><!-- Y --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Z</masterLabel>
+            <translation><!-- Z --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
         <label><!-- Password --></label>
         <name>Password__c</name>
+    </fields>
+    <fields>
+        <label><!-- Select --></label>
+        <name>Select__c</name>
+        <picklistValues>
+            <masterLabel>A</masterLabel>
+            <translation><!-- A --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>B</masterLabel>
+            <translation><!-- B --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>C</masterLabel>
+            <translation><!-- C --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>D</masterLabel>
+            <translation><!-- D --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- User --></label>

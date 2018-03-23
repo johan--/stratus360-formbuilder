@@ -11,6 +11,7 @@
     <aura:attribute name="SObjectName" type="string" default=""/>
     <aura:attribute name="RecordTypeName" type="string" default=""/>
     <aura:attribute name="FieldName" type="string" default=""/>
+    <aura:attribute name="Multiple" type="boolean" default="false"/>
 
     <aura:attribute name="Valid" type="boolean" default="true"/>
     <aura:attribute name="Message" type="string" default=""/>
@@ -46,9 +47,9 @@
                 
                 <div class="slds-form-element__control minSize" id="{!v.CompId}">
                     <ui:inputSelect aura:id="InputSelectId" required="{!v.IsRequired}" 
-                                    disabled="{!v.IsDisabled}" class="slds-select heightAdjustment" 
+                                    disabled="{!v.IsDisabled}" class="{! 'slds-select ' + (v.Multiple ? '' : 'heightAdjustment')}" 
                                     labelClass="slds-form-element__label" 
-                                    change="{!c.onSelectChangeExpType}">
+                                    change="{!c.onSelectChangeExpType}" multiple="{!v.Multiple}">
                     </ui:inputSelect>
                 </div>
     	    </div>

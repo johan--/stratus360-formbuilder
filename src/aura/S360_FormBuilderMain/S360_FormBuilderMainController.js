@@ -19,10 +19,13 @@
                 if(res.status == true){
                     var formConfig = res.formConfig
                     var data = res.data;
-                    var fieldInfo = res.fieldInfo | {};
+                    var fieldInfo = {};
+                    if(res.fieldInfo){
+                        fieldInfo = res.fieldInfo;
+                    }
                     
                     data = helper.populateData(formConfig, data);
-                    
+                    debugger;
                     component.set('v.Data', data);
                     component.set('v.FieldInfo', fieldInfo);
                     component.set('v.FormConfig', formConfig);

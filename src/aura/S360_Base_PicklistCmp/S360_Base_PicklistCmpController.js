@@ -19,6 +19,7 @@
         {
             if(component.get("v.RecordTypeName")=="" || component.get("v.RecordTypeName")==undefined)
             {
+                debugger;
                 //Get all picklist values in the field
                 helper.getPicklistOptionsAll(component, event, helper);
             }

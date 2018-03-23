@@ -38,6 +38,7 @@
                 "isSignatureEnabled": isSignatureEnabled,
                 "signatureData": canvasDataUrl
             });
+            debugger;
             action.setCallback(this, function(response){
                 
                 if(component.isValid() && response.getState() == 'SUCCESS'){

@@ -213,12 +213,12 @@ module.exports = function(app) {
                                 '</div>' +
 
                                 // for standard action->redirect event or submit event with redirect
-                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'redirect\' || (component.event === \'submit\' && component.submitRedirect == true)">' +
+                                '<div class="form-group" ng-if="component.action === \'standard\' && (component.event === \'redirect\' || (component.event === \'submit\' && component.submitRedirect == true))">' +
                                 '  <label for="redirectUri" form-builder-tooltip="Redirect URL">{{\'Redirect URL\' | formioTranslate}}</label>' +
                                 '  <input type="text" class="form-control" id="redirectUri" name="redirectUri" ng-model="component.redirectUri" placeholder="Redirect URL" />' +
                                 '</div>' +
 
-                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'redirect\' || (component.event === \'submit\' && component.submitRedirect == true)">' +
+                                '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'redirect\' || (component.action === \'standard\' && component.event === \'submit\' && component.submitRedirect == true)">' +
                                 '  <label for="redirectTarget" form-builder-tooltip="Redirect Target">{{\'Redirect Target\' | formioTranslate}}</label>' +
                                 '  <select class="form-control" id="redirectTarget" name="redirectTarget" ng-options="t for t in [\'_self\', \'_blank\']" ng-model="component.redirectTarget"></select>' +
                                 '</div>' +
