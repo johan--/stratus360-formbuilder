@@ -3,6 +3,4 @@
     <defaultLandingTab>standard-home</defaultLandingTab>
     <label>Stratus360 Form Builder</label>
     <tab>S360_Form_Config__c</tab>
-    <tab>Reservation_Form__c</tab>
-    <tab>Card_Terminal_Addon__c</tab>
 </CustomApplication>
