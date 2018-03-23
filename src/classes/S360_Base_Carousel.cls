@@ -13,6 +13,7 @@ public class S360_Base_Carousel {
                                                      String query = 'select ' + carouselCaptionField + ',' + carouselTypeField + ',' + carouselVideoTypeField + ',' + carouselVideoIdField
                                                          + ',' + carouselImageRedirectLinkField
                                                          + ', (select id, Name from Attachments) attc from ' + carouselObject + ' where ' + lookupParentField + '= \'' + parentId + '\'';
+                                                     System.debug(query);
                                                      List<sObject> carousels = Database.query(query);
                                                      /*data.put('carousel', carousels);
                                                      

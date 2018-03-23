@@ -106,7 +106,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Dummy_Object_Carousel__c.Dummy_Object__c</relatedList>
+        <relatedList>Carousel_Config__c.Dummy_Object__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

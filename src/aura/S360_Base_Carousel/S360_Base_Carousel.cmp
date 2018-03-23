@@ -33,8 +33,8 @@
                 <input data-selected-Index="{!i}" type="radio" name="slider" class="{# 'slide-radio'+(i+1)}" checked="{!s.isFocused}" id="{# 'slider_'+(i+1)}" /> 
             </aura:iteration>
             
-            <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
-                <div class="{# 'slider slide'+(i+1)}" style="{# 'background :'+s.bgColor+';left:'+(i*100)+'%'}">
+            <aura:iteration items="{!v.slidersList}" var="s" indexVar="i" aura:id="iterate">
+                <div class="{# 'slider slide'+(i+1) + ' slider_' + globalId}" style="{# 'background :'+s.bgColor+';left:'+(i*100)+'%'}" aura:id="{# 'slide'+(i+1)}">
                         <aura:if isTrue="{!s.isImage}">
                             <div class="scroll scrollbarStyle">
                             	<img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>
@@ -74,7 +74,7 @@
                         
                         
                     </div>
-            </aura:iteration>   
+            </aura:iteration> 
             
             <aura:if isTrue="{!v.slidersList.length == 0 ? true : false}">
             	<label class="no-carousel">{!$Label.c.S360_Empty_Carousel}</label>

@@ -195,16 +195,26 @@
     },
     changePageNumber : function(component, event, helper){
         var target = event.target; 
-        var selecIndex = target.getAttribute("data-selected-Index"); 
+        var selecIndex = parseInt(target.getAttribute("data-selected-Index")); 
         var slideInfo = component.get("v.slidersList");
+        var captionsList = component.get("v.captionsList");
+        
         if(slideInfo){
             for (var i = 0; i < slideInfo.length; i++) {   
                 slideInfo[i].isFocused = false;
             }
             slideInfo[selecIndex].isFocused = true;
+            
+            
+            if(captionsList && captionsList.length > 0){
+            	component.set("v.navigator", (selecIndex + 1) + " of " + slideInfo.length + ' ' + captionsList[selecIndex]);
+            }
         }
+        
         component.set("v.slidersList",slideInfo);
-        component.set('v.position', selecIndex); 
+        component.set('v.position', selecIndex);
+        
+        helper.animate(component, selecIndex);
     },
     
     changePageNumber2 : function(component, event, helper){
@@ -223,6 +233,8 @@
         }
         
         component.set("v.slidersList",slideInfo);
+        
+        helper.animate(component, selecIndex);
     },
     
     thumbnailControllButtonManager: function(component, thumbnailParent, thumbnailScroller){
@@ -249,5 +261,11 @@
                 nextButton.style.display = 'block';
             }
         }
+    },
+    
+    animate: function(component, position){
+        component.find('iterate').get('v.body').forEach(function(item){
+            item.getElement().style.transform =  'translateX(' + (position * -100) + '%)';
+        });
     }
 })

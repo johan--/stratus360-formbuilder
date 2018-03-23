@@ -395,7 +395,8 @@
                 "carouselTypeField" : config.salesforce.carouselTypeField,
                 "carouselVideoTypeField" : config.salesforce.carouselVideoTypeField,
                 "carouselVideoIdField" : config.salesforce.carouselVideoIdField,
-                "showThumbnails" : config.showThumbnails
+                "carouselImageRedirectLinkField" : config.salesforce.carouselImageRedirectLinkField,
+                "showThumbnails" : config.showThumbnails,
             }, 
             function(newComponent, status, errorMessage){
                 component.set('v.isSignatureEnabled', true);

@@ -107,7 +107,7 @@
     background: rgba(255,255,255,1)
 } 
 /* Only 10 slides supported */
-.THIS  .slide-radio1:checked ~ .slider {
+/*.THIS  .slide-radio1:checked ~ .slider {
     -webkit-transform: translateX(0%);
     transform: translateX(0%);
 }
@@ -146,7 +146,7 @@
 .THIS  .slide-radio10:checked ~ .slider {
     -webkit-transform: translateX(-900%);
     transform: translateX(-900%);
-}
+}*/
 
 .THIS .imageHeight{
     height: 100%;
