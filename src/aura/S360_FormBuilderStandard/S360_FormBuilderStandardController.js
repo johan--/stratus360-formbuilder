@@ -14,10 +14,12 @@
             component.set('v.Data', params.data);
             component.set('v.FieldInfo', params.fieldInfo);
             
-            var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;
-            if(configComponents.length != 0){
-                helper.generateForm(component, event, configComponents);   
-            } 
+            if(params.config.S360_FA__JSON__c != '' && params.config.S360_FA__JSON__c != undefined){
+             	var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;
+                if(configComponents.length != 0){
+                    helper.generateForm(component, event, configComponents);   
+                }    
+            }
         }
 	},
     
