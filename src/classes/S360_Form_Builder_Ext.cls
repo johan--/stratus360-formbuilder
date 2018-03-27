@@ -8,7 +8,6 @@ public class S360_Form_Builder_Ext {
 	public S360_Form_Builder_Ext(ApexPages.StandardController stdCtrl){
         List<String> availableFields = new List<String>();
         formConfig = (S360_FA__S360_Form_Config__c)stdCtrl.getRecord();
-        System.debug(formConfig);
         
         // get primary object field list
         if(formConfig != null && formConfig.Primary_Object__c != null){
@@ -29,6 +28,7 @@ public class S360_Form_Builder_Ext {
         objectFields = availableFields;
         
         // get json config data from attachment
+        jsonConfig = '';
         Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfig.Id];
         if(tmp.size() > 0){
             jsonAttachment = tmp[0];
@@ -40,6 +40,7 @@ public class S360_Form_Builder_Ext {
             jsonAttachment.ParentId = formConfig.Id;
             jsonAttachment.Name = 'form_' + formConfig.Id;
         }
+        System.debug(jsonConfig);
         
         if(jsonConfig == null || jsonConfig == ''){
             S360_FA__S360_Form_Config__c tmpFormConfig = [select JSON__c from S360_FA__S360_Form_Config__c where Id = :formConfig.Id];
@@ -49,11 +50,13 @@ public class S360_Form_Builder_Ext {
              	jsonConfig =  tmpFormConfig.JSON__c;
             }
         }
+        System.debug(jsonConfig);
         // end of get json config data from attachment
         
     }
     
     public PageReference save(){
+        System.debug(jsonConfig);
         update formConfig;
         
         // upsert json config attachemnt
@@ -61,5 +64,9 @@ public class S360_Form_Builder_Ext {
         upsert jsonAttachment;
         
         return null;
+    }
+    
+    public PageReference autoSave(){
+        return save();
     }
 }

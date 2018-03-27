@@ -67,6 +67,26 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>AutoSave_Interval__c</fullName>
+        <defaultValue>10</defaultValue>
+        <externalId>false</externalId>
+        <label>AutoSave Interval</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AutoSave__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>AutoSave</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Component_Type__c</fullName>
         <externalId>false</externalId>
         <label>Component Type</label>

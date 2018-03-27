@@ -83,6 +83,9 @@
             <apex:pageBlock mode="edit">
                 <apex:pageBlockButtons >
                     <apex:commandButton styleClass="slds-button slds-button--brand slds-not-selected" value="Save" action="{!save}" onclick="getUsedFields()"/>
+                    <apex:outputPanel id="autoSaveStatus">
+                        <p id="autoSaveMessage"></p>
+                    </apex:outputPanel>
                 </apex:pageBlockButtons>
                 
                 <div class="page-content" ng-app="formioApp">
@@ -103,7 +106,13 @@
                 <apex:inputField id="Form_Config_Primary_Object" value="{!S360_Form_Config__c.Primary_Object__c}" /> <p/>
                 <apex:inputText id="Form_Config_JSON" value="{!jsonConfig}" /> <p/>
                 <apex:inputField id="Form_Config_Field" value="{!S360_Form_Config__c.Field__c}" /> <p/>
+                
+                <!-- load field -->
+                <apex:inputField id="autoSaveInterval" value="{!S360_Form_Config__c.AutoSave_Interval__c}" /> <p/>
+                <apex:inputField id="isAutoSave" value="{!S360_Form_Config__c.AutoSave__c}" /> <p/>
             </div>
+            
+            <apex:actionFunction name="autoSaveAF" action="{!autoSave}" rerender="autoSaveStatus"/>
         </apex:form>
         
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/ckeditor.4.5.11.js')}"/>
@@ -112,9 +121,13 @@
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/lodash.min.4.17.4.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/angular-json-explorer.min.js')}"/>
         
-        
         <script type="text/javascript">
-        var formConfig;
+        var formConfig = '';
+        
+        // start auto save
+        autoSave();
+        // end of start auto save
+        
             angular
         .module("formBuilder", ["ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer"])
         .run(run).config(config);
@@ -161,21 +174,21 @@
             formioComponents.components.editgrid.disabled = true;
             formioComponents.components.survey.disabled = true;
             formioComponents.components.table.disabled = true;
-            
+            debugger;
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';
             if(unescapeJSON!='')
             {
                 $rootScope.form = JSON.parse(unescapeJSON);
-                formConfig = $rootScope.form;
-            }  
+            }
+            formConfig = $rootScope.form;
+            debugger;
             
             $rootScope.renderForm = true;
             
             $rootScope.$on('formUpdate', function(event, form) {
                 angular.merge($rootScope.form, form);
-                
-                /*var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
-                jsonFieldElement.value = JSON.stringify($rootScope.form);*/
+                formConfig = $rootScope.form;
+                debugger;
                 
                 $rootScope.renderForm = false;
                 setTimeout(function() {
@@ -218,14 +231,16 @@
         }
         
         function getUsedFields(){
-            
+			            
             var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
-            jsonFieldElement.value = JSON.stringify(formConfig);
+            debugger;
+            if(formConfig != '' && formConfig != undefined){
+                jsonFieldElement.value = JSON.stringify(formConfig);
+            }
+            debugger;
             
-            // var jsonConfigElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
             var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
             
-            // var config = JSON.parse(jsonConfigElement.value);
             var config = formConfig;
             var fields = collectField(config);
             if(fields.indexOf('Name') == -1){
@@ -253,6 +268,23 @@
             });
             
             return fields;
+        }
+        
+        function autoSave(){
+            var autoSaveInterval = '{!S360_Form_Config__c.AutoSave_Interval__c}' == '' ? 0 : parseInt('{!S360_Form_Config__c.AutoSave_Interval__c}');
+            var isAutoSave = {!S360_Form_Config__c.AutoSave__c};
+            
+            if(!autoSaveInterval || autoSaveInterval == 0){
+                isAutoSave = false;
+            }
+            
+            if(isAutoSave){
+                setInterval(function(){
+                    document.getElementById("autoSaveMessage").innerHTML = "Saving...";
+                    getUsedFields();
+                    autoSaveAF();
+                }, 1000 * 60 * autoSaveInterval);
+            }
         }
         </script>
     </body>

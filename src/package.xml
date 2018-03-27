@@ -47,6 +47,8 @@
         <members>Reservation_Form__c.Tier__c</members>
         <members>Reservation_Form__c.Trading_Ticker__c</members>
         <members>Reservation_Form__c.Transaction_Details__c</members>
+        <members>S360_Form_Config__c.AutoSave_Interval__c</members>
+        <members>S360_Form_Config__c.AutoSave__c</members>
         <members>S360_Form_Config__c.Component_Type__c</members>
         <members>S360_Form_Config__c.Custom_Css__c</members>
         <members>S360_Form_Config__c.Custom_Script__c</members>

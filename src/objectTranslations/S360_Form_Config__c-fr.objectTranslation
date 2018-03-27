@@ -9,6 +9,14 @@
         <value><!-- Form Config --></value>
     </caseValues>
     <fields>
+        <label><!-- AutoSave Interval --></label>
+        <name>AutoSave_Interval__c</name>
+    </fields>
+    <fields>
+        <label><!-- AutoSave --></label>
+        <name>AutoSave__c</name>
+    </fields>
+    <fields>
         <label><!-- Component Type --></label>
         <name>Component_Type__c</name>
         <picklistValues>

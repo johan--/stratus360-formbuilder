@@ -45,10 +45,9 @@
                     if(t.length != 5 && counter <= 25){ // limit to 5 seconds
                         captchaOptionObject(counter, callback);
                     }else{
-                       
-                        if(t.length != 5 && isMobile){
-                            callback(false);
-                        }else{
+                        if(t.length == 6 && !isMobile){
+                            callback(true, t[6]);
+                        }else if(isMobile && t.length == 5){
                             callback(true, t[4]);
                         }
                     }
