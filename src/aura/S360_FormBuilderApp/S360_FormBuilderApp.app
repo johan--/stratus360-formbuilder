@@ -12,6 +12,5 @@
     
     <c:S360_FormBuilderMain aura:id="S360_FormBuilderMain" formConfigName="{!v.formname}"/>
     
-    <!--S360_FA:S360_Base_LookupSObject CompId="test" sObjectAPIName="User" instanceId="test" searchString="" label="lookup"/-->
   
 </aura:application>

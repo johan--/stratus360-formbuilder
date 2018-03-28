@@ -5693,5 +5693,56 @@
         },
         "DefType": "COMPONENT",
         "Format": "XML"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000M371CAC"
+        },
+        "Id": "0Ad0a000000M371CAC",
+        "AuraDefinitionBundleId": "0Ab0a000000PTypCAG",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000PTypCAG"
+            },
+            "DeveloperName": "S360_Base_PrintButton"
+        },
+        "DefType": "COMPONENT",
+        "Format": "XML"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000M376CAC"
+        },
+        "Id": "0Ad0a000000M376CAC",
+        "AuraDefinitionBundleId": "0Ab0a000000PTypCAG",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000PTypCAG"
+            },
+            "DeveloperName": "S360_Base_PrintButton"
+        },
+        "DefType": "CONTROLLER",
+        "Format": "JS"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000M37BCAS"
+        },
+        "Id": "0Ad0a000000M37BCAS",
+        "AuraDefinitionBundleId": "0Ab0a000000PTypCAG",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000PTypCAG"
+            },
+            "DeveloperName": "S360_Base_PrintButton"
+        },
+        "DefType": "HELPER",
+        "Format": "JS"
     }
 ]

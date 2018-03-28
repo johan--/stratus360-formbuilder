@@ -38,7 +38,6 @@
                 "isSignatureEnabled": isSignatureEnabled,
                 "signatureData": canvasDataUrl
             });
-            debugger;
             action.setCallback(this, function(response){
                 
                 if(component.isValid() && response.getState() == 'SUCCESS'){
@@ -56,7 +55,6 @@
             });
             $A.enqueueAction(action);
         }catch(e){
-            debugger;
             child.afterSubmit(sender, 'ERROR', $A.get("$Label.c.S360_base_offline_message"));
         }
     },

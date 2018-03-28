@@ -34,6 +34,7 @@ require('./survey')(app);
 require('./lookup')(app);
 require('./captcha')(app);
 require('./carousel')(app);
+require('./buttonprint')(app);
 
 // Layout
 require('./columns')(app);

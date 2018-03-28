@@ -1,6 +1,16 @@
-public class S360_Form_Builder_Ext {
+global with sharing class S360_Form_Builder_Ext {
     public List<String> objectFields {get; private set;}
     public String jsonConfig {get; set;}
+    public String printAttachmentId {get; set;}
+    public String printAttachmentName {get; set;}
+    public Attachment printAttachment {
+        get {
+            if (printAttachment == null)
+                printAttachment = new Attachment();
+            return printAttachment;
+        }
+        set;
+    }
     
     private S360_FA__S360_Form_Config__c formConfig;
     private Attachment jsonAttachment;
@@ -29,7 +39,8 @@ public class S360_Form_Builder_Ext {
         
         // get json config data from attachment
         jsonConfig = '';
-        Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfig.Id];
+        //Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfig.Id];
+        Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where Name = :('form_' + formConfig.Id)];
         if(tmp.size() > 0){
             jsonAttachment = tmp[0];
             if(tmp[0].Body != null){
@@ -68,5 +79,40 @@ public class S360_Form_Builder_Ext {
     
     public PageReference autoSave(){
         return save();
+    }
+    
+    @RemoteAction
+    public static String doUploadAttachment(String parentId, String attachmentBody, String attachmentName, String attachmentId) {
+        if(attachmentBody != null) {
+            Attachment att = getAttachment(attachmentId);
+            String newBody = '';
+            if(att.Body != null) {
+                newBody = EncodingUtil.base64Encode(att.Body);
+            }
+            newBody += attachmentBody;
+            att.Body = EncodingUtil.base64Decode(newBody);
+            if(attachmentId == null) {
+                System.debug(att.Body);
+                System.debug(parentId);
+                att.Name = attachmentName;
+                att.parentId = parentId;
+            }
+            upsert att;
+            return att.Id;
+        } else {
+            return 'Attachment Body was null';
+        }
+    }
+    
+    private static Attachment getAttachment(String attId) {
+        list<Attachment> attachments = [SELECT Id, Body
+                                        FROM Attachment 
+                                        WHERE Id =: attId];
+        if(attachments.isEmpty()) {
+            Attachment a = new Attachment();
+            return a;
+        } else {
+            return attachments[0];
+        }
     }
 }

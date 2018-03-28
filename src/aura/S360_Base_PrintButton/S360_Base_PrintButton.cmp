@@ -1,0 +1,31 @@
+<aura:component controller="S360_Base_PrintButtonController">
+	    <ltng:require scripts="{!join(',',
+                               $Resource.docx,
+                               $Resource.jszip315)}"
+                      afterScriptsLoaded="{!c.scriptsLoaded}" />
+    
+    <aura:attribute name="TemplateID" type="String" default=""/>
+    <aura:attribute name="DataToInject" type="Object"/>
+    <aura:attribute name="TemplateData" type="String" default=""/>
+    
+    <aura:attribute name="Class" type="String" default=""
+                    description="CSS class to style the button container"/>
+    <aura:attribute name="CompId" type="string" default="ButtonId"	required="true"
+                    description="Unique Id for this component. This id used to identity 
+                                 the component when event fired, exp: when click event fired"/>
+    <aura:attribute name="ButtonLabel" type="string" default="Button Label" required="true"
+                    description="Label to display on button"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+                    description="Hide the button by change display to none"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+                    description="Disable the button"/>
+    
+    <button class="{!'slds-button ' + (v.Class != '' ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}" 
+            disabled="{!v.IsDisabled}" onclick="{!c.onClick}">
+        <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#summary'}" 
+                                Class="slds-button__icon slds-button__icon_left"
+                                Name="summary" Category="utility" Size="x-small"/>
+        {!v.ButtonLabel}
+    </button>
+    
+</aura:component>

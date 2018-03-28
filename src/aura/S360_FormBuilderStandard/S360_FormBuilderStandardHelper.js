@@ -17,6 +17,7 @@
 		
         // check do this object has a parent, if doesn't put this object to the outmost component
         // else check is this object's parent has been created, if yes, put this object to its parent
+        
         if(patternObj.parent == undefined){
             var body = component.get("v.body");
             
@@ -132,6 +133,8 @@
             this.generateInputEmail(component, item);
         }else if(item.type === 'phoneNumber'){
             this.generateInputPhoneNumber(component, item);
+        }else if(item.type === 'buttonprint'){
+            this.generateButtonPrint(component, item);
         }else if(item.type == undefined && formPattern[item['$$hashKey']+''+item['key']].type === 'column_item'){
             this.generateColumnItem(component, item);
         }
@@ -216,7 +219,6 @@
      */
     generateInputPhoneNumber : function(component, config){    
         var serverFieldInfo = component.get('v.FieldInfo');
-        debugger;
         var self = this;
         
         // set value and get it reference
@@ -311,6 +313,36 @@
                 if(!errorMessage){
                     component.set('v.isCaptchaEnabled', true);
                 }
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    
+    /*
+     * Function : display print button
+     * 
+     * 
+     */
+    generateButtonPrint : function(component, config){
+        var self = this;
+        
+        // set value and get it reference
+        var value = component.getReference('v.Data');
+        debugger;
+        
+        $A.createComponent(
+            'c:S360_Base_PrintButton',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "ButtonLabel": config.label,
+                "Class": config.customClass,
+                "IsHidden": config.hidden ? config.hidden : false,
+                "IsDisabled": config.disabled ? config.disabled : false,
+                "TemplateID":config.attachmentId,
+                "DataToInject":value
+            }, 
+            function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             });
     },

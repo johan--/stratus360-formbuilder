@@ -17,6 +17,7 @@ module.exports = function(gulp, plugins) {
       .pipe(gulp.dest('dist/'))
       .on('error', function(err){
         console.log(err);
+
         this.emit('end');
       });
   };
