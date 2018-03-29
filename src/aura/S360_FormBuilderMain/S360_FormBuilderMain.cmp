@@ -1,4 +1,4 @@
-<aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"  
+<aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,lightning:availableForFlowScreens"  
                 controller="S360_Form_Builder_Controller">
 
     <!--Load external resources-->

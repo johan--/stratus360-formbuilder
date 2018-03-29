@@ -1,6 +1,6 @@
 <aura:component controller="S360_Base_PrintButtonController">
 	    <ltng:require scripts="{!join(',',
-                               $Resource.docx,
+                               'https://s360-fa-dev-ed.my.salesforce.com/resource/1522209150000/S360_FA__docx',
                                $Resource.jszip315)}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" />
     
