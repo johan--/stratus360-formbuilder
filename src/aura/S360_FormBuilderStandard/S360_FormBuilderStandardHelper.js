@@ -340,6 +340,7 @@
                 "IsHidden": config.hidden ? config.hidden : false,
                 "IsDisabled": config.disabled ? config.disabled : false,
                 "TemplateID":config.attachmentId,
+                "TemplateName" : config.attachmentName,
                 "DataToInject":value
             }, 
             function(newComponent, status, errorMessage){

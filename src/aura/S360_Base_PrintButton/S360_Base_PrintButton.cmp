@@ -1,10 +1,15 @@
 <aura:component controller="S360_Base_PrintButtonController">
-	    <ltng:require scripts="{!join(',',
+	    <!--ltng:require scripts="{!join(',',
                                'https://s360-fa-dev-ed.my.salesforce.com/resource/1522209150000/S360_FA__docx',
+                               $Resource.jszip315)}"
+                      afterScriptsLoaded="{!c.scriptsLoaded}" /-->
+    <ltng:require scripts="{!join(',',
+                               $Resource.docx,
                                $Resource.jszip315)}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" />
     
     <aura:attribute name="TemplateID" type="String" default=""/>
+    <aura:attribute name="TemplateName" type="String" default=""/>
     <aura:attribute name="DataToInject" type="Object"/>
     <aura:attribute name="TemplateData" type="String" default=""/>
     
