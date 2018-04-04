@@ -1,0 +1,6 @@
+<apex:page standardStylesheets="false" showHeader="false" controller="S360_Base_PrintPDF" renderAs="pdf">
+    <apex:outputText value="{!$CurrentPage.parameters.d}" escape="false"></apex:outputText>
+    
+    <img src="https://www.google.co.id//images/branding/googlelogo/2x/googlelogo_color_120x44dp.png"/>;
+    <table border="1"><tr><td><p><strong><em>fdsf</em></strong></p></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></table>
+</apex:page>

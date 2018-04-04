@@ -341,6 +341,7 @@
                 "IsDisabled": config.disabled ? config.disabled : false,
                 "TemplateID":config.attachmentId,
                 "TemplateName" : config.attachmentName,
+                "PrintType":config.printType,
                 "DataToInject":value
             }, 
             function(newComponent, status, errorMessage){
