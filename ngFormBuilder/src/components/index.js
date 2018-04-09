@@ -35,6 +35,7 @@ require('./lookup')(app);
 require('./captcha')(app);
 require('./carousel')(app);
 require('./buttonprint')(app);
+require('./lightningflow')(app);
 
 // Layout
 require('./columns')(app);

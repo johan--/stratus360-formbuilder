@@ -31843,6 +31843,7 @@ _dereq_('./lookup')(app);
 _dereq_('./captcha')(app);
 _dereq_('./carousel')(app);
 _dereq_('./buttonprint')(app);
+_dereq_('./lightningflow')(app);
 
 // Layout
 _dereq_('./columns')(app);
@@ -31853,7 +31854,121 @@ _dereq_('./panel')(app);
 _dereq_('./table')(app);
 _dereq_('./well')(app);
 
-},{"./address":230,"./button":231,"./buttonprint":232,"./captcha":233,"./carousel":234,"./checkbox":235,"./columns":236,"./components":237,"./container":238,"./content":239,"./currency":240,"./custom":241,"./datagrid":242,"./datetime":243,"./day":244,"./editgrid":245,"./email":246,"./fieldset":247,"./file":248,"./form":249,"./hidden":250,"./htmlelement":251,"./lookup":253,"./number":254,"./page":255,"./panel":256,"./password":257,"./phonenumber":258,"./radio":259,"./resource":260,"./select":261,"./selectboxes":262,"./signature":263,"./survey":264,"./table":265,"./textarea":266,"./textfield":267,"./time":268,"./well":269}],253:[function(_dereq_,module,exports){
+},{"./address":230,"./button":231,"./buttonprint":232,"./captcha":233,"./carousel":234,"./checkbox":235,"./columns":236,"./components":237,"./container":238,"./content":239,"./currency":240,"./custom":241,"./datagrid":242,"./datetime":243,"./day":244,"./editgrid":245,"./email":246,"./fieldset":247,"./file":248,"./form":249,"./hidden":250,"./htmlelement":251,"./lightningflow":253,"./lookup":254,"./number":255,"./page":256,"./panel":257,"./password":258,"./phonenumber":259,"./radio":260,"./resource":261,"./select":262,"./selectboxes":263,"./signature":264,"./survey":265,"./table":266,"./textarea":267,"./textfield":268,"./time":269,"./well":270}],253:[function(_dereq_,module,exports){
+"use strict";
+module.exports = function(app) {
+  app.config([
+    'formioComponentsProvider',
+    function(
+      formioComponentsProvider
+    ) {
+      formioComponentsProvider.register('lightningflow', {
+        title: 'Lightning Flow',
+        template: 'formio/components/lightningflow.html',
+        group: 'advanced',
+        settings: {
+          input: false,
+          label: 'Lighting Flow',
+          flowName: '',
+          flowData: [],
+          variableType: ['String','Number','Currency','Boolean','Picklist','Multipicklist','Date','DateTime','SObject']
+        },
+        viewTemplate: 'formio/componentsView/lightningflow.html',
+        onEdit: ['$scope', function($scope) {
+          $scope.removeColumn = function(index) {
+            $scope.component.flowData.splice(index, 1);
+          };
+          $scope.addColumn = function() {
+            $scope.component.flowData.push({});
+          };
+        }],
+        fbtemplate: 'formio/formbuilder/lightningflow.html',
+        icon: 'fa fa-long-arrow-right',
+        views: [
+        {
+          name: 'Display',
+          template: 'formio/components/lightningflow/display.html'
+        },
+        {
+          name: 'API',
+          template: 'formio/components/common/api.html'
+        }
+        ]  
+      });
+    }
+  ]);
+  app.run([
+    '$templateCache',
+    function($templateCache) {
+      $templateCache.put('formio/components/lightningflow.html',
+       '<div class="form-group">' +
+        '<label>{{component.label}}</label>' +
+        '<div class="form-group" id="inputsLabelPosition">' +
+          '<input type="text" class="form-control"/>' +
+        '</div>'+
+        '<div class="form-group" style="text-align:right" id="inputsLabelPosition">' +
+          '<button type="button" class="btn btn-default" >{{\'Finish\' | formioTranslate}}</button>' +
+        '</div>'+
+       '</div>'
+       );
+
+      $templateCache.put('formio/componentsView/lightningflow.html',
+       '<div class="form-group">' +
+        '<label>{{component.label}}</label>' +
+        '<div class="form-group" id="inputsLabelPosition">' +
+          '<input type="text" class="form-control"/>' +
+        '</div>'+
+        '<div class="form-group" style="text-align:right" id="inputsLabelPosition">' +
+          '<button type="button" class="btn btn-default" >{{\'Finish\' | formioTranslate}}</button>' +
+        '</div>'+
+       '</div>'
+       );
+
+      $templateCache.put('formio/formbuilder/lightningflow.html',
+       '<div class="form-group">' +
+        '<label>{{component.label}}</label>' +
+        '<div class="form-group" id="inputsLabelPosition">' +
+          '<input type="text" class="form-control"/>' +
+        '</div>'+
+        '<div class="form-group" style="text-align:right" id="inputsLabelPosition">' +
+          '<button type="button" class="btn btn-default" >{{\'Finish\' | formioTranslate}}</button>' +
+        '</div>'+
+       '</div>'
+       );
+
+      $templateCache.put('formio/components/lightningflow/display.html',
+       '<ng-form>' +
+         '<form-builder-option property="label"></form-builder-option>' +
+         '<form-builder-option property="flowName" required></form-builder-option>' +
+         '<div class="form-group">' +
+           '<label form-builder-tooltip="Data to initialize the flow if available">{{\'Initial Data\' | formioTranslate}}</label>' +
+           '<table class="table table-condensed">' +
+            '<thead>' +
+               '<tr>' +
+                 '<th class="col-xs-4">{{\'Name\' | formioTranslate}}</th>' +
+                 '<th class="col-xs-3">{{\'Type\' | formioTranslate}}</th>' +
+                 '<th class="col-xs-4">{{\'Value\' | formioTranslate}}</th>' +
+                 '<th class="col-xs-1"></th>' +
+               '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+             '<tr ng-repeat="column in component.flowData">' +
+               '<td class="col-xs-4"><input type="text" class="form-control" ng-model="column.name"/></td>' +
+               '<td class="col-xs-3"><select class="form-control" id="variableType" name="variableType" ng-options="opp for opp in component.variableType" ng-model="column.type"></select></td>' +
+               '<td class="col-xs-4"><input type="text" class="form-control" ng-model="column.value"/></td>' +
+               '<td class="col-xs-1"><button type="button" class="btn btn-danger btn-xs" ng-click="removeColumn($index)" tabindex="-1"><span class="glyphicon glyphicon-remove-circle"></span></button></td>' +
+             '</tr>' +
+            '</tbody>' +
+           '</table>' +
+           '<button type="button" class="btn btn-default" ng-click="addColumn()">{{\'Add Variable\' | formioTranslate}}</button>' +
+         '</div>' +
+       '</ng-form>'
+       );
+    }
+  ]);
+};
+
+},{}],254:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -31980,7 +32095,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],254:[function(_dereq_,module,exports){
+},{}],255:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32064,7 +32179,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],255:[function(_dereq_,module,exports){
+},{}],256:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32085,7 +32200,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],256:[function(_dereq_,module,exports){
+},{}],257:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32196,7 +32311,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],257:[function(_dereq_,module,exports){
+},{}],258:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32272,7 +32387,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],258:[function(_dereq_,module,exports){
+},{}],259:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32362,7 +32477,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],259:[function(_dereq_,module,exports){
+},{}],260:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32442,7 +32557,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],260:[function(_dereq_,module,exports){
+},{}],261:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32547,7 +32662,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],261:[function(_dereq_,module,exports){
+},{}],262:[function(_dereq_,module,exports){
 "use strict";
 var _clone = _dereq_('lodash/clone');
 module.exports = function(app) {
@@ -32813,7 +32928,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/clone":180}],262:[function(_dereq_,module,exports){
+},{"lodash/clone":180}],263:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32896,7 +33011,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],263:[function(_dereq_,module,exports){
+},{}],264:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -32969,7 +33084,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],264:[function(_dereq_,module,exports){
+},{}],265:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -33042,7 +33157,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],265:[function(_dereq_,module,exports){
+},{}],266:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -33114,7 +33229,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],266:[function(_dereq_,module,exports){
+},{}],267:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -33229,7 +33344,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],267:[function(_dereq_,module,exports){
+},{}],268:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -33303,7 +33418,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],268:[function(_dereq_,module,exports){
+},{}],269:[function(_dereq_,module,exports){
 "use strict";
 var _cloneDeep = _dereq_('lodash/cloneDeep');
 var _each = _dereq_('lodash/each');
@@ -33356,7 +33471,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{"lodash/cloneDeep":181,"lodash/each":185}],269:[function(_dereq_,module,exports){
+},{"lodash/cloneDeep":181,"lodash/each":185}],270:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(app) {
   app.config([
@@ -33403,7 +33518,7 @@ module.exports = function(app) {
   ]);
 };
 
-},{}],270:[function(_dereq_,module,exports){
+},{}],271:[function(_dereq_,module,exports){
 "use strict";
 /**
   * These are component options that can be reused
@@ -33774,10 +33889,15 @@ module.exports = {
     label: 'Parent Object',
     placeholder: 'Parent Object',
     tooltip: 'The object you lookup to'
-  }
+  },
+  'flowName': {
+    label: 'Flow Name',
+    placeholder: 'Flow Name',
+    tooltip: 'Lightning flow name you want to run'
+  },
 };
 
-},{}],271:[function(_dereq_,module,exports){
+},{}],272:[function(_dereq_,module,exports){
 "use strict";
 module.exports = {
   actions: [
@@ -33852,7 +33972,7 @@ module.exports = {
   ]
 };
 
-},{}],272:[function(_dereq_,module,exports){
+},{}],273:[function(_dereq_,module,exports){
 "use strict";
 /*eslint max-statements: 0*/
 var _cloneDeep = _dereq_('lodash/cloneDeep');
@@ -34267,7 +34387,7 @@ module.exports = ['debounce', function(debounce) {
   };
 }];
 
-},{"lodash/capitalize":179,"lodash/cloneDeep":181,"lodash/each":185,"lodash/groupBy":189,"lodash/merge":212,"lodash/omitBy":214,"lodash/upperFirst":225}],273:[function(_dereq_,module,exports){
+},{"lodash/capitalize":179,"lodash/cloneDeep":181,"lodash/each":185,"lodash/groupBy":189,"lodash/merge":212,"lodash/omitBy":214,"lodash/upperFirst":225}],274:[function(_dereq_,module,exports){
 "use strict";
 /**
  * Create the form-builder-component directive.
@@ -34283,7 +34403,7 @@ module.exports = [
   }
 ];
 
-},{}],274:[function(_dereq_,module,exports){
+},{}],275:[function(_dereq_,module,exports){
 "use strict";
 'use strict';
 var utils = _dereq_('formiojs/utils');
@@ -34378,7 +34498,7 @@ module.exports = [
   }
 ];
 
-},{"formiojs/utils":3,"lodash/get":188,"lodash/reject":218}],275:[function(_dereq_,module,exports){
+},{"formiojs/utils":3,"lodash/get":188,"lodash/reject":218}],276:[function(_dereq_,module,exports){
 "use strict";
 var _isNumber = _dereq_('lodash/isNumber');
 var _camelCase = _dereq_('lodash/camelCase');
@@ -34732,7 +34852,7 @@ module.exports = [
   }
 ];
 
-},{"lodash/assign":177,"lodash/camelCase":178,"lodash/isNumber":200}],276:[function(_dereq_,module,exports){
+},{"lodash/assign":177,"lodash/camelCase":178,"lodash/isNumber":200}],277:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   'formioElementDirective',
@@ -34757,7 +34877,7 @@ module.exports = [
   }
 ];
 
-},{}],277:[function(_dereq_,module,exports){
+},{}],278:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -34782,7 +34902,7 @@ module.exports = [
   }
 ];
 
-},{}],278:[function(_dereq_,module,exports){
+},{}],279:[function(_dereq_,module,exports){
 "use strict";
 /**
 * This directive creates a field for tweaking component options.
@@ -34866,7 +34986,7 @@ module.exports = ['COMMON_OPTIONS', '$filter', function(COMMON_OPTIONS, $filter)
   };
 }];
 
-},{}],279:[function(_dereq_,module,exports){
+},{}],280:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for editing a component's custom validation.
@@ -34907,7 +35027,7 @@ module.exports = function() {
   };
 };
 
-},{}],280:[function(_dereq_,module,exports){
+},{}],281:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component inputs' label position.
@@ -34949,7 +35069,7 @@ module.exports = function() {
     };
   };
 
-},{}],281:[function(_dereq_,module,exports){
+},{}],282:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's key.
@@ -34995,7 +35115,7 @@ module.exports = function() {
   };
 };
 
-},{}],282:[function(_dereq_,module,exports){
+},{}],283:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's label position.
@@ -35059,7 +35179,7 @@ module.exports = function() {
     };
   };
 
-},{}],283:[function(_dereq_,module,exports){
+},{}],284:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component options' label position.
@@ -35101,7 +35221,7 @@ module.exports = function() {
     };
   };
 
-},{}],284:[function(_dereq_,module,exports){
+},{}],285:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's shortcut.
@@ -35123,7 +35243,7 @@ module.exports = function() {
   };
 };
 
-},{}],285:[function(_dereq_,module,exports){
+},{}],286:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's tags.
@@ -35167,7 +35287,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/map":210}],286:[function(_dereq_,module,exports){
+},{"lodash/map":210}],287:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -35189,7 +35309,7 @@ module.exports = [
   }
 ];
 
-},{}],287:[function(_dereq_,module,exports){
+},{}],288:[function(_dereq_,module,exports){
 "use strict";
 /**
  * A directive for a table builder
@@ -35243,7 +35363,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/merge":212}],288:[function(_dereq_,module,exports){
+},{"lodash/merge":212}],289:[function(_dereq_,module,exports){
 "use strict";
 /**
 * Invokes Bootstrap's popover jquery plugin on an element
@@ -35284,7 +35404,7 @@ module.exports = ['$filter', function($filter) {
   };
 }];
 
-},{}],289:[function(_dereq_,module,exports){
+},{}],290:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -35347,7 +35467,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/camelCase":178,"lodash/map":210}],290:[function(_dereq_,module,exports){
+},{"lodash/camelCase":178,"lodash/map":210}],291:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function() {
   return {
@@ -35384,7 +35504,7 @@ module.exports = function() {
   };
 };
 
-},{}],291:[function(_dereq_,module,exports){
+},{}],292:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function () {
   return {
@@ -35407,7 +35527,7 @@ module.exports = function () {
   };
 }
 
-},{}],292:[function(_dereq_,module,exports){
+},{}],293:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add key-value pair object.
@@ -35480,7 +35600,7 @@ module.exports = function() {
   };
 };
 
-},{}],293:[function(_dereq_,module,exports){
+},{}],294:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for an input mask for default value.
@@ -35530,7 +35650,7 @@ module.exports = function() {
   };
 };
 
-},{"formiojs/utils":3,"vanilla-text-mask":229}],294:[function(_dereq_,module,exports){
+},{"formiojs/utils":3,"vanilla-text-mask":229}],295:[function(_dereq_,module,exports){
 "use strict";
 /*
 * Prevents user inputting invalid api key characters.
@@ -35553,7 +35673,7 @@ module.exports = function() {
   };
 };
 
-},{}],295:[function(_dereq_,module,exports){
+},{}],296:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -35635,7 +35755,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/camelCase":178,"lodash/map":210}],296:[function(_dereq_,module,exports){
+},{"lodash/camelCase":178,"lodash/map":210}],297:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -35757,7 +35877,7 @@ module.exports = ['BuilderUtils', function(BuilderUtils) {
   }
 ];
 
-},{"lodash/camelCase":178,"lodash/difference":184,"lodash/map":210,"lodash/without":226}],297:[function(_dereq_,module,exports){
+},{"lodash/camelCase":178,"lodash/difference":184,"lodash/map":210,"lodash/without":226}],298:[function(_dereq_,module,exports){
 "use strict";
 'use strict';
 
@@ -35916,7 +36036,7 @@ module.exports = ['FormioUtils', function(FormioUtils) {
   };
 }];
 
-},{"lodash/difference":184,"lodash/range":217}],298:[function(_dereq_,module,exports){
+},{"lodash/difference":184,"lodash/range":217}],299:[function(_dereq_,module,exports){
 "use strict";
 // Create an AngularJS service called debounce
 module.exports = ['$timeout','$q', function($timeout, $q) {
@@ -35950,7 +36070,7 @@ module.exports = ['$timeout','$q', function($timeout, $q) {
   };
 }];
 
-},{}],299:[function(_dereq_,module,exports){
+},{}],300:[function(_dereq_,module,exports){
 "use strict";
 /*! ng-formio-builder v2.30.1 | https://unpkg.com/ng-formio-builder@2.30.1/LICENSE.txt */
 /*global window: false, console: false, jQuery: false */
@@ -36132,5 +36252,5 @@ app.run([
 
 _dereq_('./components');
 
-},{"./components":252,"./constants/commonOptions":270,"./constants/formOptions":271,"./directives/formBuilder":272,"./directives/formBuilderComponent":273,"./directives/formBuilderConditional":274,"./directives/formBuilderDnd":275,"./directives/formBuilderElement":276,"./directives/formBuilderList":277,"./directives/formBuilderOption":278,"./directives/formBuilderOptionCustomValidation":279,"./directives/formBuilderOptionInputsLabelPosition":280,"./directives/formBuilderOptionKey":281,"./directives/formBuilderOptionLabelPosition":282,"./directives/formBuilderOptionOptionsLabelPosition":283,"./directives/formBuilderOptionShortcut":284,"./directives/formBuilderOptionTags":285,"./directives/formBuilderRow":286,"./directives/formBuilderTable":287,"./directives/formBuilderTooltip":288,"./directives/headersBuilder":289,"./directives/jsonInput":290,"./directives/labelValidator":291,"./directives/objectBuilder":292,"./directives/textMask":293,"./directives/validApiKey":294,"./directives/valueBuilder":295,"./directives/valueBuilderWithShortcuts":296,"./factories/BuilderUtils":297,"./factories/debounce":298}]},{},[299])(299)
+},{"./components":252,"./constants/commonOptions":271,"./constants/formOptions":272,"./directives/formBuilder":273,"./directives/formBuilderComponent":274,"./directives/formBuilderConditional":275,"./directives/formBuilderDnd":276,"./directives/formBuilderElement":277,"./directives/formBuilderList":278,"./directives/formBuilderOption":279,"./directives/formBuilderOptionCustomValidation":280,"./directives/formBuilderOptionInputsLabelPosition":281,"./directives/formBuilderOptionKey":282,"./directives/formBuilderOptionLabelPosition":283,"./directives/formBuilderOptionOptionsLabelPosition":284,"./directives/formBuilderOptionShortcut":285,"./directives/formBuilderOptionTags":286,"./directives/formBuilderRow":287,"./directives/formBuilderTable":288,"./directives/formBuilderTooltip":289,"./directives/headersBuilder":290,"./directives/jsonInput":291,"./directives/labelValidator":292,"./directives/objectBuilder":293,"./directives/textMask":294,"./directives/validApiKey":295,"./directives/valueBuilder":296,"./directives/valueBuilderWithShortcuts":297,"./factories/BuilderUtils":298,"./factories/debounce":299}]},{},[300])(300)
 });

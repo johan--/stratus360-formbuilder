@@ -2,7 +2,10 @@
                 controller="S360_Form_Builder_Controller">
 
     <!--Load external resources-->
-    <ltng:require scripts="{!$Resource.jsonlogic}"/>
+    <!--ltng:require scripts="{!$Resource.S360_FA__jsonlogic}"/-->
+    
+    <ltng:require scripts="https://raw.githubusercontent.com/tiyolab/js/master/jsonlogic.js"/>
+    
     
     <!-- config attributes -->
     <aura:attribute name="FormConfig" type="Object" default="{}"/>

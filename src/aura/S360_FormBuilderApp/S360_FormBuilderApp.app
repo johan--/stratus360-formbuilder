@@ -1,4 +1,4 @@
-<aura:application access="GLOBAL" implements="forceCommunity:availableForAllPageTypes" template="S360_FA:S360_FormBuilderAppTemplate">
+<aura:application access="GLOBAL" implements="forceCommunity:availableForAllPageTypes" template="S360_FA:S360_FormBuilderAppTemplate" extends="force:slds">
     
     
     <!-- url param attributes -->

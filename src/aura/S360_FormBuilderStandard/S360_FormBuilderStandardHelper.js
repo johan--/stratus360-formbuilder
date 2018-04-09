@@ -135,6 +135,8 @@
             this.generateInputPhoneNumber(component, item);
         }else if(item.type === 'buttonprint'){
             this.generateButtonPrint(component, item);
+        }else if(item.type === 'lightningflow'){
+            this.generateLightningFlow(component, item);
         }else if(item.type == undefined && formPattern[item['$$hashKey']+''+item['key']].type === 'column_item'){
             this.generateColumnItem(component, item);
         }
@@ -343,6 +345,32 @@
                 "TemplateName" : config.attachmentName,
                 "PrintType":config.printType,
                 "DataToInject":value
+            }, 
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    
+    /*
+     * Function : generate lightning flow
+     * 
+     * 
+     */
+    generateLightningFlow : function(component, config){
+        var self = this;
+        
+        // set value and get it reference
+        var value = component.getReference('v.Data');
+        debugger;
+        
+        $A.createComponent(
+            'c:S360_Base_LightningFlow',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "FlowName": config.flowName,
+                "FlowData": config.flowData,
             }, 
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);

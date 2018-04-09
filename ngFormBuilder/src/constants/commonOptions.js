@@ -367,5 +367,10 @@ module.exports = {
     label: 'Parent Object',
     placeholder: 'Parent Object',
     tooltip: 'The object you lookup to'
-  }
+  },
+  'flowName': {
+    label: 'Flow Name',
+    placeholder: 'Flow Name',
+    tooltip: 'Lightning flow name you want to run'
+  },
 };

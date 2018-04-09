@@ -19,6 +19,9 @@
             var script = document.createElement('script');
             script.src = s;
             script.id = 'myscript_' + i;
+            Object.preventExtensions(script);
+            debugger;
+            
             
             /*var observer = new MutationObserver(function(mutations) {
                 if(mutations.length > 0){
@@ -33,13 +36,32 @@
             observer.observe(script, { attributes : true, attributeFilter : ['data-my'] });*/
             
             //script.innerHTML = helper.test(s);
-            document.getElementsByTagName('html')[0].appendChild(script);
+            try {
+                var handler = {
+                    get: function(target, name) {
+                        return name in target ? target[name] : 42;
+                    },
+                    getPrototypeOf(target) {
+                        return target;
+                    }
+                };
+                    
+                var p = new Proxy(script, handler);
+                    
+                console.log(script);
+                debugger;
+                document.head.appendChild(Object.getPrototypeOf(p));
+            }
+            catch(error) {
+              console.error(error);
+            }
+            
             
         });
     },
     
     afterRender: function(component, event, helper){
-        //return;
+        return;
         if(!component.get('v.isRendered')){
             component.set('v.isRendered', true);
             
@@ -48,7 +70,8 @@
             
             scripts.forEach(function(s, i){
                 var script = document.getElementById('myscript_' + i);
-                console.log(helper.test(script.src))
+                console.log(script);
+                debugger;
                 return;
                 script.onload = function() {
                   alert("Script loaded and ready");

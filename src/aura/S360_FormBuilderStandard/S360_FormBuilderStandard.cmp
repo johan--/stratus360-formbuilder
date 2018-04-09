@@ -1,6 +1,6 @@
 <aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
-    <ltng:require styles="{!$Resource.SLDS231 + '/assets/styles/salesforce-lightning-design-system.min.css'}" 
-        afterScriptsLoaded="{!c.afterScriptLoaded}"/>
+    <!--ltng:require styles="{!$Resource.S360_FA__SLDS231 + '/assets/styles/salesforce-lightning-design-system.min.css'}" 
+        afterScriptsLoaded="{!c.afterScriptLoaded}"/-->
     
     
     <!-- component parameter -->

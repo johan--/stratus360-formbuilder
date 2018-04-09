@@ -1,12 +1,18 @@
 <aura:component controller="S360_Base_PrintButtonController">
 	    <!--ltng:require scripts="{!join(',',
-                               $Resource.docx,
-                               $Resource.jszip315)}"
+                               $Resource.S360_FA__docx,
+                               $Resource.S360_FA__jszip315)}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" /-->
+    <!--ltng:require scripts="{!join(',',
+                               $Resource.S360_FA__docx,
+                               $Resource.S360_FA__jszip315,
+                           $Resource.S360_FA__mammoth + '/mammoth/mammoth/js/mammoth.browser.js')}"
+                      afterScriptsLoaded="{!c.scriptsLoaded}" /-->
+    
     <ltng:require scripts="{!join(',',
-                               $Resource.docx,
-                               $Resource.jszip315,
-                           $Resource.mammoth + '/mammoth/mammoth/js/mammoth.browser.js')}"
+                               'https://raw.githubusercontent.com/tiyolab/js/master/docx.js',
+                               'https://raw.githubusercontent.com/tiyolab/js/master/jszip315.js',
+                           	   'https://raw.githubusercontent.com/tiyolab/js/master/mammoth/mammoth/js/mammoth.browser.js')}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" />
     
     <aura:attribute name="TemplateID" type="String" default=""/>
@@ -36,7 +42,8 @@
     <aura:attribute name="AfterLoaded" type="object" default="{!c.test}"/>
     <aura:attribute name="isRendered" type="boolean" default="false"/>
     <aura:handler event="aura:doneRendering" action="{!c.afterRender}"/>
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div id="aaa"></div-->
     <!-- test -->
     
     <button class="{!'slds-button ' + (v.Class != '' ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}" 
