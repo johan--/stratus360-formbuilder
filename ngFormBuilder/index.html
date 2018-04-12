@@ -108,6 +108,7 @@
 
 
   function config(formioComponentsProvider){
+    console.log(formioComponentsProvider);
       /*formioComponentsProvider.register('printbutton', {
         title: 'Print Button',
         template: 'formio/components/printbutton.html',
@@ -143,7 +144,7 @@
   }
 
   function run($rootScope, formioComponents, $timeout, $templateCache, FormioUtils) {
-        console.log(formioComponents);
+        console.log($rootScope);
 
         formioComponents.components.buttonprint.settings.callback = function(scope){
             scope.component.attachmentId = '1';

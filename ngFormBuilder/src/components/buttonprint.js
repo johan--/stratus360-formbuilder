@@ -15,6 +15,12 @@ module.exports = function(app) {
             'PDF'
           ],
           printType: '',
+          availablePrintAction: 
+          {
+            'download' : 'Download',
+            'saveAsAttachment' : 'Save to Attachment'
+          },
+          printAction : '',
           label: 'Print Button',
           attachmentId:'',
           attachmentName:'',
@@ -62,6 +68,10 @@ module.exports = function(app) {
                                 '<div class="form-group">' +
                                   '<label for="printType" form-builder-tooltip="Print mode of this button.">{{\'Print As\' | formioTranslate}}</label>' +
                                   '<select class="form-control" id="printType" name="printType" ng-options="pt | formioTranslate for pt in component.availablePrintType" ng-model="component.printType"></select>' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                  '<label for="printAction" form-builder-tooltip="Print action of this button.">{{\'Print Action\' | formioTranslate}}</label>' +
+                                  '<select class="form-control" id="printAction" name="printAction" ng-options="key as value | formioTranslate for (key, value) in component.availablePrintAction" ng-model="component.printAction"></select>' +
                                 '</div>' +
                                 '<div class="form-group">' +
                                   '<label for="attachmentName" form-builder-tooltip="Template Name">{{\'Template Name\' | formioTranslate}}</label>' +

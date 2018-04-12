@@ -9,7 +9,7 @@ module.exports = function(app) {
         template: 'formio/components/lookup.html',
         group: 'advanced',
         settings: {
-          input: false,
+          input: true,
           dependents: [],
           dependentType: ['String','Other'],
           dependentOperator: [' = ',' != ',' LIKE ']

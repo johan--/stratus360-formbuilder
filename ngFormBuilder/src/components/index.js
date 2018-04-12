@@ -36,6 +36,7 @@ require('./captcha')(app);
 require('./carousel')(app);
 require('./buttonprint')(app);
 require('./lightningflow')(app);
+require('./flowbutton')(app);
 
 // Layout
 require('./columns')(app);
