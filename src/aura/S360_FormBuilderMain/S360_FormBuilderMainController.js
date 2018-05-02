@@ -1,10 +1,17 @@
 ({
 	init : function(component, event, helper) {
+        // test incoming input flow
+        console.log(component.get('v.inputFlow'));
+        debugger;
         
         if(component.get('v.FormConfig').S360_FA__Component_Type__c != undefined){
             component.set('v.componentType', component.get('v.FormConfig').S360_FA__Component_Type__c);
             return;
         }
+        
+        // get availbale flow action
+        helper.getAvailableFlowActions(component);
+        
         var action = component.get('c.getComponentConfig');
         action.setParams({
             "formName": component.get('v.formConfigName') ? component.get('v.formConfigName') : (helper.getUrlParam('formname') ? helper.getUrlParam('formname') : ''),
@@ -52,6 +59,15 @@
     },
     
     handleStandardOnClick: function(component, event, helper){
+        // if onclick event came from lightning flow button
+        if(event.getParam('Payload') && event.getParam('Payload').action == 'FLOW'){
+            
+            helper.navigateFlow(component, event);
+            
+            event.stopPropagation();
+            return;
+        }
+        
         component.get('v.submittedStandardButton').forEach(function(compId){
             if(compId == event.getParam('CompId')){
                 helper.upsert(component);

@@ -41,6 +41,14 @@
         <name>Field__c</name>
     </fields>
     <fields>
+        <label><!-- Flow Returns Data --></label>
+        <name>Flow_Returns_Data__c</name>
+    </fields>
+    <fields>
+        <label><!-- Has Flow Controller --></label>
+        <name>Has_Flow_Controller__c</name>
+    </fields>
+    <fields>
         <label><!-- JSON --></label>
         <name>JSON__c</name>
     </fields>
@@ -59,6 +67,10 @@
     <fields>
         <label><!-- Primary Object --></label>
         <name>Primary_Object__c</name>
+    </fields>
+    <fields>
+        <label><!-- Returned Flow Field --></label>
+        <name>Returned_Flow_Field__c</name>
     </fields>
     <gender><!-- Masculine --></gender>
     <layouts>

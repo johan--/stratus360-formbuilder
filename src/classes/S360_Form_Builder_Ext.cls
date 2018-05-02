@@ -1,7 +1,7 @@
 global with sharing class S360_Form_Builder_Ext {
     public List<String> objectFields {get; private set;}
     public String jsonConfig {get; set;}
-    public String printAttachmentId {get; set;}
+    /*public String printAttachmentId {get; set;}
     public String printAttachmentName {get; set;}
     public Attachment printAttachment {
         get {
@@ -10,7 +10,7 @@ global with sharing class S360_Form_Builder_Ext {
             return printAttachment;
         }
         set;
-    }
+    }*/
     
     private S360_FA__S360_Form_Config__c formConfig;
     private Attachment jsonAttachment;

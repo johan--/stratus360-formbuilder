@@ -1,5 +1,5 @@
 public class S360_Signature_Ctrl {
-    @AuraEnabled
+    /*@AuraEnabled
     public static String uploadSignature(String demoReportId, String b64SignData){
         try {
             //update the att flag
@@ -47,7 +47,7 @@ public class S360_Signature_Ctrl {
             system.debug('Error: '+errorMessage);
             return errorMessage;
         }
-    }
+    }*/
     
     
     @AuraEnabled

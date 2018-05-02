@@ -32,8 +32,11 @@
     <!-- save button id which has submit as its action type -->
     <aura:attribute name="submittedButton" type="string[]"/>
 
-    <!-- Show component when CSS is loaded -->
-    <aura:attribute name="cssLoaded" type="Boolean" default="false"/>
+    <!-- 
+	Show component when CSS is loaded 
+	Set to true because we never call afterScriptsLoaded
+	-->
+    <aura:attribute name="cssLoaded" type="Boolean" default="true"/>
 
     <!-- save button id which has action other than sumbit -->
     <!-- if action equal to event save like this pattern {compAPI : {actionType, actionName, actionTarget}} -->
@@ -46,6 +49,13 @@
     <aura:attribute name="TextMessage" type="String" default=""/>
     <aura:attribute name="ToastType" type="String" default=""/>
     <aura:attribute name="showToast" type="Boolean" default="false"/>
+    
+    <!-- Lightning flow action attribute -->
+    <aura:attribute name="availableFlowAction" type="String[]"/>
+    <aura:attribute name="flowData" type="Object"/>
+    <aura:attribute name="inputFlow" type="String"/>
+    <aura:attribute name="outputFlow" type="String"/>
+    <aura:attribute name="refOutputFlow" type="Object"/>
     
     <!-- registered events -->
     <aura:registerEvent name="S360_FormBuilderEvt" type="c:S360_FormBuilderEvt" />
@@ -81,13 +91,17 @@
         <aura:attribute name="message" type="string" />
     </aura:method>
     
+    <aura:method name="refreshOutputFlowValue" action="{!c.handleRefreshOutputFlowValue}" 
+                 description="refresh output flow value with its real data rather than reference value">
+    </aura:method>
+    
     <!-- this component body store rendered component -->
     
         <div class='slds'>
             {!v.body}
             <c:S360_Base_LoadingCmp aura:id="loading" CompId="loading"/>
             <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" 
-                                  SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
+                                  SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
                                   Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}"/>
             
         </div>

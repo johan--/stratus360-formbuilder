@@ -53,6 +53,10 @@
     },
     
     thumbnailLoaded: function(component, event, helper){
+        if(helper.isIE() != false){
+            component.find('carouselThumbnailsScroller').getElement().style.width = (component.get('v.slidersList').length * component.get('v.thumbnailScrollSize')) + 'px';
+        }
+        
         helper.thumbnailControllButtonManager(component);
         window.onresize = function(){
             component.find('carouselThumbnailsScroller').getElement().style.transform = 'translateX('+ 0 +'px)';
@@ -67,11 +71,23 @@
         var scrollSize = component.get('v.thumbnailScrollSize');
         var size = component.get('v.thumbnailScrollPos');
         
-        if(thumbnailScroller.scrollWidth - Math.abs(size + (scrollSize * -1)) - thumbnailParent.offsetWidth > 0){
-        	size = size + (scrollSize * -1);    
+        var scrollWidth = 0;
+        
+        // if IE
+        if(helper.isIE() != false){
+            scrollWidth = component.get('v.slidersList').length * scrollSize;
         }else{
-            if(thumbnailScroller.scrollWidth - size - thumbnailParent.offsetWidth != 0){
-                size = size + ((thumbnailScroller.scrollWidth - Math.abs(size) - thumbnailParent.offsetWidth) * -1);    
+            scrollWidth = thumbnailScroller.scrollWidth;
+        }
+        
+        
+        if(scrollWidth - Math.abs(size + (scrollSize * -1)) - thumbnailParent.offsetWidth > 0){
+        	size = size + (scrollSize * -1);    
+            
+        }else{
+            if(scrollWidth - size - thumbnailParent.offsetWidth != 0){
+                size = size + ((scrollWidth - Math.abs(size) - thumbnailParent.offsetWidth) * -1);    
+                
             }else{
             	return;    
             }

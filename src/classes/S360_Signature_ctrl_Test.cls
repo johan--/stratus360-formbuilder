@@ -1,23 +1,22 @@
 @isTest
 public class S360_Signature_ctrl_Test {
 	@isTest
-    public static void testuploadSignature(){
-        S360_Form_Config__c test = new S360_Form_Config__c();
-        test.Name = 'test';
-        test.JSON__c = '';
-        test.Primary_Object__c = 'S360_FA__Dummy_Object__c';
-        test.Field__c = '';
-        test.Component_Type__c = 'Custom';
-        test.Custom_Css__c = '';
-        test.Custom_Script__c = '';
-    
-        insert test;
-
-        String testFormName = test.Name;
-        String testRecordId = String.valueOf(test.Id);
-
-        S360_Signature_Ctrl.uploadSignature(test.id, '');
+    public static void testUploadDownloadSignature(){
+        Account a = new Account(Name = 'account');
+        insert a;
         
-        S360_Signature_Ctrl.upsertSignature(test.id, '','');
+        String data = 'test';
+        String result1 = S360_Signature_Ctrl.upsertSignature('', EncodingUtil.base64Encode(blob.valueOf(data)));
+        
+        System.assert(result1 != '');
+        
+        String result2 = S360_Signature_Ctrl.upsertSignature(a.Id, EncodingUtil.base64Encode(blob.valueOf(data)));
+        System.assertEquals('', result2);
+        System.assertEquals(EncodingUtil.base64Encode(blob.valueOf(data)), S360_Signature_Ctrl.getSignature(a.Id));
+        
+        data = 'test2';
+        String result3 = S360_Signature_Ctrl.upsertSignature(a.Id, EncodingUtil.base64Encode(blob.valueOf(data)));
+        System.assertEquals('', result3);
+        System.assertEquals(EncodingUtil.base64Encode(blob.valueOf(data)), S360_Signature_Ctrl.getSignature(a.Id));
     }
 }

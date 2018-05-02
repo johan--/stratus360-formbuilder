@@ -1,4 +1,7 @@
 ({
+    MAX_FILE_SIZE: 11000000, /* 6 000 000 * 3/4 to account for base64 */
+    CHUNK_SIZE: 900000, /* Use a multiple of 4 */
+    BUTTON_LABEL: '',
 	downloadTemplateHelper : function(component) {
         var buttonLabel = component.get('v.ButtonLabel');
         component.set('v.ButtonLabel', 'Downloading template...');
@@ -11,6 +14,8 @@
             if(component.isValid() && response.getState() == 'SUCCESS'){
                 component.set('v.ButtonLabel', buttonLabel);
                 component.set('v.TemplateData', response.getReturnValue());
+            }else{
+                component.set('v.ButtonLabel', 'Failed Download the Template');
             }
         });
         $A.enqueueAction(action);
@@ -29,13 +34,54 @@
         document.body.removeChild(element);
     },
     
+    saveAsAttachment: function(component, file, fileContents){
+        if(!component.get('v.ParentID')){
+            this.showToast(component, 'error', 'Print to Attachment Need a Parent Record');
+            return;
+        }
+        
+        var base64 = fileContents.split(',')[1];
+        var fromPos = 0;
+        var toPos = Math.min(base64.length, fromPos + this.CHUNK_SIZE);
+        // start with the initial chunk
+        this.uploadChunk(component, file, base64, fromPos, toPos, '', this.CHUNK_SIZE);
+        
+        /*var self = this;
+        var base64 = fileContents.split(',')[1];
+        var buttonLabel = component.get('v.ButtonLabel');
+        component.set('v.ButtonLabel', 'Proccessing...');
+        
+        var action = component.get("c.saveTheFile");
+        action.setParams({
+            parentId: component.get('v.ParentID'),
+            fileName: component.get('v.TemplateName'),
+            base64Data: encodeURIComponent(base64), 
+            contentType: file.type
+        });
+ 
+        action.setCallback(this, function(response) {
+            component.set('v.ButtonLabel', buttonLabel);
+            if(component.isValid() && response.getState() == 'SUCCESS'){
+                self.showToast(component, 'success', 'Print to Attachment Success');
+            }else{
+                self.showToast(component, 'error', 'Failed Print to Attachment');
+            }
+        });
+        $A.enqueueAction(action);*/
+    },
+    
     printAsDocx : function(component, event, helper){
         var out = this.injectTheDocx(component, event, helper);
         
         var reader = new FileReader();
         reader.onload = function() {
             var dataUrl = reader.result;
-            helper.download(component, dataUrl);
+            
+            if(component.get('v.PrintAction') === 'download'){
+            	helper.download(component, dataUrl);    
+            }else if(component.get('v.PrintAction') === 'saveAsAttachment'){
+                helper.saveAsAttachment(component, out, dataUrl);
+            }
             
         };
         reader.readAsDataURL(out);
@@ -49,7 +95,6 @@
             var arrayBuffer = reader.result;
             mammoth.convertToHtml({arrayBuffer: arrayBuffer})
             .then(function(result){
-                console.log(result.value)
                 window.open('https://s360-fa-dev-ed--s360-fa.na54.visual.force.com/apex/S360_Base_PrintPDF?d='+encodeURI(self.unEscapeHtml(result.value)), '_blank');
             }).done();
             
@@ -107,28 +152,66 @@
         	.replace(/&#x27;/g, "'");
     },
     
-    
-    /*test*/
-    test:function(theUrl){
-        var xmlhttp;
-        if (window.XMLHttpRequest)
-        {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp=new XMLHttpRequest();
-        }
-        else
-        {// code for IE6, IE5
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange=function()
+    showToast: function(comp, type, message){
+        comp.set('v.TextMessage', message);
+        comp.set('v.ToastType', type);
+        var toastValue = comp.get('v.showToast');
+        if(toastValue)
         {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            {
-                return xmlhttp.responseText;
-            }
+            comp.set('v.showToast',false);
+        }else
+        {
+            comp.set('v.showToast',true);
         }
-        xmlhttp.open("GET", 'https://s360-fa-dev-ed--s360-fa.na54.visual.force.com/resource/1522320358000/S360_FA__docx', false );
-        debugger;
-        xmlhttp.send();
+		
+    },
+    
+    uploadChunk : function(component, file, fileContents, fromPos, toPos, attachId, chunkSize) {
+        var action = component.get("c.saveTheChunk"); 
+        var chunk = fileContents.substring(fromPos, toPos);
+        
+        if(this.BUTTON_LABEL == ''){
+        	this.BUTTON_LABEL = component.get('v.ButtonLabel');    
+        }
+        component.set('v.ButtonLabel', 'Proccessing...');
+
+        action.setParams({
+            parentId: component.get("v.ParentID"),
+            fileName: component.get('v.TemplateName'),
+            base64Data: encodeURIComponent(chunk), 
+            contentType: file.type,
+            fileId: attachId
+        });        
+
+        var self = this;
+        action.setCallback(this, function(a) {
+            var state = a.getState();
+            if(state == "SUCCESS"){
+                attachId = a.getReturnValue();
+                fromPos = toPos;
+                toPos = Math.min(fileContents.length, fromPos + chunkSize); 
+                // recursive method 
+                if(fromPos < toPos) {
+                    self.uploadChunk(component, file, fileContents, fromPos, toPos, attachId, chunkSize); 
+                }else{
+                    component.set('v.ButtonLabel', self.BUTTON_LABEL);
+                    self.BUTTON_LABEL = '';
+                    
+                    self.showToast(component, 'success', 'Print to Attachment Success');
+                    
+                }
+
+            }else if(state == "ERROR"){
+                self.showToast(component, 'error', 'Failed Print to Attachment');
+            }
+        });
+
+        window.setTimeout(
+            $A.getCallback(function() {
+                $A.enqueueAction(action); 
+            }),1000
+        );
+     
     }
     
 })

@@ -10,17 +10,21 @@
                       afterScriptsLoaded="{!c.scriptsLoaded}" /-->
     
     <ltng:require scripts="{!join(',',
-                               'https://raw.githubusercontent.com/tiyolab/js/master/docx.js',
-                               'https://raw.githubusercontent.com/tiyolab/js/master/jszip315.js',
-                           	   'https://raw.githubusercontent.com/tiyolab/js/master/mammoth/mammoth/js/mammoth.browser.js')}"
+                               $Label.c.FormbuilderRepo + 'docx.js',
+                               $Label.c.FormbuilderRepo + 'jszip315.js',
+                           	   $Label.c.FormbuilderRepo + 'mammoth/mammoth/js/mammoth.browser.js',
+                           	   'https://raw.githubusercontent.com/jonathantneal/svg4everybody/master/dist/svg4everybody.min.js')}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" />
     
+    <aura:attribute name="ParentID" type="String" default=""/>
     <aura:attribute name="TemplateID" type="String" default=""/>
     <aura:attribute name="TemplateName" type="String" default=""/>
     <aura:attribute name="DataToInject" type="Object"/>
     <aura:attribute name="TemplateData" type="String" default=""/>
     <aura:attribute name="PrintType" type="String" default=""
                     description="[pdf|docx]"/>
+    <aura:attribute name="PrintAction" type="String" default=""
+                    description="[download|saveAsAttachment]"/>
     
     <aura:attribute name="Class" type="String" default=""
                     description="CSS class to style the button container"/>
@@ -34,24 +38,26 @@
     <aura:attribute name="IsDisabled" type="boolean" default="false"
                     description="Disable the button"/>
     
-    <!-- test -->
-    <!--aura:attribute name="scripts" type="string" default="{!join(',',
-                               $Resource.docx,
-                               $Resource.jszip315,
-                           $Resource.mammoth + '/mammoth/mammoth/js/mammoth.browser.js')}"/>
-    <aura:attribute name="AfterLoaded" type="object" default="{!c.test}"/>
-    <aura:attribute name="isRendered" type="boolean" default="false"/>
-    <aura:handler event="aura:doneRendering" action="{!c.afterRender}"/>
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <div id="aaa"></div-->
-    <!-- test -->
+    <!--Toast Attribute -->
+    <aura:attribute name="TextMessage" type="String" default=""/>
+    <aura:attribute name="ToastType" type="String" default=""/>
+    <aura:attribute name="showToast" type="Boolean" default="false"/>
+    <aura:attribute name="cssLoaded" type="Boolean" default="true"/>
     
-    <button class="{!'slds-button ' + (v.Class != '' ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}" 
+    
+    <button class="{!'slds-button ' + (v.Class ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}" 
             disabled="{!v.IsDisabled}" onclick="{!c.onClick}">
-        <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#summary'}" 
+        <!--c:S360_Base_SvgIconCmp SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS222/assets/icons/utility-sprite/svg/symbols.svg#summary'}" 
                                 Class="slds-button__icon slds-button__icon_left"
-                                Name="summary" Category="utility" Size="x-small"/>
+                                Name="summary" Category="utility" Size="x-small"/-->
+        <c:S360_Base_Icon Path="{!$Label.c.FormbuilderRepo + 'SLDS222/assets/icons/utility/summary_60.png'}" 
+                                Class="slds-button__icon slds-button__icon_left"
+                      			Size="x-small"/>
         {!v.ButtonLabel}
     </button>
+    
+    <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" 
+                                  SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
+                                  Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}"/>
     
 </aura:component>

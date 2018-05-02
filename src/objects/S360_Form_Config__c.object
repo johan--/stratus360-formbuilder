@@ -133,6 +133,22 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Flow_Returns_Data__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Flow Returns Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Has_Flow_Controller__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Has Flow Controller</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>JSON__c</fullName>
         <description>Text Area to hold the JSON to format the Form</description>
         <externalId>false</externalId>
@@ -172,6 +188,15 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Returned_Flow_Field__c</fullName>
+        <externalId>false</externalId>
+        <label>Returned Flow Field</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <label>Form Config</label>
     <listViews>

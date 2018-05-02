@@ -9,6 +9,10 @@
         <name>FormNotFound</name>
     </customLabels>
     <customLabels>
+        <label><!-- FormbuilderRepo --></label>
+        <name>FormbuilderRepo</name>
+    </customLabels>
+    <customLabels>
         <label>fr</label>
         <name>Language</name>
     </customLabels>

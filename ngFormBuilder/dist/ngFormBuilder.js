@@ -31593,14 +31593,26 @@ module.exports = function(app) {
           ],
           inputFields: [],
           selectedInputFields: [],
+          flows: {
+            /*'123': {name:'docx1', returnedFlowField: ['firstname', 'lastname']},
+            '124': {name:'saveDoc', returnedFlowField: ['address', 'hobby']}*/
+          },
+          selectedFlow: '',
+          inputFlowMap: {},
+          refreshListFlowCallback: undefined,
+          refreshFlowButtonLabel: 'Refresh Flow'
         },
         viewTemplate: 'formio/componentsView/flowbutton.html',
         fbtemplate: 'formio/formbuilder/flowbutton.html',
         icon: 'fa fa-arrows-h',
         views: [
           {
-            name: 'FLOW CONFIG',
-            template: 'formio/components/flowbutton/flowconfig.html'
+            name: 'INPUT CONFIG',
+            template: 'formio/components/flowbutton/inputconfig.html'
+          },
+          {
+            name: 'OUTPUT CONFIG',
+            template: 'formio/components/flowbutton/outputconfig.html'
           },
           {
             name: 'API',
@@ -31609,14 +31621,12 @@ module.exports = function(app) {
         ],
         onEdit: ['$scope', function($scope) {
           $scope.refreshField = function() {
-            debugger;
             var rootScope = $scope.findTheRoot($scope);
             var inputFields = [];
 
             if(rootScope.form){
               inputFields = $scope.findInputTypeField(rootScope.form); 
             }
-            debugger;
 
             $scope.component.inputFields = inputFields;
           };
@@ -31646,6 +31656,16 @@ module.exports = function(app) {
             return fields;
           };
 
+          $scope.onSelectedFlowChange = function(){
+            debugger;
+          };
+
+          $scope.refreshListFlow = function(){
+            if($scope.component.refreshListFlowCallback){
+              $scope.component.refreshListFlowCallback($scope);
+            }
+          };
+
         }],
       });
     }
@@ -31665,7 +31685,51 @@ module.exports = function(app) {
             $templateCache.put('formio/formbuilder/flowbutton.html',
                                '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
                               );
-       $templateCache.put('formio/components/flowbutton/flowconfig.html',
+
+        $templateCache.put('formio/components/flowbutton/inputconfig.html',
+          '<ng-form>' +
+          ' <div class="form-group">' +
+          '   <label form-builder-tooltip="Maps the input from other flow">{{\'Map Flow Input\' | formioTranslate}}</label>' +
+          '   <table class="table table-condensed">' +
+          '     <thead>' +
+          '       <tr>' +
+          '         <th class="col-xs-6"><button type="button" class="btn btn-default" ng-click="refreshListFlow()">{{component.refreshFlowButtonLabel | formioTranslate}}</button></th>' +
+          '         <th class="col-xs-6"><button type="button" class="btn btn-default" ng-click="refreshField()">{{\'Refresh\' | formioTranslate}}</button></th>' +
+          '       </tr>' +
+          '       <tr>' +
+          '         <th class="col-xs-6">'+
+          '           <select class="form-control" ng-model="component.selectedFlow" ng-change="onSelectedFlowChange()">'+
+          '             <option ng-repeat="(key, value) in component.flows" value="{{key}}">{{value.name}}</option>'+
+          '           </select>' +
+          '         </th>' +
+          '         <th class="col-xs-6">'+
+          '         </th>' +
+          '       </tr>' +
+          '       <tr>' +
+          '         <th class="col-xs-6">'+
+          '           Returned Flow Fields' +
+          '         </th>' +
+          '         <th class="col-xs-6">'+
+          '           Current Form Fields' +
+          '         </th>' +
+          '       </tr>' +
+          '     </thead>' +
+          '     <tbody>' +
+          '       <tr ng-repeat="row in component.flows[component.selectedFlow].returnedFlowField">' +
+          '         <td class="col-xs-6">'+
+          '           <label>{{row}}</label>' +
+          '         </td>' +
+          '         <td class="col-xs-6">'+
+          '           <select class="form-control" ng-options="f for f in component.inputFields" ng-model="component.inputFlowMap[component.selectedFlow][row]">'+
+          '         </td>' +
+          '       </tr>' +
+          '     </tbody>' +
+          '   </table>' +
+          ' </div>' +
+          '</ng-form>'
+        );
+
+       $templateCache.put('formio/components/flowbutton/outputconfig.html',
           '<ng-form>' +
           ' <div class="form-group">' +
           '   <label form-builder-tooltip="Action that will do by this flow screen">{{\'Screen Action\' | formioTranslate}}</label><br/>' +

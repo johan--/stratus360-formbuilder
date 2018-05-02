@@ -60,6 +60,7 @@
      */
     handleAfterSubmit: function(component, event, helper){
         var params = event.getParam('arguments');
+        debugger;
         if(params){
             // check response status, if error or incomplete, throw it
             if(params.status == 'ERROR'){
@@ -75,6 +76,7 @@
                 	helper.showToast(component, 'success', component.get('v.configMapping')[params.sender].successMessage);    
                 }else{
                     helper.showToast(component, 'success', params.message);
+                    debugger;
                 }
             }
             
@@ -119,5 +121,9 @@
     
     handleShowToast : function(component, event, helper){
         helper.showToast(component, event.getParam('type'), event.getParam('message'));
+    },
+    
+    handleRefreshOutputFlowValue: function(component, event, helper){
+        helper.refreshRealOutputFlowVal(component);
     }
 })

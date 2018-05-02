@@ -137,6 +137,8 @@
             this.generateButtonPrint(component, item);
         }else if(item.type === 'lightningflow'){
             this.generateLightningFlow(component, item);
+        }else if(item.type === 'flowbutton'){
+            this.generateLightningFlowButton(component, item);
         }else if(item.type == undefined && formPattern[item['$$hashKey']+''+item['key']].type === 'column_item'){
             this.generateColumnItem(component, item);
         }
@@ -155,6 +157,9 @@
         component.set('v.Data['+ config.key +']', 
                       component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
         var value = component.getReference('v.Data['+ config.key +']');
+        
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
         
         $A.createComponent(
             'c:S360_Base_InputTextCmp',
@@ -330,7 +335,7 @@
         
         // set value and get it reference
         var value = component.getReference('v.Data');
-        debugger;
+        var parentId = component.getReference('v.Data.Id');
         
         $A.createComponent(
             'c:S360_Base_PrintButton',
@@ -341,10 +346,12 @@
                 "Class": config.customClass,
                 "IsHidden": config.hidden ? config.hidden : false,
                 "IsDisabled": config.disabled ? config.disabled : false,
+                "ParentID" : parentId,
                 "TemplateID":config.attachmentId,
                 "TemplateName" : config.attachmentName,
                 "PrintType":config.printType,
-                "DataToInject":value
+                "DataToInject":value,
+                "PrintAction":config.printAction
             }, 
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -374,6 +381,51 @@
             }, 
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    
+    /*
+     * Function : generate lightning flow
+     * 
+     * 
+     */
+    generateLightningFlowButton : function(component, config){
+        var self = this;
+        
+        $A.createComponent(
+            'c:S360_Base_LightningFlowButton',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "availableFlowAction": component.get('v.availableFlowAction')
+            }, 
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+                // we don't register this button to actionButton so that it will bubble up to S360_FormBuilderMain
+                
+                // check fields that will be output of this flow
+                var refOutputFlow = component.get('v.refOutputFlow');
+                var flowData = component.get('v.flowData');
+                
+                if(!refOutputFlow){
+                    refOutputFlow = {};
+                }
+                
+                if(!flowData){
+                    flowData = {};
+                }
+                
+                config.selectedInputFields.forEach(function(f){
+                    if(flowData[f] == undefined){
+                        flowData[f] = '';   
+                    }
+                    
+                    refOutputFlow[f] = flowData[f];
+                });
+                
+                component.set('v.refOutputFlow', refOutputFlow);
+                component.set('v.flowData', flowData);
             });
     },
     
@@ -1533,5 +1585,39 @@
         }
         
         return tmp;
+    },
+    
+    add2TmpFlowData: function(component, key, value){
+        var flowData = component.get('v.flowData');
+        
+        if(!flowData){
+            flowData = {};
+        }
+        
+        flowData[key] = value;
+        component.set('v.flowData', flowData);
+    },
+    
+    getRefVal: function(component, data){
+        if(data != null && data != undefined){
+        	if(typeof data === 'object' && typeof data.toString === 'function'){
+                var key = data.toString().split(' ')[1].replace("{!", "").replace("}", "");
+                return component.get(key);    
+            }    
+        }
+        
+        return undefined;
+    },
+    
+    refreshRealOutputFlowVal: function(component){
+        var refOutputFlow = component.get('v.refOutputFlow');
+        var outputFlow = {};
+        for(var i in refOutputFlow){
+            if(refOutputFlow.hasOwnProperty(i)){
+                outputFlow[i] = this.getRefVal(component, refOutputFlow[i]);
+            }
+        }
+        
+        component.set('v.outputFlow', JSON.stringify(outputFlow));
     }
 })

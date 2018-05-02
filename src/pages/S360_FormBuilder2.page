@@ -129,8 +129,9 @@
             <div class="visibilityHiddenClass">
                 <apex:inputField value="{!S360_Form_Config__c.Name}"/> <p/>
                 <apex:inputField id="Form_Config_Primary_Object" value="{!S360_Form_Config__c.Primary_Object__c}" /> <p/>
-                <apex:inputText id="Form_Config_JSON" value="{!jsonConfig}" /> <p/>
                 <apex:inputField id="Form_Config_Field" value="{!S360_Form_Config__c.Field__c}" /> <p/>
+                <apex:inputField id="Form_Config_Has_FLow" value="{!S360_Form_Config__c.Has_Flow_Controller__c}" /> <p/>
+                <apex:inputText id="Form_Config_JSON" value="{!jsonConfig}" /> <p/>
                 
                 <!-- load field -->
                 <apex:inputField id="autoSaveInterval" value="{!S360_Form_Config__c.AutoSave_Interval__c}" /> <p/>
@@ -138,13 +139,13 @@
             </div>
             
             <apex:actionFunction name="autoSaveAF" action="{!autoSave}" rerender="autoSaveStatus"/>
-            <apex:outputPanel id="tmpInputPrintTempate">
+            <!--apex:outputPanel id="tmpInputPrintTempate">
                 <div class="visibilityHiddenClass">
                     <apex:inputText id="printTemplateName" value="{!printAttachmentName}" />
                     <apex:inputText id="printTemplateId" value="{!printAttachmentId}" />
                 </div>
                 
-            </apex:outputPanel>
+            </apex:outputPanel-->
         </apex:form>
         
         <div id="inputPrintTempate" style="visibility: hidden;" class="inputPrintTemplateContainer">
@@ -177,6 +178,7 @@
         <script type="text/javascript">
         var formConfig = '';
         var printButtonScope;
+        var hasFlowController = false;
         
         // start auto save
         autoSave();
@@ -292,13 +294,13 @@
         function getUsedFields(){
 			            
             var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
-            debugger;
+            
             if(formConfig != '' && formConfig != undefined){
                 jsonFieldElement.value = JSON.stringify(formConfig);
             }
-            debugger;
             
             var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
+            var formHasFlowController = document.getElementById('j_id0:j_id2:Form_Config_Has_FLow');
             
             var config = formConfig;
             var fields = collectField(config);
@@ -307,12 +309,19 @@
                // fields.push('Name');
             }
             fieldsConfig.value = fields.join(',');
+            formHasFlowController.checked  = hasFlowController;
         }
         
         function collectField(data){
             var acceptedFields = {!objectFields};
             var fields = [];
             data.components.forEach(function(cmp){
+                //check is form has flow controller
+                if(cmp.type === 'flowbutton'){
+                    hasFlowController = true;
+                }
+                
+                //collect fields
                 if(cmp.type == 'columns'){
                     cmp.columns.forEach(function(col){
                         fields = fields.concat(collectField(col));
@@ -342,6 +351,9 @@
                     document.getElementById("autoSaveMessage").innerHTML = "Saving...";
                     getUsedFields();
                     autoSaveAF();
+                    
+                    // restart form has flow controller value
+                    hasFlowController = false;
                 }, 1000 * 60 * autoSaveInterval);
             }
         }

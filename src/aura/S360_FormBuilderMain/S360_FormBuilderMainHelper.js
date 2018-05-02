@@ -43,7 +43,7 @@
                 if(component.isValid() && response.getState() == 'SUCCESS'){
                     if(response.getReturnValue().status == true){
                         // refresh the data
-                        component.set('v.Data', response.getReturnValue().data);
+                        // component.set('v.Data', response.getReturnValue().data);
                     	child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));    
                     }else{
                         child.afterSubmit(sender, 'ERROR', response.getReturnValue().message);
@@ -126,5 +126,31 @@
         hl.getContext('2d').putImageData(cut, 0,0);
         
         return hl.toDataURL();
+    },
+    
+    
+    getAvailableFlowActions : function(component){
+        var availableFlowAction = component.get('v.availableFlowAction');
+        var availableActions = component.get('v.availableActions');
+        debugger;
+        if(availableActions){
+        	for (var i = 0; i < availableActions.length; i++) {
+                availableFlowAction.push(availableActions[i]);
+            }
+            
+            component.set('v.availableFlowAction', availableFlowAction);
+        }
+        
+    },
+    
+    navigateFlow: function(component, event){
+        // refresh output flow value with its real data
+        if(event.getParam('Payload').payload === 'NEXT'){
+            var child = component.find('S360_FormBuilderStandard');
+            child.refreshOutputFlowValue();
+        }
+        
+        var navigate = component.get('v.navigateFlow');
+        navigate(event.getParam('Payload').payload);
     }
 })

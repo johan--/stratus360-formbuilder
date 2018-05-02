@@ -9,6 +9,13 @@
         <value>Form is not found.</value>
     </labels>
     <labels>
+        <fullName>FormbuilderRepo</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FormbuilderRepo</shortDescription>
+        <value>https://raw.githubusercontent.com/Stratus360/formbuilder.repo/master/</value>
+    </labels>
+    <labels>
         <fullName>Language</fullName>
         <categories>FA</categories>
         <language>en_US</language>

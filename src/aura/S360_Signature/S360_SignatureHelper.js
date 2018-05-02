@@ -29,7 +29,7 @@
         this.getSignature(component);
     },
     handleSaveSignature : function(component, event) {
-        var action = component.get("c.uploadSignature");
+        var action = component.get("c.upsertSignature");
         var sig = component.get("v.signaturePad");
         action.setParams({
             "demoReportId": component.get("v.recordId"),
