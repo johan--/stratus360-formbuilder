@@ -131,6 +131,8 @@
                 <apex:inputField id="Form_Config_Primary_Object" value="{!S360_Form_Config__c.Primary_Object__c}" /> <p/>
                 <apex:inputField id="Form_Config_Field" value="{!S360_Form_Config__c.Field__c}" /> <p/>
                 <apex:inputField id="Form_Config_Has_FLow" value="{!S360_Form_Config__c.Has_Flow_Controller__c}" /> <p/>
+                <apex:inputField id="SelectedInputFieldsInFlow" value="{!S360_Form_Config__c.Returned_Flow_Field__c}" /> <p/>
+                <apex:inputField id="InputFlowMap" value="{!S360_Form_Config__c.Input_Flow_Map__c}" /> <p/>
                 <apex:inputText id="Form_Config_JSON" value="{!jsonConfig}" /> <p/>
                 
                 <!-- load field -->
@@ -169,16 +171,24 @@
             </div>
         </div>
         
+        <apex:includeScript value="{!URLFOR($Resource.jsforce170)}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/ckeditor.4.5.11.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/signature_pad.min.1.5.3.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/lodash.min.4.17.4.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/angular-json-explorer.min.js')}"/>
         
+        
         <script type="text/javascript">
         var formConfig = '';
         var printButtonScope;
         var hasFlowController = false;
+        var selectedInputFields = [];
+        var inputFlowMap = '';
+        
+        // connect the jsforce
+        var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
+
         
         // start auto save
         autoSave();
@@ -236,6 +246,30 @@
             formioComponents.components.buttonprint.settings.callback = function(scope){
                 document.getElementById('inputPrintTempate').style.visibility = "visible";
                 printButtonScope = scope;
+            }
+            
+            // handle flowbutton refreshListFlowCallback
+            formioComponents.components.flowbutton.settings.refreshListFlowCallback = function(scope){
+                var refreshFlowButtonLabel = scope.component.refreshFlowButtonLabel;
+                scope.component.refreshFlowButtonLabel = 'Refreshing...';
+                JSFORCE_CONN.query('SELECT Id, Name, S360_FA__JSON__c, S360_FA__Returned_Flow_Field__c from S360_FA__S360_Form_Config__c where S360_FA__Has_Flow_Controller__c = true ', function(err, res) {
+                    if (err) { 
+                        return console.log(err); 
+                    }
+                    
+                    var flow = {};
+                    for(var i = 0; i < res.records.length; i++){
+                        flow[res.records[i].Id] = {
+                            name: res.records[i].Name,
+                            returnedFlowField: res.records[i].S360_FA__Returned_Flow_Field__c? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []
+                        }
+                    }
+                    
+                    scope.component.flows = flow;
+                    scope.component.refreshFlowButtonLabel = refreshFlowButtonLabel;
+                  
+                });
+
             }
             
             
@@ -301,6 +335,8 @@
             
             var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
             var formHasFlowController = document.getElementById('j_id0:j_id2:Form_Config_Has_FLow');
+            var selectedInputFieldsInFlow = document.getElementById('j_id0:j_id2:SelectedInputFieldsInFlow');
+            var InputFlowMapField = document.getElementById('j_id0:j_id2:InputFlowMap');
             
             var config = formConfig;
             var fields = collectField(config);
@@ -310,6 +346,8 @@
             }
             fieldsConfig.value = fields.join(',');
             formHasFlowController.checked  = hasFlowController;
+            selectedInputFieldsInFlow.value = selectedInputFields;
+            InputFlowMapField.value = inputFlowMap;
         }
         
         function collectField(data){
@@ -319,6 +357,25 @@
                 //check is form has flow controller
                 if(cmp.type === 'flowbutton'){
                     hasFlowController = true;
+                    // get selected input fields
+                    selectedInputFields = cmp.selectedInputFields;
+                    if(cmp.selectedFlow){
+                        debugger;
+                        var mapping = cmp.inputFlowMap[cmp.selectedFlow];
+                        var newMapping = {};
+                        
+                        for(var key in mapping){
+                            if(mapping.hasOwnProperty(key)){
+                                newMapping[mapping[key]] = key;
+                            }
+                        }
+                        
+                        inputFlowMap = JSON.stringify(newMapping);
+                    }
+                    console.log(cmp.inputFlowMap);
+                    console.log(cmp.selectedFlow);
+                    
+                    
                 }
                 
                 //collect fields
@@ -353,7 +410,11 @@
                     autoSaveAF();
                     
                     // restart form has flow controller value
+                    // and it selected input fields;
+                    // and input flow mapping
                     hasFlowController = false;
+                    selectedInputFields = [];
+                    inputFlowMap = '';
                 }, 1000 * 60 * autoSaveInterval);
             }
         }

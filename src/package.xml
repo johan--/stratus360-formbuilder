@@ -53,9 +53,13 @@
         <members>S360_Form_Config__c.Custom_Css__c</members>
         <members>S360_Form_Config__c.Custom_Script__c</members>
         <members>S360_Form_Config__c.Field__c</members>
+        <members>S360_Form_Config__c.Flow_Returns_Data__c</members>
+        <members>S360_Form_Config__c.Has_Flow_Controller__c</members>
+        <members>S360_Form_Config__c.Input_Flow_Map__c</members>
         <members>S360_Form_Config__c.JSON__c</members>
         <members>S360_Form_Config__c.Language__c</members>
         <members>S360_Form_Config__c.Primary_Object__c</members>
+        <members>S360_Form_Config__c.Returned_Flow_Field__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -130,8 +134,16 @@
         <members>Jquery224</members>
         <members>SLDS222</members>
         <members>SLDS231</members>
+        <members>SignaturePad</members>
         <members>bootstrap400beta2</members>
+        <members>carousel_left</members>
+        <members>carousel_right</members>
+        <members>docx</members>
         <members>formio</members>
+        <members>jsforce170</members>
+        <members>jsonlogic</members>
+        <members>jszip315</members>
+        <members>mammoth</members>
         <members>ngFormBuilder</members>
         <name>StaticResource</name>
     </types>

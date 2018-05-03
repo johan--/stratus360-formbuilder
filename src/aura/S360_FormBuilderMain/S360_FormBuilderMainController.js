@@ -1,8 +1,8 @@
 ({
 	init : function(component, event, helper) {
         // test incoming input flow
-        console.log(component.get('v.inputFlow'));
-        debugger;
+        // console.log(component.get('v.inputFlow'));
+        // debugger;
         
         if(component.get('v.FormConfig').S360_FA__Component_Type__c != undefined){
             component.set('v.componentType', component.get('v.FormConfig').S360_FA__Component_Type__c);
@@ -31,7 +31,7 @@
                         fieldInfo = res.fieldInfo;
                     }
                     
-                    data = helper.populateData(formConfig, data);
+                    data = helper.populateData(component, formConfig, data);
                     debugger;
                     component.set('v.Data', data);
                     component.set('v.FieldInfo', fieldInfo);

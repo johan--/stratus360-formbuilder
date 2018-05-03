@@ -59,7 +59,20 @@
         }
     },
     
-    populateData : function(formConfig, data){
+    populateData : function(component, formConfig, data){
+        // convert the inputFlowMap to json data
+        var inputFlowMap = {};
+        if(formConfig.S360_FA__Input_Flow_Map__c){
+        	inputFlowMap = JSON.parse(formConfig.S360_FA__Input_Flow_Map__c);    
+        }
+        
+        // convert string data from previous flow to json
+        var inputFlowData = {};
+        if(component.get('v.inputFlow')){
+         	inputFlowData = JSON.parse(component.get('v.inputFlow'));   
+        }
+        debugger;
+        
         var item = {
             'sobjectType': formConfig.S360_FA__Primary_Object__c,
             'Id': (data != undefined && data['Id']) ? data['Id'] : undefined,
@@ -72,6 +85,11 @@
                     item[field] = data[field];
                 }else{
                     item[field] = '';
+                }
+                
+                // if we have the data from flow, than use that data
+                if(inputFlowMap[field]){
+                    item[field] = inputFlowMap[field] ? inputFlowData[inputFlowMap[field]] ? inputFlowData[inputFlowMap[field]] : item[field] : item[field];
                 }
                 
                 // if type refference

@@ -49,6 +49,10 @@
         <name>Has_Flow_Controller__c</name>
     </fields>
     <fields>
+        <label><!-- Input Flow Map --></label>
+        <name>Input_Flow_Map__c</name>
+    </fields>
+    <fields>
         <label><!-- JSON --></label>
         <name>JSON__c</name>
     </fields>

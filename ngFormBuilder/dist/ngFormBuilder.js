@@ -31594,8 +31594,8 @@ module.exports = function(app) {
           inputFields: [],
           selectedInputFields: [],
           flows: {
-            /*'123': {name:'docx1', returnedFlowField: ['firstname', 'lastname']},
-            '124': {name:'saveDoc', returnedFlowField: ['address', 'hobby']}*/
+            '123': {name:'docx1', returnedFlowField: ['firstname', 'lastname']},
+            '124': {name:'saveDoc', returnedFlowField: ['address', 'hobby']}
           },
           selectedFlow: '',
           inputFlowMap: {},
