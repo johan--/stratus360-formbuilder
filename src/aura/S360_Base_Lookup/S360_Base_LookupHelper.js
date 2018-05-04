@@ -45,12 +45,12 @@
         // Define the callback
         action.setCallback(this, function(response) {
             var state = response.getState();
-
             // Callback succeeded
             if (cmp.isValid() && state === "SUCCESS")
             {
                 // Get the search matches
                 var matches = response.getReturnValue();
+                console.log(matches);
                 
                 // If we have no matches, return nothing
                 if (matches.length == 0)
@@ -117,7 +117,7 @@
         updateEvent.setParams({
             "sObjectId" : objectId, 
             "instanceId" : instanceId,
-            "sObject": whichObject
+            "payload": whichObject
         });
 
         // Fire the event

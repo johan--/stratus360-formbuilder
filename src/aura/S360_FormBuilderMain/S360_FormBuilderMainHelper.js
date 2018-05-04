@@ -71,7 +71,10 @@
         if(component.get('v.inputFlow')){
          	inputFlowData = JSON.parse(component.get('v.inputFlow'));   
         }
-        debugger;
+        
+        console.log('here');
+        console.log(inputFlowData);
+        console.log(inputFlowMap);
         
         var item = {
             'sobjectType': formConfig.S360_FA__Primary_Object__c,
@@ -87,23 +90,32 @@
                     item[field] = '';
                 }
                 
-                // if we have the data from flow, than use that data
-                if(inputFlowMap[field]){
-                    item[field] = inputFlowMap[field] ? inputFlowData[inputFlowMap[field]] ? inputFlowData[inputFlowMap[field]] : item[field] : item[field];
-                }
-                
                 // if type refference
                 if(data != undefined && data.hasOwnProperty(field.substr(0, field.lastIndexOf("__c")) + '__r')){
-                    field = field.substr(0, field.lastIndexOf("__c")) + '__r';
-                    if(data != undefined && data[field]){
-                        item[field] = data[field];
+                    var nfield = field.substr(0, field.lastIndexOf("__c")) + '__r';
+                    if(data != undefined && data[nfield]){
+                        item[nfield] = data[nfield];
                     }else{
-                        item[field] = '';
+                        item[nfield] = '';
                     }
                 }
                 
+                // if we have the data from flow, than use that data
+                var refFieldFromPrevFlow = inputFlowMap[field];
+                if(refFieldFromPrevFlow){
+                    item[field] = refFieldFromPrevFlow ? inputFlowData[refFieldFromPrevFlow] ? inputFlowData[refFieldFromPrevFlow] : item[field] : item[field];
+                    
+                    // if our data is lookup
+                    var lookupMappingField = refFieldFromPrevFlow.substr(0, refFieldFromPrevFlow.lastIndexOf("__c")) + '__r';
+                    if(inputFlowData[lookupMappingField]){
+                        item[lookupMappingField] = inputFlowData[lookupMappingField];
+                    }
+                }
             });    
         }
+        
+        console.log('here');
+        console.log(item);
         
         return item;
     },

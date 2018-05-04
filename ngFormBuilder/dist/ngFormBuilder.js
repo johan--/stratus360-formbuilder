@@ -31592,10 +31592,13 @@ module.exports = function(app) {
             {label: 'Custom', value: 'custom'}
           ],
           inputFields: [],
+          inputFieldDetails: {},
           selectedInputFields: [],
+          selectedInputFieldDetails: {},
           flows: {
-            '123': {name:'docx1', returnedFlowField: ['firstname', 'lastname']},
-            '124': {name:'saveDoc', returnedFlowField: ['address', 'hobby']}
+            /*'123': {name:'docx1', returnedFlowField: {
+                'firstname':{key: 'firstname', type: 'textfield'}, 
+                'lastname' :{key: 'lastname', type: 'textfield'}}},*/
           },
           selectedFlow: '',
           inputFlowMap: {},
@@ -31620,6 +31623,17 @@ module.exports = function(app) {
           }
         ],
         onEdit: ['$scope', function($scope) {
+          $scope.setSelectedInputFieldsProxy = function() {
+            $scope.$watch('component.selectedInputFields', function(value) {
+              var details = {};
+              value.forEach(function(val){
+                details[val] = $scope.component.inputFieldDetails[val];
+
+              });
+              $scope.component.selectedInputFieldDetails = details;
+            });
+          };
+
           $scope.refreshField = function() {
             var rootScope = $scope.findTheRoot($scope);
             var inputFields = [];
@@ -31649,6 +31663,11 @@ module.exports = function(app) {
                 }else if(cmp.type == 'fieldset' || cmp.type == 'well' || cmp.type == 'panel'){
                     fields = fields.concat($scope.findInputTypeField(cmp));
                 }else if(cmp.input){
+                    $scope.component.inputFieldDetails[cmp.key] = {
+                      key: cmp.key,
+                      type: cmp.type
+                    }
+
                     fields.push(cmp.key);
                 }
             });
@@ -31717,10 +31736,10 @@ module.exports = function(app) {
           '     <tbody>' +
           '       <tr ng-repeat="row in component.flows[component.selectedFlow].returnedFlowField">' +
           '         <td class="col-xs-6">'+
-          '           <label>{{row}}</label>' +
+          '           <label>{{row.key}}</label>' +
           '         </td>' +
           '         <td class="col-xs-6">'+
-          '           <select class="form-control" ng-options="f for f in component.inputFields" ng-model="component.inputFlowMap[component.selectedFlow][row]">'+
+          '           <select class="form-control" ng-options="f for f in component.inputFields" ng-model="component.inputFlowMap[component.selectedFlow][row.key]">'+
           '         </td>' +
           '       </tr>' +
           '     </tbody>' +
@@ -31731,6 +31750,7 @@ module.exports = function(app) {
 
        $templateCache.put('formio/components/flowbutton/outputconfig.html',
           '<ng-form>' +
+          ' <div ng-init="setSelectedInputFieldsProxy()"></div>'+
           ' <div class="form-group">' +
           '   <label form-builder-tooltip="Action that will do by this flow screen">{{\'Screen Action\' | formioTranslate}}</label><br/>' +
           '   <label>' +
@@ -31761,6 +31781,7 @@ module.exports = function(app) {
           '   <label form-builder-tooltip="Which field you want to pass through">{{\'Field to Pass\' | formioTranslate}}</label>' +
           '   <button type="button" class="btn btn-default" ng-click="refreshField()">{{\'Refresh\' | formioTranslate}}</button>' +
           '   <select class="form-control" id="inputSelect" name="inputSelect" ng-options="f for f in component.inputFields" ng-model="component.selectedInputFields" multiple>'+
+          //'   <select class="form-control" id="inputSelect" name="inputSelect" ng-options="value as key for (key, value) in component.inputFields" ng-model="component.selectedInputFields" multiple>'+
           ' </div>' +
           '</ng-form>'
         );
@@ -32636,7 +32657,8 @@ module.exports = function(app) {
           }*/
         ],
         settings:{
-          inputMask: ''
+          inputMask: '',
+          input: true
         },
         documentation: 'http://help.form.io/userguide/#phonenumber'
       });
