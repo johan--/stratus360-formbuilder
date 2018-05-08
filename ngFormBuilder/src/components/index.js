@@ -37,6 +37,7 @@ require('./carousel')(app);
 require('./buttonprint')(app);
 require('./lightningflow')(app);
 require('./flowbutton')(app);
+require('./recordtype')(app);
 
 // Layout
 require('./columns')(app);

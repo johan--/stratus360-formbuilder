@@ -56,7 +56,7 @@ module.exports = function(app) {
             var inputFields = [];
 
             if(rootScope.form){
-              inputFields = $scope.findInputTypeField(rootScope.form); 
+              inputFields = $scope.findInputTypeField(rootScope.form);
             }
 
             $scope.component.inputFields = inputFields;
@@ -108,11 +108,11 @@ module.exports = function(app) {
       $templateCache.put('formio/components/flowbutton.html',
                                '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
                               );
-            
+
             $templateCache.put('formio/componentsView/flowbutton.html',
                                '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
                               );
-            
+
             $templateCache.put('formio/formbuilder/flowbutton.html',
                                '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
                               );
