@@ -105,7 +105,10 @@
         var field = event.getParam('instanceId');
         var refField = field.substr(0, field.lastIndexOf("__c")) + '__r';
         var data = component.get('v.Data');
+        
+        console.log(event.getParams());
         data[field] = event.getParam('sObjectId');
+        data[refField] = event.getParam('payload');
         
         component.set('v.Data', data);
     },
@@ -114,7 +117,9 @@
         var field = event.getParam('instanceId');
         var refField = field.substr(0, field.lastIndexOf("__c")) + '__r';
         var data = component.get('v.Data');
+        
         data[field] = '';
+        data[refField] = '';
         
         component.set('v.Data', data);
     },

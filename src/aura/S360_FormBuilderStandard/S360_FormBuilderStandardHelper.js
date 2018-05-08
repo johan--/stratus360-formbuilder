@@ -199,6 +199,9 @@
                       component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
         var value = component.getReference('v.Data['+ config.key +']');
         
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
+        
         $A.createComponent(
             'c:S360_Base_InputEmail',
             {
@@ -233,6 +236,9 @@
                       component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
         var value = component.getReference('v.Data['+ config.key +']');
         
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
+        
         $A.createComponent(
             'c:S360_Base_InputPhone',
             {
@@ -262,8 +268,17 @@
         var serverFieldInfo = component.get('v.FieldInfo');
         var self = this;
         
-        // set value and get it reference
+        // get it reference
         var field = config.key.substr(0, config.key.lastIndexOf("__c")) + '__r';
+        
+        var value1 = component.getReference('v.Data['+ config.key +']');
+        var value2 = component.getReference('v.Data['+ field +']');
+        
+        debugger;
+        
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value1);
+        this.add2TmpFlowData(component, field, value2);
         
         // build dependent field
         var dependantField = [];
@@ -408,6 +423,8 @@
                 var refOutputFlow = component.get('v.refOutputFlow');
                 var flowData = component.get('v.flowData');
                 
+                debugger;
+                
                 if(!refOutputFlow){
                     refOutputFlow = {};
                 }
@@ -422,7 +439,24 @@
                     }
                     
                     refOutputFlow[f] = flowData[f];
+                    
+                    debugger;
+                    
+                    // if it is a lookup
+                    if(config.selectedInputFieldDetails[f].type === 'lookup'){
+                        if(f.lastIndexOf("__c") == f.length - 3){
+                         	f = f.substr(0, f.lastIndexOf("__c")) + '__r';
+                            if(flowData[f] == undefined){
+                                flowData[f] = '';   
+                            }
+                            
+                            refOutputFlow[f] = flowData[f];   
+                        }
+                    }
                 });
+                
+                console.log('refOutputFlow');
+                console.log(refOutputFlow);
                 
                 component.set('v.refOutputFlow', refOutputFlow);
                 component.set('v.flowData', flowData);
@@ -1589,6 +1623,9 @@
     
     add2TmpFlowData: function(component, key, value){
         var flowData = component.get('v.flowData');
+        
+        console.log('add2TmpFlowData');
+        console.log(key);
         
         if(!flowData){
             flowData = {};

@@ -188,7 +188,6 @@
         
         // connect the jsforce
         var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
-
         
         // start auto save
         autoSave();
@@ -257,13 +256,25 @@
                         return console.log(err); 
                     }
                     
+                    console.log(res.records);
+                    
                     var flow = {};
                     for(var i = 0; i < res.records.length; i++){
+                        var arrayOfreturnedFlowField = res.records[i].S360_FA__Returned_Flow_Field__c ? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []
+                        var returnedFlowField = {};
+                        arrayOfreturnedFlowField.forEach(function(f){
+                            returnedFlowField[f] = {
+                                'key': f,
+                                'type': ''
+                            }
+                        });
                         flow[res.records[i].Id] = {
-                            name: res.records[i].Name,
-                            returnedFlowField: res.records[i].S360_FA__Returned_Flow_Field__c? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []
+                            'name': res.records[i].Name,
+                            'returnedFlowField': returnedFlowField//res.records[i].S360_FA__Returned_Flow_Field__c? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []
                         }
                     }
+                    console.log(flow);
+                    debugger;
                     
                     scope.component.flows = flow;
                     scope.component.refreshFlowButtonLabel = refreshFlowButtonLabel;
@@ -359,6 +370,9 @@
                     hasFlowController = true;
                     // get selected input fields
                     selectedInputFields = cmp.selectedInputFields;
+                    
+                    
+                    // get mapping previous flow form field with the current field
                     if(cmp.selectedFlow){
                         debugger;
                         var mapping = cmp.inputFlowMap[cmp.selectedFlow];
@@ -367,6 +381,11 @@
                         for(var key in mapping){
                             if(mapping.hasOwnProperty(key)){
                                 newMapping[mapping[key]] = key;
+                                
+                                //if lookup
+                                /*if(cmp.inputFieldDetails[mapping[key]].type === 'lookup'){
+                                    
+                                }*/
                             }
                         }
                         
