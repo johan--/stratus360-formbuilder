@@ -1,0 +1,19 @@
+<aura:component >
+
+    <aura:attribute name="CompId" type="string" default="ButtonId"/>
+    <aura:attribute name="ButtonLabel" type="string" default="Button Label"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+
+    <!-- additional attributes -->
+    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="ButtonClass" type="String" default=""/>
+
+    <!-- additional event registration -->
+    <aura:registerEvent name="OnClick" type="c:onClick" />
+
+    <div class="{!v.Class + ' ' + (v.IsHidden ? 'slds-hide' : 'slds-show')}">
+        <button class="{!'slds-button ' + (v.ButtonClass != '' ? v.ButtonClass : 'slds-button--neutral')}" disabled="{!v.IsDisabled}" onclick="{!c.onClick}">{!v.ButtonLabel}</button>
+    </div>
+
+</aura:component>
