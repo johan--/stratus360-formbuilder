@@ -31,7 +31,8 @@ module.exports = function(app) {
           }*/
         ],
         settings:{
-          inputMask: ''
+          inputMask: '',
+          input: true
         },
         documentation: 'http://help.form.io/userguide/#phonenumber'
       });
