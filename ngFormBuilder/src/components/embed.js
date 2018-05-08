@@ -9,6 +9,7 @@ module.exports = function(app) {
           template: 'formio/components/embed.html',
           group: 'advanced',
           settings: {
+            name:'embed',
             input: false,
             dependents: [],
           },
