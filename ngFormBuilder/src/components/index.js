@@ -13,7 +13,7 @@ require('./radio')(app);
 require('./htmlelement')(app);
 require('./content')(app);
 require('./button')(app);
-
+require('./embed')(app);
 // Special
 require('./email')(app);
 require('./phonenumber')(app);
