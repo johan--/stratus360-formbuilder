@@ -66,7 +66,7 @@ module.exports = function(app) {
         },
         viewTemplate: 'formio/componentsView/recordtype.html',
         fbtemplate: 'formio/formbuilder/recordtype.html',
-        icon: 'fa fa-arrows-h',
+        icon: 'fa fa-folder-open',
         views: [{
             name: 'INPUT CONFIG',
             template: 'formio/components/recordtype/inputconfig.html'
@@ -132,15 +132,15 @@ module.exports = function(app) {
     '$templateCache',
     function($rootScope, $templateCache) {
       $templateCache.put('formio/components/recordtype.html',
-        '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
+        '<a href="#" class="btn btn-primary"><i class="fa fa-folder-open"></i> {{component.label}}</a>'
       );
 
       $templateCache.put('formio/componentsView/recordtype.html',
-        '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
+        '<a href="#" class="btn btn-primary"><i class="fa fa-folder-open"></i> {{component.label}}</a>'
       );
 
       $templateCache.put('formio/formbuilder/recordtype.html',
-        '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
+        '<a href="#" class="btn btn-primary"><i class="fa fa-folder-open"></i> {{component.label}}</a>'
       );
 
       $templateCache.put('formio/components/recordtype/inputconfig.html',
