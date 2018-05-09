@@ -17,11 +17,11 @@ module.exports = function(app) {
             {label: 'Save Only', value: 'save_only'},
             {label: 'Save and Pass Data', value: 'save_and_pass'}
           ],
-          dataToPass: '',
+          /*dataToPass: '',
           availableDataToPass: [
             {label: 'All', value: 'all'},
             {label: 'Custom', value: 'custom'}
-          ],
+          ],*/
           inputFields: [],
           inputFieldDetails: {},
           selectedInputFields: [],
@@ -116,6 +116,10 @@ module.exports = function(app) {
             }
           };
 
+          $scope.selectAllInputField = function(){
+            $scope.component.selectedInputFields = $scope.component.inputFields;
+          }
+
         }],
       });
     }
@@ -199,18 +203,19 @@ module.exports = function(app) {
           ' </div>' +
           ' <div class="form-group" ng-if="component.actionType == \'pass_data_only\' || component.actionType == \'save_and_pass\'">' +
           '   <label form-builder-tooltip="Which data you want to pass through">{{\'Data to Pass\' | formioTranslate}}</label><br/>' +
-          '   <label>' +
+          /*'   <label>' +
           '     <input type="radio" ng-model="component.dataToPass" ng-value="component.availableDataToPass[0].value">' +
           '     {{component.availableDataToPass[0].label | formioTranslate}}'+
           '   </label><br/>'+
           '   <label>' +
           '     <input type="radio" ng-model="component.dataToPass" ng-value="component.availableDataToPass[1].value">' +
           '     {{component.availableDataToPass[1].label | formioTranslate}}'+
-          '   </label><br/>'+
+          '   </label><br/>'+*/
           ' </div>' +
-          ' <div class="form-group" ng-if="(component.actionType == \'pass_data_only\' || component.actionType == \'save_and_pass\') && component.dataToPass == \'custom\'">' +
+          ' <div class="form-group" ng-if="component.actionType == \'pass_data_only\' || component.actionType == \'save_and_pass\'">' +
           '   <label form-builder-tooltip="Which field you want to pass through">{{\'Field to Pass\' | formioTranslate}}</label>' +
           '   <button type="button" class="btn btn-default" ng-click="refreshField()">{{\'Refresh\' | formioTranslate}}</button>' +
+          '   <button type="button" class="btn btn-default" ng-click="selectAllInputField()">{{\'Select All\' | formioTranslate}}</button>' +
           '   <select class="form-control" id="inputSelect" name="inputSelect" ng-options="f for f in component.inputFields" ng-model="component.selectedInputFields" multiple>'+
           //'   <select class="form-control" id="inputSelect" name="inputSelect" ng-options="value as key for (key, value) in component.inputFields" ng-model="component.selectedInputFields" multiple>'+
           ' </div>' +
