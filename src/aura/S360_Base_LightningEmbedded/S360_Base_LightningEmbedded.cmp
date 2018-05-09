@@ -1,0 +1,8 @@
+<aura:component >
+    <aura:attribute name="CompId" type="string" default=""/>
+    <aura:attribute name="label" type="string" default=""/>
+    <aura:attribute name="Attributes" type="Object" default="{}"/>    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	
+    {!v.body}
+</aura:component>

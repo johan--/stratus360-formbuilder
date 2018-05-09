@@ -1,0 +1,144 @@
+<aura:component >
+    <aura:attribute name="CompId" type="string" default=""/>
+    <aura:attribute name="data" type="Object[]"/>
+    <aura:attribute name="sort" type="String" default="asc"/>
+    <aura:attribute name="orderBy" type="String" default="Order__c"/>
+    
+    <aura:attribute name="objectToResize" type="object"/>
+    <aura:attribute name="initResizeDimen" type="object" default="{w:0, h:0}"/>
+    <aura:attribute name="initResizePos" type="object" default="{x:0, y:0}"/>
+    <aura:attribute name="isResizing" type="boolean" default="false"/>
+    <aura:attribute name="isMouseMoveActive" type="boolean" default="false"/>
+    
+    <!-- table attribute -->
+    <aura:attribute name="initTableWidth" type="integer" default="310"/>
+    <aura:attribute name="tableWidth" type="integer" default="310"/>
+    <aura:attribute name="tableHeight" type="integer" default="32"/>
+    
+    <aura:attribute name="columnWidth" type="integer[]" default="[80,80,150]" />
+    
+    <!-- rendering attribute -->
+    <aura:attribute name="isDoneRendering" type="Boolean" default="false"/>
+    <aura:attribute name="isFirstLoaded" type="boolean" default="false"/>
+    
+    <!-- handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+    <!-- register event -->
+    <aura:registerEvent name="notifyTableCanged" type="c:LightningTableChangedEvent" />
+    
+    <!-- define methods -->
+    <aura:method name="setDataReady" action="{!c.handleDataReady}" access="public" 
+                 description="method to notify table that data is already served and ready to handle by table">
+    	<aura:attribute name="sort" type="String" default="{!v.sort}" required="true"/>
+    	<aura:attribute name="orderBy" type="String" default="{!v.orderBy}" required="true"/>
+    	<aura:attribute name="data" type="Object[]" default="{!v.data}" required="true"/>
+    </aura:method>
+    <aura:method name="invalidateHeight" action="{!c.invalidateHeight}" access="public"/>
+    
+    <style>
+        .table-container{
+        	width: 100%;
+        	overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .table-body-container{
+        	overflow-y: auto;
+        	overflow-x: hidden;
+        }
+        
+        .slds-th__action{
+        	-webkit-user-drag: none !important;
+        }
+        
+        
+        
+        .table-header{
+        /*width: 1945px;
+        position: fixed;*/
+    		background: white;
+    		z-index: 2;
+        }
+        
+        .table-body{
+        /*margin-top:32px;*/
+        }
+        
+        .slds-table td {
+        	padding: .2rem .5rem !important;
+        }
+    </style>
+    
+    <div onmousemove="{!c.handleMouseMove}" onmouseup="{!c.handleMouseUp}" aura:id="table-container" ondragstart="return false;">
+        <div class="table-head-container" aura:id="table-head-container">
+            <table style="{!'width:' + v.tableWidth + 'px'}" class="slds-table slds-table--bordered slds-table--resizable-cols slds-table--fixed-layout slds-table--col-bordered table-header" role="grid">
+                <thead>
+                    <tr class="slds-line-height--reset no-select">
+                        
+                        <!-- expense report number column header -->
+                        <th style="{!'width:'+ v.columnWidth[0] +'px'}" class="t-header slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                <span class="slds-assistive-text">Sort </span>
+                                <span class="slds-truncate" title="No">No</span>
+                                
+                                <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                            </a>
+                            <div class="slds-resizable" onmousedown="{!c.startResizeTableColumn}">
+                                <span class="slds-resizable__handle">
+                                    <span class="slds-resizable__divider" ></span>
+                                </span>
+                            </div>
+                        </th>
+                        
+                        <!-- delete column header -->
+                        <th style="{!'width:'+ v.columnWidth[1] +'px'}" class="t-header slds-is-resizable slds-text-title--caps" scope="col">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                <span class="slds-truncate" title=">Action">Action</span>
+                                <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                            </a>
+                        </th> 
+                        
+                        <!-- attachment name column header -->
+                        <th style="{!'width:'+ v.columnWidth[2] +'px'}" class="t-header slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                <span class="slds-assistive-text">Sort </span>
+                                <span class="slds-truncate @Name~" onclick="{!c.sort}" title=">Attachment Name">Attachment Name</span>
+                                <div class="slds-icon_container">
+                                    <c:SvgIconCmp svgPath="/resource/SLDS222/assets/icons/utility-sprite/svg/symbols.svg#arrowup" category="utility" size="x-small" name="arrowup" class="slds-icon-text-default slds-is-sortable__icon"/>
+                                </div>
+                                <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                            </a>
+                            <div class="slds-resizable" onmousedown="{!c.startResizeTableColumn}">
+                                <span class="slds-resizable__handle">
+                                    <span class="slds-resizable__divider" ></span>
+                                </span>
+                            </div>
+                        </th>                    
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        
+    
+    	<!--div class="table-body-container" aura:id="table-body-container" id="{!v.CompId}" style="{!'width:100%; height:' + v.tableHeight + 'px'}" onscroll="{!c.manageScroll}"-->
+        <div class="table-body-container" aura:id="table-body-container" id="{!v.CompId}" style="{!'width:100%; height:100px'}" onscroll="{!c.manageScroll}">
+            <table aura:id="table-body" style="{!'width:' + (v.tableWidth) + 'px'}" class="slds-table slds-table--bordered slds-table--resizable-cols slds-table--fixed-layout slds-table--col-bordered table-body" role="grid">
+                <thead>
+                    <tr>
+                        <th class="th-hidden slds-truncate"  style="{!'width:'+ v.columnWidth[0] +'px'}">No</th>
+                        <th class="th-hidden slds-truncate"  style="{!'width:'+ v.columnWidth[1] +'px'}">Action</th>
+                        <th class="th-hidden slds-truncate"  style="{!'width:'+ v.columnWidth[2] +'px'}">Attachment Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <aura:iteration items="{!v.data}" var="ew" indexVar="index">
+                        <c:S360_Base_FileUploadItemTableComp allData="{!v.data}" data="{!ew}" index="{!index}" CompId="{! 'item_exp_report_attachment_' + index}"/>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        	<div class="{! 'slds-text-title slds-text-align--left ' + (v.data.length == 0 ? 'slds-show' : 'slds-hide')}"><br/>No result found.</div>
+        </div>
+    </div>
+</aura:component>

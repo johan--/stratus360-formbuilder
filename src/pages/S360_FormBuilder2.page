@@ -130,6 +130,7 @@
                 <apex:inputField value="{!S360_Form_Config__c.Name}"/> <p/>
                 <apex:inputField id="Form_Config_Primary_Object" value="{!S360_Form_Config__c.Primary_Object__c}" /> <p/>
                 <apex:inputField id="Form_Config_Field" value="{!S360_Form_Config__c.Field__c}" /> <p/>
+                <apex:inputField id="Form_Record_Type" value="{!S360_Form_Config__c.Record_Type_Mapping__c}"/> <p/>
                 <apex:inputField id="Form_Config_Has_FLow" value="{!S360_Form_Config__c.Has_Flow_Controller__c}" /> <p/>
                 <apex:inputField id="SelectedInputFieldsInFlow" value="{!S360_Form_Config__c.Returned_Flow_Field__c}" /> <p/>
                 <apex:inputField id="InputFlowMap" value="{!S360_Form_Config__c.Input_Flow_Map__c}" /> <p/>
@@ -185,9 +186,12 @@
         var hasFlowController = false;
         var selectedInputFields = [];
         var inputFlowMap = '';
+        var recordTypeMap = '';
         
         // connect the jsforce
         var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
+        // test
+        
         
         // start auto save
         autoSave();
@@ -283,6 +287,38 @@
 
             }
             
+            formioComponents.components.recordtype.settings.initButtonCallback = function(scope){
+                var refreshButtonLabel = scope.component.initButtonLabel;
+                console.log(refreshButtonLabel);
+                scope.component.initButtonLabel = 'Populating...';
+                JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+                    if (err) { return console.error(err); }
+                    console.log(meta.recordTypeInfos);
+                    var recordts = [];
+                    for(var i = 0; i < meta.recordTypeInfos.length; i++){
+                    	recordts[i] = {
+                            Id: meta.recordTypeInfos[i].recordTypeId,
+                            name: meta.recordTypeInfos[i].name
+                            };
+                    }
+                    scope.component.recordts = recordts;
+                });
+                JSFORCE_CONN.query('SELECT Id, Name from S360_FA__S360_Form_Config__c where S360_FA__Primary_Object__c = \'{!S360_Form_Config__c.Primary_Object__c}\'', function(err, res) {
+                    if(err){return console.error(err); }
+                    console.log(res);
+                    var forms = [];
+                    for(var i = 0; i < res.records.length; i++){
+                    	forms[i] = {
+                            Id: res.records[i].Id,
+                            Name: res.records[i].Name
+                            };
+                    }
+                    console.log(forms);
+                    scope.component.forms = forms;
+                    scope.component.initButtonLabel = refreshButtonLabel;
+                });
+                
+            }
             
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';
             if(unescapeJSON!='')
@@ -348,6 +384,7 @@
             var formHasFlowController = document.getElementById('j_id0:j_id2:Form_Config_Has_FLow');
             var selectedInputFieldsInFlow = document.getElementById('j_id0:j_id2:SelectedInputFieldsInFlow');
             var InputFlowMapField = document.getElementById('j_id0:j_id2:InputFlowMap');
+            var RecordTypeField = document.getElementById('j_id0:j_id2:Form_Record_Type');
             
             var config = formConfig;
             var fields = collectField(config);
@@ -359,6 +396,7 @@
             formHasFlowController.checked  = hasFlowController;
             selectedInputFieldsInFlow.value = selectedInputFields;
             InputFlowMapField.value = inputFlowMap;
+            RecordTypeField.value = recordTypeMap;
         }
         
         function collectField(data){
@@ -397,6 +435,9 @@
                     
                 }
                 
+                if(cmp.type === 'recordtype'){
+                	 recordTypeMap = JSON.stringify(cmp.inputFlowMap);
+                }
                 //collect fields
                 if(cmp.type == 'columns'){
                     cmp.columns.forEach(function(col){

@@ -141,6 +141,8 @@
             this.generateLightningFlowButton(component, item);
         }else if(item.type == undefined && formPattern[item['$$hashKey']+''+item['key']].type === 'column_item'){
             this.generateColumnItem(component, item);
+        }else if(item.type = 'embed'){
+            this.generateLightningEmbedded(component, item);
         }
     },
     
@@ -568,6 +570,9 @@
                      component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
         var value = component.getReference('v.Data['+ config.key +']');
         
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
+        
         $A.createComponent(
             'c:S360_Base_InputNumberCmp',
             {
@@ -604,6 +609,9 @@
         component.set('v.Data['+ config.key +']', 
                       component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
         var value = component.getReference('v.Data['+ config.key +']');
+        
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
         
         $A.createComponent(
             'c:S360_Base_InputSecret',
@@ -668,6 +676,9 @@
         component.set('v.Data['+ config.key +']', 
                       self.getUrlParam(config.key) != undefined ? self.getUrlParam(config.key) : (component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined));
         var value = component.getReference('v.Data['+ config.key +']');
+        
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
         
         $A.createComponent(
             'c:S360_Base_CheckboxCmp',
@@ -735,6 +746,9 @@
         component.set('v.Data['+ config.key +']', 
                      self.getUrlParam(config.key) ? self.getUrlParam(config.key) : ((component.get('v.Data') && component.get('v.Data')[config.key]) ? component.get('v.Data')[config.key] : config.defaultValue));
         var value = component.getReference('v.Data['+ config.key +']');
+        
+        // add to temporary flow data
+        this.add2TmpFlowData(component, config.key, value);
         
         $A.createComponent(
             'c:S360_Base_PicklistCmp',
@@ -1193,6 +1207,33 @@
                     self.callbackHandler(config, component, newComponent, status, errorMessage);
                 }
             );
+    },
+    
+    generateLightningEmbedded : function(component, config){    
+        console.log("heyyyyyaydiya");
+        console.log(config);
+        var dependents = config.dependents;
+        var dependentsFormatted = {};
+        for (var i = 0; i<dependents.length; i++){
+           	dependentsFormatted[dependents[i].field]=dependents[i].value;
+        }
+        var self = this;
+        
+        // add to temporary flow data
+        $A.createComponent(
+            'c:S360_Base_LightningEmbedded',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "label":config.label,
+                "Attributes": dependentsFormatted,
+
+            }, 
+            function(newComponent, status, errorMessage){
+                console.log("HI");
+                console.log(errorMessage);
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
     },
     
 

@@ -199,6 +199,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Record_Type_Mapping__c</fullName>
+        <externalId>false</externalId>
+        <label>Record Type Mapping</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Returned_Flow_Field__c</fullName>
         <externalId>false</externalId>
         <label>Returned Flow Field</label>

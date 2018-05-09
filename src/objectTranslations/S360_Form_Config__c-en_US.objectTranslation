@@ -73,6 +73,10 @@
         <name>Primary_Object__c</name>
     </fields>
     <fields>
+        <label><!-- Record Type Mapping --></label>
+        <name>Record_Type_Mapping__c</name>
+    </fields>
+    <fields>
         <label><!-- Returned Flow Field --></label>
         <name>Returned_Flow_Field__c</name>
     </fields>

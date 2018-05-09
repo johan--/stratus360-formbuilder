@@ -5829,5 +5829,56 @@
         },
         "DefType": "CONTROLLER",
         "Format": "JS"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000Txv6CAC"
+        },
+        "Id": "0Ad0a000000Txv6CAC",
+        "AuraDefinitionBundleId": "0Ab0a000000TWPuCAO",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000TWPuCAO"
+            },
+            "DeveloperName": "S360_Base_LightningEmbedded"
+        },
+        "DefType": "COMPONENT",
+        "Format": "XML"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000TxwJCAS"
+        },
+        "Id": "0Ad0a000000TxwJCAS",
+        "AuraDefinitionBundleId": "0Ab0a000000TWPuCAO",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000TWPuCAO"
+            },
+            "DeveloperName": "S360_Base_LightningEmbedded"
+        },
+        "DefType": "CONTROLLER",
+        "Format": "JS"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000TxwOCAS"
+        },
+        "Id": "0Ad0a000000TxwOCAS",
+        "AuraDefinitionBundleId": "0Ab0a000000TWQOCA4",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000TWQOCA4"
+            },
+            "DeveloperName": "testEmbed"
+        },
+        "DefType": "COMPONENT",
+        "Format": "XML"
     }
 ]
