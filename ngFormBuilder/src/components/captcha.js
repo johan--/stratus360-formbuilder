@@ -14,7 +14,7 @@ module.exports = function(app) {
                 },
                 viewTemplate: 'formio/componentsView/captcha.html',
                 fbtemplate: 'formio/formbuilder/captcha.html',
-                icon: 'fa fa-code',
+                icon: 'fa fa-lock',
                 views: [
                     {
                         name: 'Display',
