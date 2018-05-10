@@ -32918,26 +32918,8 @@ module.exports = function(app) {
           ],
           inputFields: [],
           selectedInputFields: [],
-          recordts: [
-            {
-              name: 'docx1',
-              Id: "1234"
-            },
-            {
-              name: 'saveDoc',
-              Id: "2234"
-            }
-          ],
-          forms: [
-            {
-              Id:"1",
-              Name:"Form A"
-            },
-            {
-              Id:"2",
-              Name:"Form B"
-            }
-          ],
+          recordts: [],
+          forms: [],
 
           selectedRecordType: '',
           selectedForm: '',
@@ -32949,7 +32931,7 @@ module.exports = function(app) {
         fbtemplate: 'formio/formbuilder/recordtype.html',
         icon: 'fa fa-folder-open',
         views: [{
-            name: 'INPUT CONFIG',
+            name: 'Record Type Mapping',
             template: 'formio/components/recordtype/inputconfig.html'
           },
           {
