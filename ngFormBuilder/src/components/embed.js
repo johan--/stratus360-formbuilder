@@ -28,10 +28,6 @@ module.exports = function(app) {
           {
             name: 'Display',
             template: 'formio/components/embed/display.html'
-          },
-          {
-            name: 'API',
-            template: 'formio/components/embed/api.html'
           }
           ]  
         });
@@ -87,11 +83,6 @@ module.exports = function(app) {
          '</ng-form>'
          );
          
-         $templateCache.put('formio/components/embed/api.html',
-          '<ng-form>' +
-            '<form-builder-option-key></form-builder-option-key>' +
-          '</ng-form>'
-       );
       }
     ]);
   };
