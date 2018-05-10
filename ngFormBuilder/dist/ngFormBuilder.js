@@ -33080,7 +33080,7 @@ module.exports = function(app) {
             Name : "Human"
           }],
 
-          selectedRecordTypes: '',
+          selectedRecordType: '',
           selectedForm: '',
           inputFlowMap: {},
           initButtonCallback: undefined,

@@ -37,15 +37,9 @@ module.exports = function(app) {
           ],
           inputFields: [],
           selectedInputFields: [],
-          recordTypes: [{
-            Id : "1111",
-            Name : "Robot"
-          },{
-            Id : "2222",
-            Name : "Human"
-          }],
+          recordTypes: [],
 
-          selectedRecordTypes: '',
+          selectedRecordType: '',
           selectedForm: '',
           inputFlowMap: {},
           initButtonCallback: undefined,
