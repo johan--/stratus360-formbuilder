@@ -2,7 +2,11 @@
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="label" type="string" default=""/>
     <aura:attribute name="Attributes" type="Object" default="{}"/>    
+    <aura:attribute name="data" type="Object"/>
+    
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-	
+    
     {!v.body}
+    
+    <button onclick="{!c.check}">Check</button>
 </aura:component>

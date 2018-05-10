@@ -1,6 +1,7 @@
 ({
 	generateForm : function(component, event, config) {
         component.set('v.FormPattern', this.mappingThePattern(component, config));
+        debugger;
         var self = this;
         config.forEach(function(item){
             console.log(item.key);
@@ -141,7 +142,7 @@
             this.generateLightningFlowButton(component, item);
         }else if(item.type == undefined && formPattern[item['$$hashKey']+''+item['key']].type === 'column_item'){
             this.generateColumnItem(component, item);
-        }else if(item.type = 'embed'){
+        }else if(item.type === 'embed'){
             this.generateLightningEmbedded(component, item);
         }
     },
@@ -425,8 +426,6 @@
                 var refOutputFlow = component.get('v.refOutputFlow');
                 var flowData = component.get('v.flowData');
                 
-                debugger;
-                
                 if(!refOutputFlow){
                     refOutputFlow = {};
                 }
@@ -442,8 +441,6 @@
                     
                     refOutputFlow[f] = flowData[f];
                     
-                    debugger;
-                    
                     // if it is a lookup
                     if(config.selectedInputFieldDetails[f].type === 'lookup'){
                         if(f.lastIndexOf("__c") == f.length - 3){
@@ -457,11 +454,11 @@
                     }
                 });
                 
-                console.log('refOutputFlow');
-                console.log(refOutputFlow);
-                
                 component.set('v.refOutputFlow', refOutputFlow);
                 component.set('v.flowData', flowData);
+                
+                // save what form does in flow
+                component.set('v.formFlowAction', config.actionType);
             });
     },
     
@@ -1210,14 +1207,17 @@
     },
     
     generateLightningEmbedded : function(component, config){    
-        console.log("heyyyyyaydiya");
-        console.log(config);
         var dependents = config.dependents;
         var dependentsFormatted = {};
         for (var i = 0; i<dependents.length; i++){
            	dependentsFormatted[dependents[i].field]=dependents[i].value;
         }
         var self = this;
+        
+        setTimeout(function(){
+            console.log("LAST NAME")
+		console.log(component.get('v.Data.S360_FA__Last_Name__c'))
+        }, 5000);
         
         // add to temporary flow data
         $A.createComponent(
@@ -1227,11 +1227,10 @@
                 "CompId": config.key,
                 "label":config.label,
                 "Attributes": dependentsFormatted,
+                "data": component.getReference('v.Data')
 
             }, 
             function(newComponent, status, errorMessage){
-                console.log("HI");
-                console.log(errorMessage);
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             });
     },

@@ -30,7 +30,8 @@
                     if(res.fieldInfo){
                         fieldInfo = res.fieldInfo;
                     }
-                    
+                    debugger;
+                    helper.recordTypeMap(component, formConfig, data);
                     data = helper.populateData(component, formConfig, data);
                     debugger;
                     component.set('v.Data', data);

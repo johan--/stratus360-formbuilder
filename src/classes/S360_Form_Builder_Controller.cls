@@ -33,11 +33,11 @@ public class S360_Form_Builder_Controller {
         if(formName != null && formName != '')
         {	
             
-            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
         	
         }else
         {
-            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
         }
         
         //Just in case language was not selected, get the blank language.
@@ -134,7 +134,16 @@ public class S360_Form_Builder_Controller {
                             strRealFields += ', ' + fieldInformations.get(name).relationshipApi + '.Name';
                         }
                     }
+                
+                	List<Schema.RecordTypeInfo> lrti = Schema.getGlobalDescribe().get(config.S360_FA__Primary_Object__c).getDescribe().getRecordTypeInfos();
+                
+                    if(lrti.size() > 1){
+                        strRealFields += ', RecordTypeId';
+                    }
+                
+                	System.debug(lrti);
                     
+                    //String sql = 'SELECT ' + strRealFields + ',RecordTypeId  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
                     String sql = 'SELECT ' + strRealFields + '  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
                     
                     List<SObject> data = Database.query(sql);

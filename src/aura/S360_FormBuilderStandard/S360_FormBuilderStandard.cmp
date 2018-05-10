@@ -52,6 +52,7 @@
     
     <!-- Lightning flow action attribute -->
     <aura:attribute name="availableFlowAction" type="String[]"/>
+    <aura:attribute name="formFlowAction" type="String"/>
     <aura:attribute name="flowData" type="Object"/>
     <aura:attribute name="inputFlow" type="String"/>
     <aura:attribute name="outputFlow" type="String"/>
