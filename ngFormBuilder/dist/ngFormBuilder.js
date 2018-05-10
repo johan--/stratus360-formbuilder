@@ -31418,10 +31418,6 @@ module.exports = function(app) {
           {
             name: 'Display',
             template: 'formio/components/embed/display.html'
-          },
-          {
-            name: 'API',
-            template: 'formio/components/embed/api.html'
           }
           ]  
         });
@@ -31432,19 +31428,19 @@ module.exports = function(app) {
       function($templateCache) {
         $templateCache.put('formio/components/embed.html',
          '<div class="form-group">' +
-          '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}}Custom Component</button>'+
+          '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Custom Component</button>'+
          '</div>'
          );
   
         $templateCache.put('formio/componentsView/embed.html',
          '<div class="form-group">' +
-          '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}}Custom Component</button>'+
+          '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Custom Component</button>'+
          '</div>'
          );
   
         $templateCache.put('formio/formbuilder/embed.html',
          '<div class="form-group">' +
-          '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}}Custom Component</button>'+
+          '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Custom Component</button>'+
          '</div>'
          );
   
@@ -31477,11 +31473,6 @@ module.exports = function(app) {
          '</ng-form>'
          );
          
-         $templateCache.put('formio/components/embed/api.html',
-          '<ng-form>' +
-            '<form-builder-option-key></form-builder-option-key>' +
-          '</ng-form>'
-       );
       }
     ]);
   };
