@@ -130,5 +130,9 @@
         <label><!-- Record Type A --></label>
         <name>Record_Type_A</name>
     </recordTypes>
+    <recordTypes>
+        <label><!-- Record Type B --></label>
+        <name>Record_Type_B</name>
+    </recordTypes>
     <startsWith><!-- Consonant --></startsWith>
 </CustomObjectTranslation>

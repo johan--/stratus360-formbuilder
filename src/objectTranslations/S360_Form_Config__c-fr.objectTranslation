@@ -87,6 +87,10 @@
             <label><!-- Custom Links --></label>
             <section>Custom Links</section>
         </sections>
+        <sections>
+            <label><!-- Test Data --></label>
+            <section>Test Data</section>
+        </sections>
     </layouts>
     <nameFieldLabel><!-- Form Config Name --></nameFieldLabel>
     <quickActions>

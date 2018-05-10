@@ -5,7 +5,7 @@ module.exports = function(app) {
       formioComponentsProvider
     ) {
       formioComponentsProvider.register('recordtype', {
-        title: 'Record Type',
+        title: 'Record Type Mapping',
         template: 'formio/components/recordtype.html',
         group: 'advanced',
         settings: {

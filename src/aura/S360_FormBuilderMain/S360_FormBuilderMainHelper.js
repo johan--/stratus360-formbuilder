@@ -1,5 +1,5 @@
 ({
-	getUrlParam: function(sParam){
+    getUrlParam: function(sParam){
         var params = decodeURIComponent(window.location.search.substring(1));
         params = params.split('&');
         for(var i = 0; i < params.length; i++){
@@ -10,7 +10,13 @@
         }
     },
     
-    upsert: function(component, sender){
+    upsert: function(component, sender, callback){
+        debugger;
+        console.log('data to save');
+        for(var i in component.get('v.Data')){
+            if(component.get('v.Data').hasOwnProperty(i))
+            	console.log(component.get('v.Data')[i]);
+        }
         var self = this;
         var child;
         
@@ -24,7 +30,7 @@
             var canvasDataUrl;
             
             if(isSignatureEnabled){
-             	canvasDataUrl = self.getExactSignatureDataUrl(component.get('v.canvas'));
+                canvasDataUrl = self.getExactSignatureDataUrl(component.get('v.canvas'));
                 if(!canvasDataUrl){
                     isSignatureEnabled = false;
                 }
@@ -33,6 +39,7 @@
             
             var action = component.get('c.saveUpsertRecord');
             action.setParams({
+                
                 "data" : component.get('v.Data'),
                 "relatedData" : component.get('v.RelatedData'),
                 "isSignatureEnabled": isSignatureEnabled,
@@ -44,13 +51,17 @@
                     if(response.getReturnValue().status == true){
                         // refresh the data
                         // component.set('v.Data', response.getReturnValue().data);
-                    	child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));    
+                        child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));
+                        
+                        if(callback != undefined){
+                            callback(response.getReturnValue().data);
+                        }
                     }else{
                         child.afterSubmit(sender, 'ERROR', response.getReturnValue().message);
                     }
                     
                 }else if(response.getState() == 'INCOMPLETE'){
-            		child.afterSubmit(sender, 'INCOMPLETE', $A.get("$Label.c.S360_base_offline_message"));
+                    child.afterSubmit(sender, 'INCOMPLETE', $A.get("$Label.c.S360_base_offline_message"));
                 }
             });
             $A.enqueueAction(action);
@@ -58,23 +69,38 @@
             child.afterSubmit(sender, 'ERROR', $A.get("$Label.c.S360_base_offline_message"));
         }
     },
-    
+    recordTypeMap : function(component, formConfig,data){
+        debugger;
+        if(formConfig.S360_FA__Record_Type_Mapping__c && this.getUrlParam('id') && data.RecordTypeId){
+                var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
+                var id = data.RecordTypeId;
+                var newForm =  map[id].Name;
+                console.log(newForm);
+                var url = window.location.href;
+                var formname = this.getUrlParam('formname');
+                debugger;
+                url = url.replace(formname,newForm);
+                debugger;
+                window.location.replace(url);
+        }
+    },
     populateData : function(component, formConfig, data){
         // convert the inputFlowMap to json data
         var inputFlowMap = {};
         if(formConfig.S360_FA__Input_Flow_Map__c){
-        	inputFlowMap = JSON.parse(formConfig.S360_FA__Input_Flow_Map__c);    
+            inputFlowMap = JSON.parse(formConfig.S360_FA__Input_Flow_Map__c);    
         }
         
         // convert string data from previous flow to json
         var inputFlowData = {};
         if(component.get('v.inputFlow')){
-         	inputFlowData = JSON.parse(component.get('v.inputFlow'));   
+            inputFlowData = JSON.parse(component.get('v.inputFlow'));   
         }
         
         console.log('here');
         console.log(inputFlowData);
         console.log(inputFlowMap);
+        debugger;
         
         var item = {
             'sobjectType': formConfig.S360_FA__Primary_Object__c,
@@ -113,6 +139,7 @@
                 }
             });    
         }
+        
         
         console.log('here');
         console.log(item);
@@ -164,7 +191,7 @@
         var availableActions = component.get('v.availableActions');
         debugger;
         if(availableActions){
-        	for (var i = 0; i < availableActions.length; i++) {
+            for (var i = 0; i < availableActions.length; i++) {
                 availableFlowAction.push(availableActions[i]);
             }
             
@@ -174,13 +201,36 @@
     },
     
     navigateFlow: function(component, event){
+        var self = this;
         // refresh output flow value with its real data
-        if(event.getParam('Payload').payload === 'NEXT'){
+        if(event.getParam('Payload').payload === 'NEXT' || event.getParam('Payload').payload === 'FINISH'){
             var child = component.find('S360_FormBuilderStandard');
-            child.refreshOutputFlowValue();
+            
+            if(component.get('v.formFlowAction') === 'pass_data_only'){
+            	child.refreshOutputFlowValue();    
+                
+                var navigate = component.get('v.navigateFlow');
+        		navigate(event.getParam('Payload').payload);
+            }else if(component.get('v.formFlowAction') === 'save_only'){
+                self.upsert(component, undefined, function(data){
+                    var data = {Id: data.Id};
+                    component.set('v.outputFlow', JSON.stringify(data));
+                    
+                	var navigate = component.get('v.navigateFlow');
+        			navigate(event.getParam('Payload').payload);    
+                });
+            }else if(component.get('v.formFlowAction') === 'save_and_pass'){
+                self.upsert(component, undefined, function(data){
+                    component.set('v.outputFlow', JSON.stringify(data));
+                    
+                	var navigate = component.get('v.navigateFlow');
+        			navigate(event.getParam('Payload').payload);    
+                });
+            }
+        }else{
+            var navigate = component.get('v.navigateFlow');
+            navigate(event.getParam('Payload').payload);
         }
         
-        var navigate = component.get('v.navigateFlow');
-        navigate(event.getParam('Payload').payload);
     }
 })

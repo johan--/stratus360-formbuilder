@@ -223,7 +223,7 @@
             formioComponents.components.panel.title = 'Wizard';
             
             // set captcha image
-           	formioComponents.components.captcha.settings.captchaImagePreview = '{!URLFOR($Resource.ngFormBuilder, "images/recaptcha-image.png")}';
+           	formioComponents.components.captcha.settings.captchaImagePreview = '{!URLFOR($Resource.CaptchaImage)}';
             
             //disabled components
             formioComponents.components.textarea.disabled = true;
@@ -272,6 +272,12 @@
                                 'type': ''
                             }
                         });
+                        
+                        returnedFlowField['Id'] = {
+                            'key': 'Id',
+                            'type': ''
+                        }
+                        
                         flow[res.records[i].Id] = {
                             'name': res.records[i].Name,
                             'returnedFlowField': returnedFlowField//res.records[i].S360_FA__Returned_Flow_Field__c? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []

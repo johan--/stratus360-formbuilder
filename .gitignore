@@ -3,3 +3,9 @@
 debug
 ngFormBuilder/bower_components
 ngFormBuilder/node_modules
+ngFormBuilder-complete.js
+ngFormBuilder-complete.min.js
+ngFormBuilder-full.js
+ngFormBuilder-full.min.js
+ngFormBuilder.js
+ngFormBuilder.min.js

@@ -16,6 +16,7 @@
             
             if(params.config.S360_FA__JSON__c != '' && params.config.S360_FA__JSON__c != undefined){
              	var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;
+                debugger;
                 if(configComponents.length != 0){
                     helper.generateForm(component, event, configComponents);   
                 }    
@@ -27,11 +28,23 @@
      * if action type equals to submit, it will bubble up to S360_FormBuilderMain.
      * this is not same with custom action with submit event
      */
+    
+    
     handleButtonClick: function(component, event, helper){
+        
        	var actionButton = component.get('v.actionButton');
-        if(actionButton == undefined){
+        
+        if(event.getParam('Payload') != undefined && event.getParam('Payload').action != 'FLOW'){
+            if(actionButton==undefined){
+                actionButton = {}
+            }
+        	actionButton[event.getParam('CompId')] = event.getParam('Payload');
+            component.set('v.actionButton', actionButton);
+        }else if (actionButton==undefined){
             return;
         }
+        
+        
         var evt = actionButton[event.getParam('CompId')];
         if(evt != undefined){
             //stop bubble event
@@ -45,6 +58,7 @@
                 }
                 
             }else if(evt.actionType === 'custom'){
+                
                 helper.customEventHandler(component, event.getParam('CompId'), evt.action);
             }
         }

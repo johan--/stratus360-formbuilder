@@ -48,8 +48,8 @@
             return;
         }
         
-        var fields = component.get('v.FormConfigTemplate').Field__c;
-        var sobject = component.get('v.FormConfigTemplate').Primary_Object__c;
+        var fields = component.get('v.FormConfigTemplate').S360_FA__Field__c;
+        var sobject = component.get('v.FormConfigTemplate').S360_FA__Primary_Object__c;
         var cWhere = component.get('v.FieldInfoTemplate')[component.get('v.RelatedField')].relationshipApi + '.Id = \'' 
         				+ component.get('v.ParentId') + '\'';
         
@@ -135,8 +135,8 @@
             'Id': (data != undefined && data['Id']) ? data['Id'] : undefined,
             'Name': (data != undefined && data['Name']) ? data['Name'] : undefined,
         };
-        if(formConfig.Field__c){
-            formConfig.Field__c.split(',').forEach(function(field){
+        if(formConfig.S360_FA__Field__c){
+            formConfig.S360_FA__Field__c.split(',').forEach(function(field){
                 if(data != undefined && data[field]){
                     item[field] = data[field];
                 }else{

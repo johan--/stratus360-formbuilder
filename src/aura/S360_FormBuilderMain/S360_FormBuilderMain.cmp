@@ -44,6 +44,7 @@
     
     <!-- Lightning flow action attribute -->
     <aura:attribute name="availableFlowAction" type="String[]"/>
+    <aura:attribute name="formFlowAction" type="String"/>
     <aura:attribute name="flowData" type="Object"/>
     <aura:attribute name="inputFlow" type="String"/>
     <aura:attribute name="outputFlow" type="String"/>
@@ -73,7 +74,8 @@
                                     	  availableFlowAction="{!v.availableFlowAction}"
                                     	  flowData="{!v.flowData}"
                                     	  inputFlow="{!v.inputFlow}"
-                                    	  outputFlow="{!v.outputFlow}"/>
+                                    	  outputFlow="{!v.outputFlow}"
+                                    	  formFlowAction="{!v.formFlowAction}"/>
     </aura:if>
     
     <aura:if isTrue="{!v.componentType == 'Custom'}">

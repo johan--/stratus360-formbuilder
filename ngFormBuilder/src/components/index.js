@@ -38,7 +38,7 @@ require('./buttonprint')(app);
 require('./lightningflow')(app);
 require('./flowbutton')(app);
 require('./recordtype')(app);
-
+require('./recordtypeselect')(app);
 // Layout
 require('./columns')(app);
 require('./fieldset')(app);
