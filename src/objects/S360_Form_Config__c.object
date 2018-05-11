@@ -208,6 +208,16 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Record_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Record Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Returned_Flow_Field__c</fullName>
         <externalId>false</externalId>
         <label>Returned Flow Field</label>

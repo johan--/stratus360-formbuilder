@@ -135,7 +135,7 @@
                 <apex:inputField id="SelectedInputFieldsInFlow" value="{!S360_Form_Config__c.Returned_Flow_Field__c}" /> <p/>
                 <apex:inputField id="InputFlowMap" value="{!S360_Form_Config__c.Input_Flow_Map__c}" /> <p/>
                 <apex:inputText id="Form_Config_JSON" value="{!jsonConfig}" /> <p/>
-                
+                <apex:inputField id="recordTypeSelection" value="{!S360_Form_Config__c.Record_Type__c}"/> <p/>
                 <!-- load field -->
                 <apex:inputField id="autoSaveInterval" value="{!S360_Form_Config__c.AutoSave_Interval__c}" /> <p/>
                 <apex:inputField id="isAutoSave" value="{!S360_Form_Config__c.AutoSave__c}" /> <p/>
@@ -187,6 +187,7 @@
         var selectedInputFields = [];
         var inputFlowMap = '';
         var recordTypeMap = '';
+        var recordType = '';
         
         // connect the jsforce
         var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
@@ -293,12 +294,14 @@
 
             }
             
+            // Record Type Component Button
             formioComponents.components.recordtype.settings.initButtonCallback = function(scope){
                 var refreshButtonLabel = scope.component.initButtonLabel;
                 console.log(refreshButtonLabel);
                 scope.component.initButtonLabel = 'Populating...';
                 JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
                     if (err) { return console.error(err); }
+                    debugger;
                     console.log(meta.recordTypeInfos);
                     var recordts = [];
                     for(var i = 0; i < meta.recordTypeInfos.length; i++){
@@ -324,6 +327,27 @@
                     scope.component.initButtonLabel = refreshButtonLabel;
                 });
                 
+            }
+            
+            // Record Select Component Button
+            formioComponents.components.recordtypeselect.settings.initButtonCallback = function(scope){
+                var refreshButtonLabel = scope.component.initButtonLabel;
+                console.log(refreshButtonLabel);
+                scope.component.initButtonLabel = 'Populating...';
+                JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+                    if (err) { return console.error(err); }
+                    console.log(meta.recordTypeInfos);
+                    var recordts = [];
+                    recordts[0] = {Id : "", Name : "None"};
+                    for(var i = 0; i < meta.recordTypeInfos.length; i++){
+                    	recordts[i+1] = {
+                            Id: meta.recordTypeInfos[i].recordTypeId,
+                            Name: meta.recordTypeInfos[i].name
+                            };
+                    }
+                    scope.component.recordTypes = recordts;
+                    scope.component.initButtonLabel = refreshButtonLabel;
+                });                
             }
             
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';
@@ -391,18 +415,20 @@
             var selectedInputFieldsInFlow = document.getElementById('j_id0:j_id2:SelectedInputFieldsInFlow');
             var InputFlowMapField = document.getElementById('j_id0:j_id2:InputFlowMap');
             var RecordTypeField = document.getElementById('j_id0:j_id2:Form_Record_Type');
-            
+            var recordTypeSelection = document.getElementById('j_id0:j_id2:recordTypeSelection');
             var config = formConfig;
             var fields = collectField(config);
             if(fields.indexOf('Name') == -1){
                 //Not sure why we add name here
                // fields.push('Name');
             }
+            debugger;
             fieldsConfig.value = fields.join(',');
             formHasFlowController.checked  = hasFlowController;
             selectedInputFieldsInFlow.value = selectedInputFields;
             InputFlowMapField.value = inputFlowMap;
             RecordTypeField.value = recordTypeMap;
+            recordTypeSelection.value = recordType;
         }
         
         function collectField(data){
@@ -443,6 +469,11 @@
                 
                 if(cmp.type === 'recordtype'){
                 	 recordTypeMap = JSON.stringify(cmp.inputFlowMap);
+                }
+                // Collect Record Type from record type select
+                if(cmp.type === 'recordtypeselect'){
+                    debugger;
+                    recordType = cmp.selectedRecordType.Id;
                 }
                 //collect fields
                 if(cmp.type == 'columns'){

@@ -77,7 +77,7 @@
         <externalId>false</externalId>
         <inlineHelpText>Choose your favorite date time</inlineHelpText>
         <label>Date Time</label>
-        <required>true</required>
+        <required>false</required>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
@@ -191,6 +191,16 @@
         <externalId>false</externalId>
         <label>Password</label>
         <length>32</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Record_Type_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>RecordType.DeveloperName</formula>
+        <label>Record Type Name</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>

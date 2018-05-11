@@ -1,5 +1,5 @@
 ({
-	init : function(component, event, helper) {
+    init : function(component, event, helper) {
         // test incoming input flow
         // console.log(component.get('v.inputFlow'));
         // debugger;
@@ -31,13 +31,39 @@
                         fieldInfo = res.fieldInfo;
                     }
                     debugger;
-                    helper.recordTypeMap(component, formConfig, data);
-                    data = helper.populateData(component, formConfig, data);
-                    debugger;
-                    component.set('v.Data', data);
-                    component.set('v.FieldInfo', fieldInfo);
-                    component.set('v.FormConfig', formConfig);
-                    component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
+                    var newForm = helper.recordTypeMap(component, formConfig, data);
+                    if (newForm){
+                        var action2 = component.get('c.getComponentConfig');
+                        action2.setParams({
+                            "formName" : newForm,
+                            "recordId" : component.get('v.recordId')
+                        });
+                        action2.setCallback(this, function(response2){
+                            res = response2.getReturnValue();
+                            formConfig = res.formConfig
+                            data = res.data;
+                            fieldInfo = {};
+                            if(res.fieldInfo){
+                                fieldInfo = res.fieldInfo;
+                            }
+                            data = helper.populateData(component, formConfig, data);
+                        	debugger;
+                        	component.set('v.Data', data);
+                        	component.set('v.FieldInfo', fieldInfo);
+                        	component.set('v.FormConfig', formConfig);
+                        	component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
+                        });
+                        action2.setStorable();
+                        $A.enqueueAction(action2);
+                    } else {
+                        
+                        data = helper.populateData(component, formConfig, data);
+                        debugger;
+                        component.set('v.Data', data);
+                        component.set('v.FieldInfo', fieldInfo);
+                        component.set('v.FormConfig', formConfig);
+                        component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
+                    }
                 }else{
                     alert(res.message);
                 }
@@ -45,7 +71,7 @@
         });
         action.setStorable();
         $A.enqueueAction(action);
-	},
+    },
     
     changeComponentType: function(component, event){
         var formConfig = component.get('v.FormConfig');
@@ -72,7 +98,7 @@
         component.get('v.submittedStandardButton').forEach(function(compId){
             if(compId == event.getParam('CompId')){
                 helper.upsert(component);
-           		event.stopPropagation();
+                event.stopPropagation();
             }
         });
     },
@@ -81,13 +107,14 @@
         component.get('v.submittedCustomButton').forEach(function(compId){
             if(compId == event.getParam('CompId')){
                 helper.upsert(component);
-           		event.stopPropagation();
+                event.stopPropagation();
             }
         });
     },
     
     handleEvent: function(component, event, helper){
         if(event.getParam('action') === 'submit'){
+            debugger;
             helper.upsert(component, event.getParam('sender'));
             event.stopPropagation();
         }

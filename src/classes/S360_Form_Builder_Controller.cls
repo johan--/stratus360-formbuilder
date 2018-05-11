@@ -33,11 +33,11 @@ public class S360_Form_Builder_Controller {
         if(formName != null && formName != '')
         {	
             
-            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c  from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
         	
         }else
         {
-            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
         }
         
         //Just in case language was not selected, get the blank language.
@@ -141,7 +141,7 @@ public class S360_Form_Builder_Controller {
                         strRealFields += ', RecordTypeId';
                     }
                 
-                	System.debug(lrti);
+                	System.debug(strRealFields);
                     
                     //String sql = 'SELECT ' + strRealFields + ',RecordTypeId  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
                     String sql = 'SELECT ' + strRealFields + '  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
@@ -171,8 +171,6 @@ public class S360_Form_Builder_Controller {
     public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData, boolean isSignatureEnabled, string signatureData){
         System.debug(data);
         System.debug(relatedData);
-        System.debug(isSignatureEnabled);
-        System.debug(signatureData);
         
         Map<String, Object> serverResponse = new Map<String, Object>();
         try{
@@ -185,6 +183,10 @@ public class S360_Form_Builder_Controller {
 
                 // construct and save related data
                 for(string key : relatedData.keySet()){
+
+                    System.debug('key');
+                    System.debug(key);
+                    System.debug(relatedData.get(key));
                     
                     // get the field name that reference to parent
                     string relatedField = key.split('\\|')[1];
@@ -210,6 +212,8 @@ public class S360_Form_Builder_Controller {
                         }
                         childRecords.add(sObj);
                     }
+
+                    System.debug(childRecords);
                     
                     if(childRecords != null && !childRecords.isEmpty()){
                      	upsert childRecords;   
@@ -249,6 +253,9 @@ public class S360_Form_Builder_Controller {
         }
         
         String query = 'select ' + fields + ' from ' + sFrom + swhere;
+        
+        System.debug(query);
+        
         serverResponse = Database.query(query);
         
         return serverResponse;
