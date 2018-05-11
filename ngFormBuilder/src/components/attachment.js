@@ -9,6 +9,7 @@ module.exports = function (app) {
                 template: 'formio/components/attachment.html',
                 group: 'advanced',
                 settings: {
+                    message:'attachment',
                     label: 'attachment',
                     input: false,
                     dependents: [],
