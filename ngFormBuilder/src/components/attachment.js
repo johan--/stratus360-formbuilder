@@ -12,17 +12,9 @@ module.exports = function (app) {
                     message:'attachment',
                     label: 'attachment',
                     input: false,
-                    dependents: [],
                 },
                 viewTemplate: 'formio/componentsView/attachment.html',
-                onEdit: ['$scope', function ($scope) {
-                    $scope.removeColumn = function (index) {
-                        $scope.component.dependents.splice(index, 1);
-                    };
-                    $scope.addColumn = function () {
-                        $scope.component.dependents.push({});
-                    };
-                }],
+
                 fbtemplate: 'formio/formbuilder/attachment.html',
                 icon: 'fa fa-paperclip',
                 views: [
