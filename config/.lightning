@@ -2195,6 +2195,23 @@
     {
         "attributes": {
             "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000TzSBCA0"
+        },
+        "Id": "0Ad0a000000TzSBCA0",
+        "AuraDefinitionBundleId": "0Ab0a0000008mY0CAI",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a0000008mY0CAI"
+            },
+            "DeveloperName": "S360_FormBuilderMain"
+        },
+        "DefType": "RENDERER",
+        "Format": "JS"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
             "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000ADjWCAW"
         },
         "Id": "0Ad0a000000ADjWCAW",
@@ -2259,6 +2276,23 @@
         },
         "DefType": "DESIGN",
         "Format": "XML"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000TzSGCA0"
+        },
+        "Id": "0Ad0a000000TzSGCA0",
+        "AuraDefinitionBundleId": "0Ab0a0000008mY0CAI",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a0000008mY0CAI"
+            },
+            "DeveloperName": "S360_FormBuilderMain"
+        },
+        "DefType": "SVG",
+        "Format": "SVG"
     },
     {
         "attributes": {
@@ -5879,23 +5913,6 @@
             "DeveloperName": "testEmbed"
         },
         "DefType": "CONTROLLER",
-        "Format": "JS"
-    },
-    {
-        "attributes": {
-            "type": "AuraDefinition",
-            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000TxxvCAC"
-        },
-        "Id": "0Ad0a000000TxxvCAC",
-        "AuraDefinitionBundleId": "0Ab0a000000TWQOCA4",
-        "AuraDefinitionBundle": {
-            "attributes": {
-                "type": "AuraDefinitionBundle",
-                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a000000TWQOCA4"
-            },
-            "DeveloperName": "testEmbed"
-        },
-        "DefType": "HELPER",
         "Format": "JS"
     },
     {

@@ -1,21 +1,17 @@
 <aura:component >
-    <aura:attribute name="DATA" type="Object"/>     <!--For Dynamic Components-->
-    <aura:attribute name="myTitle" type="String"/> <!--For Static Component  -->
-
     
     <aura:attribute name="size" type="integer"/> 
-    <aura:attribute name="S360_FA__First_Name__c" type="string"/>
-    <aura:attribute name="S360_FA__Last_Name__c" type="string"/>
+    <aura:attribute name="DATA" type="object"/>
     <aura:registerEvent name="OnClick" type="c:S360_Base_onClick"/>
     
     <form class="slds-form--stacked">          
             <lightning:input label="First Name"
                              name="firstname"
-                             value="{!v.DATA.myAge}"/>
+                             value="{!v.DATA.S360_FA__First_Name__c}"/>
         
             <lightning:input label="Last Name"
                              name="lastname"
-                             value="{!v.DATA.mySize}"/>
+                             value="{!v.DATA.S360_FA__Last_Name__c}"/>
         
             <lightning:button label="Create Expense" 
                               class="slds-m-top--medium"

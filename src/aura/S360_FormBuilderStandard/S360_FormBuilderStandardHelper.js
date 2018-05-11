@@ -1093,6 +1093,8 @@
         }
         component.set('v.RelatedData['+ formName + '|' + relatedField +']', []);
         var relatedRef = component.getReference('v.RelatedData['+ formName + '|' + relatedField +']');
+
+        debugger;
         
         var self = this;
         $A.createComponent(

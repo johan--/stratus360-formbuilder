@@ -14,6 +14,7 @@ require('./htmlelement')(app);
 require('./content')(app);
 require('./button')(app);
 require('./embed')(app);
+require('./attachment')(app);
 // Special
 require('./email')(app);
 require('./phonenumber')(app);

@@ -15,7 +15,7 @@
         console.log('data to save');
         for(var i in component.get('v.Data')){
             if(component.get('v.Data').hasOwnProperty(i))
-            	console.log(component.get('v.Data')[i]);
+                console.log(i + '' +component.get('v.Data')[i]);
         }
         var self = this;
         var child;
@@ -38,9 +38,15 @@
             }
             
             var action = component.get('c.saveUpsertRecord');
+            debugger;
+            console.log("HERE");
+            console.log(component.get('v.Data'));
+            var data1 = component.get('v.Data');
+            data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
+            debugger;
             action.setParams({
                 
-                "data" : component.get('v.Data'),
+                "data" : data1,
                 "relatedData" : component.get('v.RelatedData'),
                 "isSignatureEnabled": isSignatureEnabled,
                 "signatureData": canvasDataUrl
@@ -72,16 +78,23 @@
     recordTypeMap : function(component, formConfig,data){
         debugger;
         if(formConfig.S360_FA__Record_Type_Mapping__c && this.getUrlParam('id') && data.RecordTypeId){
-                var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
-                var id = data.RecordTypeId;
-                var newForm =  map[id].Name;
-                console.log(newForm);
-                var url = window.location.href;
-                var formname = this.getUrlParam('formname');
-                debugger;
-                url = url.replace(formname,newForm);
-                debugger;
-                window.location.replace(url);
+            var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
+            var id = data.RecordTypeId;
+            var newForm =  map[id].Name;
+            console.log(newForm);
+            var url = window.location.href;
+            var formname = this.getUrlParam('formname');
+            debugger;
+            url = url.replace(formname,newForm);
+            debugger;
+            window.location.replace(url);
+        } else if (formConfig.S360_FA__Record_Type_Mapping__c && component.get('v.recordId') && data.RecordTypeId){
+            debugger;
+            var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
+            var id = data.RecordTypeId;
+            var newForm =  map[id].Name;
+            return newForm;
+         
         }
     },
     populateData : function(component, formConfig, data){
@@ -207,24 +220,24 @@
             var child = component.find('S360_FormBuilderStandard');
             
             if(component.get('v.formFlowAction') === 'pass_data_only'){
-            	child.refreshOutputFlowValue();    
+                child.refreshOutputFlowValue();    
                 
                 var navigate = component.get('v.navigateFlow');
-        		navigate(event.getParam('Payload').payload);
+                navigate(event.getParam('Payload').payload);
             }else if(component.get('v.formFlowAction') === 'save_only'){
                 self.upsert(component, undefined, function(data){
                     var data = {Id: data.Id};
                     component.set('v.outputFlow', JSON.stringify(data));
                     
-                	var navigate = component.get('v.navigateFlow');
-        			navigate(event.getParam('Payload').payload);    
+                    var navigate = component.get('v.navigateFlow');
+                    navigate(event.getParam('Payload').payload);    
                 });
             }else if(component.get('v.formFlowAction') === 'save_and_pass'){
                 self.upsert(component, undefined, function(data){
                     component.set('v.outputFlow', JSON.stringify(data));
                     
-                	var navigate = component.get('v.navigateFlow');
-        			navigate(event.getParam('Payload').payload);    
+                    var navigate = component.get('v.navigateFlow');
+                    navigate(event.getParam('Payload').payload);    
                 });
             }
         }else{
