@@ -106,6 +106,20 @@ module.exports = function(app) {
         '</ng-form>'
       );
 
+      // Create the common API tab markup.
+      $templateCache.put('formio/components/common/apiNew.html',
+        '<ng-form>' +
+        '<form-builder-option-key-new></form-builder-option-key-new>' +
+        '<form-builder-option-tags></form-builder-option-tags>' +
+          '<uib-accordion>' +
+            '<div uib-accordion-group heading="Custom Properties" class="panel panel-default">' +
+              '<object-builder data="component.properties" label="Custom Properties" tooltip-text="This allows you to configure any custom properties for this component." />' +
+            '</div>' +
+          '</uib-accordion>' +
+        '</ng-form>'
+      );
+
+
       // Create the common Layout tab markup.
       $templateCache.put('formio/components/common/layout.html',
         '<ng-form>' +

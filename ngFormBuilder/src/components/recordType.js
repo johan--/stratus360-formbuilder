@@ -39,7 +39,11 @@ module.exports = function(app) {
           selectedInputFields: [],
           recordts: [],
           forms: [],
-
+          apis: [{
+            Name: 'S360_A'
+          }, {
+            Name: 'S360_B'
+          }],
           selectedRecordType: '',
           selectedForm: '',
           inputFlowMap: {},
@@ -55,7 +59,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/common/apiNew.html'
           }
         ],
         onEdit: ['$scope', function($scope) {

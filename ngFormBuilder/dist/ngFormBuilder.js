@@ -30547,6 +30547,20 @@ module.exports = function(app) {
         '</ng-form>'
       );
 
+      // Create the common API tab markup.
+      $templateCache.put('formio/components/common/apiNew.html',
+        '<ng-form>' +
+        '<form-builder-option-key-new></form-builder-option-key-new>' +
+        '<form-builder-option-tags></form-builder-option-tags>' +
+          '<uib-accordion>' +
+            '<div uib-accordion-group heading="Custom Properties" class="panel panel-default">' +
+              '<object-builder data="component.properties" label="Custom Properties" tooltip-text="This allows you to configure any custom properties for this component." />' +
+            '</div>' +
+          '</uib-accordion>' +
+        '</ng-form>'
+      );
+
+
       // Create the common Layout tab markup.
       $templateCache.put('formio/components/common/layout.html',
         '<ng-form>' +
@@ -32911,7 +32925,11 @@ module.exports = function(app) {
           selectedInputFields: [],
           recordts: [],
           forms: [],
-
+          apis: [{
+            Name: 'S360_A'
+          }, {
+            Name: 'S360_B'
+          }],
           selectedRecordType: '',
           selectedForm: '',
           inputFlowMap: {},
@@ -32927,7 +32945,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/common/apiNew.html'
           }
         ],
         onEdit: ['$scope', function($scope) {
@@ -33072,13 +33090,7 @@ module.exports = function(app) {
           ],
           inputFields: [],
           selectedInputFields: [],
-          recordTypes: [{
-            Id : "1111",
-            Name : "Robot"
-          },{
-            Id : "2222",
-            Name : "Human"
-          }],
+          recordTypes: [],
 
           selectedRecordType: '',
           selectedForm: '',
@@ -35751,6 +35763,61 @@ module.exports = function() {
 },{}],286:[function(_dereq_,module,exports){
 "use strict";
 /**
+* A directive for a field to edit a component's key.
+*/
+module.exports = function() {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: function() {
+      return '<div class="form-group" ng-class="{\'has-warning\': shouldWarnAboutEmbedding()}">' +
+                'Manual Input <input type="checkbox" ng-model="component.manualIn" name="Manual Input"/>' +
+                '<div ng-if="component.manualIn">' +
+                '<div class="alert alert-warning" role="alert" ng-if="!component.isNew">' +
+                'Changing the API key will cause you to lose existing submission data associated with this component.' +
+                '</div>' +
+                '<label for="key" class="control-label" form-builder-tooltip="The name of this field in the API endpoint.">Property Name</label>' +
+                '<input type="text" class="form-control" id="key" name="key" ng-model="component.key" valid-api-key value="{{ component.key }}" ' +
+                'ng-disabled="component.source" ng-blur="onBlur()">' +
+                '</div>' +
+                '<div ng-if="!component.manualIn">' +
+                '<label for="key" class="control-label" form-builder-tooltip="The name of this field in the API endpoint.">Property Name</label>' +
+                '         <td class="col-xs-6">'+
+                '           <select class="form-control" ng-model="component.key" ng-options="f as f.Name for f in component.apis">'+
+                '         </td>' +
+                '</div>'+
+                '<p ng-if="shouldWarnAboutEmbedding()" class="help-block"><span class="glyphicon glyphicon-exclamation-sign"></span> ' +
+                  'Using a dot in your Property Name will link this field to a field from a Resource. Doing this manually is not recommended because you will experience unexpected behavior if the Resource field is not found. If you wish to embed a Resource field in your form, use a component from the corresponding Resource Components category on the left.' +
+                '</p>' +
+              '</div>';
+    },
+    controller: ['$scope', 'BuilderUtils', function($scope, BuilderUtils) {
+      BuilderUtils.uniquify($scope.form, $scope.component);
+
+      $scope.onBlur = function() {
+        $scope.component.lockKey = true;
+
+        // If they try to input an empty key, refill it with default and let uniquify make it unique.
+        if (!$scope.component.key && $scope.formComponents[$scope.component.type].settings.key) {
+          $scope.component.key = $scope.formComponents[$scope.component.type].settings.key;
+          $scope.component.lockKey = false; // Also unlock key
+          BuilderUtils.uniquify($scope.form, $scope.component);
+        }
+      };
+
+      $scope.shouldWarnAboutEmbedding = function() {
+        if (!$scope.component || !$scope.component.key) {
+          return false;
+        }
+        return !$scope.component.source && $scope.component.key.indexOf('.') !== -1;
+      };
+    }]
+  };
+};
+
+},{}],287:[function(_dereq_,module,exports){
+"use strict";
+/**
 * A directive for a field to edit a component's label position.
 */
 module.exports = function() {
@@ -35812,7 +35879,7 @@ module.exports = function() {
     };
   };
 
-},{}],287:[function(_dereq_,module,exports){
+},{}],288:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component options' label position.
@@ -35854,7 +35921,7 @@ module.exports = function() {
     };
   };
 
-},{}],288:[function(_dereq_,module,exports){
+},{}],289:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's shortcut.
@@ -35876,7 +35943,7 @@ module.exports = function() {
   };
 };
 
-},{}],289:[function(_dereq_,module,exports){
+},{}],290:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for a field to edit a component's tags.
@@ -35920,7 +35987,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/map":209}],290:[function(_dereq_,module,exports){
+},{"lodash/map":209}],291:[function(_dereq_,module,exports){
 "use strict";
 module.exports = [
   function() {
@@ -35942,7 +36009,7 @@ module.exports = [
   }
 ];
 
-},{}],291:[function(_dereq_,module,exports){
+},{}],292:[function(_dereq_,module,exports){
 "use strict";
 /**
  * A directive for a table builder
@@ -35996,7 +36063,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/merge":211}],292:[function(_dereq_,module,exports){
+},{"lodash/merge":211}],293:[function(_dereq_,module,exports){
 "use strict";
 /**
 * Invokes Bootstrap's popover jquery plugin on an element
@@ -36037,7 +36104,7 @@ module.exports = ['$filter', function($filter) {
   };
 }];
 
-},{}],293:[function(_dereq_,module,exports){
+},{}],294:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -36100,7 +36167,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/camelCase":180,"lodash/map":209}],294:[function(_dereq_,module,exports){
+},{"lodash/camelCase":180,"lodash/map":209}],295:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function() {
   return {
@@ -36137,7 +36204,7 @@ module.exports = function() {
   };
 };
 
-},{}],295:[function(_dereq_,module,exports){
+},{}],296:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function () {
   return {
@@ -36160,7 +36227,7 @@ module.exports = function () {
   };
 }
 
-},{}],296:[function(_dereq_,module,exports){
+},{}],297:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add key-value pair object.
@@ -36233,7 +36300,7 @@ module.exports = function() {
   };
 };
 
-},{}],297:[function(_dereq_,module,exports){
+},{}],298:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive for an input mask for default value.
@@ -36283,7 +36350,7 @@ module.exports = function() {
   };
 };
 
-},{"formiojs/utils":4,"vanilla-text-mask":228}],298:[function(_dereq_,module,exports){
+},{"formiojs/utils":4,"vanilla-text-mask":228}],299:[function(_dereq_,module,exports){
 "use strict";
 /*
 * Prevents user inputting invalid api key characters.
@@ -36306,7 +36373,7 @@ module.exports = function() {
   };
 };
 
-},{}],299:[function(_dereq_,module,exports){
+},{}],300:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -36388,7 +36455,7 @@ module.exports = function() {
   };
 };
 
-},{"lodash/camelCase":180,"lodash/map":209}],300:[function(_dereq_,module,exports){
+},{"lodash/camelCase":180,"lodash/map":209}],301:[function(_dereq_,module,exports){
 "use strict";
 /**
 * A directive that provides a UI to add {value, label} objects to an array.
@@ -36510,7 +36577,7 @@ module.exports = ['BuilderUtils', function(BuilderUtils) {
   }
 ];
 
-},{"lodash/camelCase":180,"lodash/difference":186,"lodash/map":209,"lodash/without":225}],301:[function(_dereq_,module,exports){
+},{"lodash/camelCase":180,"lodash/difference":186,"lodash/map":209,"lodash/without":225}],302:[function(_dereq_,module,exports){
 "use strict";
 'use strict';
 
@@ -36669,7 +36736,7 @@ module.exports = ['FormioUtils', function(FormioUtils) {
   };
 }];
 
-},{"lodash/difference":186,"lodash/range":216}],302:[function(_dereq_,module,exports){
+},{"lodash/difference":186,"lodash/range":216}],303:[function(_dereq_,module,exports){
 "use strict";
 // Create an AngularJS service called debounce
 module.exports = ['$timeout','$q', function($timeout, $q) {
@@ -36703,7 +36770,7 @@ module.exports = ['$timeout','$q', function($timeout, $q) {
   };
 }];
 
-},{}],303:[function(_dereq_,module,exports){
+},{}],304:[function(_dereq_,module,exports){
 "use strict";
 /*! ng-formio-builder v2.30.1 | https://unpkg.com/ng-formio-builder@2.30.1/LICENSE.txt */
 /*global window: false, console: false, jQuery: false */
@@ -36803,6 +36870,8 @@ app.directive('formBuilderOptionInputsLabelPosition', _dereq_('./directives/form
 
 app.directive('formBuilderOptionKey', _dereq_('./directives/formBuilderOptionKey'));
 
+app.directive('formBuilderOptionKeyNew', _dereq_('./directives/formBuilderOptionKeyNew'));
+
 app.directive('formBuilderOptionLabelPosition', _dereq_('./directives/formBuilderOptionLabelPosition'));
 
 app.directive('formBuilderOptionOptionsLabelPosition', _dereq_('./directives/formBuilderOptionOptionsLabelPosition'));
@@ -36885,5 +36954,5 @@ app.run([
 
 _dereq_('./components');
 
-},{"./components":253,"./constants/commonOptions":274,"./constants/formOptions":275,"./directives/formBuilder":276,"./directives/formBuilderComponent":277,"./directives/formBuilderConditional":278,"./directives/formBuilderDnd":279,"./directives/formBuilderElement":280,"./directives/formBuilderList":281,"./directives/formBuilderOption":282,"./directives/formBuilderOptionCustomValidation":283,"./directives/formBuilderOptionInputsLabelPosition":284,"./directives/formBuilderOptionKey":285,"./directives/formBuilderOptionLabelPosition":286,"./directives/formBuilderOptionOptionsLabelPosition":287,"./directives/formBuilderOptionShortcut":288,"./directives/formBuilderOptionTags":289,"./directives/formBuilderRow":290,"./directives/formBuilderTable":291,"./directives/formBuilderTooltip":292,"./directives/headersBuilder":293,"./directives/jsonInput":294,"./directives/labelValidator":295,"./directives/objectBuilder":296,"./directives/textMask":297,"./directives/validApiKey":298,"./directives/valueBuilder":299,"./directives/valueBuilderWithShortcuts":300,"./factories/BuilderUtils":301,"./factories/debounce":302}]},{},[303])(303)
+},{"./components":253,"./constants/commonOptions":274,"./constants/formOptions":275,"./directives/formBuilder":276,"./directives/formBuilderComponent":277,"./directives/formBuilderConditional":278,"./directives/formBuilderDnd":279,"./directives/formBuilderElement":280,"./directives/formBuilderList":281,"./directives/formBuilderOption":282,"./directives/formBuilderOptionCustomValidation":283,"./directives/formBuilderOptionInputsLabelPosition":284,"./directives/formBuilderOptionKey":285,"./directives/formBuilderOptionKeyNew":286,"./directives/formBuilderOptionLabelPosition":287,"./directives/formBuilderOptionOptionsLabelPosition":288,"./directives/formBuilderOptionShortcut":289,"./directives/formBuilderOptionTags":290,"./directives/formBuilderRow":291,"./directives/formBuilderTable":292,"./directives/formBuilderTooltip":293,"./directives/headersBuilder":294,"./directives/jsonInput":295,"./directives/labelValidator":296,"./directives/objectBuilder":297,"./directives/textMask":298,"./directives/validApiKey":299,"./directives/valueBuilder":300,"./directives/valueBuilderWithShortcuts":301,"./factories/BuilderUtils":302,"./factories/debounce":303}]},{},[304])(304)
 });

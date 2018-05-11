@@ -96,6 +96,8 @@ app.directive('formBuilderOptionInputsLabelPosition', require('./directives/form
 
 app.directive('formBuilderOptionKey', require('./directives/formBuilderOptionKey'));
 
+app.directive('formBuilderOptionKeyNew', require('./directives/formBuilderOptionKeyNew'));
+
 app.directive('formBuilderOptionLabelPosition', require('./directives/formBuilderOptionLabelPosition'));
 
 app.directive('formBuilderOptionOptionsLabelPosition', require('./directives/formBuilderOptionOptionsLabelPosition'));
