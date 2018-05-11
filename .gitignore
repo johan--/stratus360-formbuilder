@@ -2,10 +2,14 @@
 .idea
 debug
 ngFormBuilder/bower_components
-ngFormBuilder/dist/node_modules
+ngFormBuilder/node_modules
 ngFormBuilder/dist/ngFormBuilder-complete.js
 ngFormBuilder/dist/ngFormBuilder-complete.min.js
 ngFormBuilder/dist/ngFormBuilder-full.js
 ngFormBuilder/dist/ngFormBuilder-full.min.js
 ngFormBuilder/dist/ngFormBuilder.js
 ngFormBuilder/dist/ngFormBuilder.min.js
+ngFormBuilder/dist/ngFormBuilder-complete.css
+ngFormBuilder/dist/ngFormBuilder-complete.min.css
+ngFormBuilder/dist/ngFormBuilder-full.css
+ngFormBuilder/dist/ngFormBuilder-full.min.css
