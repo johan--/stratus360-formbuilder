@@ -207,6 +207,7 @@ public class S360_Form_Builder_Controller {
             if(relatedData != null)
             {
                 Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+                Schema.DescribeSObjectResult relatedObjectDesc;
                 // construct and save related data
                 for(string key : relatedData.keySet()){
                     
@@ -219,6 +220,9 @@ public class S360_Form_Builder_Controller {
                         Map<object, object> tmpRe = (Map<object, object>)records[0];
                     	String listType = 'List<' + (string)tmpRe.get('sobjectType') + '>';
             			childRecords = (List<SObject>)Type.forName(listType).newInstance();  
+
+                        // get related data describe object
+                        relatedObjectDesc = gd.get((string)tmpRe.get('sobjectType')).getDescribe();
                     }
                     //List<Sobject> childRecords = new List<Sobject>();
                     
@@ -231,7 +235,19 @@ public class S360_Form_Builder_Controller {
                             if((string)fname != 'sobjectType')
                             	sObj.put((string)fname, tmpRe.get((string)fname));
                         }
-                        childRecords.add(sObj);
+
+                        if(tmpRe.get('Id') != null){
+                            // check is has updateable permission
+                            if(relatedObjectDesc.isUpdateable()){
+                                childRecords.add(sObj);        
+                            }
+                        }else{
+                            // check is has createable permission
+                            if(relatedObjectDesc.isCreateable()){
+                                childRecords.add(sObj);        
+                            }
+                        }
+                        
                     }
                     
                     if(childRecords != null && !childRecords.isEmpty()){

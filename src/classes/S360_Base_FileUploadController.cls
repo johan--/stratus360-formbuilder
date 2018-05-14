@@ -16,7 +16,30 @@ public with sharing class S360_Base_FileUploadController {
 
         return a.Id;
     }
-
+	
+    @AuraEnabled
+    public static void createNewAttachmentMapper(Id parentId, string attachId, string fieldName, string fileName){
+        S360_FA__AttachmentMapper__c am = new S360_FA__AttachmentMapper__c();
+        am.S360_FA__Dummy_Object__c	 = parentId;
+        am.S360_FA__attachId__c = attachId;
+        am.S360_FA__fileName__c = fileName;
+        am.S360_FA__fieldName__c = fieldName;
+        
+        upsert am;
+    }
+    
+    @AuraEnabled
+    public static List<S360_FA__AttachmentMapper__c> getAttachmentList(String parentId){
+        List<S360_FA__AttachmentMapper__c> lists = new List<S360_FA__AttachmentMapper__c>();
+        try{
+        	lists = [SELECT S360_FA__fileName__c, S360_FA__fieldName__c FROM S360_FA__AttachmentMapper__c WHERE S360_FA__Dummy_Object__c=:parentId];    
+        }catch(QueryException e){
+            System.debug(e);
+        }
+       	
+        return lists;
+    }
+    
     public static void appendToFile(Id fileId, String base64Data) {
         system.debug('passed fileId:'+fileId);
 

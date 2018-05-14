@@ -108,9 +108,13 @@
             <apex:pageBlock mode="edit">
                 <apex:pageBlockButtons >
                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Save" action="{!save}" onclick="getUsedFields()"/>
+                     &nbsp; 
+                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Populate APIs" onclick="setAPIs()" reRender="none"/>
                     <apex:outputPanel id="autoSaveStatus">
                         <p id="autoSaveMessage"></p>
                     </apex:outputPanel>
+                   
+
                 </apex:pageBlockButtons>
                 
                 <div class="page-content" ng-app="formioApp">
@@ -210,11 +214,12 @@
         }
 		
         function run($rootScope, formioComponents, $timeout, $templateCache, UserService){
-            setAPIs();
+            
             console.log('tagg');
             console.log($rootScope);
             console.log(formioComponents);
-            UserService.globalAPI = allApis;
+            allApis = UserService.globalAPI;
+            setAPIs();
             $rootScope.displays = [{
                 name: 'form',
                 title: 'Form'
@@ -527,7 +532,9 @@
             debugger;
             JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
              	if (err) { return console.error(err); }
-                var apis = [];
+                while(allApis.length > 0) {
+   				 allApis.pop();
+				}
                 for(var i = 0; i < meta.fields.length; i++){
                     allApis[i] = meta.fields[i].name;
                 }

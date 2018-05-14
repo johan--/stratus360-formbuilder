@@ -53,14 +53,14 @@ public class PickListDescController_Test {
     
     @isTest
     public static void test3(){
-        Dummy_Object__c dummyObject = new Dummy_Object__c(Game_Type__c = 'Game1');
-        dummyObject.Last_Name__c = 'test';
-        dummyObject.Date_Time__c = date.today();
+        Contact dummyObject = new Contact(LeadSource ='Web');
+        dummyObject.LastName = 'test';
+        dummyObject.Birthdate = date.today();
         insert dummyObject;
         
         PageReference pageRef = Page.PicklistDesc;
         pageRef.getParameters().put('id', dummyObject.Id);
-        pageRef.getParameters().put('pickListFieldName', 'Game_type__c');
+        pageRef.getParameters().put('pickListFieldName', 'LeadSource');
         Test.setCurrentPage(pageRef);
         
         Test.startTest();

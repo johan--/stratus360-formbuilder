@@ -6,17 +6,22 @@
         
         //Get the array of files
         var fileInput = component.find("fileId").get("v.files");
-        
+        	
+        debugger;
+        return;
         //Get first file
-        var len = component.find("fileId").get("v.files").length;
+        var len = fileInput.length;
+        var self = this;
         for(var i = 0; i<len; i++){
             var file = fileInput[i];
+            
+            
             if(file){
                 alert(file.name)
             }
-            var self = this;
+            
             if (file.size > self.MAX_FILE_SIZE) {
-                component.set("v.fileName", 'Alert : File size cannot exceed ' + self.MAX_FILE_SIZE + ' bytes.\n' + ' Selected file size: ' + file.size);
+                alert('File size cannot exceed ' + self.MAX_FILE_SIZE + ' bytes.\n' + ' Selected file size: ' + file.size);
                 return;
             }
      
@@ -59,7 +64,25 @@
             contentType: file.type,
             fileId: attachId
         });
- 
+ 		
+        var createNewAttachmentMapperAction = component.get("c.createNewAttachmentMapper");
+        createNewAttachmentMapperAction.setParams({
+            parentId: component.get("v.parentId"),
+            attachId: attachId,
+            fieldName: component.get("v.fieldName"),
+            fileName: file.name
+        });
+        alert("HI");
+        
+        createNewAttachmentMapperAction.setCallback(this, function(response){
+        	var state = response.getState();  
+            if (state ==="ERROR"){
+                var errors = response.getError();
+                console.log(errors);
+            }
+        });
+        $A.enqueueAction(createNewAttachmentMapperAction);
+        
         // set call back 
         action.setCallback(this, function(response) {
             // store the response / Attachment Id   
@@ -72,9 +95,12 @@
                 // check if the start postion is still less then end postion 
                 // then call again 'uploadInChunk' method , 
                 // else, diaply alert msg and hide the loading spinner
+                
+                
                 if (startPosition < endPosition) {
                     this.uploadInChunk(component, file, fileContents, startPosition, endPosition, attachId);
                 } else {
+                                       
                     alert('your File is uploaded successfully');
                 }
                 // handel the response errors        

@@ -1,4 +1,28 @@
 ({
+    doInit: function(component, event, helper){
+        var a = [];
+        var action = component.get("c.getAttachmentList");
+        action.setParams({
+            parentId: component.get("v.parentId")
+        });
+        alert("HI");
+        action.setCallback(this, function(response){
+            var state = response.getState();
+            if (state ==="ERROR"){
+                alert("ERROROR");
+                var errors = response.getError();
+                console.log(errors);
+            }else{
+				var a = response.getReturnValue();
+                component.set("v.allFilesList", a);
+            }
+            
+        });
+        $A.enqueueAction(action);
+        
+        
+        
+    },
     doSave: function(component, event, helper) {
         
         if (component.find("fileId").get("v.files").length > 0) {
@@ -9,14 +33,6 @@
     },
  
     handleFilesChange: function(component, event, helper) {
-        /*var fileList = [];
-        len = event.getSource().get("v.files").length;
-        alert("length is "+len);
-       
-        for(var i = 0; i<len; i++){
-            fileList.push(event.getSource().get("v.files")[i]);
-        }
-        component.*/
         component.set("v.FileList",event.getSource().get("v.files"));
     },
     showDiv : function(component, event, helper) {
@@ -33,9 +49,5 @@
     
     closeModal: function(component, event, helper){
     	document.getElementById('modalWindow').style.display = 'none';
-	},
-    uploadFileClientSide: function(component, event, helper){
-        alert("uploaded:"+event.getParam("files").length);
-        return;
-    }
+	}
 })

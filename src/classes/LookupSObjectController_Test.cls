@@ -28,12 +28,12 @@ public class LookupSObjectController_Test {
     
     @isTest
     public static void testStringWhereType(){
-        S360_FA__Dummy_Object__c v1 = new S360_FA__Dummy_Object__c( S360_FA__Last_Name__c  = 'Common1', S360_FA__Password__c  = 'account1');
-        S360_FA__Dummy_Object__c v2 = new S360_FA__Dummy_Object__c( S360_FA__Last_Name__c  = 'Common2', S360_FA__Password__c  = 'account2');
-        v1.S360_FA__Date_Time__c = date.today();
-        v2.S360_FA__Date_Time__c = date.today();
-        v1.S360_FA__Last_Name__c = 'last';
-        v2.S360_FA__Last_Name__c = 'last';
+        Contact v1 = new Contact( LastName = 'Common1', Department= 'account1');
+        Contact v2 = new Contact( LastName  = 'Common2', Department  = 'account2');
+        v1.Birthdate = date.today();
+        v2.Birthdate = date.today();
+        v1.LastName= 'last';
+        v2.LastName= 'last';
         
         insert v1;
         insert v2;
@@ -116,9 +116,9 @@ public class LookupSObjectController_Test {
 
     @isTest
     public static void testResult(){
-        S360_FA__Dummy_Object__c v1 = new S360_FA__Dummy_Object__c();
-        v1.S360_FA__Date_Time__c = date.today();
-        v1.S360_FA__Last_Name__c = 'last';
+        Contact v1 = new Contact();
+        v1.Birthdate= date.today();
+        v1.LastName = 'last';
 
         insert v1;
 

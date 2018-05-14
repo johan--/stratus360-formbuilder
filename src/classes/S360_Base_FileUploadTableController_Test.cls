@@ -92,9 +92,9 @@ public class S360_Base_FileUploadTableController_Test {
 
     @isTest
     public static void testDeleteAttachment(){
-        S360_FA__Dummy_Object__c dummy = new S360_FA__Dummy_Object__c();
-        dummy.S360_FA__Last_Name__c = 'bvbb';
-        dummy.S360_FA__Date_Time__c = date.today();
+        Contact dummy = new Contact();
+        dummy.LastName = 'bvbb';
+        dummy.Birthdate = date.today();
         insert dummy;
         Id dummyId = dummy.Id;
 
