@@ -2,14 +2,10 @@
 public class LookupSObjectController_Test {
     @isTest
     public static void testSearch(){
-        S360_FA__Dummy_Object__c v1 = new S360_FA__Dummy_Object__c();
-        S360_FA__Dummy_Object__c v2 = new S360_FA__Dummy_Object__c();
-        v1.S360_FA__Date_Time__c = date.today();
-        v2.S360_FA__Date_Time__c = date.today();
-        v1.S360_FA__Last_Name__c = 'last';
-        v2.S360_FA__Last_Name__c = 'last';
-
-        System.debug('Date is ' +  v1.S360_FA__Date_Time__c);
+        Account v1 = new Account();
+        Account v2 = new Account();
+        v1.Name = 'Account1';
+        v2.Name = 'Account2';
         
         insert v1;
         insert v2;
@@ -17,16 +13,15 @@ public class LookupSObjectController_Test {
         Id [] fixedSearchResults= new ID[]{v1.Id, v2.Id};
         Test.setFixedSearchResults(fixedSearchResults);
 
-        List<LookupSObjectController.Result> results1 = LookupSObjectController.lookup('Dummy', 'S360_FA__Dummy_Object__c', '', '', '', '');
+        List<LookupSObjectController.Result> results1 = LookupSObjectController.lookup('account', 'Account', '', '', '', '');
         
-        // System.assertEquals(2, results1.size());
         for(LookupSObjectController.Result r : results1){
-            if(r.SObjectLabel == 'Vendor A'){
-                // System.assertEquals(v1.Id, r.SObjectId);        
+            if(r.SObjectLabel == 'Account1'){
+                System.assertEquals(v1.Id, r.SObjectId);        
             }
             
-            if(r.SObjectLabel == 'Vendor B'){
-                // System.assertEquals(v2.Id, r.SObjectId);        
+            if(r.SObjectLabel == 'Account2'){
+                System.assertEquals(v2.Id, r.SObjectId);        
             }
         }
     }

@@ -67,10 +67,22 @@ global with sharing class S360_Form_Builder_Ext {
     }
     
     public PageReference save(){
-        System.debug(jsonConfig);
+        Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+        if(!globalDescribe.get('s360_fa__s360_form_config__c').getDescribe().isUpdateable()){
+            return null;
+        }
         update formConfig;
         
         // upsert json config attachemnt
+        if(jsonAttachment.Id != null){
+            if(!globalDescribe.get('attachment').getDescribe().isUpdateable()){
+                return null;
+            }
+        }else{
+            if(!globalDescribe.get('attachment').getDescribe().isCreateable()){
+                return null;
+            }
+        }
         jsonAttachment.Body = blob.valueOf(jsonConfig);
         upsert jsonAttachment;
         

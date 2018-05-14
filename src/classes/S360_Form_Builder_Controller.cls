@@ -84,9 +84,17 @@ public class S360_Form_Builder_Controller {
                         serverResponse.put('message', Label.ObjectNotAccessible);
                         return serverResponse;
                     }
+
+                    /* pull object level information */
+                    Map<String, boolean> objectLevelInfo = new Map<String, boolean>();
+                    objectLevelInfo.put('isAccessible', objectDescribe.isAccessible());
+                    objectLevelInfo.put('isUpdateable', objectDescribe.isUpdateable());
+                    objectLevelInfo.put('isCreateable', objectDescribe.isCreateable());
+                    objectLevelInfo.put('isDeletable', objectDescribe.isDeletable());
+                    serverResponse.put('objectInfo', objectLevelInfo);
                     
                     // if dataId is empty check is user has creatable permission
-                    if(dataId == ''){
+                    /*if(dataId == ''){
                         if(!objectDescribe.isCreateable()){
                             serverResponse.put('status', false);
                             serverResponse.put('message', Label.ObjectNotCreatable );
@@ -98,7 +106,7 @@ public class S360_Form_Builder_Controller {
                         serverResponse.put('status', false);
                         serverResponse.put('message', Label.ObjectNotUpdatable );
                         return serverResponse;
-                    }
+                    }*/
                     
                     //Get all fields exist in Object
                     Map<String, FieldInformation> fieldInformations = new Map<String, FieldInformation>();
@@ -130,9 +138,12 @@ public class S360_Form_Builder_Controller {
                     
                     // generate field which refference
                     for(String name : fieldInformations.keySet()){
-                        if(fieldInformations.get(name).relationshipApi != null && fieldInformations.get(name).relationshipApi != ''){
-                            strRealFields += ', ' + fieldInformations.get(name).relationshipApi + '.Name';
+                        if(!name.startsWithIgnoreCase('Jigsaw')){
+                            if(fieldInformations.get(name).relationshipApi != null && fieldInformations.get(name).relationshipApi != ''){
+                                strRealFields += ', ' + fieldInformations.get(name).relationshipApi + '.Name';
+                            }
                         }
+                        
                     }
                 
                 	List<Schema.RecordTypeInfo> lrti = Schema.getGlobalDescribe().get(config.S360_FA__Primary_Object__c).getDescribe().getRecordTypeInfos();
@@ -174,19 +185,30 @@ public class S360_Form_Builder_Controller {
         
         Map<String, Object> serverResponse = new Map<String, Object>();
         try{
+            if(data.Id != null){
+                // check is updateable
+                if(!data.getSObjectType().getDescribe().isUpdateable()){
+                    serverResponse.put('status', false);
+                    serverResponse.put('message', Label.ObjectNotUpdatable);
+                    return serverResponse;
+                }
+            }else{
+                // check is creataable
+                if(!data.getSObjectType().getDescribe().isCreateable()){
+                    serverResponse.put('status', false);
+                    serverResponse.put('message', Label.ObjectNotCreatable);
+                    return serverResponse;       
+                }
+            }
             upsert data;
             
             Id parentId = data.Id;
             
             if(relatedData != null)
             {
-
+                Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
                 // construct and save related data
                 for(string key : relatedData.keySet()){
-
-                    System.debug('key');
-                    System.debug(key);
-                    System.debug(relatedData.get(key));
                     
                     // get the field name that reference to parent
                     string relatedField = key.split('\\|')[1];
@@ -198,12 +220,11 @@ public class S360_Form_Builder_Controller {
                     	String listType = 'List<' + (string)tmpRe.get('sobjectType') + '>';
             			childRecords = (List<SObject>)Type.forName(listType).newInstance();  
                     }
-                    System.debug('rec is = ' + records);
                     //List<Sobject> childRecords = new List<Sobject>();
                     
                     for(object re : records){
                         Map<object, object> tmpRe = (Map<object, object>)re;
-                        sObject sObj = Schema.getGlobalDescribe().get((string)tmpRe.get('sobjectType')).newSObject() ;
+                        sObject sObj = gd.get((string)tmpRe.get('sobjectType')).newSObject() ;
                         sObj.put(relatedField, parentId);
                         for(object fname : tmpRe.keySet()){
                             System.debug((string)fname);
@@ -212,8 +233,6 @@ public class S360_Form_Builder_Controller {
                         }
                         childRecords.add(sObj);
                     }
-
-                    System.debug(childRecords);
                     
                     if(childRecords != null && !childRecords.isEmpty()){
                      	upsert childRecords;   
@@ -224,7 +243,7 @@ public class S360_Form_Builder_Controller {
             // upsert signature data
             if(isSignatureEnabled){
                 String res = S360_Signature_Ctrl.upsertSignature(data.Id, signatureData);
-                System.debug(res);
+                
                 if(res != ''){
             		serverResponse.put('status', false);
             		serverResponse.put('data', data);        
@@ -247,6 +266,14 @@ public class S360_Form_Builder_Controller {
     @AuraEnabled
     public static List<sobject> getRelatedData(String fields, String sFrom, String cWhere){
         list<sobject> serverResponse = new list<sobject>();
+
+        //check if has access to the related data
+        Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe(); 
+        Schema.DescribeSObjectResult objectDescribe = globalDescribe.get(sFrom.toLowerCase()).getDescribe();
+        if(!objectDescribe.isAccessible()){
+            return serverResponse;
+        }
+
         String swhere = '';
         if(cWhere != null && cWhere != ''){
             swhere = ' where ' + cWhere;

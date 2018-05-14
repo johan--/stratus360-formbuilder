@@ -12,6 +12,7 @@
     <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="RelatedData" type="Object" default="{}"/>
     <aura:attribute name="FieldInfo" type="Object" default="{}"/>
+    <aura:attribute name="ObjectInfo" type="Object" default="{}"/>
     
     <!-- captcha attributes -->
     <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>

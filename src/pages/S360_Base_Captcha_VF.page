@@ -20,7 +20,7 @@
         var onloadCallback = function() {
             
             grecaptcha.render('widgetId1', {
-                'sitekey' : '{!$CurrentPage.parameters.sk}', 
+                'sitekey' : '{!HTMLENCODE($CurrentPage.parameters.sk)}', 
                 'data-size' : 'compact',
                 'data-theme' : 'light',
                 'callback' : function(value){

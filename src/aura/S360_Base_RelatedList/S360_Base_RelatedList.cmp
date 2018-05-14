@@ -11,8 +11,9 @@
     
     <aura:attribute name="FormConfigTemplate" type="sobject" default="{}"/>
     <aura:attribute name="FieldInfoTemplate" type="sobject" default="{}"/>
+    <aura:attribute name="ObjectInfoTemplate" type="sobject" default="{}"/>
     <aura:attribute name="DataTemplate" type="sobject" default="{}"/>
-    <aura:attribute name="IsReady" type="boolean" default="false"/>
+    <aura:attribute name="IsReady" type="boolean" default="true"/>
     
     <aura:attribute name="componentData" type="Object"/>
     
@@ -26,7 +27,7 @@
     <aura:handler name="change" value="{!v.FormConfigTemplate}" action="{!c.handleTemplateRetrieved}"/>
     
     <div>
-        <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" ShowToast="{!v.showToast}"/>
+        <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="true"/>
         
         <article class="{!'slds-card ' + v.Class}">
             <div class="slds-card__header slds-grid">
@@ -57,7 +58,8 @@
                                         </div>
                                         <div class="slds-size_1-of-1 slds-large-size_1-of-12">
                                             <div class="slds-grid> slds-grid_align-end slds-p-right_medium">
-                                                <c:S360_Base_ButtonCmp ButtonLabel="x" CompId="{! 'remove_' + v.FormName + '_' + v.ParentId}" Payload="{!index}" Class="slds-button slds-button_destructive slds-m-arround_small"/>
+                                                <c:S360_Base_ButtonCmp ButtonLabel="x" CompId="{! 'remove_' + v.FormName + '_' + v.ParentId}" Payload="{!index}" Class="slds-button slds-button_destructive slds-m-arround_small"
+                                                    IsDisabled="{! !v.ObjectInfoTemplate.isDeletable}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +67,8 @@
                             </aura:iteration>
                             
                             <c:S360_Base_ButtonCmp ButtonLabel="+ add" CompId="{! 'new_' + v.FormName + '_' + v.ParentId}" 
-                                                   aura:id="btnAdd" Class="slds-button slds-button_brand slds-m-top_small"/>
+                                                   aura:id="btnAdd" Class="slds-button slds-button_brand slds-m-top_small"
+                                                   IsDisabled="{! !v.ObjectInfoTemplate.isCreateable}"/>
                         </div>
                         
                         <aura:set attribute="else">
@@ -80,6 +83,7 @@
                                                 componentData="{!v.componentData}"
                                                 FormConfig="{!v.FormConfigTemplate}"
                                                 FieldInfo="{!v.FieldInfoTemplate}"
+                                                ObjectInfo="{!v.ObjectInfoTemplate}"
                                                 Data="{!v.DataTemplate}"/>
                     </div>
                 </aura:if>

@@ -1,9 +1,11 @@
-<aura:component >
+<aura:component controller="S360_Base_FileUploadController">
     <aura:attribute name="FileList" type="Object[]"/>
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="fieldName" type="string" default=""/>
-    <lightning:spinner aura:id="mySpinner" class="slds-hide"/>
-
+    <aura:attribute name="fileNames" type="string" default=""/>
+    <aura:attribute name="parentId" type="Id" default="a010a00000TlodeAAB" />
+    
+    
     <div class = "radioButtonForm">
         <fieldset class="slds-form-element">
             <legend class="slds-form-element__legend slds-form-element__label"><b>Do you have the ID ready to upload?</b></legend>
@@ -63,15 +65,11 @@
               
               <br/>
               
-              <!--<lightning:input aura:id="file-input" type="file" files="{!v.FileList}" label="Files" 
-                 name="file" multiple="true" onchange="{! c.uploadFileClientSide}"/> -->
+              <lightning:input aura:id="fileId" type="file" label="Attachment" name="file" multiple="true" accept="image/png, .zip" onchange="{!c.handleFilesChange }"/>
+
+               <button class="slds-button slds-button_brand" onclick="{!c.doSave}">Upload Attachment</button>
               
-              <lightning:fileUpload label="Attach receipt"
-                    name="fileUploader" 
-                    multiple="true" 
-                    accept=".pdf, .png"
-                    recordId="{!v.myRecordId}" 
-                    onuploadfinished="{!c.handleUploadFinished}" />
+              
               
               <hr/>
               
