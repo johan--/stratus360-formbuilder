@@ -14,7 +14,7 @@ var app = angular.module('ngFormBuilder', [
 
 app.factory('UserService', function(){
   return{
-    globalAPI: []
+    globalAPI: ['A', 'B']
   }
 });
 
