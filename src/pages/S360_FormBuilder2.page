@@ -107,7 +107,8 @@
         <apex:form >
             <apex:pageBlock mode="edit">
                 <apex:pageBlockButtons >
-                    <apex:commandButton styleClass="slds-button slds-button--brand slds-not-selected" value="Save" action="{!save}" onclick="getUsedFields()"/>
+                    <apex:commandButton styleClass="btn btn-primary btn-md" value="Save" action="{!save}" onclick="getUsedFields()"/>
+                    <apex:commandButton styleClass="btn btn-primary btn-md" value="Populate APIs" onclick="setAPIs()"/>
                     <apex:outputPanel id="autoSaveStatus">
                         <p id="autoSaveMessage"></p>
                     </apex:outputPanel>
@@ -188,7 +189,7 @@
         var inputFlowMap = '';
         var recordTypeMap = '';
         var recordType = '';
-        
+        var allApis = [];
         // connect the jsforce
         var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
         // test
@@ -348,6 +349,18 @@
                     scope.component.recordTypes = recordts;
                     scope.component.initButtonLabel = refreshButtonLabel;
                 });                
+            }
+            
+            function setAPIs(){
+                JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+                    debugger;	
+                    if (err) { return console.error(err); }
+                    debugger;
+                    console.log(meta);
+                    var apis = JSON.parse(meta);
+                    console.log(apis);
+                    allApis = apis;
+                });
             }
             
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';

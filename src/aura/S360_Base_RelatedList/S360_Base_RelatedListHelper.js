@@ -100,7 +100,7 @@
         $A.enqueueAction(action);
     },
     
-    deleteRecordHelper: function(component, event){
+    deleteRecordHelper: function(component, event, helper){
         var self = this;
         var index = event.getParam("Payload");
         var data = component.get('v.Data');
@@ -122,9 +122,9 @@
                     component.set('v.body', body);
                     component.set('v.Data', data);
                     
-                    this.showToast(component, 'success', 'Success delete record');
+                    helper.showToast(component, 'success', 'Success delete record');
                 }else{
-                    this.showToast(component, 'error', 'Failed delete record : ' + res.message);
+                    helper.showToast(component, 'error', 'Failed delete record : ' + res.message);
                 }
             }
         });

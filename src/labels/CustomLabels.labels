@@ -40,6 +40,13 @@
         <value>you do not have access to create this object</value>
     </labels>
     <labels>
+        <fullName>ObjectNotDeletable</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ObjectNotDeletable</shortDescription>
+        <value>You don&apos;t have access to delete on this object</value>
+    </labels>
+    <labels>
         <fullName>ObjectNotFound</fullName>
         <categories>FA</categories>
         <language>en_US</language>

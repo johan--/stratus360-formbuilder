@@ -24,7 +24,7 @@
                 console.log(res);
                 
                 if(res.status == true){
-                    var formConfig = res.formConfig
+                    var formConfig = res.formConfig;
                     var data = res.data;
                     var fieldInfo = {};
                     if(res.fieldInfo){
@@ -36,29 +36,36 @@
                         var action2 = component.get('c.getComponentConfig');
                         action2.setParams({
                             "formName" : newForm,
-                            "recordId" : component.get('v.recordId')
+                            "recordId" : component.get('v.recordId') ? component.get('v.recordId') : (helper.getUrlParam('id') ? helper.getUrlParam('id') : '')
                         });
                         action2.setCallback(this, function(response2){
-                            res = response2.getReturnValue();
-                            formConfig = res.formConfig
-                            data = res.data;
-                            fieldInfo = {};
-                            if(res.fieldInfo){
-                                fieldInfo = res.fieldInfo;
+                            if(component.isValid() && response2.getState() == 'SUCCESS'){
+                                var res2 = response2.getReturnValue();
+                                if(res2.status == true){
+                                    var formConfig2 = res2.formConfig;
+                                    var data2 = res2.data;
+                                    var fieldInfo2 = {};
+                                    if(res2.fieldInfo){
+                                        fieldInfo2 = res2.fieldInfo;
+                                    }
+                                    data = helper.populateData(component, formConfig2, data2);
+                                    debugger;
+                                    component.set('v.Data', data2);
+                                    component.set('v.FieldInfo', fieldInfo2);
+                                    component.set('v.FormConfig', formConfig2);
+                                    component.set('v.componentType', formConfig2.S360_FA__Component_Type__c);
+                                }
                             }
-                            data = helper.populateData(component, formConfig, data);
-                        	debugger;
-                        	component.set('v.Data', data);
-                        	component.set('v.FieldInfo', fieldInfo);
-                        	component.set('v.FormConfig', formConfig);
-                        	component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
                         });
+                        
                         action2.setStorable();
                         $A.enqueueAction(action2);
+                        
                     } else {
                         
                         data = helper.populateData(component, formConfig, data);
                         debugger;
+                        
                         component.set('v.Data', data);
                         component.set('v.FieldInfo', fieldInfo);
                         component.set('v.FormConfig', formConfig);

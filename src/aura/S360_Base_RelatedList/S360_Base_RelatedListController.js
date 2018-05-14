@@ -19,7 +19,7 @@
                 if(component.get('v.Data')[event.getParam('Payload')].Id != undefined && 
                    component.get('v.Data')[event.getParam('Payload')].Id != ''){
                     if(confirm('Are you sure delete this record?')){
-                        helper.deleteRecordHelper(component, event);
+                        helper.deleteRecordHelper(component, event, helper);
                     }
                 }else{
                     var index = event.getParam("Payload");

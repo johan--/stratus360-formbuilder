@@ -44,8 +44,7 @@
             var data1 = component.get('v.Data');
             data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
             debugger;
-            action.setParams({
-                
+            action.setParams({               
                 "data" : data1,
                 "relatedData" : component.get('v.RelatedData'),
                 "isSignatureEnabled": isSignatureEnabled,
@@ -75,7 +74,7 @@
             child.afterSubmit(sender, 'ERROR', $A.get("$Label.c.S360_base_offline_message"));
         }
     },
-    recordTypeMap : function(component, formConfig,data){
+    /*recordTypeMap : function(component, formConfig,data){
         debugger;
         if(formConfig.S360_FA__Record_Type_Mapping__c && this.getUrlParam('id') && data.RecordTypeId){
             var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
@@ -89,6 +88,16 @@
             debugger;
             window.location.replace(url);
         } else if (formConfig.S360_FA__Record_Type_Mapping__c && component.get('v.recordId') && data.RecordTypeId){
+            debugger;
+            var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
+            var id = data.RecordTypeId;
+            var newForm =  map[id].Name;
+            return newForm;
+         
+        }
+    },*/
+    recordTypeMap : function(component, formConfig,data){
+        if (formConfig.S360_FA__Record_Type_Mapping__c && (component.get('v.recordId') || this.getUrlParam('id')) && data.RecordTypeId){
             debugger;
             var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
             var id = data.RecordTypeId;

@@ -264,6 +264,16 @@ public class S360_Form_Builder_Controller {
     @AuraEnabled
     public static Map<String, Object> deleteRecords(String obj, string lid){
         Map<String, Object> serverResponse = new Map<String, Object>();
+
+        // check delete access
+        Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+        Schema.DescribeSObjectResult objectDescribe = globalDescribe.get(obj.toLowerCase()).getDescribe();
+        if(!objectDescribe.isDeletable()){
+            serverResponse.put('status', false);
+            serverResponse.put('message', Label.ObjectNotDeletable);
+            return serverResponse;
+        }
+        
         try{
             List<Sobject> lobj = database.query('select Id from ' + obj + ' where Id in ('+ lid +') ');
             delete lobj;

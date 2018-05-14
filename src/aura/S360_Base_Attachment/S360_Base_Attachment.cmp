@@ -1,0 +1,150 @@
+<aura:component >
+    <aura:attribute name="FileList" type="Object[]"/>
+    <aura:attribute name="CompId" type="string" default=""/>
+    <aura:attribute name="fieldName" type="string" default=""/>
+    <lightning:spinner aura:id="mySpinner" class="slds-hide"/>
+
+    <div class = "radioButtonForm">
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label"><b>Do you have the ID ready to upload?</b></legend>
+          <div class="slds-form-element__control">
+            <span class="slds-radio">
+              <input type="radio" id="opt1" value="opt1" name="options" onchange="{!c.showDiv}"/>
+              <label class="slds-radio__label" for="opt1">
+                <span class="slds-radio_faux"></span>
+                <span class="slds-form-element__label">Yes</span>
+              </label>
+            </span>
+            <span class="slds-radio">
+              <input type="radio" id="opt2" value="opt2" name="options" onchange="{!c.hideDiv}"/>
+              <label class="slds-radio__label" for="opt2">
+                <span class="slds-radio_faux"></span>
+                <span class="slds-form-element__label">No</span>
+              </label>
+            </span>
+          </div>
+        </fieldset>
+    </div>
+    
+    <br/>
+    
+    <!--Start of Yellow Div and button that calls the modal that manages your files-->
+    <div id="uploadDiv" class="backgroundcolor" style = "display:none;" >
+        <span class="slds-file-selector__button slds-button slds-button_neutral" onclick = "{!c.showModal}">
+                    <div class="uploadIcon">
+                        <lightning:icon iconName="utility:file" variant="file" size="x-small"/>
+                    </div>
+                       &nbsp;&nbsp;Manage Files
+        </span>
+        
+    	
+    </div>
+    
+    <!--File Manager Modal-->
+    
+    <div id="modalWindow" class="demo-only" style="height: 640px; display:none;">
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="{!c.closeModal}">
+              <lightning:icon iconName="utility:close" variant="close" size="x-small"/>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Attachment</h2>
+          </header>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <!--Inside of the Modal Form Begins-->
+              
+              <div class="slds-box" style="background-color:#e8eef7;">
+              	<p>Supported file types: PDF, JPG, GIF, PNG, DOC, DOCX</p>
+                <br/>
+                <p>Maximum file size of 4.5 MB</p>
+              </div>
+              
+              <br/>
+              
+              <!--<lightning:input aura:id="file-input" type="file" files="{!v.FileList}" label="Files" 
+                 name="file" multiple="true" onchange="{! c.uploadFileClientSide}"/> -->
+              
+              <lightning:fileUpload label="Attach receipt"
+                    name="fileUploader" 
+                    multiple="true" 
+                    accept=".pdf, .png"
+                    recordId="{!v.myRecordId}" 
+                    onuploadfinished="{!c.handleUploadFinished}" />
+              
+              <hr/>
+              
+              <div class="slds-box">
+                  <p><b>Linked Files:</b></p>
+                  
+              	<ol>
+                  <li> file1.png</li>
+                  <li> file2.jpg</li>
+                  <li> file3.pdf</li>
+                </ol>
+              </div>
+              
+              
+              <hr/>
+              
+              
+              <p> Pick from a previously uploaded attachment</p>
+              <table class = "slds-table" style="width:100% border-color: #c9d2e0; " border="1"> 
+                  <tr>
+                    <th></th>
+                    <th>File name</th>
+                    <th>Size</th> 
+                      
+                  </tr>
+                  
+                  <!--Previously uploaded files table-->
+                  
+                  <tr style = "height: 20px;">
+                    <td height ="50" width="20">
+                        <span class="slds-checkbox">
+                          <input type="checkbox" name="options" id="checkbox-01" value="checkbox-01" tabindex="-1" aria-labelledby="check-button-label-01 check-group-header" />
+                          <label class="slds-checkbox__label" for="checkbox-01" id="check-button-label-01">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-form-element__label slds-assistive-text">Select item 1</span>
+                          </label>
+                        </span>
+                    </td>
+                    <td height = "50">File1</td>
+                    <td height = "50">3 mb</td>   
+                  </tr>
+                  
+                  <tr style = "height: 20px;">
+                      <td height ="50" width="20">
+                        <span class="slds-checkbox">
+                          <input type="checkbox" name="options" id="checkbox-01" value="checkbox-01" tabindex="-1" aria-labelledby="check-button-label-01 check-group-header" />
+                          <label class="slds-checkbox__label" for="checkbox-01" id="check-button-label-01">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-form-element__label slds-assistive-text">Select item 1</span>
+                          </label>
+                        </span>
+                    </td>
+                    <td height = "50">File2</td>
+                    <td height = "50">2 mb</td> 
+                  </tr>
+                  
+              </table>
+              
+              
+              
+            <!--Inside of the Modal Form Ends-->
+              
+              
+          </div>
+          <footer class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
+            <button class="slds-button slds-button_brand">Save</button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+
+    
+</aura:component>
