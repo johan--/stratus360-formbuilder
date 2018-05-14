@@ -144,9 +144,6 @@
   }
 
   function run($rootScope, formioComponents, $timeout, $templateCache, FormioUtils, UserService) {
-        console.log($rootScope);
-        console.log(UserService);
-
         formioComponents.components.buttonprint.settings.callback = function(scope){
             scope.component.attachmentId = '1';
             scope.component.attachmentName = '2';
