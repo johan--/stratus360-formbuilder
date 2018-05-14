@@ -12,6 +12,12 @@ var app = angular.module('ngFormBuilder', [
   'ckeditor'
 ]);
 
+app.factory('UserService', function(){
+  return{
+    allApis;
+  }
+});
+
 app.constant('FORM_OPTIONS', require('./constants/formOptions'));
 
 app.constant('COMMON_OPTIONS', require('./constants/commonOptions'));

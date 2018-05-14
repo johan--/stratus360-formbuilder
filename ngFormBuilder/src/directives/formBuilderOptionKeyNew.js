@@ -8,18 +8,20 @@ module.exports = function() {
     template: function() {
       return '<div class="form-group" ng-class="{\'has-warning\': shouldWarnAboutEmbedding()}">' +
                 'Manual Input <input type="checkbox" ng-model="component.manualIn" name="Manual Input"/>' +
-                '<div ng-if="component.manualIn">' +
                 '<div class="alert alert-warning" role="alert" ng-if="!component.isNew">' +
                 'Changing the API key will cause you to lose existing submission data associated with this component.' +
                 '</div>' +
+                '<div>' +
                 '<label for="key" class="control-label" form-builder-tooltip="The name of this field in the API endpoint.">Property Name</label>' +
+                '</div>'+
+                '<div ng-if="component.manualIn">' +
                 '<input type="text" class="form-control" id="key" name="key" ng-model="component.key" valid-api-key value="{{ component.key }}" ' +
                 'ng-disabled="component.source" ng-blur="onBlur()">' +
                 '</div>' +
                 '<div ng-if="!component.manualIn">' +
-                '<label for="key" class="control-label" form-builder-tooltip="The name of this field in the API endpoint.">Property Name</label>' +
                 '         <td class="col-xs-6">'+
-                '           <select class="form-control" ng-model="component.key" ng-options="f as f.Name for f in component.apis">'+
+                '           <select class="form-control" ng-model="component.key" ng-options="f as f for f in component.apis" valid-api-key value="{{ component.key }}"'+
+                'ng-disabled="component.source" ng-blur="onBlur()">' +
                 '         </td>' +
                 '</div>'+
                 '<p ng-if="shouldWarnAboutEmbedding()" class="help-block"><span class="glyphicon glyphicon-exclamation-sign"></span> ' +
@@ -27,9 +29,9 @@ module.exports = function() {
                 '</p>' +
               '</div>';
     },
-    controller: ['$scope', 'BuilderUtils', function($scope, BuilderUtils) {
+    controller: ['$scope', 'BuilderUtils', 'UserService', function($scope, BuilderUtils, UserService) {
       BuilderUtils.uniquify($scope.form, $scope.component);
-
+      $scope.component.apis = UserService.globalAPI;
       $scope.onBlur = function() {
         $scope.component.lockKey = true;
 

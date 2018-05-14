@@ -73,7 +73,7 @@
   <div class="container-fluid">
     <div>
       <div class="row">
-        
+
       </div>
       <div class="row">
         <div class="col-sm-8">
@@ -103,7 +103,7 @@
     .run(run).config(config);
 
 
-    run.$inject = ['$rootScope', 'formioComponents', '$timeout', '$templateCache', 'FormioUtils'];
+    run.$inject = ['$rootScope', 'formioComponents', '$timeout', '$templateCache', 'FormioUtils', 'UserService'];
     config.$inject = ['formioComponentsProvider'];
 
 
@@ -135,16 +135,17 @@
             template: 'formio/components/printbutton/api.html'
           },
         ],
-        
+
         documentation: 'http://help.form.io/userguide/#button'
       });*/
 
 
-      
+
   }
 
-  function run($rootScope, formioComponents, $timeout, $templateCache, FormioUtils) {
+  function run($rootScope, formioComponents, $timeout, $templateCache, FormioUtils, UserService) {
         console.log($rootScope);
+        console.log(UserService);
 
         formioComponents.components.buttonprint.settings.callback = function(scope){
             scope.component.attachmentId = '1';
@@ -227,11 +228,11 @@
       //  '<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> {{component.label}}</a>'
       //  );
 
-        
+
   }
 
 
-      
+
 </script>
 </body>
 </html>
