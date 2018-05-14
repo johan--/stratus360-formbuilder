@@ -15,7 +15,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/common/apiNew.html'
           }
           /*{
             name: 'Conditional',

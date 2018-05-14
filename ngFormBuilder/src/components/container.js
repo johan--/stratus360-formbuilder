@@ -10,7 +10,7 @@ module.exports = function(app) {
             template: 'formio/components/container/display.html'
           }, {
             name: 'API',
-            template: 'formio/components/common/api.html'
+            template: 'formio/components/common/apiNew.html'
           }
           /*{
             name: 'Conditional',

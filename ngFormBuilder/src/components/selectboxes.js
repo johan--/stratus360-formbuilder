@@ -15,7 +15,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/selectboxes/api.html'
+            template: 'formio/components/selectboxes/apiNew.html'
           },
           {
             name: 'Layout',
@@ -60,9 +60,9 @@ module.exports = function(app) {
       );
 
       // Create the API markup.
-      $templateCache.put('formio/components/selectboxes/api.html',
+      $templateCache.put('formio/components/selectboxes/apiNew.html',
         '<ng-form>' +
-          '<form-builder-option-key></form-builder-option-key>' +
+          '<form-builder-option-key-new></form-builder-option-key-new>' +
         '</ng-form>'
       );
 

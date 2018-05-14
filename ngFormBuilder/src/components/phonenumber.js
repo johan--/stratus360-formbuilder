@@ -19,7 +19,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/phoneNumber/api.html'
+            template: 'formio/components/phoneNumber/apiNew.html'
           },
           /*{
             name: 'Layout',
@@ -78,9 +78,9 @@ module.exports = function(app) {
         '</ng-form>'
       );
 
-      $templateCache.put('formio/components/phoneNumber/api.html',
+      $templateCache.put('formio/components/phoneNumber/apiNew.html',
         '<ng-form>' +
-          '<form-builder-option-key></form-builder-option-key>' +
+          '<form-builder-option-key-new></form-builder-option-key-new>' +
         '</ng-form>'
       );
     }

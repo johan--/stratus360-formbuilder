@@ -15,7 +15,7 @@ module.exports = function(app) {
           },*/
           {
             name: 'API',
-            template: 'formio/components/signature/api.html'
+            template: 'formio/components/signature/apiNew.html'
           },
           /*{
             name: 'Layout',
@@ -52,9 +52,9 @@ module.exports = function(app) {
         '</ng-form>'
       );
 
-      $templateCache.put('formio/components/signature/api.html',
+      $templateCache.put('formio/components/signature/apiNew.html',
         '<ng-form>' +
-          '<form-builder-option-key></form-builder-option-key>' +
+          '<form-builder-option-key-new></form-builder-option-key-new>' +
         '</ng-form>'
       );
 

@@ -20,7 +20,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/button/api.html'
+            template: 'formio/components/button/apiNew.html'
           },
           {
             name: 'Action',
@@ -176,9 +176,9 @@ module.exports = function(app) {
       );
 
 
-      $templateCache.put('formio/components/button/api.html',
+      $templateCache.put('formio/components/button/apiNew.html',
         '<ng-form>' +
-          '<form-builder-option-key></form-builder-option-key>' +
+          '<form-builder-option-key-new></form-builder-option-key-new>' +
         '</ng-form>'
       );
 
@@ -223,14 +223,14 @@ module.exports = function(app) {
                                 '  <select class="form-control" id="redirectTarget" name="redirectTarget" ng-options="t for t in [\'_self\', \'_blank\']" ng-model="component.redirectTarget"></select>' +
                                 '</div>' +
 
-                                // if submitSuccessCallback 
+                                // if submitSuccessCallback
                                 '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'submit\' && component.submitSuccess === true">' +
                                 '  <label for="submitSuccessCallback" form-builder-tooltip="The custom logic to evaluate when success submit.">{{\'Success Callback Logic\' | formioTranslate}}</label>' +
                                 '  <formio-script-editor rows="3" id="submitSuccessCallback" name="submitSuccessCallback" ng-model="component.submitSuccessCallback" placeholder=""></formio-script-editor>' +
                                 '</div>' +
                                '</ng-form>' +
 
-                               // if submitFailedCallback 
+                               // if submitFailedCallback
                                 '<div class="form-group" ng-if="component.action === \'standard\' && component.event === \'submit\' && component.submitFailed === true">' +
                                 '  <label for="submitFailedCallback" form-builder-tooltip="The custom logic to evaluate when success submit.">{{\'Failed Callback Logic\' | formioTranslate}}</label>' +
                                 '  <formio-script-editor rows="3" id="submitFailedCallback" name="submitFailedCallback" ng-model="component.submitFailedCallback" placeholder=""></formio-script-editor>' +
