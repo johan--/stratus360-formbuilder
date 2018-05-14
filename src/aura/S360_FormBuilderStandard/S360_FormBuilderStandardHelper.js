@@ -144,6 +144,8 @@
             this.generateColumnItem(component, item);
         }else if(item.type === 'embed'){
             this.generateLightningEmbedded(component, item);
+        }else if(item.type === 'attachment'){
+            this.generateAttachment(component, item);
         }
     },
     
@@ -463,11 +465,12 @@
     },
     
     
+    
     /*
      * Function : display signature
      * 
      * 
-     */
+
     generateSignature : function(component, config){    
         var serverFieldInfo = component.get('v.FieldInfo');
         var self = this;
@@ -1216,11 +1219,6 @@
         }
         var self = this;
         
-        setTimeout(function(){
-            console.log("LAST NAME")
-		console.log(component.get('v.Data.S360_FA__Last_Name__c'))
-        }, 5000);
-        
         // add to temporary flow data
         $A.createComponent(
             'c:S360_Base_LightningEmbedded',
@@ -1230,6 +1228,24 @@
                 "label":config.label,
                 "Attributes": dependentsFormatted,
                 "data": component.getReference('v.Data')
+
+            }, 
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    generateAttachment: function(component, config){    
+        
+        var self = this;
+        
+        // add to temporary flow data
+        $A.createComponent(
+            'c:S360_Base_Attachment',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "fieldName":config.label,
 
             }, 
             function(newComponent, status, errorMessage){

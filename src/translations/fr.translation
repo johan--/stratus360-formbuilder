@@ -25,6 +25,10 @@
         <name>ObjectNotCreatable</name>
     </customLabels>
     <customLabels>
+        <label><!-- ObjectNotDeletable --></label>
+        <name>ObjectNotDeletable</name>
+    </customLabels>
+    <customLabels>
         <label><!-- ObjectNotFound --></label>
         <name>ObjectNotFound</name>
     </customLabels>
