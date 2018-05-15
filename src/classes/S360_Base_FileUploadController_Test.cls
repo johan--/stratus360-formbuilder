@@ -5,9 +5,9 @@ public class S360_Base_FileUploadController_Test {
     public static void testSaveTheFile(){
         Attachment test = new Attachment();
         
-        S360_FA__Dummy_Object__c v1 = new S360_FA__Dummy_Object__c();
-        v1.S360_FA__Last_Name__c = 'bvbb';
-        v1.S360_FA__Date_Time__c = date.today();
+        Contact v1 = new Contact();
+        v1.LastName = 'bvbb';
+        v1.Birthdate = date.today();
         insert v1;
         
         Id testParentId = v1.id;
@@ -40,9 +40,9 @@ public class S360_Base_FileUploadController_Test {
     public static void testAppendToFile(){
         String body = 'test';
         String toAppend = 'append';
-        S360_FA__Dummy_Object__c dummy = new S360_FA__Dummy_Object__c();
-        dummy.S360_FA__Last_Name__c = 'bvbb';
-        dummy.S360_FA__Date_Time__c = date.today();
+        Contact dummy = new Contact();
+        dummy.LastName = 'bvbb';
+        dummy.Birthdate= date.today();
         insert dummy;
 
         Id testId = dummy.Id;
@@ -71,9 +71,9 @@ public class S360_Base_FileUploadController_Test {
 
     @isTest
     public static void testSaveTheChunk(){
-        S360_FA__Dummy_Object__c parent = new S360_FA__Dummy_Object__c();
-        parent.S360_FA__Last_Name__c = 'smth';
-        parent.S360_FA__Date_Time__c = date.today();
+        Contact parent = new Contact();
+        parent.LastName = 'smth';
+        parent.Birthdate = date.today();
         insert parent;
 
         Id testParentId = parent.Id;

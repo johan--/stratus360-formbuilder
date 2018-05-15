@@ -469,7 +469,7 @@
     /*
      * Function : display signature
      * 
-     * 
+     */ 
 
     generateSignature : function(component, config){    
         var serverFieldInfo = component.get('v.FieldInfo');
@@ -855,9 +855,23 @@
                     
                     
                     
-                    //var submittedButton = component.get('v.submittedButton');
-                    //submittedButton.push(config.key);
-                    //component.set('v.submittedButton', submittedButton);
+                    /**
+                     * configure object level security
+                     */
+                    var objectInfo = component.get('v.ObjectInfo');
+                    var recordId = component.get('v.Data').Id;
+                    debugger;
+                    if(recordId){
+                        // check for updateable permission
+                        if(!objectInfo.isUpdateable){
+                            newComponent.set('v.IsDisabled', true);
+                        }
+                    }else{
+                        // check for creatable permission
+                        if(!objectInfo.isCreateable){
+                            newComponent.set('v.IsDisabled', true);   
+                        }
+                    }
                 }else if(config.action == 'standard'){
                     if(config.event != '' && config.event != undefined){
                         var actionType = config.event;
@@ -946,6 +960,24 @@
                                 // disabled previous button
                                 newComponent.set('v.IsDisabled', true);
                             }   
+                        }else if(eventName[0] == 'submit'){
+                            /**
+                             * configure object level security
+                             */
+                            var objectInfo = component.get('v.ObjectInfo');
+                            var recordId = component.get('v.Data').Id;
+                            debugger;
+                            if(recordId){
+                                // check for updateable permission
+                                if(!objectInfo.isUpdateable){
+                                    newComponent.set('v.IsDisabled', true);
+                                }
+                            }else{
+                                // check for creatable permission
+                                if(!objectInfo.isCreateable){
+                                    newComponent.set('v.IsDisabled', true);   
+                                }
+                            }
                         }
                         // end check is custom event is next/previous
                         

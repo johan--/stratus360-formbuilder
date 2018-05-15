@@ -1,5 +1,6 @@
 ({
 	showToast : function(component, event, helper) {
+        debugger;
 		$A.util.removeClass(component.find("ToastID"), "slds-hide");
 
         if(component.get('v.Type') == 'success'){

@@ -108,10 +108,13 @@
             <apex:pageBlock mode="edit">
                 <apex:pageBlockButtons >
                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Save" action="{!save}" onclick="getUsedFields()"/>
-                    <apex:commandButton styleClass="btn btn-primary btn-md" value="Populate APIs" onclick="setAPIs()"/>
+                     &nbsp; 
+                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Populate APIs" onclick="setAPIs()" reRender="none"/>
                     <apex:outputPanel id="autoSaveStatus">
                         <p id="autoSaveMessage"></p>
                     </apex:outputPanel>
+                   
+
                 </apex:pageBlockButtons>
                 
                 <div class="page-content" ng-app="formioApp">
@@ -203,14 +206,20 @@
         .module("formBuilder", ["ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer"])
         .run(run).config(config);
 
-		run.$inject = ['$rootScope', 'formioComponents', '$timeout', '$templateCache'];
+		run.$inject = ['$rootScope', 'formioComponents', '$timeout', '$templateCache','UserService'];
     	config.$inject = ['formioComponentsProvider'];
 
 		function config(formioComponentsProvider){
             
         }
 		
-        function run($rootScope, formioComponents, $timeout, $templateCache){
+        function run($rootScope, formioComponents, $timeout, $templateCache, UserService){
+            
+            console.log('tagg');
+            console.log($rootScope);
+            console.log(formioComponents);
+            allApis = UserService.globalAPI;
+            setAPIs();
             $rootScope.displays = [{
                 name: 'form',
                 title: 'Form'
@@ -350,18 +359,7 @@
                     scope.component.initButtonLabel = refreshButtonLabel;
                 });                
             }
-            
-            function setAPIs(){
-                JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
-                    debugger;	
-                    if (err) { return console.error(err); }
-                    debugger;
-                    console.log(meta);
-                    var apis = JSON.parse(meta);
-                    console.log(apis);
-                    allApis = apis;
-                });
-            }
+          
             
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';
             if(unescapeJSON!='')
@@ -414,6 +412,7 @@
                 }
             });
         }
+        
         
         function getUsedFields(){
 			            
@@ -529,6 +528,20 @@
             }
         }
         
+        function setAPIs(){
+            debugger;
+            JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+             	if (err) { return console.error(err); }
+                while(allApis.length > 0) {
+   				 allApis.pop();
+				}
+                for(var i = 0; i < meta.fields.length; i++){
+                    allApis[i] = meta.fields[i].name;
+                }
+                console.log(allApis);
+                debugger;
+            });
+        }
         
         /**
         * upload print template handler

@@ -37,9 +37,9 @@ public class S360_Base_ObjectCommon_Test {
 
     @isTest
     public static void testConvertIdTo15Digit(){
-        S360_FA__Dummy_Object__c parent = new S360_FA__Dummy_Object__c();
-        parent.S360_FA__Last_Name__c = 'smth';
-        parent.S360_FA__Date_Time__c = date.today();
+        Contact parent = new Contact();
+        parent.LastName = 'smth';
+        parent.Birthdate = date.today();
         insert parent;
 
         S360_Base_ObjectCommon.convertIdTo15Digit(parent);

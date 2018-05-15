@@ -13,6 +13,8 @@
             component.set('v.FormConfig', params.config);
             component.set('v.Data', params.data);
             component.set('v.FieldInfo', params.fieldInfo);
+            component.set('v.ObjectInfo', params.objectInfo);
+            debugger;
             
             if(params.config.S360_FA__JSON__c != '' && params.config.S360_FA__JSON__c != undefined){
              	var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;

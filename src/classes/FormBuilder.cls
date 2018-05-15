@@ -1,5 +1,9 @@
+/**
+ * no need this class anymore, replaced with S360_Form_Builder_Controller
+ */
+
 public class FormBuilder {
-    @AuraEnabled
+    /*@AuraEnabled
     public static String getComponentConfig(String formName,String formId){
         List<S360_Form_Config__c> formConfigs;
         if(formId != '')
@@ -14,5 +18,5 @@ public class FormBuilder {
         }else{
             return '';
         }
-    }
+    }*/
 }

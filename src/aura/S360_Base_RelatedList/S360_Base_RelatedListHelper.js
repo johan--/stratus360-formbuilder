@@ -34,6 +34,7 @@
      * get related data and construct that form based on related data
      */
     getAndCustrunctRelatedData: function(component){
+        component.set('v.IsReady', false);
         var self = this;
         
         // if related field not set up properly, exit this process
@@ -163,6 +164,6 @@
         {
             comp.set('v.showToast',true);
         }
-		
+		debugger;
     },
 })

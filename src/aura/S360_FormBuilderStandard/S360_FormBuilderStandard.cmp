@@ -9,6 +9,7 @@
     <!-- save related data by formName|relatedField as the key -->
     <aura:attribute name="RelatedData" type="Object" default="{}" />
     <aura:attribute name="FieldInfo" type="Object" default="{}"/>
+    <aura:attribute name="ObjectInfo" type="Object" default="{}"/>
     
     <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
     <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
@@ -73,7 +74,8 @@
                  description="setup stuff to render"> 
         <aura:attribute name="config" type="Object"/> 
         <aura:attribute name="data" type="Object" /> 
-        <aura:attribute name="fieldInfo" type="Object" /> 
+        <aura:attribute name="fieldInfo" type="Object" />
+        <aura:attribute name="objectInfo" type="Object" /> 
     </aura:method>
     
     <!-- this method is called after S360_FormBuilderMain finish its server operation -->

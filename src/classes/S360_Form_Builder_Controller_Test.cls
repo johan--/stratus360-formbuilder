@@ -45,9 +45,9 @@ public class S360_Form_Builder_Controller_Test {
 
     @isTest
     public static void testDeleteRecords(){
-        S360_FA__Dummy_Object__c deleteMe = new S360_FA__Dummy_Object__c();
-        deleteMe.S360_FA__Last_Name__c = 'what';
-        deleteMe.S360_FA__Date_Time__c = date.today();
+        Contact deleteMe = new Contact();
+        deleteMe.LastName = 'what';
+        deleteMe.HasOptedOutOfEmail	 = false;
         insert deleteMe;
 
         S360_Form_Builder_Controller.deleteRecords('S360_FA__Dummy_Object__c', deleteMe.Id);

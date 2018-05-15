@@ -1,7 +1,10 @@
+/**
+ * no need this class anymore, replaced with S360_Form_Builder_Controller_Test
+ */
 @isTest
 public class FormBuilder_Test {
 
-    @isTest
+    /*@isTest
     public static void testGetComponentConfig(){
         FormBuilder.getComponentConfig('', '');
         FormBuilder.getComponentConfig('', '1');
@@ -14,5 +17,5 @@ public class FormBuilder_Test {
         insert test;
 
         FormBuilder.getComponentConfig('test', '1');
-    }
+    }*/
 }

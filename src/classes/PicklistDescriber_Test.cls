@@ -2,12 +2,12 @@
 public class PicklistDescriber_Test {
     @isTest
     public static void testDescribeId(){
-        S360_FA__Dummy_Object__c dummyObject = new S360_FA__Dummy_Object__c(S360_FA__Game_Type__c = 'Game1',S360_FA__Last_Name__c = 'AA', S360_FA__Date_Time__c = date.today());
+        Contact dummyObject = new Contact(LeadSource= 'Web',LastName = 'AA', Birthdate = date.today());
         insert dummyObject; 
        	
-        List<Dummy_Object__c> dObject = [SELECT id, S360_FA__Game_Type__c FROM S360_FA__Dummy_Object__c];
+        List<Contact> dObject = [SELECT id, LeadSource FROM Contact];
         
-		List<String> plv = PicklistDescriber.describeID(dObject[0].Id, 'S360_FA__Game_Type__c');
+		List<String> plv = PicklistDescriber.describeID(dObject[0].Id, 'LeadSource');
               
     }
     
@@ -41,13 +41,13 @@ public class PicklistDescriber_Test {
     
     @isTest
     public static void testGetDescribeAll(){
-        Schema.SObjectType detail = Schema.getGlobalDescribe().get('S360_FA__Dummy_Object__c');
-        Schema.SObjectField field = detail.getDescribe().fields.getMap().get('S360_FA__Game_Type__c');
+        Schema.SObjectType detail = Schema.getGlobalDescribe().get('Contact');
+        Schema.SObjectField field = detail.getDescribe().fields.getMap().get('LeadSource');
         Schema.DescribeFieldResult descField = field.getDescribe();
         List<Schema.PicklistEntry> ple = descField.getPicklistValues();
         
-        Map<String,List<String>> mapPlv = PicklistDescriber.describeAll('S360_FA__Dummy_Object__c', new String[]{'S360_FA__Game_Type__c'});
-        List<String> plv = mapPlv.get('S360_FA__Game_Type__c');
+        Map<String,List<String>> mapPlv = PicklistDescriber.describeAll('Contact', new String[]{'LeadSource'});
+        List<String> plv = mapPlv.get('LeadSource');
         
         
         //System.assertEquals(ple.size(), plv.size());

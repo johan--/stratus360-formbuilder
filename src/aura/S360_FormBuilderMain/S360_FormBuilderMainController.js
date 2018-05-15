@@ -27,10 +27,16 @@
                     var formConfig = res.formConfig;
                     var data = res.data;
                     var fieldInfo = {};
+                    var objectInfo = {};
+
                     if(res.fieldInfo){
                         fieldInfo = res.fieldInfo;
                     }
-                    debugger;
+
+                    if(res.objectInfo){
+                        objectInfo = res.objectInfo;
+                    }
+                    
                     var newForm = helper.recordTypeMap(component, formConfig, data);
                     if (newForm){
                         var action2 = component.get('c.getComponentConfig');
@@ -45,13 +51,21 @@
                                     var formConfig2 = res2.formConfig;
                                     var data2 = res2.data;
                                     var fieldInfo2 = {};
+                                    var objectInfo2 = {};
+
                                     if(res2.fieldInfo){
                                         fieldInfo2 = res2.fieldInfo;
                                     }
+
+                                    if(res2.objectInfo){
+                                        objectInfo2 = res2.objectInfo;
+                                    }
+
                                     data = helper.populateData(component, formConfig2, data2);
-                                    debugger;
+                                    
                                     component.set('v.Data', data2);
                                     component.set('v.FieldInfo', fieldInfo2);
+                                    component.set('v.ObjectInfo', objectInfo2);
                                     component.set('v.FormConfig', formConfig2);
                                     component.set('v.componentType', formConfig2.S360_FA__Component_Type__c);
                                 }
@@ -68,11 +82,21 @@
                         
                         component.set('v.Data', data);
                         component.set('v.FieldInfo', fieldInfo);
+                        component.set('v.ObjectInfo', objectInfo);
                         component.set('v.FormConfig', formConfig);
                         component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
                     }
                 }else{
                     alert(res.message);
+                    
+                    /*var formConfig = res.formConfig;
+                    component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
+
+                    if(formConfig.S360_FA__Component_Type__c == 'Standard'){
+                        component.find('S360_FormBuilderStandard').showToastMethod('error', res.message);
+                    }else if(formConfig.S360_FA__Component_Type__c == 'Custom'){
+                        alert(res.message);
+                    }*/
                 }
             }
         });
@@ -84,9 +108,10 @@
         var formConfig = component.get('v.FormConfig');
         var data = component.get('v.Data');
         var fieldInfo = component.get('v.FieldInfo');
+        var objectInfo = component.get('v.ObjectInfo');
         
         if(formConfig.S360_FA__Component_Type__c == 'Standard'){
-            component.find('S360_FormBuilderStandard').setup(formConfig, data, fieldInfo);
+            component.find('S360_FormBuilderStandard').setup(formConfig, data, fieldInfo, objectInfo);
         }else if(formConfig.S360_FA__Component_Type__c == 'Custom'){
             component.find('S360_FormBuilderCustom').setup(formConfig, data, fieldInfo);
         }
