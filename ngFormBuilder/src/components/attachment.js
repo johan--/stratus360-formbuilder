@@ -5,7 +5,7 @@ module.exports = function (app) {
             formioComponentsProvider
         ) {
             formioComponentsProvider.register('attachment', {
-                title: 'attachment',
+                title: 'Attachment',
                 template: 'formio/components/attachment.html',
                 group: 'advanced',
                 settings: {
@@ -30,45 +30,35 @@ module.exports = function (app) {
         '$templateCache',
         function ($templateCache) {
             $templateCache.put('formio/components/attachment.html',
-                '<div class="btn-group btn-group-toggle" data-toggle="buttons">' +
-                '<label class="btn btn-secondary">' +
-                '<input type="radio" name="options" id="Yes" autocomplete="off"> Yes' +
-                '</label>' +
-                '<label class="btn btn-secondary">' +
-                '<input type="radio" name="options" id="No" autocomplete="off"> No' +
-                '</label>' +
-                '</div>' +
-                '<div class="form-group">' +
-                '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Attachment</button>' +
-                '</div>'
+                '<p><b>{{component.message}}</b></p>'+
+                '<table>'+
+                '<td width=60px>'+
+                '<input type="radio" id="contactChoice1" name="options">'+
+                '    <label for="contactChoice1">Yes</label>'+
+                '</td> '+
+                '<td width=60px>'+
+                '<input type="radio" id="contactChoice2" name="options">'+
+                '    <label for="contactChoice1">No</label>'+
+                '</td>'+
+                '</table>'
             );
 
             $templateCache.put('formio/componentsView/attachment.html',
-                '<div class="btn-group btn-group-toggle" data-toggle="buttons">' +
-                '<label class="btn btn-secondary">' +
-                '<input type="radio" name="options" id="Yes" autocomplete="off"> Yes' +
-                '</label>' +
-                '<label class="btn btn-secondary">' +
-                '<input type="radio" name="options" id="No" autocomplete="off"> No' +
-                '</label>' +
-                '</div>' +
-                '<div class="form-group">' +
-                '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Attachment</button>' +
-                '</div>'
+                '<p><b>{{component.message}}</b></p>'+
+                '<table>'+
+                '<td width=60px>'+
+                '<input type="radio" id="contactChoice1" name="options">'+
+                '    <label for="contactChoice1">Yes</label>'+
+                '</td> '+
+                '<td width=60px>'+
+                '<input type="radio" id="contactChoice2" name="options">'+
+                '    <label for="contactChoice1">No</label>'+
+                '</td>'+
+                '</table>'
             );
 
             $templateCache.put('formio/formbuilder/attachment.html',
-                '<div class="btn-group btn-group-toggle" data-toggle="buttons">' +
-                '<label class="btn btn-secondary">' +
-                '<input type="radio" name="options" id="Yes" autocomplete="off"> Yes' +
-                '</label>' +
-                '<label class="btn btn-secondary">' +
-                '<input type="radio" name="options" id="No" autocomplete="off"> No' +
-                '</label>' +
-                '</div>' +
-                '<div class="form-group">' +
-                '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Attachment</button>' +
-                '</div>'
+                '<button type="button" class="btn btn-primary btn-block" style = "white-space: normal;">{{component.label}} Attachment Form</button>'
             );
 
             $templateCache.put('formio/components/attachment/display.html',

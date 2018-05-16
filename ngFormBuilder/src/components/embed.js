@@ -5,7 +5,7 @@ module.exports = function(app) {
         formioComponentsProvider
       ) {
         formioComponentsProvider.register('embed', {
-          title: 'embed',
+          title: 'Embed',
           template: 'formio/components/embed.html',
           group: 'advanced',
           settings: {
