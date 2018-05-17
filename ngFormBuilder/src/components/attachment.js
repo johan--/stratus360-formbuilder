@@ -74,6 +74,10 @@ module.exports = function (app) {
                 '<input id="label" name="label" type="text" ng-model="component.label" placeholder="Field Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
                 '</div>' +
 
+                '<div class="form-group">' +
+                '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Object that you want to Bind to\' | formioTranslate}}</label>' +
+                '<input id="label" name="label" type="text" ng-model="component.master" placeholder="Field Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
+                '</div>' +
 
                 '</ng-form>'
             );
