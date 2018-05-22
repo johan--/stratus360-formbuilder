@@ -12,17 +12,21 @@
         }else{
             filterCondition = 'ParentID = null';
         }
-        
+        var deleteme = comp.get('v.FormId');
         var action = comp.get('c.getObjectAttachment');
+        
         action.setStorable();
         action.setParams({
             "filterCondition": filterCondition,
             "pOffset": comp.get('v.offset'),
             "pSize": comp.get('v.pageSize'),
             "sortDirection": comp.get('v.sort'),
-            "orderBy": comp.get('v.orderBy')
+            "orderBy": comp.get('v.orderBy'),
+            "ReportId": comp.get('v.ReportId'),
+            "FormId": comp.get('v.FormId')
         });
         action.setCallback(this, function(res){
+            debugger;
             if(comp.isValid() && res.getState() == 'SUCCESS'){
                 comp.set('v.objectPermission', res.getReturnValue().data.ObjectPermission);
                 
@@ -30,12 +34,18 @@
                  	if(res.getReturnValue().status){
                         comp.set('v.length', res.getReturnValue().data.length)
                         comp.set('v.objectWrapper', res.getReturnValue().data.objectWrapper);
-                        
+                        var a =res.getReturnValue().data.objectWrapper;
+                        console.log('HEre');
+                        for(var i in a){
+                            console.log(a[i]);
+                        }
+                        debugger;
                         if(hlp){
                             setTimeout(function(){
+                                debugger;
                             	hlp.notifyTable(comp);
                             	hlp.notifyPagination(comp);    
-                            },1000);
+                            },2000);
                         }
                         
                         if(message){
@@ -132,6 +142,7 @@
 
         var self = this;
         action.setCallback(this, function(a) {
+            debugger;
             var state = a.getState();
             if(state == "SUCCESS"){
                 attachId = a.getReturnValue();
@@ -140,11 +151,12 @@
                 // recursive method 
                 if(fromPos < toPos) {
                     console.log('fromPos:'+fromPos);
-                    self.uploadChunk(component, fileName, fileType, fileContents, fromPos, toPos, attachId, chunkSize); 
+                    self.uploadChunk(component, fileName, fileType, fileContents, fromPos, toPos, attachId, chunkSize);
                 }else{
                     // finish upload
                     // update attachment table
                     self.getAttachment(component, self, $A.get('$Label.c.attachment_created'));
+                    //component.refreshTable();
                    	// show toast
                     //self.showToast(component, 'success', $A.get('$Label.c.attachment_created'));
                 }
@@ -154,13 +166,11 @@
                 component.set('v.showLoading', false);
                 self.showToast(component, 'error', $A.get('$Label.c.attachment_not_created'));
             }
-
         });
 
-        window.setTimeout(
             $A.getCallback(function() {
                 $A.enqueueAction(action); 
             }),1000
-        );
+
     },
 })

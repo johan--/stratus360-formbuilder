@@ -88,9 +88,9 @@ public class S360_Base_FileUploadController_Test {
 
     @isTest
     public static void testRetrieveImageId(){
-        S360_FA__Dummy_Object__c parent = new S360_FA__Dummy_Object__c();
-        parent.S360_FA__Last_Name__c = 'testlast';
-        parent.S360_FA__Date_Time__c = date.today();
+        Contact parent = new Contact();
+        parent.LastName = 'testlast';
+        parent.Birthdate = date.today();
         insert parent;
 
         Id result = S360_Base_FileUploadController.retrieveImageId(parent.Id);
@@ -100,9 +100,9 @@ public class S360_Base_FileUploadController_Test {
 
     @isTest
     public static void testSaveRecords(){
-        String testObjectType = 'S360_FA__Dummy_Object__com';
+        String testObjectType = 'Contact';
         String[] testPopulated = new String[5];
-        List<S360_FA__Dummy_Object__c> testRecords = new List<S360_FA__Dummy_Object__c>();
+        List<Contact> testRecords = new List<Contact>();
 
         testPopulated[0] = 'a';
         testPopulated[1] = 'b';
@@ -110,11 +110,11 @@ public class S360_Base_FileUploadController_Test {
 
         S360_Base_FileUploadController.saveRecords(testObjectType, testPopulated, testRecords);
 
-        testObjectType = 'S360_FA__Dummy_Object__c';
+        testObjectType = 'Contact';
 
-        S360_FA__Dummy_Object__c a = new S360_FA__Dummy_Object__c();
-        S360_FA__Dummy_Object__c b = new S360_FA__Dummy_Object__c();
-        S360_FA__Dummy_Object__c c = new S360_FA__Dummy_Object__c();
+        Contact a = new Contact();
+        Contact b = new Contact();
+        Contact c = new Contact();
 
         testRecords.add(a);
         testRecords.add(b);

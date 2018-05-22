@@ -1,5 +1,5 @@
 public with sharing class S360_Base_FileUploadController {
-
+	   
     @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) {
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
@@ -16,23 +16,70 @@ public with sharing class S360_Base_FileUploadController {
 
         return a.Id;
     }
+    
+    @AuraEnabled
+    public static Boolean deleteAttachmentMapper(Id parentId, string fieldName, Id attachId, string customObject){
+        System.debug(customObject);
+        List<S360_FA__AttachmentMapper__c> am = Database.query('SELECT Id FROM S360_FA__AttachmentMapper__c WHERE ('+customObject+'=:parentId) AND (S360_FA__fieldName__c=:fieldName) AND (S360_FA__attachId__c=:attachId)');
+        try{
+            List<S360_FA__AttachmentMapper__c> checkIfMoreInstancesOfAttachment = Database.query('SELECT Id FROM  S360_FA__AttachmentMapper__c WHERE ('+customObject+'=:parentId) AND (S360_FA__fieldName__c!=:fieldName) AND (S360_FA__attachId__c=:attachId)');
+            if(checkIfMoreInstancesOfAttachment.size()<1){
+                    Attachment attachment = [SELECT Id FROM Attachment WHERE Id=:attachId];
+                	SObjectType attachmentFLS = Schema.getGlobalDescribe().get('Attachment');
+                	try{
+                        if(attachmentFLS.getDescribe().isDeletable()){
+                        	delete attachment;
+                        }
+                    }catch(DmlException e){
+                        System.debug(e);
+                    }
+            }
+            SObjectType attachmentMapperFLS = Schema.getGlobalDescribe().get('S360_FA__AttachmentMapper__c');
+            if(attachmentMapperFLS.getDescribe().isDeletable()){
+            	delete am;
+                return true;
+            }else{
+                return false;
+            }         
+        }catch(DmlException e){
+            System.debug(e);
+        }
+        return false;
+    }
 	
     @AuraEnabled
-    public static void createNewAttachmentMapper(Id parentId, string attachId, string fieldName, string fileName){
+    public static Boolean createNewAttachmentMapper(Id parentId, string attachId, string fieldName, string fileName, string customObject){
         S360_FA__AttachmentMapper__c am = new S360_FA__AttachmentMapper__c();
-        am.S360_FA__Dummy_Object__c	 = parentId;
+        am.put(customObject, parentId);
         am.S360_FA__attachId__c = attachId;
         am.S360_FA__fileName__c = fileName;
         am.S360_FA__fieldName__c = fieldName;
         
-        upsert am;
+        SObjectType attachmentMapperFLS = Schema.getGlobalDescribe().get('S360_FA__AttachmentMapper__c');
+        if(attachmentMapperFLS.getDescribe().isCreateable()){
+        	insert am;
+            return true;
+        }
+        return false;
     }
     
     @AuraEnabled
-    public static List<S360_FA__AttachmentMapper__c> getAttachmentList(String parentId){
+    public static List<S360_FA__AttachmentMapper__c> getAttachmentList(String parentId, String fieldName, String customObject){
         List<S360_FA__AttachmentMapper__c> lists = new List<S360_FA__AttachmentMapper__c>();
         try{
-        	lists = [SELECT S360_FA__fileName__c, S360_FA__fieldName__c FROM S360_FA__AttachmentMapper__c WHERE S360_FA__Dummy_Object__c=:parentId];    
+            lists = Database.query('SELECT S360_FA__attachId__c, S360_FA__fileName__c, S360_FA__fieldName__c FROM S360_FA__AttachmentMapper__c WHERE ('+customObject+'=:parentId) AND (S360_FA__fieldName__c!=:fieldName)');   
+        }catch(QueryException e){
+            System.debug(e);
+        }
+       	
+        return lists;
+    }
+    
+    @AuraEnabled
+    public static List<S360_FA__AttachmentMapper__c> getMyAttachmentList(String parentId, String fieldName, String customObject){
+        List<S360_FA__AttachmentMapper__c> lists = new List<S360_FA__AttachmentMapper__c>();
+        try{
+            lists = Database.query('SELECT S360_FA__attachId__c, S360_FA__fileName__c, S360_FA__fieldName__c FROM S360_FA__AttachmentMapper__c WHERE ('+customObject+'=:parentId) AND (S360_FA__fieldName__c=:fieldName)');
         }catch(QueryException e){
             System.debug(e);
         }

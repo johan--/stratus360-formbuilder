@@ -17,23 +17,23 @@ public class PicklistDescriber_Test {
         User usr = new User(LastName='lastName', Alias='alias', Email='last@name.com', Username='lstN@xx.co', CommunityNickname='name', ProfileId = p.Id,
                          EmailEncodingKey='UTF-8', LanguageLocaleKey='en_US', LocaleSidKey='en_US', TimeZoneSidKey='America/New_York');
         
-        String vendorRecord = Schema.SObjectType.S360_FA__Dummy_Object__c.getRecordTypeInfosByName().get('Record Type A').getName();
+        String vendorRecord = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Record Type A').getName();
         
-        Schema.SObjectType detail = Schema.getGlobalDescribe().get('S360_FA__Dummy_Object__c');
-        Schema.SObjectField field = detail.getDescribe().fields.getMap().get('S360_FA__Game_Type__c');
+        Schema.SObjectType detail = Schema.getGlobalDescribe().get('Contact');
+        Schema.SObjectField field = detail.getDescribe().fields.getMap().get('LeadSource');
         Schema.DescribeFieldResult descField = field.getDescribe();
         List<Schema.PicklistEntry> ple = descField.getPicklistValues();
         
         PageReference pageRef = Page.PicklistDesc;
-        pageRef.getParameters().put('sobjectType', 'S360_FA__Dummy_Object__c');
+        pageRef.getParameters().put('sobjectType', 'Contact');
         pageRef.getParameters().put('recordTypeName', 'S360_FA__Record_Type_A ');
-        pageRef.getParameters().put('pickListFieldName', 'S360_FA__Game_Type__c');
+        pageRef.getParameters().put('pickListFieldName', 'LeadSource');
         Test.setCurrentPage(pageRef);
         
         Test.startTest();
         
-        Map<String,List<String>> mapPlv = PicklistDescriber.describe('S360_FA__Dummy_Object__c', 'S360_FA__Record_Type_A ', new String[]{'S360_FA__Game_Type__c'});
-        List<String> plv = mapPlv.get(vendorRecord+'S360_FA__Game_Type__c');
+        Map<String,List<String>> mapPlv = PicklistDescriber.describe('Contact', 'S360_FA__Record_Type_A ', new String[]{'LeadSource'});
+        List<String> plv = mapPlv.get(vendorRecord+'LeadSource');
         
         
         Test.stopTest();

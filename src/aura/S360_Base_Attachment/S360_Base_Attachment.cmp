@@ -1,51 +1,82 @@
 <aura:component controller="S360_Base_FileUploadController">
-    <aura:attribute name="FileList" type="Object[]"/>
+    
+    <aura:attribute name="master" type="string" default="" />
+    
+    <aura:attribute name="FileList" type="String[]"/>
+    <aura:attribute name="message" type="String"/>
     <aura:attribute name="allFilesList" type="Object[]"/>
+    <aura:attribute name="myFilesList" type="Object[]"/>
+    <aura:attribute name="fileQueue" type="Object[]"/>
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="fieldName" type="string" default=""/>
-    <aura:attribute name="parentId" type="Id" default="a010a00000TlodeAAB" />
+    <aura:attribute name="parentId" type="Id" default="" />
+    <aura:attribute name="start" type="string" default="false" />
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="statusFLS" type="String"/>
 	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<div style="position:relative;left:20px;">
+        <b>{!v.message}</b>
+        <br/>
+        <br/>
+        <div style="width:100px">
+          <table>
+              <tr>
+                  <td>
+                    <p>Yes</p>
+                  </td>
+                  <td>
+                    <div><ui:inputRadio aura:id="0" name="{!v.CompId}" change="{!c.showDiv}"/></div>
+                  </td>
+                  &nbsp;&nbsp;
+                  <td>
+                    <p>No</p>
+                  </td>
+                  <td>
+                    <div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.hideDiv}"/></div>
+                  </td>
+              </tr>
+          </table>
+    	</div>
+    </div>
+    <br></br>
 
     
-    <div class = "radioButtonForm">
-        <fieldset class="slds-form-element">
-            <legend class="slds-form-element__legend slds-form-element__label"><b>Do you have the ID ready to upload?</b></legend>
-          <div class="slds-form-element__control">
-            <span class="slds-radio">
-              <input type="radio" id="opt1" value="opt1" name="options" onchange="{!c.showDiv}"/>
-              <label class="slds-radio__label" for="opt1">
-                <span class="slds-radio_faux"></span>
-                <span class="slds-form-element__label">Yes</span>
-              </label>
-            </span>
-            <span class="slds-radio">
-              <input type="radio" id="opt2" value="opt2" name="options" onchange="{!c.hideDiv}"/>
-              <label class="slds-radio__label" for="opt2">
-                <span class="slds-radio_faux"></span>
-                <span class="slds-form-element__label">No</span>
-              </label>
-            </span>
-          </div>
-        </fieldset>
-    </div>
-    
-    <br/>
-    
     <!--Start of Yellow Div and button that calls the modal that manages your files-->
-    <div id="uploadDiv" class="backgroundcolor" style = "display:none;" >
-        <span class="slds-file-selector__button slds-button slds-button_neutral" onclick = "{!c.showModal}">
+    <div aura:id="uploadDiv" class="slds-hide" style="position:relative;left:20px;">
+        <br/>
+        
+        <p style="color:#8c965a"><b>&nbsp;&nbsp;List of Attachments:</b></p>
+        <br/>
+        
+              	<ol>
+                    <aura:iteration items="{!v.myFilesList}" var="item" indexVar="i">
+						<table style="table-layout: fixed;">
+                            <tr>
+                                <td><li style="color:#4564ad"> <b>&nbsp;&nbsp;{!item.S360_FA__fileName__c}</b></li></td>
+                        		<td>
+                                    <button id="{!i}" class="slds-button" onclick="{!c.deleteFile}">
+              						<lightning:icon iconName="utility:delete" variant="delete" size="x-small"/>
+            						</button>
+                                </td>
+                            </tr>
+                		</table>
+                  	</aura:iteration>
+
+                  
+                </ol>
+        &nbsp;&nbsp;<span class="slds-file-selector__button slds-button slds-button_neutral" style="margin-top:15px; margin-bottom:15px" onclick = "{!c.showModal}">
                     <div class="uploadIcon">
                         <lightning:icon iconName="utility:file" variant="file" size="x-small"/>
                     </div>
                        &nbsp;&nbsp;Manage Files
         </span>
-        
+        <div id="divFLSDelete" class="hidden"><p style="color:red"><b>&nbsp;&nbsp;{!v.statusFLS}</b></p><br/><br/></div>
     	
     </div>
     
     <!--File Manager Modal-->
     
-    <div id="modalWindow" class="demo-only" style="height: 640px; display:none;">
+    <div aura:id="modalWindow" class="slds-hide" style="height: 640px;">
       <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
         <div class="slds-modal__container">
           <header class="slds-modal__header">
@@ -59,26 +90,55 @@
             <!--Inside of the Modal Form Begins-->
               
               <div class="slds-box" style="background-color:#e8eef7;">
-              	<p>Supported file types: PDF, JPG, GIF, PNG, DOC, DOCX</p>
+              	<p>Supported file types: PDF, JPG, GIF, PNG, DOC, DOCX, ZIP</p>
                 <br/>
                 <p>Maximum file size of 4.5 MB</p>
               </div>
               
               <br/>
               
-              <lightning:input aura:id="fileId" type="file" label="Attachment" name="file" multiple="true" accept="image/png, .zip, .pdf" onchange="{!c.handleFilesChange }"/>
-
-               <button class="slds-button slds-button_brand" onclick="{!c.doSave}">Upload Attachment</button>
-              
+              <lightning:input aura:id="fileId" type="file" label="Attachment" name="file" multiple="true" accept="image/png, .zip, .pdf, .docx, .doc, .jpeg, .jpg, .gif" onchange="{!c.handleFilesChange }"/>
+              <br/>
+              <button class="slds-button slds-button_brand" onclick="{!c.doSave}">Upload Attachment</button>
+              <div id="divFLS" class="hidden"><br/><p style="color:red"><b>{!v.statusFLS}</b></p></div>
+			 <div>
+                 <table>
+                 
+                     
+                     <aura:iteration items="{!v.FileList}" var="item" indexVar="i">
+                         <tr>
+                             <td>
+                                 <ul class="slds-list--vertical slds-has-dividers--bottom-space slds-has-block-links--space">
+                                     <li class="slds-list__item"><a href="#void">{!item}</a></li>
+                                 </ul>
+                             </td>
+                             <td>
+                                <button id="{!i}" class="slds-button" onclick="{!c.removeFromView}">
+              						<lightning:icon iconName="utility:delete" variant="delete" size="small"/>
+            					</button>
+                             </td>
+                         </tr>
+                     </aura:iteration>
+                     
+                     
+                 
+                 </table>
+             </div>
+			 <aura:if isTrue="{!v.showLoadingSpinner}">
+                  <div class="slds-text-body_small slds-text-color_error">Uploading... 
+                     <img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
+                  </div>
+             </aura:if>              
               
               
               <hr/>
               
               <div class="slds-box">
                   <p><b>Linked Files:</b></p>
+                  <br/>
                   
               	<ol>
-                    <aura:iteration items="{!v.allFilesList}" var="item">
+                    <aura:iteration items="{!v.myFilesList}" var="item">
 
                         <li> {!item.S360_FA__fileName__c}</li>
                 
@@ -92,47 +152,27 @@
               <hr/>
               
               
-              <p> Pick from a previously uploaded attachment</p>
-              <table class = "slds-table" style="width:100% border-color: #c9d2e0; " border="1"> 
+              <p><b> Choose from a previously uploaded attachment</b></p>
+               <table class = "slds-table" style="width:100% border-color: #c9d2e0; " border="1"> 
                   <tr>
                     <th></th>
                     <th>File name</th>
-                    <th>Size</th> 
                       
-                  </tr>
-                  
-                  <!--Previously uploaded files table-->
-                  
-                  <tr style = "height: 20px;">
+                  </tr>               
+                   
+                 <aura:iteration items="{!v.allFilesList}" var="item">
+                      <tr style = "height: 20px;">
                     <td height ="50" width="20">
-                        <span class="slds-checkbox">
-                          <input type="checkbox" name="options" id="checkbox-01" value="checkbox-01" tabindex="-1" aria-labelledby="check-button-label-01 check-group-header" />
-                          <label class="slds-checkbox__label" for="checkbox-01" id="check-button-label-01">
-                            <span class="slds-checkbox_faux"></span>
-                            <span class="slds-form-element__label slds-assistive-text">Select item 1</span>
-                          </label>
-                        </span>
+                          <lightning:input name="Selected" type="checkbox" checked="{!item.selected}" />
+                          
                     </td>
-                    <td height = "50">File1</td>
-                    <td height = "50">3 mb</td>   
+                    <td height = "50">{!item.S360_FA__fileName__c}</td>                    
                   </tr>
-                  
-                  <tr style = "height: 20px;">
-                      <td height ="50" width="20">
-                        <span class="slds-checkbox">
-                          <input type="checkbox" name="options" id="checkbox-01" value="checkbox-01" tabindex="-1" aria-labelledby="check-button-label-01 check-group-header" />
-                          <label class="slds-checkbox__label" for="checkbox-01" id="check-button-label-01">
-                            <span class="slds-checkbox_faux"></span>
-                            <span class="slds-form-element__label slds-assistive-text">Select item 1</span>
-                          </label>
-                        </span>
-                    </td>
-                    <td height = "50">File2</td>
-                    <td height = "50">2 mb</td> 
-                  </tr>
-                  
+                     
+              </aura:iteration>
               </table>
-              
+              <br/>
+              <button class="slds-button slds-button_brand" onclick="{!c.bindCheckBoxValues}">Add</button>
               
               
             <!--Inside of the Modal Form Ends-->
@@ -141,7 +181,7 @@
           </div>
           <footer class="slds-modal__footer">
             <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
-            <button class="slds-button slds-button_brand" onclick="{!c.saveForm}">Save</button>
+            <button class="slds-button slds-button_brand" onclick="{!c.saveModal}">Save</button>
           </footer>
         </div>
       </section>

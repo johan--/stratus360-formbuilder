@@ -5,7 +5,7 @@ public class S360_Form_Builder_Controller_Test {
         S360_Form_Config__c test = new S360_Form_Config__c();
         test.Name = 'test';
         test.JSON__c = '';
-        test.Primary_Object__c = 'S360_FA__Dummy_Object__c';
+        test.Primary_Object__c = 'Contact';
         test.Field__c = '';
         test.Component_Type__c = 'Custom';
         test.Custom_Css__c = '';
@@ -40,7 +40,7 @@ public class S360_Form_Builder_Controller_Test {
     @isTest
     public static void testGetRelatedData(){
         date today = date.today();
-        S360_Form_Builder_Controller.getRelatedData('Id', 'S360_FA__Dummy_Object__c', 'S360_FA__Interest__c = false');
+        S360_Form_Builder_Controller.getRelatedData('Id', 'Contact', 'DoNotCall = false');
     }
 
     @isTest
@@ -50,7 +50,7 @@ public class S360_Form_Builder_Controller_Test {
         deleteMe.HasOptedOutOfEmail	 = false;
         insert deleteMe;
 
-        S360_Form_Builder_Controller.deleteRecords('S360_FA__Dummy_Object__c', deleteMe.Id);
+        S360_Form_Builder_Controller.deleteRecords('Contact', deleteMe.Id);
         S360_Form_Builder_Controller.deleteRecords('StaticResource', deleteMe.Id);
     }
 }

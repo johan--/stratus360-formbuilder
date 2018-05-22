@@ -2,7 +2,7 @@
 public class S360_Base_Carousel_Test {
 	@isTest
     public static void getCarousel(){
-        S360_FA__Dummy_Object__c a = new S360_FA__Dummy_Object__c(S360_FA__First_Name__c='fs', S360_FA__Last_Name__c='ln', S360_FA__Date_Time__c=System.now());
+        Contact a = new Contact(FirstName='fs', LastName='ln');
         insert a;
         
         S360_FA__Carousel_Config__c b = new S360_FA__Carousel_Config__c(S360_FA__Dummy_Object__c = a.Id, S360_FA__Caption__c='caption',

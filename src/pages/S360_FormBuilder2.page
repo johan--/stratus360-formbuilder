@@ -3,13 +3,13 @@
         <meta charset="utf-8"/>
         <title>Form.io Form Builder</title>
         <meta name="viewport" content="width=device-width"/>
-        
+
         <link rel="stylesheet" href="{!URLFOR($Resource.formio, '/css/angular-json-explorer.min.css')}"/>
         <link rel="stylesheet" href="{!URLFOR($Resource.Bootstrap337, '/dist/css/bootstrap.min.css.yeti.css')}" />
         <link rel="stylesheet" href="{!URLFOR($Resource.FontAwesome470, '/css/font-awesome.min.css')}" />
         <link rel="stylesheet" href="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.css')}"/>
         <link rel="stylesheet" href="{!URLFOR($Resource.FontAwesome463, '/css/font-awesome.min.css')}" />
-        
+
     </head>
     <body ng-app="formBuilder">
         <!-- BROWSE HAPPY BEGINS HERE -->
@@ -35,44 +35,44 @@
             width:64px;
             display:inline-block;
             }
-            
+
             .formbuilder {
             /*height: 600px;*/
             }
-            
+
             .formcomponents {
             width: 30%;
             }
-            
+
             .formarea {
             width: 70%;
             }
-            
+
             .component-settings .nav-link {
             font-size: 0.6em;
             }
-            
+
             .jsonviewer {
             max-height: 600px;
             overflow: scroll;
             }
-            
+
             .form-type-select {
             display: inline-block;
             width: 100px;
             height: 28px;
             vertical-align: top;
             }
-            
-            
+
+
             .visibilityHiddenClass{
             	visibility: hidden;
             }
-            
+
             a.nav-link.ng-binding{
             	font-size: 0.9em;
             }
-            
+
             .inputPrintTemplateContainer{
                 position: fixed;
                 z-index: 100000;
@@ -88,7 +88,7 @@
                 align-items: center;
                 right: 0;
             }
-            
+
             .inputPrintTemplateContainer .modal{
             	display: block;
                 top: 0;
@@ -103,20 +103,26 @@
         <!--[if IE 8]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
         <!--[if IE 9]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
         <!-- BROWSE HAPPY ENDS HERE -->
-        
+
         <apex:form >
             <apex:pageBlock mode="edit">
                 <apex:pageBlockButtons >
                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Save" action="{!save}" onclick="getUsedFields()"/>
-                     &nbsp; 
+                     &nbsp;
                      <apex:commandButton styleClass="btn btn-primary btn-md" value="Populate APIs" onclick="setAPIs()" reRender="none"/>
+                     &nbsp;
+                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Save As" onclick="saveAsM()" action="{!saveAs}"/>
+                     &nbsp;
+                    <apex:selectList size="1" onchange="changeVersion()" value="{!selectedVersion}">	
+                       <apex:selectOptions value="{!versionList}"/> 
+                    </apex:selectList>
                     <apex:outputPanel id="autoSaveStatus">
                         <p id="autoSaveMessage"></p>
                     </apex:outputPanel>
-                   
+
 
                 </apex:pageBlockButtons>
-                
+
                 <div class="page-content" ng-app="formioApp">
                     <div class="container-fluid">
                         <div>
@@ -129,7 +135,7 @@
                     </div>
                 </div>
             </apex:pageBlock>
-            
+
             <div class="visibilityHiddenClass">
                 <apex:inputField value="{!S360_Form_Config__c.Name}"/> <p/>
                 <apex:inputField id="Form_Config_Primary_Object" value="{!S360_Form_Config__c.Primary_Object__c}" /> <p/>
@@ -144,19 +150,19 @@
                 <apex:inputField id="autoSaveInterval" value="{!S360_Form_Config__c.AutoSave_Interval__c}" /> <p/>
                 <apex:inputField id="isAutoSave" value="{!S360_Form_Config__c.AutoSave__c}" /> <p/>
             </div>
-            
+
             <apex:actionFunction name="autoSaveAF" action="{!autoSave}" rerender="autoSaveStatus"/>
             <!--apex:outputPanel id="tmpInputPrintTempate">
                 <div class="visibilityHiddenClass">
                     <apex:inputText id="printTemplateName" value="{!printAttachmentName}" />
                     <apex:inputText id="printTemplateId" value="{!printAttachmentId}" />
                 </div>
-                
+
             </apex:outputPanel-->
         </apex:form>
-        
+
         <div id="inputPrintTempate" style="visibility: hidden;" class="inputPrintTemplateContainer">
-            
+
             <div class="modal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -175,15 +181,15 @@
                 </div>
             </div>
         </div>
-        
+
         <apex:includeScript value="{!URLFOR($Resource.jsforce170)}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/ckeditor.4.5.11.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/signature_pad.min.1.5.3.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/lodash.min.4.17.4.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/angular-json-explorer.min.js')}"/>
-        
-        
+		<apex:includeScript value="{!URLFOR($Resource.securefilters)}"/>
+
         <script type="text/javascript">
         var formConfig = '';
         var printButtonScope;
@@ -195,13 +201,66 @@
         var allApis = [];
         // connect the jsforce
         var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
-        // test
+        // test read metadata
+        var versionNum = 0;
+        function changeVersion(){
+			versionNum = "{!selectedVersion}";            
+        }
+        function saveAsM(){
+            updateVersion();
+            getUsedFields();
+        }
         
+        function updateVersion(){
+        JSFORCE_CONN.metadata.read('CustomObject', 'S360_FA__S360_Form_Config__c', function(err, metadata) {
+            debugger;
+          console.log('meta')
+          console.log(metadata);
+          var index;
+          if (err) {
+            console.error(err);
+          }
+          for (var i = 0; i < metadata.fields.length; i++) {
+            if (metadata.fields[i].fullName == "S360_FA__Version__c") {
+              index = i;
+            }
         
+          }
+          var versions = metadata.fields[index].picklist.picklistValues.length;
+          metadata.fields[index].picklist.picklistValues[versions] = {
+            fullName: (versions + 1).toString(),
+            default: "false"
+          };
+          var newMeta = [{
+              //Id: {!formConfig.Id},
+            	fullName: 'S360_FA__S360_Form_Config__c.S360_FA__Version__c',
+              type :"Picklist",
+              label :"Version",	
+            picklist: metadata.fields[index].picklist
+          }]
+          console.log(newMeta);
+          debugger;
+          JSFORCE_CONN.metadata.update('CustomField', newMeta, function(err, results) {
+              debugger;
+            if (err) {
+              console.error(err);
+            }
+            for (var i = 0; i < results.length; i++) {
+              var result = results[i];
+              console.log('success ? : ' + result.success);
+              console.log('fullName : ' + result.fullName);
+            }
+              debugger;
+          });
+        });
+       }
+        
+
+
         // start auto save
         autoSave();
         // end of start auto save
-        
+
             angular
         .module("formBuilder", ["ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer"])
         .run(run).config(config);
@@ -210,11 +269,11 @@
     	config.$inject = ['formioComponentsProvider'];
 
 		function config(formioComponentsProvider){
-            
+
         }
-		
+
         function run($rootScope, formioComponents, $timeout, $templateCache, UserService){
-            
+
             console.log('tagg');
             console.log($rootScope);
             console.log(formioComponents);
@@ -227,15 +286,15 @@
                 name: 'wizard',
                 title: 'Wizard'
             }];
-            
-            
+
+
             formioComponents.components.container.title = 'Related List';
             formioComponents.components.fieldset.title = 'Panel';
             formioComponents.components.panel.title = 'Wizard';
-            
+
             // set captcha image
            	formioComponents.components.captcha.settings.captchaImagePreview = '{!URLFOR($Resource.CaptchaImage)}';
-            
+
             //disabled components
             formioComponents.components.textarea.disabled = true;
             formioComponents.components.selectboxes.disabled = true;
@@ -254,25 +313,25 @@
             formioComponents.components.editgrid.disabled = true;
             formioComponents.components.survey.disabled = true;
             formioComponents.components.table.disabled = true;
-            
-            
+
+
             // handle print callback
             formioComponents.components.buttonprint.settings.callback = function(scope){
                 document.getElementById('inputPrintTempate').style.visibility = "visible";
                 printButtonScope = scope;
             }
-            
+
             // handle flowbutton refreshListFlowCallback
             formioComponents.components.flowbutton.settings.refreshListFlowCallback = function(scope){
                 var refreshFlowButtonLabel = scope.component.refreshFlowButtonLabel;
                 scope.component.refreshFlowButtonLabel = 'Refreshing...';
                 JSFORCE_CONN.query('SELECT Id, Name, S360_FA__JSON__c, S360_FA__Returned_Flow_Field__c from S360_FA__S360_Form_Config__c where S360_FA__Has_Flow_Controller__c = true ', function(err, res) {
-                    if (err) { 
-                        return console.log(err); 
+                    if (err) {
+                        return console.log(err);
                     }
-                    
+
                     console.log(res.records);
-                    
+
                     var flow = {};
                     for(var i = 0; i < res.records.length; i++){
                         var arrayOfreturnedFlowField = res.records[i].S360_FA__Returned_Flow_Field__c ? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []
@@ -283,12 +342,12 @@
                                 'type': ''
                             }
                         });
-                        
+
                         returnedFlowField['Id'] = {
                             'key': 'Id',
                             'type': ''
                         }
-                        
+
                         flow[res.records[i].Id] = {
                             'name': res.records[i].Name,
                             'returnedFlowField': returnedFlowField//res.records[i].S360_FA__Returned_Flow_Field__c? res.records[i].S360_FA__Returned_Flow_Field__c.split(',') : []
@@ -296,20 +355,20 @@
                     }
                     console.log(flow);
                     debugger;
-                    
+
                     scope.component.flows = flow;
                     scope.component.refreshFlowButtonLabel = refreshFlowButtonLabel;
-                  
+
                 });
 
             }
-            
+
             // Record Type Component Button
             formioComponents.components.recordtype.settings.initButtonCallback = function(scope){
                 var refreshButtonLabel = scope.component.initButtonLabel;
                 console.log(refreshButtonLabel);
                 scope.component.initButtonLabel = 'Populating...';
-                JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+                JSFORCE_CONN.sobject("{!JSENCODE(	S360_Form_Config__c.Primary_Object__c)}").describe(function(err, meta) {
                     if (err) { return console.error(err); }
                     debugger;
                     console.log(meta.recordTypeInfos);
@@ -322,7 +381,7 @@
                     }
                     scope.component.recordts = recordts;
                 });
-                JSFORCE_CONN.query('SELECT Id, Name from S360_FA__S360_Form_Config__c where S360_FA__Primary_Object__c = \'{!S360_Form_Config__c.Primary_Object__c}\'', function(err, res) {
+                JSFORCE_CONN.query('SELECT Id, Name from S360_FA__S360_Form_Config__c where S360_FA__Primary_Object__c = \'{!JSENCODE(S360_Form_Config__c.Primary_Object__c)}\'', function(err, res) {
                     if(err){return console.error(err); }
                     console.log(res);
                     var forms = [];
@@ -336,9 +395,9 @@
                     scope.component.forms = forms;
                     scope.component.initButtonLabel = refreshButtonLabel;
                 });
-                
+
             }
-            
+
             // Record Select Component Button
             formioComponents.components.recordtypeselect.settings.initButtonCallback = function(scope){
                 var refreshButtonLabel = scope.component.initButtonLabel;
@@ -357,32 +416,33 @@
                     }
                     scope.component.recordTypes = recordts;
                     scope.component.initButtonLabel = refreshButtonLabel;
-                });                
+                });
             }
-          
-            
+
+
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';
+            debugger;
             if(unescapeJSON!='')
             {
                 $rootScope.form = JSON.parse(unescapeJSON);
             }
             formConfig = $rootScope.form;
             debugger;
-            
+
             $rootScope.renderForm = true;
-            
+
             $rootScope.$on('formUpdate', function(event, form) {
                 angular.merge($rootScope.form, form);
                 formConfig = $rootScope.form;
                 debugger;
-                
+
                 $rootScope.renderForm = false;
                 setTimeout(function() {
                     $rootScope.renderForm = true;
                 }, 10);
-                
+
             });
-            
+
             if(unescapeJSON!='')
             {
                 var originalComps = _.cloneDeep($rootScope.form.components);
@@ -392,7 +452,7 @@
                     $rootScope.jsonCollapsed = false;
                 }, 200);
             }
-            
+
             var currentDisplay = 'form';
             $rootScope.$watch('form.display', function(display) {
                 debugger;
@@ -412,16 +472,16 @@
                 }
             });
         }
-        
-        
+
+
         function getUsedFields(){
-			            
+
             var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
-            
+
             if(formConfig != '' && formConfig != undefined){
                 jsonFieldElement.value = JSON.stringify(formConfig);
             }
-            
+
             var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
             var formHasFlowController = document.getElementById('j_id0:j_id2:Form_Config_Has_FLow');
             var selectedInputFieldsInFlow = document.getElementById('j_id0:j_id2:SelectedInputFieldsInFlow');
@@ -442,9 +502,14 @@
             RecordTypeField.value = recordTypeMap;
             recordTypeSelection.value = recordType;
         }
-        
+
         function collectField(data){
-            var acceptedFields = {!objectFields};
+            var acceptedFields = '{!JSENCODE(objectFields)}';
+            console.log(acceptedFields);
+            acceptedFields = acceptedFields.split(',');
+            console.log('test');
+            console.log(acceptedFields);
+            debugger;
             var fields = [];
             data.components.forEach(function(cmp){
                 //check is form has flow controller
@@ -452,33 +517,33 @@
                     hasFlowController = true;
                     // get selected input fields
                     selectedInputFields = cmp.selectedInputFields;
-                    
-                    
+
+
                     // get mapping previous flow form field with the current field
                     if(cmp.selectedFlow){
                         debugger;
                         var mapping = cmp.inputFlowMap[cmp.selectedFlow];
                         var newMapping = {};
-                        
+
                         for(var key in mapping){
                             if(mapping.hasOwnProperty(key)){
                                 newMapping[mapping[key]] = key;
-                                
+
                                 //if lookup
                                 /*if(cmp.inputFieldDetails[mapping[key]].type === 'lookup'){
-                                    
+
                                 }*/
                             }
                         }
-                        
+
                         inputFlowMap = JSON.stringify(newMapping);
                     }
                     console.log(cmp.inputFlowMap);
                     console.log(cmp.selectedFlow);
-                    
-                    
+
+
                 }
-                
+
                 if(cmp.type === 'recordtype'){
                 	 recordTypeMap = JSON.stringify(cmp.inputFlowMap);
                 }
@@ -500,24 +565,33 @@
                     }
                 }
             });
-            
+
             return fields;
         }
-        
+
         function autoSave(){
-            var autoSaveInterval = '{!S360_Form_Config__c.AutoSave_Interval__c}' == '' ? 0 : parseInt('{!S360_Form_Config__c.AutoSave_Interval__c}');
-            var isAutoSave = {!S360_Form_Config__c.AutoSave__c};
-            
+            var interval = {!JSENCODE(TEXT(S360_Form_Config__c.AutoSave_Interval__c))};
+            var autoSaveInterval = 0;
+            debugger;
+
+            autoSaveInterval = interval;
+
+            debugger;
+            var isAutoSave = false;
+            if({!IF(S360_Form_Config__c.AutoSave__c, "true", "false")}){
+               isAutoSave = true;
+               }
+
             if(!autoSaveInterval || autoSaveInterval == 0){
                 isAutoSave = false;
             }
-            
+
             if(isAutoSave){
                 setInterval(function(){
                     document.getElementById("autoSaveMessage").innerHTML = "Saving...";
                     getUsedFields();
                     autoSaveAF();
-                    
+
                     // restart form has flow controller value
                     // and it selected input fields;
                     // and input flow mapping
@@ -527,10 +601,10 @@
                 }, 1000 * 60 * autoSaveInterval);
             }
         }
-        
+
         function setAPIs(){
-            debugger;
-            JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+            var primaryObject = '{!JSENCODE(S360_Form_Config__c.Primary_Object__c)}';
+            JSFORCE_CONN.sobject(primaryObject).describe(function(err, meta) {
              	if (err) { return console.error(err); }
                 while(allApis.length > 0) {
    				 allApis.pop();
@@ -542,16 +616,16 @@
                 debugger;
             });
         }
-        
+
         /**
         * upload print template handler
         */
-        
-        
+
+
         function closeInputPrintTempate(){
             document.getElementById('inputPrintTempate').style.visibility = "hidden";
         }
-        
+
         var maxStringSize = 6000000;    //Maximum String size is 6,000,000 characters
         var maxFileSize = 4350000;      //After Base64 Encoding, this is the max file size
         var chunkSize = 950000;         //Maximum Javascript Remoting message size is 1,000,000 characters
@@ -560,11 +634,11 @@
         var fileSize;
         var positionIndex;
         var doneUploading;
-        
+
         function uploadFile() {
             document.getElementById('btnUploadPrintTemplate').innerHTML = 'Uploading...';
-            var file = document.getElementById('attachmentFile').files[0];
-            
+            var file = document.getElementById('attachmentFile').files[versionNum];
+
             if(file != undefined) {
                 if(file.size <= maxFileSize) {
                     attachmentName = file.name;
@@ -579,7 +653,7 @@
                         } else {
                             alert("Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".");
                         }
-                        
+
                     }
                     fileReader.onerror = function(e) {
                         alert("There was an error reading the file.  Please try again.");
@@ -587,9 +661,9 @@
                     fileReader.onabort = function(e) {
                         alert("There was an error reading the file.  Please try again.");
                     }
-                    
+
                     fileReader.readAsBinaryString(file);  //Read the body of the file
-                    
+
                 } else {
                     alert("File must be under 4.3 MB in size.  Your file is too large.  Please try again.");
                 }
@@ -597,8 +671,8 @@
                 alert("You must choose a file before trying to upload it");
             }
         }
-        
-        
+
+
         function uploadAttachment(fileId) {
             var attachmentBody = "";
             if(fileSize <= positionIndex + chunkSize) {
@@ -607,10 +681,10 @@
             } else {
                 attachmentBody = attachment.substring(positionIndex, positionIndex + chunkSize);
             }
-            
+
             Visualforce.remoting.Manager.invokeAction(
             	'{!$RemoteAction.S360_Form_Builder_Ext.doUploadAttachment}',
-                '{!S360_Form_Config__c.Id}',attachmentBody, attachmentName, fileId, 
+                '{!S360_Form_Config__c.Id}',attachmentBody, attachmentName, fileId,
                 function(result, event) {
                     console.log(result);
                     if(event.type === 'exception') {
@@ -621,7 +695,7 @@
                             if(doneUploading == true) {
                                 alert('done uploading');
                                 document.getElementById('btnUploadPrintTemplate').innerHTML = 'Upload';
-                                
+
                                 // update form builder scope
                                 printButtonScope.component.attachmentId = result;
                 				printButtonScope.component.attachmentName = attachmentName;

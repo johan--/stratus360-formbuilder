@@ -1,9 +1,9 @@
 <aura:component controller="S360_Base_FileUploadTableController">
     <aura:attribute name="objectPermission" type="Object"/>
     <aura:attribute name="ReportId" type="String" default=""/>
+    <aura:attribute name="FormId" type="String" default=""/>
     <aura:attribute name="buttonAttachReceiptId" type="String" default="Exp_Attach_Table_buttonAttachReceiptId"/>
-    <aura:attribute name="CompId" type="string" default="InputTextId"/>
-    
+    <aura:attribute name="CompId" type="string" default="InputTextId"/>e
     <!-- loading attribute -->
     <aura:attribute name="showLoading" type="boolean" default="false"/>
     
@@ -42,7 +42,6 @@
     <aura:method name="refreshTable" action="{!c.refreshTable}" access="public">
         <aura:attribute name="message" type="string" default=""></aura:attribute>
     </aura:method>
-    
     <style>
         .footer {
            <!--position:fixed;-->
@@ -75,6 +74,8 @@
             <c:LightningPaginationComponent CompId="{!v.paginationId}" aura:id="E_Rep_Attachment_Pagination_id"/>
         </div>    
     </aura:if>
+    
+    <button onclick="{!c.doInit}">aaa</button>
     
     <c:LightningLoadingComponent show="{!v.showLoading}" CompId="{!'E_Rep_View_loading'}"/>
 </aura:component>

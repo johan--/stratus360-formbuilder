@@ -17,7 +17,11 @@
             comp.set('v.orderBy', param.orderBy);
             comp.set('v.data', null);
         	comp.set('v.data', param.data);
-            
+            debugger;
+            //var allData = comp.get('v.data');
+            //allData.splice(0,0);
+            //comp.set('v.data', allData);
+
             if(!comp.get('v.isFirstLoaded')){
                 comp.set('v.isFirstLoaded', true);
                 hlp.manageTableHeightDimention(comp);

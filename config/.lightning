@@ -3113,6 +3113,23 @@
     {
         "attributes": {
             "type": "AuraDefinition",
+            "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000TzrkCAC"
+        },
+        "Id": "0Ad0a000000TzrkCAC",
+        "AuraDefinitionBundleId": "0Ab0a0000008mYDCAY",
+        "AuraDefinitionBundle": {
+            "attributes": {
+                "type": "AuraDefinitionBundle",
+                "url": "/services/data/v36.0/tooling/sobjects/AuraDefinitionBundle/0Ab0a0000008mYDCAY"
+            },
+            "DeveloperName": "S360_FormBuilderStandard"
+        },
+        "DefType": "STYLE",
+        "Format": "CSS"
+    },
+    {
+        "attributes": {
+            "type": "AuraDefinition",
             "url": "/services/data/v36.0/tooling/sobjects/AuraDefinition/0Ad0a000000ADkKCAW"
         },
         "Id": "0Ad0a000000ADkKCAW",

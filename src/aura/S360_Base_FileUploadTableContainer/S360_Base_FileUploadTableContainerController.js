@@ -35,11 +35,11 @@
     },
     
     handleOnChange : function(comp, event, hlp) {
+        debugger;
 		switch(event.getParam('CompId')){
             case comp.get('v.buttonAttachReceiptId') :
-                event.stopPropagation();
+               // event.stopPropagation();
                 hlp.saveAttachment(comp, event.getParam('payload'));
-                
                 break;
         }
 	}

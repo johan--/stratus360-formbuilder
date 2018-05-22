@@ -2,8 +2,10 @@
 	init : function(component, event, helper) {
 		var parent = document.createElement(component.get('v.Tag'));
         parent.className = component.get('v.Class');
+
         component.get('v.Attributes').forEach(function(attr){
-            parent.setAttribute(attr[0], attr[1]);
+            if(attr[0])
+                parent.setAttribute(attr[0], attr[1]);
         });
         
         // temporary div in order to get genereate dom string

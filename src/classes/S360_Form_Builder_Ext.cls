@@ -1,6 +1,8 @@
 global with sharing class S360_Form_Builder_Ext {
-    public List<String> objectFields {get; private set;}
+    //public List<String> objectFields {get; private set;}
+    public string objectFields {get; private set;}
     public String jsonConfig {get; set;}
+    public Integer selectedVersion {get; set;}
     /*public String printAttachmentId {get; set;}
     public String printAttachmentName {get; set;}
     public Attachment printAttachment {
@@ -11,32 +13,51 @@ global with sharing class S360_Form_Builder_Ext {
         }
         set;
     }*/
-    
-    private S360_FA__S360_Form_Config__c formConfig;
+
+    public S360_FA__S360_Form_Config__c formConfig {get; private set;}
+    public List<SelectOption> versionList {get; private set;}
     private Attachment jsonAttachment;
-    
+    private Integer versionField;
 	public S360_Form_Builder_Ext(ApexPages.StandardController stdCtrl){
+        
         List<String> availableFields = new List<String>();
         formConfig = (S360_FA__S360_Form_Config__c)stdCtrl.getRecord();
-        
+        System.debug(formConfig);
+        System.debug(stdCtrl);
+        List<S360_FA__S360_Form_Config__c> versionConfig = [SELECT 	S360_FA__Version_No__c from S360_FA__S360_Form_Config__c where id =:formConfig.Id];
+        versionField = Integer.valueOf(versionConfig[0].S360_FA__Version_No__c);
+        versionList = new List<SelectOption>();
+        for(Integer i = 0; i <= versionField; i++){
+            versionList.add(new SelectOption(String.valueOf(i),String.valueOf(i)));
+        }
+        System.debug([SELECT S360_FA__Version_No__c from S360_FA__S360_Form_Config__c where id =:formConfig.Id]);
         // get primary object field list
         if(formConfig != null && formConfig.Primary_Object__c != null){
             String primaryObject = formConfig.Primary_Object__c;
-            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe(); 
-            if(globalDescribe.get(primaryObject.toLowerCase()) != null){        
+            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+            if(globalDescribe.get(primaryObject.toLowerCase()) != null){
                 Schema.DescribeSObjectResult objectDescribe = globalDescribe.get(primaryObject.toLowerCase()).getDescribe();
                 Map<String, Schema.SobjectField> fieldInfo = objectDescribe.fields.getMap();
                 for(Schema.SobjectField f: fieldInfo.values()){
                     DescribeFieldResult dfr = f.getDescribe();
-                    availableFields.add('"'+dfr.getName()+'"');
+                    availableFields.add(dfr.getName());
                     if(dfr.getRelationshipName() !=null){
-                        availableFields.add('"'+dfr.getRelationshipName()+'"');
+                        availableFields.add(dfr.getRelationshipName());
                     }
                 }
             }
         }
-        objectFields = availableFields;
         
+        objectFields = '';
+        try{
+            objectFields=availableFields[0];
+        	for(Integer i = 0; i<availableFields.size(); i++){
+            	objectFields += ','+availableFields[i];
+        }
+        }catch(ListException e){
+            System.debug(e);
+        }
+
         // get json config data from attachment
         jsonConfig = '';
         //Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfig.Id];
@@ -44,7 +65,7 @@ global with sharing class S360_Form_Builder_Ext {
         if(tmp.size() > 0){
             jsonAttachment = tmp[0];
             if(tmp[0].Body != null){
-            	jsonConfig = tmp[0].Body.toString();    
+            	jsonConfig = tmp[0].Body.toString();
             }
         }else{
             jsonAttachment = new Attachment();
@@ -52,7 +73,7 @@ global with sharing class S360_Form_Builder_Ext {
             jsonAttachment.Name = 'form_' + formConfig.Id;
         }
         System.debug(jsonConfig);
-        
+
         if(jsonConfig == null || jsonConfig == ''){
             S360_FA__S360_Form_Config__c tmpFormConfig = [select JSON__c from S360_FA__S360_Form_Config__c where Id = :formConfig.Id];
             if(tmpFormConfig.JSON__c == null){
@@ -63,36 +84,57 @@ global with sharing class S360_Form_Builder_Ext {
         }
         System.debug(jsonConfig);
         // end of get json config data from attachment
-        
+
     }
-    
+
     public PageReference save(){
         Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
         if(!globalDescribe.get('s360_fa__s360_form_config__c').getDescribe().isUpdateable()){
             return null;
         }
         update formConfig;
-        
+
         // upsert json config attachemnt
         if(jsonAttachment.Id != null){
-            if(!globalDescribe.get('attachment').getDescribe().isUpdateable()){
-                return null;
+            if(globalDescribe.get('attachment').getDescribe().isUpdateable()){
+                jsonAttachment.Body = blob.valueOf(jsonConfig);
+       			upsert jsonAttachment;
             }
         }else{
-            if(!globalDescribe.get('attachment').getDescribe().isCreateable()){
-                return null;
+            if(globalDescribe.get('attachment').getDescribe().isCreateable()){
+                jsonAttachment.Body = blob.valueOf(jsonConfig);
+        		upsert jsonAttachment;
             }
         }
-        jsonAttachment.Body = blob.valueOf(jsonConfig);
-        upsert jsonAttachment;
         
+
         return null;
     }
-    
+
+    public PageReference saveAs(){
+        Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+        if(globalDescribe.get('s360_fa__s360_form_config__c').getDescribe().isUpdateable()){
+            update formConfig;
+        }
+        
+
+        // upsert json config attachemnt
+       jsonAttachment.Id = null;
+
+        jsonAttachment.Body = blob.valueOf(jsonConfig);
+        upsert jsonAttachment;
+        List<S360_FA__S360_Form_Config__c> versionConfig = [SELECT S360_FA__Version_No__c from S360_FA__S360_Form_Config__c where id =:formConfig.Id];
+        versionconfig[0].S360_FA__Version_No__c++;
+        System.debug(versionconfig[0].S360_FA__Version_No__c);
+        upsert(versionconfig);
+
+        return null;
+    }
+
     public PageReference autoSave(){
         return save();
     }
-    
+
     @RemoteAction
     public static String doUploadAttachment(String parentId, String attachmentBody, String attachmentName, String attachmentId) {
         if(attachmentBody != null) {
@@ -115,10 +157,10 @@ global with sharing class S360_Form_Builder_Ext {
             return 'Attachment Body was null';
         }
     }
-    
+
     private static Attachment getAttachment(String attId) {
         list<Attachment> attachments = [SELECT Id, Body
-                                        FROM Attachment 
+                                        FROM Attachment
                                         WHERE Id =: attId];
         if(attachments.isEmpty()) {
             Attachment a = new Attachment();

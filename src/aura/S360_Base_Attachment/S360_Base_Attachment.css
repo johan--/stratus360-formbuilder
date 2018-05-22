@@ -2,6 +2,14 @@
     
 
 }
+.THIS.hidden{
+    display: none;
+    padding-bottom: 25px;
+}
+
+.THIS.unhidden{
+    display: block;
+}
 
 .THIS.radioButtonForm{
     border-style: solid;
@@ -11,10 +19,9 @@
 }
 
 
-.THIS.backgroundcolor {
+.THIS.slds-show {
     border-radius: 10px;
     width:600px;
-	height:100px;
   	background-color: #f7f7d9;
 
 }

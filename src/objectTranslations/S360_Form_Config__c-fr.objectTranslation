@@ -84,6 +84,30 @@
         <label><!-- Returned Flow Field --></label>
         <name>Returned_Flow_Field__c</name>
     </fields>
+    <fields>
+        <label><!-- Version No --></label>
+        <name>Version_No__c</name>
+    </fields>
+    <fields>
+        <label><!-- Version --></label>
+        <name>Version__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4</masterLabel>
+            <translation><!-- 4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5</masterLabel>
+            <translation><!-- 5 --></translation>
+        </picklistValues>
+    </fields>
     <gender><!-- Masculine --></gender>
     <layouts>
         <layout>Form Config Layout</layout>

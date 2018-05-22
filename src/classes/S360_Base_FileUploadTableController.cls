@@ -1,7 +1,14 @@
 public with sharing class S360_Base_FileUploadTableController {
     @AuraEnabled
-    public static Map<String, Object> getObjectAttachment(String filterCondition, decimal pOffset, decimal pSize, String sortDirection, String orderBy){
-        Map<String, Boolean> objectPermission = S360_Base_ObjectCommon.getObjectPermission(Dummy_Object__c.SObjectType.getDescribe());
+    public static Map<String, Object> getObjectAttachment(String filterCondition, decimal pOffset, decimal pSize, String sortDirection, String orderBy, String ReportId, String FormId){
+        List <S360_FA__S360_Form_Config__c> primary = [SELECT S360_FA__Primary_Object__c from S360_FA__S360_Form_Config__c where id = :FormId];
+        System.debug(primary[0]);
+        String objwanted = primary[0].S360_FA__Primary_Object__c;
+        System.debug(objwanted);
+        String query = 'Select Id From '+objwanted+ ' Limit 10';
+		List<SObject> objL = Database.query(query);
+
+        Map<String, Boolean> objectPermission = S360_Base_ObjectCommon.getObjectPermission(objL[0].id.getSObjectType().getDescribe());
         Map<String, Object> data = new Map<String, Object>();
         
         //expenseReportPermission.put('isCreateable', false);
@@ -21,6 +28,7 @@ public with sharing class S360_Base_FileUploadTableController {
             try{
                 AggregateResult results = database.query('SELECT COUNT(id) result FROM Attachment ' + whereCondition);
                 count = Integer.valueOf(results.get('result'));    
+                
                 System.debug('Count ' + count);
             }catch(System.QueryException qe){
                 List<String> msg = new List<String>();
@@ -31,7 +39,7 @@ public with sharing class S360_Base_FileUploadTableController {
             
             List<ObjectWrapper> objectWrappers = new List<ObjectWrapper>();
             Map<String, Object> result = getExpenseHelper(filterCondition, pageSize, pageOffset, orderBy, sortDirection);
-            
+            System.debug(result);
             if(Boolean.valueOf(result.get('status'))){
                 for(Attachment e : (List<Attachment>)result.get('data')){
                     ObjectWrapper ew = new ObjectWrapper();
@@ -104,7 +112,7 @@ public with sharing class S360_Base_FileUploadTableController {
         
         List<Attachment> ls = new List<Attachment>();
         List<Attachment> tmpLs = new List<Attachment>();
-        
+    
         if(o <= mo){
             if(filterCondition != ''){
                 whereCondition = 'where ('+filterCondition+')';
@@ -115,6 +123,7 @@ public with sharing class S360_Base_FileUploadTableController {
             
             try{
              	List<Attachment> exp = Database.query(sql);
+                System.debug(exp);
                 return S360_Base_ServerResult.returnMessage(true, null, exp);
             }catch(System.QueryException qe){
                 List<String> msg = new List<String>();

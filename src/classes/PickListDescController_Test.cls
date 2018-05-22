@@ -23,9 +23,9 @@ public class PickListDescController_Test {
     
     @isTest
     public static void test2(){
-        String vendorRecordName = Schema.SObjectType.S360_FA__Dummy_Object__c.getRecordTypeInfosByName().get('Record Type A').getName();
+        String vendorRecordName = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Record Type A').getName();
         System.debug('vendor: ' + vendorRecordName);
-        Id vendorRecordId = Schema.SObjectType.S360_FA__Dummy_Object__c.getRecordTypeInfosByName().get('Record Type A').getRecordTypeId();
+        Id vendorRecordId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Record Type A').getRecordTypeId();
         System.debug('vendorrecordid: ' + vendorRecordId);
         
         PageReference pageRef = Page.PicklistDesc;
@@ -35,10 +35,10 @@ public class PickListDescController_Test {
 
         vendorRecordName = vendorRecordName.replace(' ', '_');
 
-        pageRef.getParameters().put('sobjectType', 'S360_FA__Dummy_Object__c');
+        pageRef.getParameters().put('sobjectType', 'Contact');
         pageRef.getParameters().put('recordTypeId', vendorRecordId);
         pageRef.getParameters().put('recordTypeName', vendorRecordName);
-        pageRef.getParameters().put('pickListFieldName', 'S360_FA__Game_type__c');
+        pageRef.getParameters().put('pickListFieldName', 'LeadSource');
         Test.setCurrentPage(pageRef);
         
         Test.startTest();

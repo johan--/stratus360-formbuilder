@@ -4,6 +4,7 @@
         debugger;
         var self = this;
         config.forEach(function(item){
+            debugger;
             console.log(item.key);
             
             self.generatorMapping(component, item);
@@ -1223,17 +1224,19 @@
      * 
      */
     generateInputFile : function(component, config){
+        debugger;
         var self = this;
         if(component.get('v.Data')['Id'] == undefined){
             return;
         }
-        
+        var deletem =  component.get('v.FormConfig');
         $A.createComponent(
                 'c:S360_Base_FileUploadTableContainer',
                 {
                     "aura:id": config.key,
                     "CompId": config.key,
                     "ReportId": component.get('v.Data')['Id'] ? component.get('v.Data')['Id'] : '',
+                    "FormId": component.get('v.FormConfig')['Id']
                     //"FileLabel": config.label,
                     //"Class": config.customClass ? config.customClass : '',
                 },
@@ -1270,6 +1273,7 @@
     generateAttachment: function(component, config){    
         
         var self = this;
+        var parentId = component.getReference('v.Data.Id');
         
         // add to temporary flow data
         $A.createComponent(
@@ -1277,7 +1281,10 @@
             {
                 "aura:id": config.key,
                 "CompId": config.key,
-                "fieldName":config.label,
+                "fieldName": config.label,
+                "message": config.message,
+                "master": config.master,
+                "parentId": parentId
 
             }, 
             function(newComponent, status, errorMessage){

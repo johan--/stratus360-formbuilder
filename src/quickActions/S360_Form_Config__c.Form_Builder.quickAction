@@ -3,7 +3,7 @@
     <height>512</height>
     <label>Form Builder</label>
     <optionsCreateFeedItem>false</optionsCreateFeedItem>
-    <page>S360_Form_Builder</page>
+    <page>S360_FormBuilder2</page>
     <type>VisualforcePage</type>
     <width>-100</width>
 </QuickAction>
