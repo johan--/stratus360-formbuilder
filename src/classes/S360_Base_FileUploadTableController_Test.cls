@@ -16,9 +16,20 @@ public class S360_Base_FileUploadTableController_Test {
     }
 
     @isTest
-    public static void testGetObjectAttachment(){
+    public static void testgetObjectAttachment(){
         initTest();
-
+        EmailMessage email = new EmailMessage();
+        email.subject = 'test email';
+        insert email;
+        
+        EmailMessage email2 = new EmailMessage();
+        email.subject = 'test email2';
+        insert email2;
+        
+		S360_FA__S360_Form_Config__c  fc = new S360_FA__S360_Form_Config__c();
+        fc.S360_FA__Primary_Object__c = 'EmailMessage';
+        insert fc;
+        
         String testFilterCondition = '';
         decimal testPOffset = 0;
         decimal testPSize = 1;
@@ -27,7 +38,7 @@ public class S360_Base_FileUploadTableController_Test {
 
         S360_Base_FileUploadTableController.getObjectAttachment
             (
-            testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy
+            testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy, 'EmailMessage', fc.Id
             );
         
         testFilterCondition = NULL;
@@ -38,7 +49,7 @@ public class S360_Base_FileUploadTableController_Test {
 
         S360_Base_FileUploadTableController.getObjectAttachment
             (
-            testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy
+            testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy, 'EmailMessage', fc.Id
             );
         
         testFilterCondition = 'Name != null';
@@ -49,7 +60,7 @@ public class S360_Base_FileUploadTableController_Test {
 
         S360_Base_FileUploadTableController.getObjectAttachment
             (
-            testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy
+            testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy, 'EmailMessage', fc.Id
             );
 
         testFilterCondition = 'Name = null';
@@ -60,7 +71,7 @@ public class S360_Base_FileUploadTableController_Test {
 
         S360_Base_FileUploadTableController.getObjectAttachment
                 (
-                        testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy
+                        testFilterCondition, testPOffset, testPSize, testSortDirection, testOrderBy, 'EmailMessage', fc.Id
                 );
     }
 
@@ -74,9 +85,10 @@ public class S360_Base_FileUploadTableController_Test {
     }
 
     @isTest 
-    public static void testSaveTheChunk(){
-        Account parent = new Account();
-        parent.Name = 'smth';
+   	public static void testSaveTheChunk(){
+        Contact parent = new Contact();
+        parent.LastName = 'smth';
+        parent.Birthdate = date.today();
         insert parent;
 
         Id testParentId = parent.Id;
@@ -84,10 +96,11 @@ public class S360_Base_FileUploadTableController_Test {
         String testBase64 = 'test';
         String testContentType = 'testContentType';
 
-        Id testID = (S360_Base_FileUploadTableController.saveTheChunk(testParentId, testName, testBase64, testContentType, ''));
+        Id testID = (S360_Base_FileUploadController.saveTheChunk(testParentId, testName, testBase64, testContentType, ''));
 
-        S360_Base_FileUploadTableController.saveTheChunk(testParentId, testName, testBase64, testContentType, testId);
+        S360_Base_FileUploadController.saveTheChunk(testParentId, testName, testBase64, testContentType, testId);
     }
+    
 
     @isTest
     public static void testDeleteAttachment(){

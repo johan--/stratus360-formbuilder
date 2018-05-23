@@ -1,13 +1,13 @@
 public with sharing class S360_Base_FileUploadTableController {
     @AuraEnabled
     public static Map<String, Object> getObjectAttachment(String filterCondition, decimal pOffset, decimal pSize, String sortDirection, String orderBy, String ReportId, String FormId){
-        List <S360_FA__S360_Form_Config__c> primary = [SELECT S360_FA__Primary_Object__c from S360_FA__S360_Form_Config__c where id = :FormId];
+        List <S360_FA__S360_Form_Config__c> primary = [SELECT S360_FA__Primary_Object__c from S360_FA__S360_Form_Config__c where Id = :FormId];
         System.debug(primary[0]);
         String objwanted = primary[0].S360_FA__Primary_Object__c;
         System.debug(objwanted);
         String query = 'Select Id From '+objwanted+ ' Limit 10';
 		List<SObject> objL = Database.query(query);
-
+        
         Map<String, Boolean> objectPermission = S360_Base_ObjectCommon.getObjectPermission(objL[0].id.getSObjectType().getDescribe());
         Map<String, Object> data = new Map<String, Object>();
         

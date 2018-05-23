@@ -85,6 +85,10 @@
         <name>Returned_Flow_Field__c</name>
     </fields>
     <fields>
+        <label><!-- SelectedVersion --></label>
+        <name>SelectedVersion__c</name>
+    </fields>
+    <fields>
         <label><!-- Version No --></label>
         <name>Version_No__c</name>
     </fields>

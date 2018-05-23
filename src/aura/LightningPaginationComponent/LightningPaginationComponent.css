@@ -1,2 +1,27 @@
-.THIS {
+.THIS .lightning_pagination_component-select {
+    width: inherit !important;
+}
+
+.THIS #lightning_pagination_component-container {
+    padding: 10px;
+}
+
+.THIS #lightning_pagination_component-record-info {
+    float: left;
+}
+
+.THIS #lightning_pagination_component-nav-container {
+    float: right;
+}
+
+.THIS .nav-item {
+    margin-right: 10px !important;
+}
+
+.THIS .inline-button{
+    display: inline-block !important;
+}
+
+.THIS .inline-picklist{
+    display: inline-block !important;
 }

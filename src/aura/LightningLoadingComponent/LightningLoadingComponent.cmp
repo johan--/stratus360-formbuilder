@@ -6,12 +6,6 @@
     </aura:method>
 
     <aura:handler event="c:LightningLoadingEvent" action="{!c.handleEvent}"/>
-    <style>
-        .slds-spinner_container{
-            <!--position: fixed !important;-->
-            position: fixed;
-        }
-    </style>
     <div class="slds-spinner_container" style="{! 'display: ' + (v.show ? 'block' : 'none')}" id="loading">
         <div role="status" class="slds-spinner slds-spinner--medium">
             <span class="slds-assistive-text">Loading</span>

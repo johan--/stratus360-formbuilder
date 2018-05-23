@@ -113,8 +113,8 @@
                      &nbsp;
                      <apex:commandButton styleClass="btn btn-primary btn-md" value="Save As" onclick="saveAsM()" action="{!saveAs}"/>
                      &nbsp;
-                    <apex:selectList size="1" onchange="changeVersion()" value="{!selectedVersion}">	
-                       <apex:selectOptions value="{!versionList}"/> 
+                    <apex:selectList size="1" onchange="refreshPageAF()" value="{!selectedVersion}">
+                       <apex:selectOptions value="{!versionList}"/>
                     </apex:selectList>
                     <apex:outputPanel id="autoSaveStatus">
                         <p id="autoSaveMessage"></p>
@@ -152,6 +152,7 @@
             </div>
 
             <apex:actionFunction name="autoSaveAF" action="{!autoSave}" rerender="autoSaveStatus"/>
+            <apex:actionFunction name="refreshPageAF" action="{!refreshPage}" />
             <!--apex:outputPanel id="tmpInputPrintTempate">
                 <div class="visibilityHiddenClass">
                     <apex:inputText id="printTemplateName" value="{!printAttachmentName}" />
@@ -203,14 +204,16 @@
         var JSFORCE_CONN = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
         // test read metadata
         var versionNum = 0;
-        function changeVersion(){
-			versionNum = "{!selectedVersion}";            
-        }
+
         function saveAsM(){
             updateVersion();
             getUsedFields();
         }
-        
+		
+        function updateVersion(){
+            refreshPageAF();
+            window.location.reload();
+        }
         function updateVersion(){
         JSFORCE_CONN.metadata.read('CustomObject', 'S360_FA__S360_Form_Config__c', function(err, metadata) {
             debugger;
@@ -224,7 +227,7 @@
             if (metadata.fields[i].fullName == "S360_FA__Version__c") {
               index = i;
             }
-        
+
           }
           var versions = metadata.fields[index].picklist.picklistValues.length;
           metadata.fields[index].picklist.picklistValues[versions] = {
@@ -235,7 +238,7 @@
               //Id: {!formConfig.Id},
             	fullName: 'S360_FA__S360_Form_Config__c.S360_FA__Version__c',
               type :"Picklist",
-              label :"Version",	
+              label :"Version",
             picklist: metadata.fields[index].picklist
           }]
           console.log(newMeta);
@@ -254,7 +257,7 @@
           });
         });
        }
-        
+
 
 
         // start auto save
@@ -368,7 +371,7 @@
                 var refreshButtonLabel = scope.component.initButtonLabel;
                 console.log(refreshButtonLabel);
                 scope.component.initButtonLabel = 'Populating...';
-                JSFORCE_CONN.sobject("{!JSENCODE(	S360_Form_Config__c.Primary_Object__c)}").describe(function(err, meta) {
+                JSFORCE_CONN.sobject("{!JSENCODE(S360_Form_Config__c.Primary_Object__c)}").describe(function(err, meta) {
                     if (err) { return console.error(err); }
                     debugger;
                     console.log(meta.recordTypeInfos);
@@ -403,7 +406,7 @@
                 var refreshButtonLabel = scope.component.initButtonLabel;
                 console.log(refreshButtonLabel);
                 scope.component.initButtonLabel = 'Populating...';
-                JSFORCE_CONN.sobject("{!S360_Form_Config__c.Primary_Object__c}").describe(function(err, meta) {
+                JSFORCE_CONN.sobject("{!JSENCODE(S360_Form_Config__c.Primary_Object__c)}").describe(function(err, meta) {
                     if (err) { return console.error(err); }
                     console.log(meta.recordTypeInfos);
                     var recordts = [];
@@ -637,6 +640,7 @@
 
         function uploadFile() {
             document.getElementById('btnUploadPrintTemplate').innerHTML = 'Uploading...';
+            //versionNum = "{!selectedVersion}";
             var file = document.getElementById('attachmentFile').files[versionNum];
 
             if(file != undefined) {

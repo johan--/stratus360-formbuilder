@@ -2,30 +2,32 @@ public with sharing class S360_Base_FileUploadController {
 	   
     @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType) {
+        
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
 
-        Attachment a = new Attachment();
-        a.parentId = parentId;
+        Attachment a = new Attachment(parentId = parentId, Body = EncodingUtil.base64Decode(base64Data), Name = fileName, ContentType = contentType);
+        /*a.parentId = parentId;
 
         a.Body = EncodingUtil.base64Decode(base64Data);
         a.Name = fileName;
-        a.ContentType = contentType;
-
-        insert a;
+        a.ContentType = contentType;*/
+        
+        if(Schema.sObjectType.Attachment.isCreateable()){
+        	insert a;
+        }
         system.debug('aId:'+a.Id);
 
         return a.Id;
     }
     
     @AuraEnabled
-    public static Boolean deleteAttachmentMapper(Id parentId, string fieldName, Id attachId, string customObject){
-        System.debug(customObject);
+    public static Boolean deleteAttachmentMapper(Id parentId, string fieldName, string attachId, string customObject){
         List<S360_FA__AttachmentMapper__c> am = Database.query('SELECT Id FROM S360_FA__AttachmentMapper__c WHERE ('+customObject+'=:parentId) AND (S360_FA__fieldName__c=:fieldName) AND (S360_FA__attachId__c=:attachId)');
         try{
             List<S360_FA__AttachmentMapper__c> checkIfMoreInstancesOfAttachment = Database.query('SELECT Id FROM  S360_FA__AttachmentMapper__c WHERE ('+customObject+'=:parentId) AND (S360_FA__fieldName__c!=:fieldName) AND (S360_FA__attachId__c=:attachId)');
             if(checkIfMoreInstancesOfAttachment.size()<1){
-                    Attachment attachment = [SELECT Id FROM Attachment WHERE Id=:attachId];
                 	SObjectType attachmentFLS = Schema.getGlobalDescribe().get('Attachment');
+                    Attachment attachment = [SELECT Id FROM Attachment WHERE Id=:attachId];
                 	try{
                         if(attachmentFLS.getDescribe().isDeletable()){
                         	delete attachment;
@@ -59,8 +61,9 @@ public with sharing class S360_Base_FileUploadController {
         if(attachmentMapperFLS.getDescribe().isCreateable()){
         	insert am;
             return true;
+        }else{
+        	return false;
         }
-        return false;
     }
     
     @AuraEnabled
@@ -88,6 +91,7 @@ public with sharing class S360_Base_FileUploadController {
     }
     
     public static void appendToFile(Id fileId, String base64Data) {
+        SObjectType attachmentFLS = Schema.getGlobalDescribe().get('Attachment');
         system.debug('passed fileId:'+fileId);
 
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
@@ -99,9 +103,14 @@ public with sharing class S360_Base_FileUploadController {
         ];
 
         String existingBody = EncodingUtil.base64Encode(a.Body);
-        a.Body = EncodingUtil.base64Decode(existingBody + base64Data);
-
-        update a;
+        
+        if(Schema.sObjectType.Attachment.fields.Body.isUpdateable() || Schema.sObjectType.Attachment.fields.Body.isCreateable()){
+         	a.Body = EncodingUtil.base64Decode(existingBody + base64Data);   
+        }
+		
+        if(Schema.sObjectType.Attachment.isUpdateable()){
+        	update a;
+        }
     }
 
     @AuraEnabled

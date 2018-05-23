@@ -5,8 +5,7 @@ public class S360_Base_Carousel_Test {
         Contact a = new Contact(FirstName='fs', LastName='ln');
         insert a;
         
-        S360_FA__Carousel_Config__c b = new S360_FA__Carousel_Config__c(S360_FA__Dummy_Object__c = a.Id, S360_FA__Caption__c='caption',
-                                                                       S360_FA__Type__c='image');
+        S360_FA__Carousel_Config__c b = new S360_FA__Carousel_Config__c(Contact__c = a.Id, S360_FA__Caption__c='caption',S360_FA__Type__c='image');
         insert b;
         
         Attachment attch = new Attachment();
@@ -16,7 +15,7 @@ public class S360_Base_Carousel_Test {
         attch.ContentType = 'txt';
         insert attch;
         
-        List<Sobject> result = S360_Base_Carousel.getCarousel('S360_FA__Dummy_Object__c', a.id, 'S360_FA__Carousel_Config__c', 'S360_FA__Caption__c', 'S360_FA__Type__c', 'S360_FA__Video_Type__c', 
+        List<Sobject> result = S360_Base_Carousel.getCarousel('Contact__c', a.id, 'S360_FA__Carousel_Config__c', 'S360_FA__Caption__c', 'S360_FA__Type__c', 'S360_FA__Video_Type__c', 
                                                               'S360_FA__Video_Id__c', 'S360_FA__Redirect_Link__c');
         System.assertEquals(1, result.size());
         System.assertEquals('caption', result.get(0).get('S360_FA__Caption__c'));

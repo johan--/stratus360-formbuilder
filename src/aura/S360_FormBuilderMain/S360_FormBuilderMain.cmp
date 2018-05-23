@@ -48,8 +48,8 @@
     <aura:attribute name="availableFlowAction" type="String[]"/>
     <aura:attribute name="formFlowAction" type="String"/>
     <aura:attribute name="flowData" type="Object"/>
-    <aura:attribute name="inputFlow" type="String"/>
-    <aura:attribute name="outputFlow" type="String"/>
+    <aura:attribute name="inputFlow" type="String" access="global"/>
+    <aura:attribute name="outputFlow" type="String" access="global"/>
     
     <!-- Handler -->
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
