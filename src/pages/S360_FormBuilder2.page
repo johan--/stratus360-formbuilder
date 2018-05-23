@@ -113,9 +113,14 @@
                      &nbsp;
                      <apex:commandButton styleClass="btn btn-primary btn-md" value="Save As" onclick="saveAsM()" action="{!saveAs}"/>
                      &nbsp;
-                    <apex:selectList size="1" onchange="refreshPageAF()" value="{!selectedVersion}">
-                       <apex:selectOptions value="{!versionList}"/>
-                    </apex:selectList>
+                    
+                    <div class="form-group">
+                        <br/>
+                        <label> <font size="4">Version Number</font> </label>
+                    	<apex:selectList styleClass="form-control" size="1" onchange="refreshPageAF()" value="{!selectedVersion}">
+                       		<apex:selectOptions value="{!versionList}"/>
+                    	</apex:selectList>
+                    </div>
                     <apex:outputPanel id="autoSaveStatus">
                         <p id="autoSaveMessage"></p>
                     </apex:outputPanel>
@@ -640,7 +645,8 @@
 
         function uploadFile() {
             document.getElementById('btnUploadPrintTemplate').innerHTML = 'Uploading...';
-            //versionNum = "{!selectedVersion}";
+            versionNum = "{!selectedVersion}";
+            debugger;
             var file = document.getElementById('attachmentFile').files[versionNum];
 
             if(file != undefined) {

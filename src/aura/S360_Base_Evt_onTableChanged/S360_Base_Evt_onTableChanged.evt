@@ -1,4 +1,0 @@
-<aura:event type="COMPONENT" description="component event to notify table parent that there were something change in table">
-    <aura:attribute name="sort" type="String" required="true"/>
-    <aura:attribute name="orderBy" type="String" required="true"/>
-</aura:event>

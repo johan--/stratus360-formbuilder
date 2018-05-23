@@ -5,12 +5,23 @@ public with sharing class S360_Base_FileUploadController {
         
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
 
-        Attachment a = new Attachment(parentId = parentId, Body = EncodingUtil.base64Decode(base64Data), Name = fileName, ContentType = contentType);
-        /*a.parentId = parentId;
-
-        a.Body = EncodingUtil.base64Decode(base64Data);
-        a.Name = fileName;
-        a.ContentType = contentType;*/
+        Attachment a = new Attachment();
+        
+        if(Schema.sObjectType.Attachment.fields.parentId.isCreateable()){
+        	a.parentId = parentId;    
+        }
+        
+        if(Schema.sObjectType.Attachment.fields.Body.isCreateable()){
+        	a.Body = EncodingUtil.base64Decode(base64Data);    
+        }
+        
+        if(Schema.sObjectType.Attachment.fields.Name.isCreateable()){
+            a.Name = fileName;
+        }
+        
+        if(Schema.sObjectType.Attachment.fields.ContentType.isCreateable()){
+         	a.ContentType = contentType;   
+        }
         
         if(Schema.sObjectType.Attachment.isCreateable()){
         	insert a;

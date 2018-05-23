@@ -1,4 +1,5 @@
 global with sharing class S360_Form_Builder_Ext {
+    
     //public List<String> objectFields {get; private set;}
     public string objectFields {get; private set;}
     public String jsonConfig {get; set;}
@@ -18,7 +19,7 @@ global with sharing class S360_Form_Builder_Ext {
     public List<SelectOption> versionList {get; private set;}
     private Attachment jsonAttachment;
     private Integer versionField;
-	public S360_Form_Builder_Ext(ApexPages.StandardController stdCtrl){        
+	public S360_Form_Builder_Ext(ApexPages.StandardController stdCtrl){
         List<String> availableFields = new List<String>();
         formConfig = (S360_FA__S360_Form_Config__c)stdCtrl.getRecord();
         System.debug(formConfig);
@@ -61,11 +62,11 @@ global with sharing class S360_Form_Builder_Ext {
         // get json config data from attachment
         jsonConfig = '';
         //Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfig.Id];
-        Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where Name = :('form_' + formConfig.Id)];
-        if(tmp.size() > 0){
-            jsonAttachment = tmp[selectedVersion];
-            if(tmp[selectedVersion].Body != null){
-            	jsonConfig = tmp[selectedVersion].Body.toString();
+        Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where Name = :('form_' + formConfig.Id + '_v' + selectedVersion)];
+        if(tmp.size() > 0){ 
+            jsonAttachment = tmp[0];
+            if(tmp[0].Body != null){
+            	jsonConfig = tmp[0].Body.toString();
             }
         }else{
             jsonAttachment = new Attachment();
@@ -74,7 +75,7 @@ global with sharing class S360_Form_Builder_Ext {
             }
             
             if(Schema.sObjectType.Attachment.fields.Name.isCreateable() || Schema.sObjectType.Attachment.fields.Name.isUpdateable()){
-             	jsonAttachment.Name = 'form_' + formConfig.Id;   
+             	jsonAttachment.Name = 'form_' + formConfig.Id + '_v' + selectedVersion;   
             }
         }
         System.debug(jsonConfig);
@@ -136,7 +137,9 @@ global with sharing class S360_Form_Builder_Ext {
 		if(Schema.sObjectType.Attachment.fields.Body.isUpdateable() || Schema.sObjectType.Attachment.fields.Body.isCreateable()){
         	jsonAttachment.Body = blob.valueOf(jsonConfig);
         }
-        
+        if(Schema.sObjectType.Attachment.fields.Name.isUpdateable() || Schema.sObjectType.Attachment.fields.Name.isCreateable()){
+        	jsonAttachment.Name = 'form_' + formConfig.Id + '_v' + (versionField+1);
+        }
         if(Schema.sObjectType.Attachment.isCreateable()){
         	insert jsonAttachment;
         }
@@ -146,8 +149,21 @@ global with sharing class S360_Form_Builder_Ext {
         if(Schema.sObjectType.S360_FA__S360_Form_Config__c.isUpdateable()){
         	update(versionconfig);
         }
+		
+        List<S360_FA__S360_Form_Config__c> versionUpsert = [SELECT S360_FA__SelectedVersion__c from S360_FA__S360_Form_Config__c where id =:formConfig.Id];
+        
+        if(Schema.sObjectType.S360_FA__S360_Form_Config__c.fields.S360_FA__SelectedVersion__c.isUpdateable()){
+         	versionUpsert[0].S360_FA__SelectedVersion__c = versionField+1;
+        }
+        
+        if(Schema.sObjectType.S360_FA__S360_Form_Config__c.isUpdateable()){
+        	update(versionUpsert);
+        }
+        
+        PageReference acctPage = new ApexPages.StandardController(formConfig).view();
+        acctPage.setRedirect(true);
+        return acctPage;
 
-        return null;
     }
     
     public PageReference refreshPage() {
@@ -160,9 +176,14 @@ global with sharing class S360_Form_Builder_Ext {
         if(Schema.sObjectType.S360_FA__S360_Form_Config__c.isUpdateable()){
         	update(versionUpsert);
         }
-        PageReference pageRef = new PageReference(ApexPages.currentPage().getUrl());
+        /*PageReference pageRef = new PageReference(ApexPages.currentPage().getUrl());
+        System.debug(ApexPages.currentPage().getUrl());
 		pageRef.setRedirect(true);
-		return pageRef;
+		return null;*/
+        
+        PageReference acctPage = new ApexPages.StandardController(formConfig).view();
+        acctPage.setRedirect(true);
+        return acctPage;
  	}
 
     public PageReference autoSave(){

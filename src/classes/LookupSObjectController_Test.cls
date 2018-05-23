@@ -28,12 +28,8 @@ public class LookupSObjectController_Test {
     
     @isTest
     public static void testStringWhereType(){
-        Contact v1 = new Contact( LastName = 'Common1', Department= 'account1');
-        Contact v2 = new Contact( LastName  = 'Common2', Department  = 'account2');
-        v1.Birthdate = date.today();
-        v2.Birthdate = date.today();
-        v1.LastName= 'last';
-        v2.LastName= 'last';
+        Account v1 = new Account( name = 'Common1');
+        Account v2 = new Account( name  = 'Common2');
         
         insert v1;
         insert v2;
@@ -41,7 +37,7 @@ public class LookupSObjectController_Test {
         Id [] fixedSearchResults= new ID[]{v1.Id, v2.Id};
         Test.setFixedSearchResults(fixedSearchResults);
 
-        List<LookupSObjectController.Result> results1 = LookupSObjectController.lookup('Dummy', 'S360_FA__Dummy_Object__c', 'S360_FA__Last_Name__c=,S360_FA__Password__c=', 'String,String', 'Common1,account1', '');
+        List<LookupSObjectController.Result> results1 = LookupSObjectController.lookup('Common1', 'Account', 'name=', 'String', 'Common1', '');
         
         // System.assertEquals(1, results1.size());
         // System.assertEquals(v1.Id, results1.get(0).SObjectId);        
