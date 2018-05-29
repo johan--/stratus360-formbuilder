@@ -57,10 +57,10 @@
             
             // if loaded in mobile, call captchaOptionObject function to increase the iframe height from parent;
             // we need this because in mobile device, captcha will load image
-            debugger;
+            //debugger;
             //if(isMobile == true){
                 captchaOptionObject(0, function(status, obj){
-                    debugger;
+                    //debugger;
                     if(status == true){
                         var observer = new MutationObserver(function(mutations) {
                             if(mutations.length > 0){

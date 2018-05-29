@@ -4,7 +4,7 @@
         debugger;
         var self = this;
         config.forEach(function(item){
-            debugger;
+            //debugger;
             console.log(item.key);
             
             self.generatorMapping(component, item);
@@ -280,7 +280,7 @@
         var value1 = component.getReference('v.Data['+ config.key +']');
         var value2 = component.getReference('v.Data['+ field +']');
         
-        debugger;
+        //debugger;
         
         // add to temporary flow data
         this.add2TmpFlowData(component, config.key, value1);
@@ -390,7 +390,7 @@
         
         // set value and get it reference
         var value = component.getReference('v.Data');
-        debugger;
+        //debugger;
         
         $A.createComponent(
             'c:S360_Base_LightningFlow',
@@ -734,11 +734,11 @@
         
         // if field is not correct
         // reset sobject to empty so it will not perform server call
-        debugger;
+        //debugger;
         if(component.get('v.FieldInfo')[field] == undefined){
             sobject = '';
         }
-        debugger;
+        //debugger;
         
         var serverFieldInfo = component.get('v.FieldInfo');
         var self = this;
@@ -861,7 +861,7 @@
                      */
                     var objectInfo = component.get('v.ObjectInfo');
                     var recordId = component.get('v.Data').Id;
-                    debugger;
+                    //debugger;
                     if(recordId){
                         // check for updateable permission
                         if(!objectInfo.isUpdateable){
@@ -967,7 +967,7 @@
                              */
                             var objectInfo = component.get('v.ObjectInfo');
                             var recordId = component.get('v.Data').Id;
-                            debugger;
+                            //debugger;
                             if(recordId){
                                 // check for updateable permission
                                 if(!objectInfo.isUpdateable){
@@ -1130,7 +1130,7 @@
         component.set('v.RelatedData['+ formName + '|' + relatedField +']', []);
         var relatedRef = component.getReference('v.RelatedData['+ formName + '|' + relatedField +']');
 
-        debugger;
+        //debugger;
         
         var self = this;
         $A.createComponent(
@@ -1224,7 +1224,7 @@
      * 
      */
     generateInputFile : function(component, config){
-        debugger;
+        //debugger;
         var self = this;
         if(component.get('v.Data')['Id'] == undefined){
             return;

@@ -11,7 +11,7 @@
                 var res = response.getReturnValue();
                 
                 if(res.status == true){
-                    debugger;
+                    //debugger;
                     var formConfig = JSON.parse(res.config);
                     component.set('v.Data', res.data);
                     component.set('v.FieldInfo', res.fieldInfo);

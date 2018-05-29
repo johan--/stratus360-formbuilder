@@ -86,7 +86,7 @@
                     var canvas = component.find('signature-pad').getElement();
                     var destCtx = canvas.getContext('2d');
                     
-                    debugger;
+                    //debugger;
 					var scaleFactor = 1;
                     var y = 0;
                     var x = 0;

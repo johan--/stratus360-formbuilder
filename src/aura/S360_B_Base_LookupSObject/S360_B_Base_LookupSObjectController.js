@@ -84,7 +84,7 @@
     },
 
     inputTextChanged : function(c,e,h){
-        //debugger;
+        ////debugger;
         //helper.handleSelection(cmp,event);
         window.dismissLookupDropdown = function(){
             this.set("v.showDropdownList", false);

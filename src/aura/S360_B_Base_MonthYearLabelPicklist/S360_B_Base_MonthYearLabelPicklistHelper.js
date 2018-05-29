@@ -1,7 +1,7 @@
 ({
     onChange : function(component, event, helper){
         //update values
-        // debugger;
+        // //debugger;
         // component.set('v.DefaultDay', component.find('InputDay').get('v.value'));
         // component.set('v.DefaultMonth', component.find('InputMonth').get('v.value'));
         // component.set('v.DefaultYear', component.find('InputYear').get('v.value'));

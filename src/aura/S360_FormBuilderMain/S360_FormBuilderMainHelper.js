@@ -11,7 +11,7 @@
     },
     
     upsert: function(component, sender, callback){
-        debugger;
+        //debugger;
         console.log('data to save');
         for(var i in component.get('v.Data')){
             if(component.get('v.Data').hasOwnProperty(i))
@@ -38,12 +38,12 @@
             }
             
             var action = component.get('c.saveUpsertRecord');
-            debugger;
+            //debugger;
             console.log("HERE");
             console.log(component.get('v.Data'));
             var data1 = component.get('v.Data');
             data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
-            debugger;
+            //debugger;
             action.setParams({               
                 "data" : data1,
                 "relatedData" : component.get('v.RelatedData'),
@@ -75,7 +75,7 @@
         }
     },
     /*recordTypeMap : function(component, formConfig,data){
-        debugger;
+        //debugger;
         if(formConfig.S360_FA__Record_Type_Mapping__c && this.getUrlParam('id') && data.RecordTypeId){
             var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
             var id = data.RecordTypeId;
@@ -83,12 +83,12 @@
             console.log(newForm);
             var url = window.location.href;
             var formname = this.getUrlParam('formname');
-            debugger;
+            //debugger;
             url = url.replace(formname,newForm);
-            debugger;
+            //debugger;
             window.location.replace(url);
         } else if (formConfig.S360_FA__Record_Type_Mapping__c && component.get('v.recordId') && data.RecordTypeId){
-            debugger;
+            //debugger;
             var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
             var id = data.RecordTypeId;
             var newForm =  map[id].Name;
@@ -98,7 +98,7 @@
     },*/
     recordTypeMap : function(component, formConfig,data){
         if (formConfig.S360_FA__Record_Type_Mapping__c && (component.get('v.recordId') || this.getUrlParam('id')) && data.RecordTypeId){
-            debugger;
+            //debugger;
             var map = JSON.parse(formConfig.S360_FA__Record_Type_Mapping__c);
             var id = data.RecordTypeId;
             var newForm =  map[id].Name;
@@ -122,7 +122,7 @@
         console.log('here');
         console.log(inputFlowData);
         console.log(inputFlowMap);
-        debugger;
+        //debugger;
         
         var item = {
             'sobjectType': formConfig.S360_FA__Primary_Object__c,
@@ -211,7 +211,7 @@
     getAvailableFlowActions : function(component){
         var availableFlowAction = component.get('v.availableFlowAction');
         var availableActions = component.get('v.availableActions');
-        debugger;
+        //debugger;
         if(availableActions){
             for (var i = 0; i < availableActions.length; i++) {
                 availableFlowAction.push(availableActions[i]);

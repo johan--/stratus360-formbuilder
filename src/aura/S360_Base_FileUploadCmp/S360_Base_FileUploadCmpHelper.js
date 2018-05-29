@@ -20,7 +20,7 @@
             var fileContents = fr.result;
             var base64Mark = 'base64,';
             var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
-            debugger;
+            //debugger;
             fileContents = fileContents.substring(dataStart);
        
             self.upload(component, file, fileContents);
@@ -32,7 +32,7 @@
     upload: function(component, file, fileContents) {
         var fromPos = 0;
         var toPos = Math.min(fileContents.length, fromPos + this.CHUNK_SIZE);
-        debugger;
+        //debugger;
         // start with the initial chunk
         this.uploadChunk(component, file, fileContents, fromPos, toPos, '', this.CHUNK_SIZE);   
     },

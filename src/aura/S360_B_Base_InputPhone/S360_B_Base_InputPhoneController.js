@@ -16,7 +16,7 @@
           //alert(phcheck.match(/^\(?\d{3}[ )-]? ?\d{3}[ -]?\d{4}$/));
           if(phcheck!='')
           {
-            //debugger;
+            ////debugger;
             if(!phcheck.match(/^([\s\)\(+-]*\d[\s\)\(+-]*){10,}$/)){
                 //$A.util.addClass(phonevalid, 'slds-has-error');
                  phonevalid.set("v.errors", [{message: "Please Enter a Valid phone number e.g. (123) 456-7890" } ]);

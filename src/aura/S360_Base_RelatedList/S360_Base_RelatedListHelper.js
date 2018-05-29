@@ -3,7 +3,7 @@
         var body = component.get('v.body');
         // copy data template and push to data collection and get that refference for our new related list form
         var dataTemplate = JSON.parse(JSON.stringify(component.get('v.DataTemplate')));
-        debugger;
+        //debugger;
         // set parent id if available
         if(component.get('v.ParentId') != '' && component.get('v.ParentId') != undefined){
             dataTemplate[component.get('v.RelatedField')] = component.get('v.ParentId');
@@ -12,7 +12,7 @@
         var index = component.get('v.Data').length;
         component.set('v.Data['+ index +']', dataTemplate);
         var data = component.getReference('v.Data['+ index +']');
-        debugger;
+        //debugger;
         $A.createComponent(
                 'c:S360_FormBuilderMain',
                 {
@@ -64,12 +64,12 @@
         action.setCallback(this, function(response){
             if(component.isValid() && response.getState() == 'SUCCESS'){
                 var res = response.getReturnValue();
-                debugger;
+                //debugger;
                 if(res.length > 0){
                     res.forEach(function(record){
                         // populate the dat to field
                         record = self.populateData(component.get('v.FormConfigTemplate'), record);
-                        debugger;
+                        //debugger;
                         var body = component.get('v.body');
                         var index = component.get('v.Data').length;
                         
@@ -164,6 +164,6 @@
         {
             comp.set('v.showToast',true);
         }
-		debugger;
+		//debugger;
     },
 })

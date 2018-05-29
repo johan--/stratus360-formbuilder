@@ -1,6 +1,6 @@
 ({
     doInit: function(component, event, helper) {
-		debugger;
+		//debugger;
         //GetPicklistValue if not provided
         if(component.get("v.SObjectName")=="" || component.get("v.SObjectName")==undefined)
         {
@@ -19,7 +19,7 @@
         {
             if(component.get("v.RecordTypeName")=="" || component.get("v.RecordTypeName")==undefined)
             {
-                debugger;
+                //debugger;
                 //Get all picklist values in the field
                 helper.getPicklistOptionsAll(component, event, helper);
             }

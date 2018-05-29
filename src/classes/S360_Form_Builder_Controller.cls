@@ -60,11 +60,11 @@ public class S360_Form_Builder_Controller {
             // replace config json__c with attachemnt value
             // our new version use attachment to save json config to avoid json string overflow
             //Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfigs[0].Id];
-            Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id)];
+            Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+formConfigs[0].S360_FA__SelectedVersion__c)];
             
            if(tmp.size() > 0){
-            	if(tmp[Integer.valueOf(formConfigs[0].S360_FA__SelectedVersion__c)].Body != null){
-                    formConfigs[0].S360_FA__JSON__c = tmp[Integer.valueOf(formConfigs[0].S360_FA__SelectedVersion__c)].Body.toString();    
+            	if(tmp[0].Body != null){
+                    formConfigs[0].S360_FA__JSON__c = tmp[0].Body.toString();    
                 }    
             }
             

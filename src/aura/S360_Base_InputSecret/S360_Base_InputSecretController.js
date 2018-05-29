@@ -1,6 +1,6 @@
 ({
 	handleOnChange: function(component, event, helper){
-        debugger;
+        //debugger;
         var evt = component.getEvent('OnChange');
         evt.setParams({
             "CompId": component.get('v.CompId'),

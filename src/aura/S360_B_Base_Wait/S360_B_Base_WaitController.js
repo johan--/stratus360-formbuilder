@@ -1,6 +1,6 @@
 ({
 	showWait : function(component, event, helper) {
-		//debugger;
+		////debugger;
 		var waitTarget = component.find("S360_Base_Wait");
 
 		var params = event.getParam('arguments');

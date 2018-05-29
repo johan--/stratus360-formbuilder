@@ -221,7 +221,7 @@
         }
         function updateVersion(){
         JSFORCE_CONN.metadata.read('CustomObject', 'S360_FA__S360_Form_Config__c', function(err, metadata) {
-            debugger;
+            //debugger;
           console.log('meta')
           console.log(metadata);
           var index;
@@ -247,9 +247,9 @@
             picklist: metadata.fields[index].picklist
           }]
           console.log(newMeta);
-          debugger;
+          //debugger;
           JSFORCE_CONN.metadata.update('CustomField', newMeta, function(err, results) {
-              debugger;
+              //debugger;
             if (err) {
               console.error(err);
             }
@@ -258,7 +258,7 @@
               console.log('success ? : ' + result.success);
               console.log('fullName : ' + result.fullName);
             }
-              debugger;
+              //debugger;
           });
         });
        }
@@ -362,7 +362,7 @@
                         }
                     }
                     console.log(flow);
-                    debugger;
+                    //debugger;
 
                     scope.component.flows = flow;
                     scope.component.refreshFlowButtonLabel = refreshFlowButtonLabel;
@@ -378,7 +378,7 @@
                 scope.component.initButtonLabel = 'Populating...';
                 JSFORCE_CONN.sobject("{!JSENCODE(S360_Form_Config__c.Primary_Object__c)}").describe(function(err, meta) {
                     if (err) { return console.error(err); }
-                    debugger;
+                    //debugger;
                     console.log(meta.recordTypeInfos);
                     var recordts = [];
                     for(var i = 0; i < meta.recordTypeInfos.length; i++){
@@ -429,20 +429,20 @@
 
 
             var unescapeJSON = '{!JSENCODE(jsonConfig)}';
-            debugger;
+            //debugger;
             if(unescapeJSON!='')
             {
                 $rootScope.form = JSON.parse(unescapeJSON);
             }
             formConfig = $rootScope.form;
-            debugger;
+            //debugger;
 
             $rootScope.renderForm = true;
 
             $rootScope.$on('formUpdate', function(event, form) {
                 angular.merge($rootScope.form, form);
                 formConfig = $rootScope.form;
-                debugger;
+                //debugger;
 
                 $rootScope.renderForm = false;
                 setTimeout(function() {
@@ -463,7 +463,7 @@
 
             var currentDisplay = 'form';
             $rootScope.$watch('form.display', function(display) {
-                debugger;
+                //debugger;
                 if (display && (display !== currentDisplay)) {
                     currentDisplay = display;
                     if (display === 'form') {
@@ -502,7 +502,7 @@
                 //Not sure why we add name here
                // fields.push('Name');
             }
-            debugger;
+            //debugger;
             fieldsConfig.value = fields.join(',');
             formHasFlowController.checked  = hasFlowController;
             selectedInputFieldsInFlow.value = selectedInputFields;
@@ -517,7 +517,7 @@
             acceptedFields = acceptedFields.split(',');
             console.log('test');
             console.log(acceptedFields);
-            debugger;
+            //debugger;
             var fields = [];
             data.components.forEach(function(cmp){
                 //check is form has flow controller
@@ -529,7 +529,7 @@
 
                     // get mapping previous flow form field with the current field
                     if(cmp.selectedFlow){
-                        debugger;
+                        //debugger;
                         var mapping = cmp.inputFlowMap[cmp.selectedFlow];
                         var newMapping = {};
 
@@ -557,7 +557,7 @@
                 }
                 // Collect Record Type from record type select
                 if(cmp.type === 'recordtypeselect'){
-                    debugger;
+                    //debugger;
                     recordType = cmp.selectedRecordType.Id;
                 }
                 //collect fields
@@ -580,11 +580,11 @@
         function autoSave(){
             var interval = {!JSENCODE(TEXT(S360_Form_Config__c.AutoSave_Interval__c))};
             var autoSaveInterval = 0;
-            debugger;
+            //debugger;
 
             autoSaveInterval = interval;
 
-            debugger;
+            //debugger;
             var isAutoSave = false;
             if({!IF(S360_Form_Config__c.AutoSave__c, "true", "false")}){
                isAutoSave = true;
@@ -621,7 +621,7 @@
                     allApis[i] = meta.fields[i].name;
                 }
                 console.log(allApis);
-                debugger;
+                //debugger;
             });
         }
 
@@ -646,7 +646,7 @@
         function uploadFile() {
             document.getElementById('btnUploadPrintTemplate').innerHTML = 'Uploading...';
             versionNum = "{!selectedVersion}";
-            debugger;
+            //debugger;
             var file = document.getElementById('attachmentFile').files[versionNum];
 
             if(file != undefined) {

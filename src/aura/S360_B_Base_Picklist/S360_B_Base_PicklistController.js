@@ -2,7 +2,7 @@
     doInit: function(component, event, helper) {
         try{
             //Set value to default if provided (DefaultValue and DefaultK are redundant)
-            //if(component.get('v.CompId') == "LanguagePicklist") debugger;
+            //if(component.get('v.CompId') == "LanguagePicklist");
             if(typeof component.get('v.Value') == 'undefined') component.set('v.Value', '');
             if(typeof component.get('v.DefaultValue') == "undefined") component.set('v.DefaultValue', '');
             if(!component.get('v.DefaultK') && component.get('v.DefaultValue')) component.set('v.DefaultK', component.get('v.DefaultValue'));

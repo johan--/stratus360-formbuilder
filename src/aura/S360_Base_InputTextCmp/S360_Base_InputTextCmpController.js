@@ -4,7 +4,7 @@
     },
     
 	onValueChange: function(component, event, helper){
-        debugger;
+        //debugger;
         helper.setDefaultValue(component);
         
         var evt = component.getEvent('OnChange');

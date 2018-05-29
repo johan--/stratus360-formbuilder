@@ -14,7 +14,7 @@
     },
     
     deleteAttachment : function(comp){
-        debugger;
+        //debugger;
         comp.set('v.showLoading', true);
         var self = this;
         

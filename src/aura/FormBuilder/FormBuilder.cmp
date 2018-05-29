@@ -1,15 +1,15 @@
 <aura:component implements="force:lightningQuickAction,force:hasRecordId"  controller="FormBuilder">
-    
+
     <!-- Input parameter -->
     <aura:attribute name="formConfigID" type="String" default=""/>
     <aura:attribute name="recordId" type="String" default="" />
-    
+
     <!-- component parameter -->
     <aura:attribute name="Value" type="Object" default="{}"/>
-    
+
     <!-- Handler -->
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-    
-    
+
+
     {!v.body}
 </aura:component>

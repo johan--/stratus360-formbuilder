@@ -2,7 +2,7 @@
     init : function(component, event, helper) {
         // test incoming input flow
         // console.log(component.get('v.inputFlow'));
-        // debugger;
+        // //debugger;
         
         if(component.get('v.FormConfig').S360_FA__Component_Type__c != undefined){
             component.set('v.componentType', component.get('v.FormConfig').S360_FA__Component_Type__c);
@@ -78,12 +78,13 @@
                     } else {
                         
                         data = helper.populateData(component, formConfig, data);
-                        debugger;
+                        //debugger;
                         
                         component.set('v.Data', data);
                         component.set('v.FieldInfo', fieldInfo);
                         component.set('v.ObjectInfo', objectInfo);
                         component.set('v.FormConfig', formConfig);
+                        debugger;
                         component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
                     }
                 }else{
@@ -146,7 +147,7 @@
     
     handleEvent: function(component, event, helper){
         if(event.getParam('action') === 'submit'){
-            debugger;
+            //debugger;
             helper.upsert(component, event.getParam('sender'));
             event.stopPropagation();
         }

@@ -7,6 +7,7 @@
     },
 
 	setup : function(component, event, helper) {
+        debugger;
 		var params = event.getParam('arguments');
         if (params) {
             
@@ -14,11 +15,11 @@
             component.set('v.Data', params.data);
             component.set('v.FieldInfo', params.fieldInfo);
             component.set('v.ObjectInfo', params.objectInfo);
-            debugger;
+            //debugger;
             
             if(params.config.S360_FA__JSON__c != '' && params.config.S360_FA__JSON__c != undefined){
              	var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;
-                debugger;
+                //debugger;
                 if(configComponents.length != 0){
                     helper.generateForm(component, event, configComponents);   
                 }    
@@ -76,7 +77,7 @@
      */
     handleAfterSubmit: function(component, event, helper){
         var params = event.getParam('arguments');
-        debugger;
+        //debugger;
         if(params){
             // check response status, if error or incomplete, throw it
             if(params.status == 'ERROR'){
@@ -92,7 +93,7 @@
                 	helper.showToast(component, 'success', component.get('v.configMapping')[params.sender].successMessage);    
                 }else{
                     helper.showToast(component, 'success', params.message);
-                    debugger;
+                    //debugger;
                 }
             }
             

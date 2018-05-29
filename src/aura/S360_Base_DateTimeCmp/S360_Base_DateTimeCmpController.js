@@ -1,7 +1,7 @@
 ({
     init : function(component, event, helper){
         if(component.get('v.Date') == '' || component.get('v.Date') == undefined){
-            debugger;
+            //debugger;
             if(component.get('v.DefaultDate') != '' && component.get('v.DefaultDate') != undefined){
              	component.set('v.Date', component.get('v.DefaultDate'));   
             }
@@ -11,7 +11,7 @@
     },
     
 	handleOnChange: function(component, event, helper){
-        console.log(component.get('v.Date'));debugger;
+        console.log(component.get('v.Date'));//debugger;
         if(component.get('v.Date') != component.get('v.InitDate')){
          	var evt = component.getEvent('OnChange');
             evt.setParams({

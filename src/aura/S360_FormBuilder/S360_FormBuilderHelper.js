@@ -82,7 +82,7 @@
     
     generateBTextField : function(globalComponent, config, callback){
         $A.createComponent(
-            'c:S360_Base_B_Base_InputText',
+            'S360_FA:S360_Base_B_Base_InputText',
             {
                 "CompId": config.key,
                 "InputLabel": config.label ? config.label : '',

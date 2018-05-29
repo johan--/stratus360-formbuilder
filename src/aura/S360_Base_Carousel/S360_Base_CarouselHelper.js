@@ -122,7 +122,7 @@
         
         action.setCallback(this,function(response) {
             var state = response.getState();
-            debugger;
+            //debugger;
             if(state=="SUCCESS"){
                 if(response.getReturnValue()){
                     var carousel = [];

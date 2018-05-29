@@ -1,15 +1,15 @@
 ({
     onChange : function(component, event, helper){
         //update values
-        // debugger;
+        // //debugger;
         // component.set('v.DefaultDay', component.find('InputDay').get('v.value'));
         // component.set('v.DefaultMonth', component.find('InputMonth').get('v.value'));
         // component.set('v.DefaultYear', component.find('InputYear').get('v.value'));
-    
+
 
         var evt = component.getEvent('OnChange');
-        var day = component.get('v.IsDayPresent') 
-        ? component.find('InputDay').get('v.value') + '-' 
+        var day = component.get('v.IsDayPresent')
+        ? component.find('InputDay').get('v.value') + '-'
         : '';
         var dateWithFormat = component.find('InputYear').get('v.value')+'-'+ day + component.find('InputMonth').get('v.value');
         evt.setParams({
@@ -31,7 +31,7 @@
         //Set day options based on month (number of days in that month)
         var thirtyOneDays = ["January", "March", "May", "July", "August", "October", "December"];
         var thirtyDays = ["April", "June", "September", "November"];
-        var nDays;  
+        var nDays;
         var dayOpts = [];
 
         if(month[0] == ";") {
@@ -52,7 +52,7 @@
             if(!defaultDay){
                 dayOpts.push({
                     "class": "optionClass",
-                    "label": String(defaultDay), 
+                    "label": String(defaultDay),
                     "value": String(defaultDay)
                 });
             }
@@ -66,18 +66,18 @@
         // if(Number.isNaN(defaultDay)) dayOpts.push({class:'optionClass', label: "DD", value:NaN});
 
         for(var i = 1; i <= nDays; i++){
-            var row = { 
-                "class": "optionClass", 
-                "label": String(i), 
-                "value": String(i) 
+            var row = {
+                "class": "optionClass",
+                "label": String(i),
+                "value": String(i)
             };
             if(i == defaultDay) row.selected = "true";
             dayOpts.push(row);
         }
-        dayOpts.unshift({ 
-            "class": "optionClass", 
-            "label": "", 
-            "value": "", 
+        dayOpts.unshift({
+            "class": "optionClass",
+            "label": "",
+            "value": "",
             "selected": (typeof defaultDay == "undefined")
         });
 
@@ -97,7 +97,7 @@
     //         yearOpts.push({
     //             class:"optionClass",
     //             label: String(i),
-    //             value: String(i), 
+    //             value: String(i),
     //             selected: (String(i) == String(defaultY))
     //         });
     //     }

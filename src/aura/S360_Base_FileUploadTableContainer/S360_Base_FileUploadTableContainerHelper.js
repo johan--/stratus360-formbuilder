@@ -3,7 +3,7 @@
     CHUNK_SIZE: 900000, /* Use a multiple of 4 */
     
     getAttachment : function(comp, hlp, message){
-    	debugger;
+    	//debugger;
         comp.set('v.showLoading', true);
         
         var filterCondition = '';
@@ -26,7 +26,7 @@
             "FormId": comp.get('v.FormId')
         });
         action.setCallback(this, function(res){
-            debugger;
+            //debugger;
             if(comp.isValid() && res.getState() == 'SUCCESS'){
                 comp.set('v.objectPermission', res.getReturnValue().data.ObjectPermission);
                 
@@ -39,10 +39,10 @@
                         for(var i in a){
                             console.log(a[i]);
                         }
-                        debugger;
+                        //debugger;
                         if(hlp){
                             setTimeout(function(){
-                                debugger;
+                                //debugger;
                             	hlp.notifyTable(comp);
                             	hlp.notifyPagination(comp);    
                             },2000);
@@ -142,7 +142,7 @@
 
         var self = this;
         action.setCallback(this, function(a) {
-            debugger;
+            //debugger;
             var state = a.getState();
             if(state == "SUCCESS"){
                 attachId = a.getReturnValue();

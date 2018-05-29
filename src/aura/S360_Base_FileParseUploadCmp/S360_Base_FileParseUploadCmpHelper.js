@@ -112,7 +112,7 @@
             fieldPopulated: column,
             records: component.get('v.SObject')
         });
-        debugger;
+        //debugger;
         console.log(action.getParams());
         action.setCallback(this, function(r){
             if(r.getState() == "SUCCESS"){
