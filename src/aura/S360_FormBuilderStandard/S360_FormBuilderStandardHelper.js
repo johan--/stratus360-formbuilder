@@ -183,7 +183,8 @@
                 "Class": config.customClass ? config.customClass : '',
                 "MaxLength": config.validate ? config.validate.maxLength : undefined,
                 "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
-                "Json": config.validate ? config.validate.json : ''
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             }, 
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -588,7 +589,8 @@
                 "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
                 "Value": value,
                 "Class": config.customClass ? config.customClass : '',
-                "Json": config.validate ? config.validate.json : '',
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
                 "Data": component.getReference('v.Data')
             },
             function(newComponent, status, errorMessage){
@@ -1661,6 +1663,47 @@
     },
     
     submitEvent: function(component, sender){
+        debugger;
+        var isAllValid = true;
+        // validate fields before submit
+        if(jsonLogic != undefined && jsonLogic != ''){
+            var componentData = component.get('v.componentData');
+            for(var key in componentData){
+                if(componentData.hasOwnProperty(key)){
+
+                    if(componentData[key].get('v.input') === true){
+                        // check is required
+                        if(componentData[key].get('v.IsRequired') == true && !componentData[key].get('v.Value')){
+                            componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
+                            isAllValid = false;
+                            continue;
+                        }
+
+                        // check validation
+                        if(componentData[key].get('v.JsonLogic')){
+                            var jsonLogicData = {
+                                "value": componentData[key].get('v.Value'),
+                                "name": key
+                            }
+
+                            //JSLogic Validation
+                            var validateJson = componentData[key].get('v.JsonLogic');
+                            var isValid = jsonLogic.apply(validateJson, jsonLogicData);
+
+                            if(!isValid){
+                                isAllValid = false;
+                                componentData[key].validationFail();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(!isAllValid){
+            return;
+        }
+
         if(component.get('v.isCaptchaEnabled') && !component.get('v.isCaptchaSuccess')){
             this.showToast(component, 'warning', $A.get("$Label.c.S360_base_captcha_message"));
             return;

@@ -20,14 +20,6 @@ module.exports = function(app) {
             name: 'API',
             template: 'formio/components/textfield/apiNew.html'
           }
-          /*{
-            name: 'Layout',
-            template: 'formio/components/common/layout.html'
-          },
-          {
-            name: 'Conditional',
-            template: 'formio/components/common/conditional.html'
-          }*/
         ],
         documentation: 'http://help.form.io/userguide/#textfield'
       });
@@ -61,7 +53,6 @@ module.exports = function(app) {
       $templateCache.put('formio/components/textfield/validate.html',
         '<ng-form>' +
           '<form-builder-option property="validate.required"></form-builder-option>' +
-          '<form-builder-option property="validate.minLength"></form-builder-option>' +
           '<form-builder-option property="validate.maxLength"></form-builder-option>' +
           '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
         '</ng-form>'

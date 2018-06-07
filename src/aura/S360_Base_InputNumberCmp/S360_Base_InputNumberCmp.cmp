@@ -1,4 +1,7 @@
 <aura:component >
+    <!-- static value -->
+    <!-- input equal to true means that we able to set/modify value of this component -->
+    <aura:attribute name="input" type="boolean" default="true"/>
 
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="InputLabel" type="string" default=""/>
@@ -14,16 +17,25 @@
     <aura:attribute name="Class" type="String" default=""
                     description="Style for input container"/>
     <aura:attribute name="DefaultValue" type="String" default="0"/>
-    <aura:attribute name="Valid" type="boolean" default="true"/>
-    <aura:attribute name="Message" type="string" default=""/>
-    <aura:attribute name="Json" type="string" default=""/>
+    <aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
     <aura:attribute name="Data" type="Object" default="{}"/>
+
+    <!-- validation attribute -->
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
+    <aura:attribute name="Message" type="string" default="" access="private"/>
 
     <!-- Component init handler -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler name="change" value="{!v.Value}" action="{!c.onValueChange}"/>
 
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
+
+    <!-- validation method -->
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
  
 	<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
@@ -38,7 +50,7 @@
             <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}" class="slds-input textRightAlign" placeholder="{!v.PlaceholderText}" value="{!v.Value}" format="{!v.Format}"/>
         </div>
         <aura:renderIf isTrue="{!v.Valid != true}">
-            <ui:message title="Warning" severity="warning" closable="true">
+            <ui:message title="Warning" severity="warning" closable="false">
                 <aura:unescapedHtml value="{!v.Message}"/>
             </ui:message>
         </aura:renderIf>

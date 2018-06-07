@@ -11,7 +11,7 @@ module.exports = function(app) {
           },
           {
             name: 'Data',
-            template: 'formio/components/common/data.html'
+            template: 'formio/components/textfield/data.html'
           },
           {
             name: 'Validation',
@@ -19,16 +19,8 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/apiNew.html'
+            template: 'formio/components/textfield/apiNew.html'
           }
-          /*{
-            name: 'Layout',
-            template: 'formio/components/common/layout.html'
-          },
-          {
-            name: 'Conditional',
-            template: 'formio/components/common/conditional.html'
-          }*/
         ],
         documentation: 'http://help.form.io/userguide/#number'
       });
