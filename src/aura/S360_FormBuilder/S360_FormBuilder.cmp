@@ -1,5 +1,5 @@
 <aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"  controller="S360_Form_Builder_Controller">
-    
+
         <ltng:require styles="{!join(',',
     $Resource.Bootstrap + '/css/bootstrap.min.css',
     $Resource.Bootstrap + '/css/font-awesome.min.css',
@@ -7,14 +7,14 @@
     $Resource.Bootstrap + v.cssCode)}"
     scripts="{!$Resource.jsLibraries + '/js/70c0b494a4.js'}"
      />
-    
+
     <aura:attribute name="cssCode" type="String" default="/css/style.css"/>
-    
+
     <!-- Input parameter -->
     <aura:attribute name="formConfigName" type="String" default=""/>
     <aura:attribute name="formConfigID" type="String" default=""/>
     <aura:attribute name="dataId" type="String" default="" />
-    
+
     <!-- component parameter -->
     <aura:attribute name="Value" type="Object" default="{}"/>
     <aura:attribute name="Data" type="Object" default="{}"/>
@@ -22,12 +22,12 @@
 
 	<!-- this object stores all components rendered in the form
 		 use Field API name to access the component
-	 -->    
+	 -->
     <aura:attribute name="componentData" type="Object"/>
-    
+
     <!-- Handler -->
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-    
+
     <!-- this component body store rendered component -->
     {!v.body}
 </aura:component>

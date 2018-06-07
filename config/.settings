@@ -7,7 +7,20 @@
     "loginUrl": "https://login.salesforce.com/",
     "workspace": "/Users/ds/Documents/Data/Work/mavensmate",
     "subscription": [
-        "AuraDefinitionBundle"
+        "ApexClass",
+        "ApexPage",
+        "AuraDefinitionBundle",
+        "CorsWhitelistOrigin",
+        "CustomApplication",
+        "CustomLabels",
+        "CustomObject",
+        "CustomTab",
+        "FlexiPage",
+        "Layout",
+        "QuickAction",
+        "ReportType",
+        "StaticResource",
+        "Translations"
     ],
     "orgType": "developer",
     "instanceUrl": "https://s360-fa-dev-ed.my.salesforce.com"

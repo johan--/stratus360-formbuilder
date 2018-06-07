@@ -6,7 +6,7 @@
     
     onClick: function(component, event, helper){
         if((/pdf/i).test(component.get('v.PrintType'))){
-            helper.printAsPDF(component, event, helper);
+            helper.printAsPDF2(component, event, helper);
         }else if((/docx/i).test(component.get('v.PrintType'))){
          	helper.printAsDocx(component, event, helper);
         }

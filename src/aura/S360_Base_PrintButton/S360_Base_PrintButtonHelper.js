@@ -71,12 +71,10 @@
     },
     
     printAsDocx : function(component, event, helper){
-        var out = this.injectTheDocx(component, event, helper);
-        
+        var out = this.injectTheDocx(component, event, helper);     
         var reader = new FileReader();
         reader.onload = function() {
             var dataUrl = reader.result;
-            
             if(component.get('v.PrintAction') === 'download'){
             	helper.download(component, dataUrl);    
             }else if(component.get('v.PrintAction') === 'saveAsAttachment'){
@@ -85,6 +83,69 @@
             
         };
         reader.readAsDataURL(out);
+    },
+    
+    printAsPDF2 : function(component, event, helper){
+        var out = this.injectTheDocx(component, event, helper);
+        var xhttp = new XMLHttpRequest();
+        var formData = new FormData();
+        var self = this;
+        formData.append("file", out);
+        formData.append("fileName", "xxx.docx");
+        xhttp.open("POST", "https://gentle-waters-44196.herokuapp.com/upload", true);
+        xhttp.responseType = "arraybuffer";
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var pdfFile = xhttp.response;
+                var b = new Blob([new Uint8Array(pdfFile)]);
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var dataUrl = reader.result;
+                    if(component.get('v.PrintAction')=='download'){
+                        var fileNameArray = component.get("v.TemplateName").split('.');
+                        var lengthOfName = fileNameArray.length;
+                        fileNameArray.splice(lengthOfName-1,1);
+                        var fileName = '';
+                        for(var i = 0; i<fileNameArray.length; i++){
+                            fileName+=fileNameArray[i]+'.';
+                        }
+                        debugger;
+                        
+                        var element = document.createElement('a');
+                        element.setAttribute('href', dataUrl);
+                        element.setAttribute('download', fileName+'pdf');
+                        
+                        element.style.display = 'none';
+                        document.body.appendChild(element);
+                        
+                        element.click();
+                        
+                        document.body.removeChild(element);
+                    }else if(component.get('v.PrintAction')=='saveAsAttachment'){
+                        if(!component.get('v.ParentID')){
+                            this.showToast(component, 'error', 'Print to Attachment Need a Parent Record');
+                            return;
+                        }
+
+                        var base64 = dataUrl.split(',')[1];
+                        console.log(base64);
+                        var fromPos = 0;
+                        var toPos = Math.min(base64.length, fromPos + self.CHUNK_SIZE);
+                        // start with the initial chunk
+                        self.uploadChunkPDF(component, b, base64, fromPos, toPos, '', this.CHUNK_SIZE);
+                    }
+                };
+                reader.readAsDataURL(b);
+            }
+        }
+        xhttp.send(formData);
+            /*if(component.get('v.PrintAction') === 'download'){
+            	helper.download(component, dataUrl);    
+            }else if(component.get('v.PrintAction') === 'saveAsAttachment'){
+                helper.saveAsAttachment(component, out, dataUrl);
+            }*/
+            
+        
     },
     
     printAsPDF : function(component, event, helper){
@@ -196,7 +257,62 @@
                 }else{
                     component.set('v.ButtonLabel', self.BUTTON_LABEL);
                     self.BUTTON_LABEL = '';
+                    alert("Done uploading");
+                    self.showToast(component, 'success', 'Print to Attachment Success');
                     
+                }
+
+            }else if(state == "ERROR"){
+                self.showToast(component, 'error', 'Failed Print to Attachment');
+            }
+        });
+
+        window.setTimeout(
+            $A.getCallback(function() {
+                $A.enqueueAction(action); 
+            }),1000
+        );
+     
+    },
+    
+    uploadChunkPDF : function(component, file, fileContents, fromPos, toPos, attachId, chunkSize) {
+        var action = component.get("c.saveTheChunk"); 
+        var chunk = fileContents.substring(fromPos, toPos);
+        var fileNameArray = component.get("v.TemplateName").split('.');
+        var lengthOfName = fileNameArray.length;
+        fileNameArray.splice(lengthOfName-1,1);
+        var fileName = '';
+        for(var i = 0; i<fileNameArray.length; i++){
+            fileName+=fileNameArray[i]+'.';
+        }
+        
+        if(this.BUTTON_LABEL == ''){
+        	this.BUTTON_LABEL = component.get('v.ButtonLabel');    
+        }
+        component.set('v.ButtonLabel', 'Proccessing...');
+
+        action.setParams({
+            parentId: component.get("v.ParentID"),
+            fileName: fileName +"pdf",
+            base64Data: encodeURIComponent(chunk), 
+            contentType: file.type,
+            fileId: attachId
+        });        
+
+        var self = this;
+        action.setCallback(this, function(a) {
+            var state = a.getState();
+            if(state == "SUCCESS"){
+                attachId = a.getReturnValue();
+                fromPos = toPos;
+                toPos = Math.min(fileContents.length, fromPos + chunkSize); 
+                // recursive method 
+                if(fromPos < toPos) {
+                    self.uploadChunk(component, file, fileContents, fromPos, toPos, attachId, chunkSize); 
+                }else{
+                    component.set('v.ButtonLabel', self.BUTTON_LABEL);
+                    self.BUTTON_LABEL = '';
+                    alert("Done uploading");
                     self.showToast(component, 'success', 'Print to Attachment Success');
                     
                 }

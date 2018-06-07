@@ -125,4 +125,11 @@
         <shortDescription>S360 base offline message</shortDescription>
         <value>You might be offline</value>
     </labels>
+    <labels>
+        <fullName>greeting</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>greeting</shortDescription>
+        <value>Aloha!</value>
+    </labels>
 </CustomLabels>

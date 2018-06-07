@@ -145,6 +145,7 @@
         <members>jszip315</members>
         <members>mammoth</members>
         <members>ngFormBuilder</members>
+        <members>mytest</members>
         <name>StaticResource</name>
     </types>
     <types>

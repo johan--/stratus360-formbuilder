@@ -72,4 +72,8 @@
         <label><!-- S360 base offline message --></label>
         <name>S360_base_offline_message</name>
     </customLabels>
+    <customLabels>
+        <label><!-- greeting --></label>
+        <name>greeting</name>
+    </customLabels>
 </Translations>
