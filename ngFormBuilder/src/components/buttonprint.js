@@ -75,13 +75,11 @@ module.exports = function(app) {
                                   '<label for="printAction" form-builder-tooltip="Print action of this button.">{{\'Print Action\' | formioTranslate}}</label>' +
                                   '<select class="form-control" id="printAction" name="printAction" ng-options="key as value | formioTranslate for (key, value) in component.availablePrintAction" ng-model="component.printAction"></select>' +
                                 '</div>' +
-                                '<div>'+
+                                '<div class="form-group">'+
                                 '<label ng-show ="component.printType==\'PDF\'" for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Heroku link for the PDF Conversion REST API\' | formioTranslate}}</label>' +
                                 '<input id="herokuLink" name="herokuLink" type="text" ng-model="component.herokuLink" ng-show ="component.printType==\'PDF\'"placeholder="Heroku Link" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
                                 '</div>' +
-                                '</div>'+
-
-                                '<div>'+
+                                '<div class="form-group">'+
                                 '<label ng-show ="component.printType==\'PDF\'" for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Token for PDF Conversion\' | formioTranslate}}</label>' +
                                 '<input id="token" name="token" type="text" ng-model="component.token" ng-show ="component.printType==\'PDF\'"placeholder="Token" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
                                 '</div>' +
