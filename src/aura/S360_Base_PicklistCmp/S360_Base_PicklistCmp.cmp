@@ -1,4 +1,8 @@
 <aura:component controller="PicklistDescriber">
+    <!-- static value -->
+    <!-- input equal to true means that we able to set/modify value of this component -->
+    <aura:attribute name="input" type="boolean" default="true"/>
+
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="InputLabel" type="string" default=""/>
     <aura:attribute name="HelpText" type="string" default=""/>
@@ -6,17 +10,19 @@
     <aura:attribute name="IsRequired" type="boolean" default="false"/>
     <aura:attribute name="IsDisabled" type="boolean" default="false"/>
     <aura:attribute name="PicklistKV" type="string" default=""/>
-    <aura:attribute name="DefaultK" type="string" />
-    <aura:attribute name="OldDefaultK" type="string" />
+    <aura:attribute name="Value" type="string" />
+    <aura:attribute name="OldValue" type="string" />
     <aura:attribute name="SObjectName" type="string" default=""/>
     <aura:attribute name="RecordTypeName" type="string" default=""/>
     <aura:attribute name="FieldName" type="string" default=""/>
     <aura:attribute name="Multiple" type="boolean" default="false"/>
-
-    <aura:attribute name="Valid" type="boolean" default="true"/>
-    <aura:attribute name="Message" type="string" default=""/>
-    <aura:attribute name="Json" type="string" default=""/>
     <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+
+    <!-- validation attribute -->
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
+    <aura:attribute name="Message" type="string" default="" access="private"/>
  
     <!-- additional attributes -->
     <aura:attribute name="Class" type="String" default=""/>
@@ -26,20 +32,26 @@
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:handler name="change" value="{!v.DefaultK}" action="{!c.changeDefaultK}"/>
+    <aura:handler name="change" value="{!v.Value}" action="{!c.changeValue}"/>
     <aura:handler event="c:NotifyPicklistCmp" action="{!c.handleNotify}" />
     
     <!-- define methods -->
     <aura:method name="invalidatePicklist" action="{!c.methodHandleNotify}" access="public" 
                  description="method to invalidate picklist comp"/>
 
+    <!-- validation method -->
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
+
     
     	<article class="{!(v.IsHidden ? 'slds-hide slds-is-relative' : 'slds-show slds-is-relative ' + v.Class)}">
             <div aura:id="picklistID" class="{!v.SideClass}">
         		<label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-show slds-form-element__label ')}" for="{!v.CompId}">
-                    <!--abbr class="slds-required" 
-                  style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr-->
                     <aura:unescapedHTML value="{!v.InputLabel}"> </aura:unescapedHTML>
+                    <abbr class="slds-required" 
+                  style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
                     	
                 </label>
                 
@@ -62,7 +74,7 @@
             </div>
 
             <aura:renderIf isTrue="{!v.Valid != true}">
-                <ui:message title="Warning" severity="warning" closable="true">
+                <ui:message title="Warning" severity="warning" closable="false">
                     <aura:unescapedHtml value="{!v.Message}"/>
                 </ui:message>
             </aura:renderIf>

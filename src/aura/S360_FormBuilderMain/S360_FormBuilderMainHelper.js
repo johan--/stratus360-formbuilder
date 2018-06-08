@@ -1,4 +1,7 @@
 ({
+    MAX_FILE_SIZE: 11000000, /* 6 000 000 * 3/4 to account for base64 */
+    CHUNK_SIZE: 900000, /* Use a multiple of 4 */
+
     getUrlParam: function(sParam){
         var params = decodeURIComponent(window.location.search.substring(1));
         params = params.split('&');
@@ -56,10 +59,16 @@
                     if(response.getReturnValue().status == true){
                         // refresh the data
                         // component.set('v.Data', response.getReturnValue().data);
-                        child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));
 
-                        if(callback != undefined){
-                            callback(response.getReturnValue().data);
+                        // if we have attachment to upload
+                        if(component.get('v.AttachmentsData').length > 0){
+                            self.readFile(component, 0, child, sender, callback, response);
+                        }else{
+                            child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));
+
+                            if(callback != undefined){
+                                callback(response.getReturnValue().data);
+                            }
                         }
                     }else{
                         child.afterSubmit(sender, 'ERROR', response.getReturnValue().message);
@@ -254,5 +263,95 @@
             navigate(event.getParam('Payload').payload);
         }
 
-    }
+    },
+
+    readFile: function(component, indexOfFile, mainOp_child, mainOp_sender, mainOp_callback, mainOp_response){
+        var attachments = component.get('v.AttachmentsData');
+        if(attachments.length > 0 && indexOfFile < attachments.length){
+            var fileToUpload = attachments[indexOfFile];
+
+            this.saveAttachment(component, fileToUpload, indexOfFile, mainOp_child, mainOp_sender, mainOp_callback, mainOp_response);
+        }
+    },
+
+    saveAttachment: function(comp, payload, indexOfFile, mainOp_child, mainOp_sender, mainOp_callback, mainOp_response){
+        debugger;
+        var base64Mark = 'base64,';
+        var dataStart = payload.contents.indexOf(base64Mark) + base64Mark.length;
+        var fileContents = payload.contents.substring(dataStart);
+        
+        
+        this.upload(comp, payload.name, payload.type, fileContents, indexOfFile,
+            mainOp_child, mainOp_sender, mainOp_callback, mainOp_response);
+    },
+    
+    upload: function(component, fileName, fileType, fileContents, indexOfFile,
+        mainOp_child, mainOp_sender, mainOp_callback, mainOp_response) {
+        debugger;
+        var fromPos = 0;
+        var toPos = Math.min(fileContents.length, fromPos + this.CHUNK_SIZE);
+        
+        // start with the initial chunk
+        component.set('v.showLoading', true);
+        this.uploadChunk(component, fileName, fileType, fileContents, fromPos, toPos, '', this.CHUNK_SIZE, indexOfFile,
+            mainOp_child, mainOp_sender, mainOp_callback, mainOp_response);   
+    },
+    
+    uploadChunk : function(component, fileName, fileType, fileContents, fromPos, toPos, attachId, chunkSize, indexOfFile,
+        mainOp_child, mainOp_sender, mainOp_callback, mainOp_response) {
+        
+        // call this dummy fuction just for setting up action.setCallback
+        var action = component.get("c.saveTheChunk"); 
+        var chunk = fileContents.substring(fromPos, toPos);
+
+        debugger;
+
+        action.setParams({
+            parentId: mainOp_response.getReturnValue().data['Id'],
+            fileName: fileName,
+            base64Data: encodeURIComponent(chunk), 
+            contentType: fileType,
+            fileId: attachId
+        });        
+
+        var self = this;
+        action.setCallback(this, function(a) {
+            debugger;
+            var state = a.getState();
+            if(state == "SUCCESS"){
+                attachId = a.getReturnValue();
+                fromPos = toPos;
+                toPos = Math.min(fileContents.length, fromPos + chunkSize); 
+                // recursive method 
+                if(fromPos < toPos) {
+                    console.log('fromPos:'+fromPos);
+                    self.uploadChunk(component, fileName, fileType, fileContents, fromPos, toPos, attachId, chunkSize, indexOfFile,
+                        mainOp_child, mainOp_sender, mainOp_callback, mainOp_response);
+                }else{
+                    // finish upload
+                    var attachments = component.get('v.AttachmentsData');
+                    indexOfFile++;
+
+                    // check if we have another attachment
+                    if(indexOfFile < attachments.length){
+                        self.readFile(component, indexOfFile, mainOp_child, mainOp_sender, mainOp_callback, mainOp_response);
+                    }else{
+                        mainOp_child.afterSubmit(mainOp_sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));
+
+                        if(mainOp_callback != undefined){
+                            mainOp_callback(mainOp_response.getReturnValue().data);
+                        }
+                    }
+                }
+
+            }else if(state == "ERROR"){
+                console.log(a.getError());
+                component.set('v.showLoading', false);
+                self.showToast(component, 'error', $A.get('$Label.c.attachment_not_created'));
+            }
+        });
+
+        $A.enqueueAction(action); 
+
+    },
 })

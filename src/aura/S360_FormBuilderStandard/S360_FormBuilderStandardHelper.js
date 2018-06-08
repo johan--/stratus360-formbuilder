@@ -766,13 +766,16 @@
                 "IsRequired": config.validate ? config.validate.required : false,
                 "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
                 "PicklistKV": picklistKeyVal,
-                "DefaultK": value,
+                "Value": value,
                 "SObjectName": sobject,
                 "RecordTypeName": recordType,
                 "FieldName": field,
                 "Class": config.customClass ? config.customClass : '',
                 "ShowBlank": true,
-                "Multiple" : config.multiple ? true : false
+                "Multiple" : config.multiple ? true : false,
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
+                "Data": component.getReference('v.Data')
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -1230,17 +1233,18 @@
     generateInputFile : function(component, config){
         //debugger;
         var self = this;
-        if(component.get('v.Data')['Id'] == undefined){
-            return;
-        }
+        
         var deletem =  component.get('v.FormConfig');
         $A.createComponent(
                 'c:S360_Base_FileUploadTableContainer',
                 {
                     "aura:id": config.key,
                     "CompId": config.key,
-                    "ReportId": component.get('v.Data')['Id'] ? component.get('v.Data')['Id'] : '',
-                    "FormId": component.get('v.FormConfig')['Id']
+                    "ParentId": component.get('v.Data')['Id'] ? component.get('v.Data')['Id'] : '',
+                    "FormId": component.get('v.FormConfig')['Id'],
+                    "IsRequired": config.validate ? config.validate.required : false,
+                    "JsonLogic": config.validate ? config.validate.json : '',
+                    "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
                     //"FileLabel": config.label,
                     //"Class": config.customClass ? config.customClass : '',
                 },
@@ -1697,6 +1701,20 @@
                                 componentData[key].validationFail();
                             }
                         }
+                    }else if(componentData[key].get('v.typeAttachment') === true){
+                        // check is required
+                        if(componentData[key].get('v.IsRequired') == true && componentData[key].get('v.objectWrapper').length == 0){
+                            componentData[key].validationFail($A.get("$Label.c.S360_Attachment_Required"));
+                            isAllValid = false;
+                            continue;
+                        }
+
+                        // create new record operation
+                        if(!component.get('v.Data')['Id']){
+                            component.set('v.AttachmentsData', 
+                                componentData[key].get('v.objectWrapper').map(x => x.payload));
+                        }
+                        
                     }
                 }
             }

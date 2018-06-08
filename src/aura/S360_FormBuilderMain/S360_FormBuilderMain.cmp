@@ -12,6 +12,7 @@
     <aura:attribute name="FormConfig" type="Object" default="{}"/>
     <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="RelatedData" type="Object" default="{}"/>
+    <aura:attribute name="AttachmentsData" type="Object[]" default="[]"/>
     <aura:attribute name="FieldInfo" type="Object" default="{}"/>
     <aura:attribute name="ObjectInfo" type="Object" default="{}"/>
     
@@ -66,6 +67,7 @@
         <c:S360_FormBuilderStandard aura:id="S360_FormBuilderStandard" 
                                     Data="{!v.Data}" 
                                     RelatedData="{!v.RelatedData}" 
+                                    AttachmentsData="{!v.AttachmentsData}" 
                                     componentData="{!v.componentData}" 
                                     submittedButton="{!v.submittedStandardButton}" 
                                           isCaptchaEnabled="{!v.isCaptchaEnabled}"

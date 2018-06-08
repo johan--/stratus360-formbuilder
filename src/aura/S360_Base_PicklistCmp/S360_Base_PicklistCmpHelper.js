@@ -94,7 +94,7 @@
             if (state === "SUCCESS") {
                 var optionsMap = response.getReturnValue();
                 var picklistKV = [];
-                var defaultKeyK = component.get("v.DefaultK");
+                var Value = component.get("v.Value");
 
                 for (var field in optionsMap) {
                     picklistKV = optionsMap[field];
@@ -116,15 +116,15 @@
                 //Add the PickList value from database to the picklistKV if needed
                 component.set("v.PicklistKV",picklistKV);
                 
-                var opts2 = helper.createJSON(component, picklistKV, defaultKeyK);
+                var opts2 = helper.createJSON(component, picklistKV, Value);
         		component.find("InputSelectId").set("v.options", opts2);
-                if(defaultKeyK){
-                	component.find("InputSelectId").set("v.value", defaultKeyK);
+                if(Value){
+                	component.find("InputSelectId").set("v.value", Value);
                 }else{
                     if(opts2){
-                        //component.set("v.DefaultK", opts2[0].value);
+                        //component.set("v.Value", opts2[0].value);
                         //component.find("InputSelectId").set("v.value", opts2[0].value);
-                        //component.set("v.OldDefaultK", opts2[0].value);
+                        //component.set("v.OldValue", opts2[0].value);
                     }
                 }
                 helper.onChange(component);
@@ -163,7 +163,7 @@
                 //debugger;
                 var picklistKV = [];
                 var newPicklistKV = [];
-                var defaultKeyK = component.get("v.DefaultK");
+                var Value = component.get("v.Value");
                 
                 for (var field in optionsMap) {
                     picklistKV = optionsMap[field];
@@ -185,15 +185,15 @@
                 //Add the PickList value from database to the picklistKV if needed
                 component.set("v.PicklistKV",picklistKV);
 				
-                var opts2 = helper.createJSON(component, picklistKV, defaultKeyK);
+                var opts2 = helper.createJSON(component, picklistKV, Value);
         		component.find("InputSelectId").set("v.options", opts2);
-                if(defaultKeyK){
-                	component.find("InputSelectId").set("v.value", defaultKeyK);
+                if(Value){
+                	component.find("InputSelectId").set("v.value", Value);
                 }else{
                     if(opts2){
                         //component.find("InputSelectId").set("v.value", opts2[0].value);
-                        //component.set("v.DefaultK", opts2[0].value);
-                        //component.set("v.OldDefaultK", opts2[0].value);
+                        //component.set("v.Value", opts2[0].value);
+                        //component.set("v.OldValue", opts2[0].value);
                     }
                 }
                 
@@ -213,7 +213,13 @@
     
     onChange : function(component){
         // push to attribute value
-        component.set('v.DefaultK', component.find('InputSelectId').get('v.value'));
+        component.set('v.Value', component.find('InputSelectId').get('v.value'));
+
+
+        // validate required field
+        this.validateRequireField(component);
+        // validate field
+        this.validateField(component);
         
         var evt = component.getEvent('OnChange');
         evt.setParams({
@@ -227,20 +233,60 @@
         console.log('call ' + comp.get('v.CompId'));
         var self = this;
         setTimeout(function(){
-        	var defaultKeyK = comp.get("v.DefaultK");
+        	var Value = comp.get("v.Value");
             var picklistKV = comp.get("v.PicklistKV");
             
             if(picklistKV == ''){
                 self.handleNotify(comp);
             }else{
-             	var opts2 = self.createJSON(comp, picklistKV, defaultKeyK);
+             	var opts2 = self.createJSON(comp, picklistKV, Value);
             
                 comp.find("InputSelectId").set("v.options", opts2);
-                comp.find("InputSelectId").set("v.value", defaultKeyK);
-                
-                self.onChange(comp);    
+                comp.find("InputSelectId").set("v.value", Value);
+
+                if(Value != '' && Value != 'null'){
+                    self.onChange(comp);
+                }
             }    
         }, 100);
+    },
+
+    toggleErrorMessage: function(component, status, message){
+        if(status === true){
+            component.set('v.Valid', true);
+        }else {
+            component.set('v.Valid', false);
+            component.set('v.Message', message);
+        }
+    },
+
+    validateRequireField: function(component){
+        // validate required field
+        if(!component.get('v.Value')){
+            this.toggleErrorMessage(component, false, $A.get("$Label.c.S360_Field_Required"));
+        }else{
+            this.toggleErrorMessage(component, true);
+        }
+    },
+
+    validateField: function(component){
+        // validate field
+        var jsonLogicData = {
+            "value": component.get('v.Value'),
+            "name": component.get('v.CompId')
+        }
+
+        if(jsonLogic != undefined && jsonLogic != ''){
+            
+            //JSLogic Validation
+            var validateJson = component.get('v.JsonLogic');
+            
+            if(validateJson != undefined && validateJson != "") {
+                var valid = jsonLogic.apply(validateJson, jsonLogicData);
+                
+                this.toggleErrorMessage(component, valid, component.get('v.FailureValidationMessage'));
+            }   
+        }
     }
 
 })

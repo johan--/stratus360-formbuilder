@@ -39,9 +39,9 @@
  
 	<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
+            <aura:unescapedHtml value="{!v.InputLabel}"/>			
             <abbr class="slds-required" 
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
-            <aura:unescapedHtml value="{!v.InputLabel}"/>			
         </label>
         
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>

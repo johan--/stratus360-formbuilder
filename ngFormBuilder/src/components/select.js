@@ -20,7 +20,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/apiNew.html'
+            template: 'formio/components/textfield/apiNew.html'
           }
           /*{
             name: 'Layout',

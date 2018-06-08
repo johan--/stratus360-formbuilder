@@ -6,6 +6,7 @@ module.exports = function(app) {
       formioComponentsProvider
     ) {
       formioComponentsProvider.register('file', {
+        title: 'Attachment',
         onEdit: [
           '$scope',
           'Formio',
@@ -19,7 +20,7 @@ module.exports = function(app) {
             });
           }
         ],
-        icon: 'fa fa-file',
+        icon: 'fa fa-paperclip',
         views: [
           {
             name: 'Display',
@@ -29,11 +30,11 @@ module.exports = function(app) {
             name: 'Validation',
             template: 'formio/components/file/validate.html'
           },
-          {
+          /*{
             name: 'API',
             template: 'formio/components/common/apiNew.html'
           }
-          /*{
+          {
             name: 'Layout',
             template: 'formio/components/common/layout.html'
           },

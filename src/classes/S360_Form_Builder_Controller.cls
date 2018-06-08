@@ -333,6 +333,17 @@ public class S360_Form_Builder_Controller {
         return serverResponse;
     }
 
+    @AuraEnabled
+    public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) { 
+        if (fileId == '') {
+            fileId = S360_Base_FileUploadController.saveTheFile(parentId, fileName, base64Data, contentType);
+        } else {
+            S360_Base_FileUploadController.appendToFile(fileId, base64Data);
+        }
+        system.debug('fileId:'+fileId);
+        return Id.valueOf(fileId);
+    }
+
     class FieldInformation {
         @AuraEnabled public String label {get; set;}
         @AuraEnabled public String helpText {get; set;}

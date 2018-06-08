@@ -1,6 +1,7 @@
 ({
 	doInit : function(comp, evt, hlp) {
         hlp.getAttachment(comp, hlp);
+        
 	},
  
  	handleTableCanged: function(comp, evt, hlp){
@@ -38,9 +39,22 @@
         //debugger;
 		switch(event.getParam('CompId')){
             case comp.get('v.buttonAttachReceiptId') :
-               // event.stopPropagation();
-                hlp.saveAttachment(comp, event.getParam('payload'));
+                if(comp.get('v.ParentId')){
+                    hlp.saveAttachment(comp, event.getParam('payload'));
+                }else{
+                    hlp.putAttachment(comp, event.getParam('payload'));
+                }
+                
                 break;
         }
-	}
+	},
+
+    handleValidationFail: function(component, event, helper){
+        var params = event.getParam('arguments');
+        var message = '';
+        if (params) {
+            message = params.message || component.get('v.FailureValidationMessage');
+        }
+        helper.toggleErrorMessage(component, false, message);
+    }
 })

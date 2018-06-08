@@ -7,8 +7,8 @@
         comp.set('v.showLoading', true);
         
         var filterCondition = '';
-        if(comp.get('v.ReportId')){
-            filterCondition = "ParentID = '" + comp.get('v.ReportId')+"'";
+        if(comp.get('v.ParentId')){
+            filterCondition = "ParentID = '" + comp.get('v.ParentId')+"'";
         }else{
             filterCondition = 'ParentID = null';
         }
@@ -22,7 +22,7 @@
             "pSize": comp.get('v.pageSize'),
             "sortDirection": comp.get('v.sort'),
             "orderBy": comp.get('v.orderBy'),
-            "ReportId": comp.get('v.ReportId'),
+            "ReportId": comp.get('v.ParentId'),
             "FormId": comp.get('v.FormId')
         });
         action.setCallback(this, function(res){
@@ -80,6 +80,7 @@
     },
     
     notifyTable : function(comp){
+        debugger;
         var tableCmp = comp.find('E_Rep_Attachment_Table_id');
         tableCmp.setDataReady(
             comp.get("v.sort"), 
@@ -110,6 +111,7 @@
     },
     
     saveAttachment: function(comp, payload){
+        debugger;
         var base64Mark = 'base64,';
         var dataStart = payload.contents.indexOf(base64Mark) + base64Mark.length;
         var fileContents = payload.contents.substring(dataStart);
@@ -119,6 +121,7 @@
     },
     
     upload: function(component, fileName, fileType, fileContents) {
+        debugger;
         var fromPos = 0;
         var toPos = Math.min(fileContents.length, fromPos + this.CHUNK_SIZE);
         
@@ -128,12 +131,13 @@
     },
     
     uploadChunk : function(component, fileName, fileType, fileContents, fromPos, toPos, attachId, chunkSize) {
+        debugger;
         // call this dummy fuction just for setting up action.setCallback
         var action = component.get("c.saveTheChunk"); 
         var chunk = fileContents.substring(fromPos, toPos);
 
         action.setParams({
-            parentId: component.get("v.ReportId"),
+            parentId: component.get("v.ParentId"),
             fileName: fileName,
             base64Data: encodeURIComponent(chunk), 
             contentType: fileType,
@@ -142,7 +146,7 @@
 
         var self = this;
         action.setCallback(this, function(a) {
-            //debugger;
+            debugger;
             var state = a.getState();
             if(state == "SUCCESS"){
                 attachId = a.getReturnValue();
@@ -156,9 +160,6 @@
                     // finish upload
                     // update attachment table
                     self.getAttachment(component, self, $A.get('$Label.c.attachment_created'));
-                    //component.refreshTable();
-                   	// show toast
-                    //self.showToast(component, 'success', $A.get('$Label.c.attachment_created'));
                 }
 
             }else if(state == "ERROR"){
@@ -168,9 +169,36 @@
             }
         });
 
-            $A.getCallback(function() {
-                $A.enqueueAction(action); 
-            }),1000
+        $A.enqueueAction(action); 
 
+    },
+
+    putAttachment: function(component, payload){
+        var objectWrapper = component.get('v.objectWrapper');
+        if(!objectWrapper){
+            objectWrapper = [];
+        }
+
+        objectWrapper.push({
+            selected: false,
+            payload: payload,
+            objects: {
+                Name: payload.name
+            }
+        });
+        component.set('v.length', objectWrapper.length);
+        component.set('v.objectWrapper', objectWrapper);
+
+        this.notifyTable(component);
+        this.notifyPagination(component);
+    },
+
+    toggleErrorMessage: function(component, status, message){
+        if(status === true){
+            component.set('v.Valid', true);
+        }else {
+            component.set('v.Valid', false);
+            component.set('v.Message', message);
+        }
     },
 })

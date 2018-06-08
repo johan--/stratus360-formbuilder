@@ -5,7 +5,7 @@ module.exports = function (app) {
             formioComponentsProvider
         ) {
             formioComponentsProvider.register('attachment', {
-                title: 'Attachment',
+                title: 'Field Attachment',
                 template: 'formio/components/attachment.html',
                 group: 'advanced',
                 settings: {
