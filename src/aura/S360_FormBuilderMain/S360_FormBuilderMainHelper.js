@@ -13,10 +13,10 @@
     upsert: function(component, sender, callback){
         //debugger;
         console.log('data to save');
-        for(var i in component.get('v.Data')){
-            if(component.get('v.Data').hasOwnProperty(i))
-                console.log(i + '' +component.get('v.Data')[i]);
-        }
+        // for(var i in component.get('v.Data')){
+        //     if(component.get('v.Data').hasOwnProperty(i))
+        //         console.log(i + '' +component.get('v.Data')[i]);
+        // }
         var self = this;
         var child;
 
@@ -45,13 +45,13 @@
             data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
             //debugger;
             action.setParams({
-                "data" : data1, 
+                "data" : data1,
                 "relatedData" : component.get('v.RelatedData'),
                 "isSignatureEnabled": isSignatureEnabled,
                 "signatureData": canvasDataUrl
             });
             action.setCallback(this, function(response){
-
+				debugger;
                 if(component.isValid() && response.getState() == 'SUCCESS'){
                     if(response.getReturnValue().status == true){
                         // refresh the data

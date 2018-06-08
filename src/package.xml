@@ -144,8 +144,8 @@
         <members>jsonlogic</members>
         <members>jszip315</members>
         <members>mammoth</members>
-        <members>ngFormBuilder</members>
         <members>mytest</members>
+        <members>ngFormBuilder</members>
         <name>StaticResource</name>
     </types>
     <types>

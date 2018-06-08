@@ -20,6 +20,8 @@
     <aura:attribute name="TemplateID" type="String" default=""/>
     <aura:attribute name="TemplateName" type="String" default=""/>
     <aura:attribute name="DataToInject" type="Object"/>
+    <aura:attribute name="Token" type="String" default=""/>
+    <aura:attribute name="HerokuLink" type="String" default=""/>
     <aura:attribute name="TemplateData" type="String" default=""/>
     <aura:attribute name="PrintType" type="String" default=""
                     description="[pdf|docx]"/>

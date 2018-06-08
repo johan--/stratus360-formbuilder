@@ -113,31 +113,31 @@
         var data = component.get('v.Data');
         var fieldInfo = component.get('v.FieldInfo');
         var objectInfo = component.get('v.ObjectInfo');
-        console.log("STANDARD");
-        //console.log(formConfig);
-        var ans = '';
-        // for(var i in formConfig){
-        //     ans+=('\'' + i + '\'' +':' + '\''+ formConfig[i] + '\''+"," );
+        // console.log("STANDARD");
+        // //console.log(formConfig);
+        // var ans = '';
+        // // for(var i in formConfig){
+        // //     ans+=('\'' + i + '\'' +':' + '\''+ formConfig[i] + '\''+"," );
+        // // }
+        // // console.log(ans);
+        // ans = JSON.stringify( formConfig.S360_FA__JSON__c);
+        // console.log(ans);
+        // ans = "";
+        // for(var i in data){
+        //     ans+=(i +':' + JSON.stringify(data[i], null, 2)+",");
         // }
         // console.log(ans);
-        ans = JSON.stringify( formConfig.S360_FA__JSON__c);
-        console.log(ans);
-        ans = "";
-        for(var i in data){
-            ans+=(i +':' + JSON.stringify(data[i], null, 2)+",");
-        }
-        console.log(ans);
-        ans = "";
-        for(var i in fieldInfo){
-            ans+=(i +':' + JSON.stringify(fieldInfo[i], null, 2)+",");
-        }
-        console.log(ans);
-         ans = "";
-        for(var i in objectInfo){
-            ans+=(i +':' + JSON.stringify(objectInfo[i], null, 2)+",");
-        }
-
-        console.log(ans);
+        // ans = "";
+        // for(var i in fieldInfo){
+        //     ans+=(i +':' + JSON.stringify(fieldInfo[i], null, 2)+",");
+        // }
+        // console.log(ans);
+        //  ans = "";
+        // for(var i in objectInfo){
+        //     ans+=(i +':' + JSON.stringify(objectInfo[i], null, 2)+",");
+        // }
+        //
+        // console.log(ans);
         if(formConfig.S360_FA__Component_Type__c == 'Standard'){
             component.find('S360_FormBuilderStandard').setup(formConfig, data, fieldInfo, objectInfo);
         }else if(formConfig.S360_FA__Component_Type__c == 'Custom'){

@@ -92,11 +92,19 @@
         var self = this;
         formData.append("file", out);
         formData.append("fileName", "xxx.docx");
-        xhttp.open("POST", "https://gentle-waters-44196.herokuapp.com/upload", true);
+        xhttp.open("POST", component.get("{!v.HerokuLink}")+"/upload",true);
+        xhttp.setRequestHeader("token",component.get("{!v.Token}"));
         xhttp.responseType = "arraybuffer";
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 var pdfFile = xhttp.response;
+                if(String.fromCharCode.apply(null, new Uint8Array(pdfFile)) === "insufficient privileges"){
+                    component.set("v.ButtonLabel", "Insufficient Privileges");
+                    setTimeout(function(){
+                        component.set("v.ButtonLabel","Print");
+                    },2000);
+                    return;
+                }
                 var b = new Blob([new Uint8Array(pdfFile)]);
                 var reader = new FileReader();
                 reader.onload = function() {

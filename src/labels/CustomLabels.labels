@@ -70,6 +70,13 @@
         <value>No view to display</value>
     </labels>
     <labels>
+        <fullName>S360_Field_Required</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Field_Required</shortDescription>
+        <value>Field is required</value>
+    </labels>
+    <labels>
         <fullName>S360_base_captcha_domain</fullName>
         <language>en_US</language>
         <protected>true</protected>

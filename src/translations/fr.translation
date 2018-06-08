@@ -41,6 +41,10 @@
         <name>S360_Empty_Carousel</name>
     </customLabels>
     <customLabels>
+        <label><!-- S360_Field_Required --></label>
+        <name>S360_Field_Required</name>
+    </customLabels>
+    <customLabels>
         <label><!-- S360 base captcha domain --></label>
         <name>S360_base_captcha_domain</name>
     </customLabels>

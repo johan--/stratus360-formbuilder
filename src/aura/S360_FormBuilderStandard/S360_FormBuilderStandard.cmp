@@ -105,7 +105,7 @@
             <c:S360_Base_LoadingCmp aura:id="loading" CompId="loading"/>
             <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" 
                                   SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
-                                  Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}"/>
+                                  Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}" aura:id="S360_Base_ToastCmp"/>
             
         </div>
    

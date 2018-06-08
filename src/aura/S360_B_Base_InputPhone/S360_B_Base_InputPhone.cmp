@@ -22,8 +22,8 @@
     <aura:handler name="change" value="{!v.Value}" action="{!c.itemsChange}"/>
     <aura:handler name="change" value="{!v.IsReadOnly}" action="{!c.itemsChange}"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
- 
- 
+
+
     <div class="{!(v.IsHidden ? 'hidden' : '')}">
         <label class="{!v.InputLabel.length ? '' : 'hidden'}" for="{!v.CompId}" >
             <span class="{!v.IsReadOnly? '' : (v.IsRequired ? (v.IsMissingValueLocal ? 'error' : '' ) : '')}">
@@ -44,6 +44,6 @@
         </aura:if>
 
     </div>
-  
+
 
 </aura:component>
