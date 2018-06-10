@@ -596,6 +596,7 @@
 
             if(isAutoSave){
                 setInterval(function(){
+                    debugger;
                     document.getElementById("autoSaveMessage").innerHTML = "Saving...";
                     getUsedFields();
                     autoSaveAF();

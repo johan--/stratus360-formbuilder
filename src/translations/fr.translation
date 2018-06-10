@@ -37,6 +37,10 @@
         <name>ObjectNotUpdatable</name>
     </customLabels>
     <customLabels>
+        <label><!-- S360 Attachment Required --></label>
+        <name>S360_Attachment_Required</name>
+    </customLabels>
+    <customLabels>
         <label><!-- S360 Empty Carousel --></label>
         <name>S360_Empty_Carousel</name>
     </customLabels>

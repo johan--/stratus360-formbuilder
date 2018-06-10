@@ -63,6 +63,13 @@
         <value>you do not have access to update this object</value>
     </labels>
     <labels>
+        <fullName>S360_Attachment_Required</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360 Attachment Required</shortDescription>
+        <value>Attachment is required</value>
+    </labels>
+    <labels>
         <fullName>S360_Empty_Carousel</fullName>
         <language>en_US</language>
         <protected>true</protected>
