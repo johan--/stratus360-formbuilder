@@ -47,7 +47,7 @@ module.exports = function(app) {
       );
 
       $templateCache.put('formio/components/textfield/data.html',
-        '<form-builder-option text-mask property="defaultValue"></form-builder-option>' 
+        '<form-builder-option text-mask property="defaultValue"></form-builder-option>'
       );
 
       $templateCache.put('formio/components/textfield/validate.html',

@@ -33,7 +33,7 @@ module.exports = function(app) {
           },
           {
             name: 'Validation',
-            template: 'formio/components/textfield/validate.html'
+            template: 'formio/components/panel/validate.html'
           },
           /*{
             name: 'Layout',
@@ -110,7 +110,7 @@ module.exports = function(app) {
         '</uib-accordion>'
       );
 
-      $templateCache.put('formio/components/textfield/validate.html',
+      $templateCache.put('formio/components/panel/validate.html',
         '<ng-form>' +
           // '<form-builder-option property="validate.required"></form-builder-option>' +
           // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
