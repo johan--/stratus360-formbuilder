@@ -29,6 +29,11 @@ module.exports = function(app) {
           {
             name: 'Display',
             template: 'formio/components/panel/display.html'
+
+          },
+          {
+            name: 'Validation',
+            template: 'formio/components/textfield/validate.html'
           },
           /*{
             name: 'Layout',
@@ -78,6 +83,7 @@ module.exports = function(app) {
             '<select class="form-control" id="breadcrumb" name="breadcrumb" ng-options="breadcrumb.name as breadcrumb.title for breadcrumb in breadcrumbs" ng-model="component.breadcrumb"></select>' +
           '</div>' +*/
           '<form-builder-option property="customClass"></form-builder-option>' +
+          '<form-builder-option property="hidden"></form-builder-option>' +
           //'<form-builder-option property="tableView"></form-builder-option>' +
         '</ng-form>'
       );
@@ -102,6 +108,14 @@ module.exports = function(app) {
             '<textarea class="form-control" rows="5" id="json" name="json" json-input ng-model="component.nextPage" placeholder="{ ... }"></textarea>' +
           '</div>' +
         '</uib-accordion>'
+      );
+
+      $templateCache.put('formio/components/textfield/validate.html',
+        '<ng-form>' +
+          // '<form-builder-option property="validate.required"></form-builder-option>' +
+          // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+        '</ng-form>'
       );
     }
   ]);
