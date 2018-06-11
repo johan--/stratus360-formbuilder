@@ -33,16 +33,16 @@ public class S360_Form_Builder_Controller {
         if(formName != null && formName != '')
         {
 
-            formConfigs = [select S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c  from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c  from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
 
         }else
         {
-            formConfigs = [select S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
         }
 
         //Just in case language was not selected, get the blank language.
         if(formConfigs.size()==0){
-			formConfigs = [select S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c from S360_FA__S360_Form_Config__c where id = :formId limit 1];
+			formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c from S360_FA__S360_Form_Config__c where id = :formId limit 1];
         }
 
         // initialize server response
@@ -153,15 +153,26 @@ public class S360_Form_Builder_Controller {
                     }
 
                 	System.debug(strRealFields);
-                  System.debug(serverResponse);
+                    System.debug(serverResponse);
                     //String sql = 'SELECT ' + strRealFields + ',RecordTypeId  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
-                    String sql = 'SELECT ' + strRealFields + '  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
+                    if(config.S360_FA__Save_to_Storage__c){
+                        String sql = 'SELECT  S360_FA__Record__c FROM S360_FA__Storage__c WHERE Id = \'' + dataId +'\'';
 
-                    List<SObject> data = Database.query(sql);
+                        List<SObject> data = Database.query(sql);
 
-                    if(data.size() > 0){
-                        serverResponse.put('data', data[0]);
+                        if(data.size() > 0){
+                            serverResponse.put('data', data[0]);
+                        }
+                    }else{
+                        String sql = 'SELECT ' + strRealFields + '  FROM ' + config.S360_FA__Primary_Object__c + ' WHERE Id = \'' + dataId +'\'';
+
+                        List<SObject> data = Database.query(sql);
+
+                        if(data.size() > 0){
+                            serverResponse.put('data', data[0]);
+                        }
                     }
+                    
 
                     serverResponse.put('status', true);
 
@@ -179,81 +190,89 @@ public class S360_Form_Builder_Controller {
     }
 
     @AuraEnabled
-    public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData, boolean isSignatureEnabled, string signatureData){
+    public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData, 
+        boolean isSignatureEnabled, string signatureData, boolean isSaveToStorage){
         System.debug(data);
         System.debug(relatedData);
 
         Map<String, Object> serverResponse = new Map<String, Object>();
         try{
-            if(data.Id != null){
-                // check is updateable
-                if(!data.getSObjectType().getDescribe().isUpdateable()){
-                    serverResponse.put('status', false);
-                    serverResponse.put('message', Label.ObjectNotUpdatable);
-                    return serverResponse;
+            // do we save it to big object
+            if(isSaveToStorage != true){
+
+                if(data.Id != null){
+                    // check is updateable
+                    if(!data.getSObjectType().getDescribe().isUpdateable()){
+                        serverResponse.put('status', false);
+                        serverResponse.put('message', Label.ObjectNotUpdatable);
+                        return serverResponse;
+                    }
+                }else{
+                    // check is creataable
+                    if(!data.getSObjectType().getDescribe().isCreateable()){
+                        serverResponse.put('status', false);
+                        serverResponse.put('message', Label.ObjectNotCreatable);
+                        return serverResponse;
+                    }
                 }
+                upsert data;
+
+                Id parentId = data.Id;
+
+                if(relatedData != null)
+                {
+                    Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+                    Schema.DescribeSObjectResult relatedObjectDesc;
+                    // construct and save related data
+                    for(string key : relatedData.keySet()){
+
+                        // get the field name that reference to parent
+                        string relatedField = key.split('\\|')[1];
+                        List<object> records = (List<object>)relatedData.get(key);
+
+                        List<SObject> childRecords;
+                        if(records.size() > 0){
+                            Map<object, object> tmpRe = (Map<object, object>)records[0];
+                            String listType = 'List<' + (string)tmpRe.get('sobjectType') + '>';
+                            childRecords = (List<SObject>)Type.forName(listType).newInstance();
+
+                            // get related data describe object
+                            relatedObjectDesc = gd.get((string)tmpRe.get('sobjectType')).getDescribe();
+                        }
+                        //List<Sobject> childRecords = new List<Sobject>();
+
+                        for(object re : records){
+                            Map<object, object> tmpRe = (Map<object, object>)re;
+                            sObject sObj = gd.get((string)tmpRe.get('sobjectType')).newSObject() ;
+                            sObj.put(relatedField, parentId);
+                            for(object fname : tmpRe.keySet()){
+                                System.debug((string)fname);
+                                if((string)fname != 'sobjectType')
+                                    sObj.put((string)fname, tmpRe.get((string)fname));
+                            }
+
+                            if(tmpRe.get('Id') != null){
+                                // check is has updateable permission
+                                if(relatedObjectDesc.isUpdateable()){
+                                    childRecords.add(sObj);
+                                }
+                            }else{
+                                // check is has createable permission
+                                if(relatedObjectDesc.isCreateable()){
+                                    childRecords.add(sObj);
+                                }
+                            }
+
+                        }
+
+                        if(childRecords != null && !childRecords.isEmpty()){
+                            upsert childRecords;
+                        }
+                    }
+                }
+
             }else{
-                // check is creataable
-                if(!data.getSObjectType().getDescribe().isCreateable()){
-                    serverResponse.put('status', false);
-                    serverResponse.put('message', Label.ObjectNotCreatable);
-                    return serverResponse;
-                }
-            }
-            upsert data;
-
-            Id parentId = data.Id;
-
-            if(relatedData != null)
-            {
-                Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-                Schema.DescribeSObjectResult relatedObjectDesc;
-                // construct and save related data
-                for(string key : relatedData.keySet()){
-
-                    // get the field name that reference to parent
-                    string relatedField = key.split('\\|')[1];
-                    List<object> records = (List<object>)relatedData.get(key);
-
-                    List<SObject> childRecords;
-                    if(records.size() > 0){
-                        Map<object, object> tmpRe = (Map<object, object>)records[0];
-                    	String listType = 'List<' + (string)tmpRe.get('sobjectType') + '>';
-            			childRecords = (List<SObject>)Type.forName(listType).newInstance();
-
-                        // get related data describe object
-                        relatedObjectDesc = gd.get((string)tmpRe.get('sobjectType')).getDescribe();
-                    }
-                    //List<Sobject> childRecords = new List<Sobject>();
-
-                    for(object re : records){
-                        Map<object, object> tmpRe = (Map<object, object>)re;
-                        sObject sObj = gd.get((string)tmpRe.get('sobjectType')).newSObject() ;
-                        sObj.put(relatedField, parentId);
-                        for(object fname : tmpRe.keySet()){
-                            System.debug((string)fname);
-                            if((string)fname != 'sobjectType')
-                            	sObj.put((string)fname, tmpRe.get((string)fname));
-                        }
-
-                        if(tmpRe.get('Id') != null){
-                            // check is has updateable permission
-                            if(relatedObjectDesc.isUpdateable()){
-                                childRecords.add(sObj);
-                            }
-                        }else{
-                            // check is has createable permission
-                            if(relatedObjectDesc.isCreateable()){
-                                childRecords.add(sObj);
-                            }
-                        }
-
-                    }
-
-                    if(childRecords != null && !childRecords.isEmpty()){
-                     	upsert childRecords;
-                    }
-                }
+                upsert data;
             }
 
             // upsert signature data
@@ -293,6 +312,10 @@ public class S360_Form_Builder_Controller {
         String swhere = '';
         if(cWhere != null && cWhere != ''){
             swhere = ' where ' + cWhere;
+        }
+
+        if(fields  == null){
+            fields = 'Id';
         }
 
         String query = 'select ' + fields + ' from ' + sFrom + swhere;

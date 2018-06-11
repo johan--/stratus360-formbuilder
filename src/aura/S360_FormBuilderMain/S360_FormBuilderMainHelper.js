@@ -44,14 +44,36 @@
             //debugger;
             console.log("HERE");
             console.log(component.get('v.Data'));
-            var data1 = component.get('v.Data');
-            data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
-            //debugger;
+            var data1;
+
+            // if we save it to big object
+            if(component.get("v.FormConfig").S360_FA__Save_to_Storage__c === true){
+                data1 = component.get('v.Data');
+                data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
+
+                var id = data1.Id;
+
+                delete data1.Id;
+                data1 = {
+                    S360_FA__Record__c: JSON.stringify(data1),
+                    sobjectType: 'S360_FA__Storage__c'
+                };
+
+                if(id){
+                    data1.Id = id;
+                }
+            }else{
+                data1 = component.get('v.Data');
+                data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
+            }
+            
+            debugger;
             action.setParams({
                 "data" : data1,
                 "relatedData" : component.get('v.RelatedData'),
                 "isSignatureEnabled": isSignatureEnabled,
-                "signatureData": canvasDataUrl
+                "signatureData": canvasDataUrl,
+                "isSaveToStorage" : component.get("v.FormConfig").S360_FA__Save_to_Storage__c
             });
             action.setCallback(this, function(response){
 				debugger;
@@ -133,12 +155,14 @@
         console.log(inputFlowMap);
         //debugger;
 
-        var item = {
-            'sobjectType': formConfig.S360_FA__Primary_Object__c,
-            'Id': (data != undefined && data['Id']) ? data['Id'] : undefined,
-            'Name': (data != undefined && data['Name']) ? data['Name'] : undefined,
-        };
-        if(formConfig.S360_FA__Field__c){
+        // if we dont save it to big object
+        if(formConfig.S360_FA__Field__c && formConfig.S360_FA__Save_to_Storage__c == false){
+            var item = {
+                'sobjectType': formConfig.S360_FA__Primary_Object__c,
+                'Id': (data != undefined && data['Id']) ? data['Id'] : undefined,
+                'Name': (data != undefined && data['Name']) ? data['Name'] : undefined,
+            };
+
             formConfig.S360_FA__Field__c.split(',').forEach(function(field){
 
                 if(data != undefined && data[field]){
@@ -169,6 +193,27 @@
                     }
                 }
             });
+        }else{
+            item = data || {};
+            for(var keyF in inputFlowMap){
+                if(inputFlowMap.hasOwnProperty(keyF)){
+                    var refFieldFromPrevFlow = inputFlowMap[keyF];
+                    if(refFieldFromPrevFlow){
+                        if(item[keyF]){
+                            item[keyF] = refFieldFromPrevFlow ? inputFlowData[refFieldFromPrevFlow] ? inputFlowData[refFieldFromPrevFlow] : item[keyF] : item[keyF];
+                        }else{
+                            item[keyF] = refFieldFromPrevFlow ? inputFlowData[refFieldFromPrevFlow] ? inputFlowData[refFieldFromPrevFlow] : undefined : undefined;
+                        }
+                        
+
+                        // if our data is lookup
+                        var lookupMappingField = refFieldFromPrevFlow.substr(0, refFieldFromPrevFlow.lastIndexOf("__c")) + '__r';
+                        if(inputFlowData[lookupMappingField]){
+                            item[lookupMappingField] = inputFlowData[lookupMappingField];
+                        }
+                    }
+                }
+            }
         }
 
 

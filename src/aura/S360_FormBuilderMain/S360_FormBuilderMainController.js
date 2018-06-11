@@ -26,7 +26,15 @@
                 if(res.status == true){
                   debugger;
                     var formConfig = res.formConfig;
-                    var data = res.data;
+                    var data;
+
+                    if(formConfig.S360_FA__Save_to_Storage__c && res.data){
+                        data = JSON.parse(res.data.S360_FA__Record__c);
+                        data.Id = res.data.Id;
+                    }else{
+                        data = res.data;
+                    }
+
                     var fieldInfo = {};
                     var objectInfo = {};
 
@@ -51,7 +59,14 @@
                                 var res2 = response2.getReturnValue();
                                 if(res2.status == true){
                                     var formConfig2 = res2.formConfig;
-                                    var data2 = res2.data;
+                                    var data2;
+
+                                    if(formConfig2.S360_FA__Save_to_Storage__c){
+                                        data2 = JSON.parse(res2.data.S360_FA__Record__c);
+                                    }else{
+                                        data2 = res2.data;
+                                    }
+
                                     var fieldInfo2 = {};
                                     var objectInfo2 = {};
 
