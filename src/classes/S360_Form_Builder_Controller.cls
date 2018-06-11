@@ -243,6 +243,7 @@ public class S360_Form_Builder_Controller {
 
                         for(object re : records){
                             Map<object, object> tmpRe = (Map<object, object>)re;
+                            System.debug(tmpRe);
                             sObject sObj = gd.get((string)tmpRe.get('sobjectType')).newSObject() ;
                             sObj.put(relatedField, parentId);
                             for(object fname : tmpRe.keySet()){
@@ -273,6 +274,54 @@ public class S360_Form_Builder_Controller {
 
             }else{
                 upsert data;
+
+                Id parentId = data.Id;
+
+                if(relatedData != null)
+                {
+                    Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+                    Schema.DescribeSObjectResult relatedObjectDesc;
+                    System.debug(relatedData);
+                    // construct and save related data
+                    for(string key : relatedData.keySet()){
+
+                        // get the field name that reference to parent
+                        string relatedField = key.split('\\|')[1];
+                        List<object> records = (List<object>)relatedData.get(key);
+
+                        List<SObject> childRecords;
+                        if(records.size() > 0){
+                            Map<object, object> tmpRe = (Map<object, object>)records[0];
+                            String listType = 'List<' + (string)tmpRe.get('sobjectType') + '>';
+                            childRecords = (List<SObject>)Type.forName(listType).newInstance();
+                        }
+                        //List<Sobject> childRecords = new List<Sobject>();
+
+                        for(object re : records){
+                            Map<object, object> tmpRe = (Map<object, object>)re;
+                            Map<String, object> finalTmpRe = new Map<String, object>();
+                            sObject sObj = gd.get((string)tmpRe.get('sobjectType')).newSObject();
+                            sObj.put(relatedField, parentId);
+                            for(object fname : tmpRe.keySet()){
+                                System.debug((string)fname);
+                                if((string)fname != 'sobjectType' && (string)fname != 'S360_FA__Parent__c' && 
+                                    (string)fname != 'Id'){
+                                    finalTmpRe.put((string)fname, tmpRe.get((string)fname));
+                                }else if((string)fname == 'Id'){
+                                    sObj.put('Id', tmpRe.get((string)fname));
+                                }
+                            }
+
+                            sObj.put('S360_FA__Record__c', JSON.serialize(finalTmpRe));
+
+                            childRecords.add(sObj);
+                        }
+
+                        if(childRecords != null && !childRecords.isEmpty()){
+                            upsert childRecords;
+                        }
+                    }
+                }
             }
 
             // upsert signature data

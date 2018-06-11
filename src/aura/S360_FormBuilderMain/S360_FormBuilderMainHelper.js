@@ -195,6 +195,10 @@
             });
         }else{
             item = data || {};
+            item['sobjectType'] = formConfig.S360_FA__Primary_Object__c;
+            item['Id'] = (data != undefined && data['Id']) ? data['Id'] : undefined;
+            item['Name'] = (data != undefined && data['Name']) ? data['Name'] : undefined;
+            
             for(var keyF in inputFlowMap){
                 if(inputFlowMap.hasOwnProperty(keyF)){
                     var refFieldFromPrevFlow = inputFlowMap[keyF];
