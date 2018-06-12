@@ -16,10 +16,10 @@ module.exports = function(app) {
             name: 'Validation',
             template: 'formio/components/textfield/validate.html'
           },
-          // {
-          //   name: 'Rendering',
-          //   template: 'formio/components/textfield/rendering.html'
-          // },
+          {
+            name: 'Rendering',
+            template: 'formio/components/textfield/rendering.html'
+          },
           {
             name: 'API',
             template: 'formio/components/textfield/apiNew.html'
@@ -54,13 +54,11 @@ module.exports = function(app) {
         '<form-builder-option text-mask property="defaultValue"></form-builder-option>'
       );
 
-      // $templateCache.put('formio/components/textfield/rendering.html',
-      //   '<ng-form>' +
-      //     // '<form-builder-option property="validate.required"></form-builder-option>' +
-      //     // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
-      //     '<form-builder-option-custom-rendering></form-builder-option-custom-rendering>' +
-      //   '</ng-form>'
-      // );
+      $templateCache.put('formio/components/textfield/rendering.html',
+        '<ng-form>' +
+        '<render-subscribe-values form="form" component="component" data="component.values" default="component.defaultValue" label="Values" tooltip-text="The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form."></value-builder-with-shortcuts>' +
+        '</ng-form>'
+      );
 
       $templateCache.put('formio/components/textfield/validate.html',
         '<ng-form>' +

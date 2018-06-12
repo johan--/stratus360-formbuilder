@@ -31,10 +31,10 @@ module.exports = function(app) {
             template: 'formio/components/panel/display.html'
 
           },
-          {
-            name: 'Validation',
-            template: 'formio/components/panel/validate.html'
-          },
+          // {
+          //   name: 'Validation',
+          //   template: 'formio/components/panel/validate.html'
+          // },
 
           /*{
             name: 'Layout',
@@ -46,7 +46,7 @@ module.exports = function(app) {
           },
           {
             name: 'API',
-            template: 'formio/components/common/apiNew.html'
+            template: 'formio/components/common/api.html'
           }
           /*{
             name: 'Conditional',
@@ -74,13 +74,13 @@ module.exports = function(app) {
         '</div>'
       );
 
-      $templateCache.put('formio/components/panel/validate.html',
-        '<ng-form>' +
-          // '<form-builder-option property="validate.required"></form-builder-option>' +
-          // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
-          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
-        '</ng-form>'
-      );
+      // $templateCache.put('formio/components/panel/validate.html',
+      //   '<ng-form>' +
+      //     // '<form-builder-option property="validate.required"></form-builder-option>' +
+      //     // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
+      //     '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+      //   '</ng-form>'
+      // );
       // Create the settings markup.
       $templateCache.put('formio/components/panel/display.html',
         '<ng-form>' +
@@ -128,7 +128,7 @@ module.exports = function(app) {
           // '<form-builder-option property="validate.required"></form-builder-option>' +
           // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
           '<form-builder-option-custom-rendering></form-builder-option-custom-rendering>' +
-          '<render-subscribe form="form" component="component" data="component.values" default="component.defaultValue" label="Values" tooltip-text="The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form."></value-builder-with-shortcuts>' +
+          '<render-subscribe-keys form="form" component="component" data="component.values" default="component.defaultValue" label="Values" tooltip-text="The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form."></value-builder-with-shortcuts>' +
 
         '</ng-form>'
       );

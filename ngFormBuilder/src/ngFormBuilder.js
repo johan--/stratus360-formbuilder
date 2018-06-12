@@ -126,6 +126,10 @@ app.directive('valueBuilder', require('./directives/valueBuilder'));
 
 app.directive('renderSubscribe', require('./directives/renderSubscribe'));
 
+app.directive('renderSubscribeKeys', require('./directives/renderSubscribeKeys'));
+
+app.directive('renderSubscribeValues', require('./directives/renderSubscribeValues'));
+
 app.directive('headersBuilder', require('./directives/headersBuilder'));
 
 app.directive('valueBuilderWithShortcuts', require('./directives/valueBuilderWithShortcuts'));
