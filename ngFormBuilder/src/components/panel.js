@@ -127,6 +127,7 @@ module.exports = function(app) {
         '<ng-form>' +
           // '<form-builder-option property="validate.required"></form-builder-option>' +
           // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
+          '<form-builder-option-custom-rendering></form-builder-option-custom-rendering>' +
           '<render-subscribe form="form" component="component" data="component.values" default="component.defaultValue" label="Values" tooltip-text="The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form."></value-builder-with-shortcuts>' +
 
         '</ng-form>'
