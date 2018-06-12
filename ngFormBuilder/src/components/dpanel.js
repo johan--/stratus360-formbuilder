@@ -6,8 +6,8 @@ module.exports = function(app) {
       formioComponentsProvider,
       FORM_OPTIONS
     ) {
-      formioComponentsProvider.register('panel', {
-        fbtemplate: 'formio/formbuilder/panel.html',
+      formioComponentsProvider.register('dpanel', {
+        fbtemplate: 'formio/formbuilder/dpanel.html',
         icon: 'fa fa-list-alt',
         onEdit: ['$scope', function($scope) {
           $scope.themes = FORM_OPTIONS.themes;
@@ -28,12 +28,8 @@ module.exports = function(app) {
         views: [
           {
             name: 'Display',
-            template: 'formio/components/panel/display.html'
+            template: 'formio/components/dpanel/display.html'
 
-          },
-          {
-            name: 'Validation',
-            template: 'formio/components/panel/validate.html'
           },
 
           /*{
@@ -41,8 +37,8 @@ module.exports = function(app) {
             template: 'formio/components/common/layout.html'
           },*/
           {
-            name: 'Rendering',
-            template: 'formio/components/panel/render.html'
+            name: 'Validation',
+            template: 'formio/components/dpanel/validate.html'
           },
           {
             name: 'API',
@@ -62,7 +58,7 @@ module.exports = function(app) {
   app.run([
     '$templateCache',
     function($templateCache) {
-      $templateCache.put('formio/formbuilder/panel.html',
+      $templateCache.put('formio/formbuilder/dpanel.html',
         '<div class="panel panel-{{ component.theme }}">' +
           '<div ng-if="component.title" class="panel-heading"><h3 class="panel-title">' +
             '{{ component.title }} ' +
@@ -74,15 +70,8 @@ module.exports = function(app) {
         '</div>'
       );
 
-      $templateCache.put('formio/components/panel/validate.html',
-        '<ng-form>' +
-          // '<form-builder-option property="validate.required"></form-builder-option>' +
-          // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
-          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
-        '</ng-form>'
-      );
       // Create the settings markup.
-      $templateCache.put('formio/components/panel/display.html',
+      $templateCache.put('formio/components/dpanel/display.html',
         '<ng-form>' +
           '<form-builder-option property="title" label="Title" placeholder="Panel Title" title="The title text that appears in the header of this panel."></form-builder-option>' +
           /*'<form-builder-option property="tooltip"></form-builder-option>' +
@@ -100,8 +89,15 @@ module.exports = function(app) {
         '</ng-form>'
       );
 
+      $templateCache.put('formio/components/dpanel/validate.html',
+        '<ng-form>' +
+          // '<form-builder-option property="validate.required"></form-builder-option>' +
+          // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
+          '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+        '</ng-form>'
+      );
 
-      $templateCache.put('formio/components/panel/conditional.html',
+      $templateCache.put('formio/components/dpanel/conditional.html',
         '<form-builder-conditional></form-builder-conditional>' +
         '<uib-accordion>' +
           '<div uib-accordion-group heading="Advanced Next Page" class="panel panel-default">' +
@@ -122,16 +118,6 @@ module.exports = function(app) {
           '</div>' +
         '</uib-accordion>'
       );
-
-      $templateCache.put('formio/components/panel/render.html',
-        '<ng-form>' +
-          // '<form-builder-option property="validate.required"></form-builder-option>' +
-          // '<form-builder-option property="validate.maxLength"></form-builder-option>' +
-          '<render-subscribe form="form" component="component" data="component.values" default="component.defaultValue" label="Values" tooltip-text="The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form."></value-builder-with-shortcuts>' +
-
-        '</ng-form>'
-      );
-
     }
   ]);
 };

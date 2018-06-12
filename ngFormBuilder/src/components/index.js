@@ -46,5 +46,6 @@ require('./fieldset')(app);
 require('./container')(app);
 require('./page')(app);
 require('./panel')(app);
+//require('./dpanel')(app);
 require('./table')(app);
 require('./well')(app);

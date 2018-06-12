@@ -118,9 +118,13 @@ app.directive('validApiKey', require('./directives/validApiKey'));
 
 app.directive('formBuilderOptionCustomValidation', require('./directives/formBuilderOptionCustomValidation'));
 
+app.directive('formBuilderOptionCustomRendering', require('./directives/formBuilderOptionCustomRendering'));
+
 app.directive('formBuilderTooltip', require('./directives/formBuilderTooltip'));
 
 app.directive('valueBuilder', require('./directives/valueBuilder'));
+
+app.directive('renderSubscribe', require('./directives/renderSubscribe'));
 
 app.directive('headersBuilder', require('./directives/headersBuilder'));
 

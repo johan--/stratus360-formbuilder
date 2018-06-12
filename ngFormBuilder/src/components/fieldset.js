@@ -14,6 +14,7 @@ module.exports = function(app) {
             name: 'Layout',
             template: 'formio/components/common/layout.html'
           },*/
+
           {
             name: 'API',
             template: 'formio/components/common/apiNew.html'
@@ -43,6 +44,9 @@ module.exports = function(app) {
         '</fieldset>'
       );
 
+
+
+
       // Create the settings markup.
       $templateCache.put('formio/components/fieldset/display.html',
         '<ng-form>' +
@@ -50,8 +54,11 @@ module.exports = function(app) {
           //'<form-builder-option property="tooltip"></form-builder-option>' +
           '<form-builder-option property="customClass"></form-builder-option>' +
           //'<form-builder-option property="tableView"></form-builder-option>' +
+                    '<form-builder-option property="hidden"></form-builder-option>' +
         '</ng-form>'
       );
+
+
     }
   ]);
 };
