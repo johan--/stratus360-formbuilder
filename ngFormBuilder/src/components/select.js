@@ -19,6 +19,10 @@ module.exports = function(app) {
             template: 'formio/components/select/validate.html'
           },
           {
+            name: 'Rendering',
+            template: 'formio/components/select/rendering.html'
+          },
+          {
             name: 'API',
             template: 'formio/components/textfield/apiNew.html'
           }
@@ -245,6 +249,15 @@ module.exports = function(app) {
           '<form-builder-option ng-show="component.dataSrc == \'url\'" property="authenticate"></form-builder-option>' +
           '<form-builder-option property="defaultValue"></form-builder-option>' +
           '<form-builder-option property="dbIndex" class="form-builder-premium form-builder-dbindex"></form-builder-option>' +
+        '</ng-form>'
+      );
+
+      $templateCache.put('formio/components/select/rendering.html',
+        '<ng-form>' +
+      //  '<render-subscribe-values form="form" component="component" data="component.values" default="component.defaultValue" label="Values" tooltip-text="The radio button values that can be picked for this field. Values are text submitted with the form data. Labels are text that appears next to the radio buttons on the form."></value-builder-with-shortcuts>' +
+          '<input type="checkbox"   ng-model="component.broadcastRender"/> Dynamic Rendering? ' +
+          '<label class="control-label" +" form-builder-tooltip="Enable this component to dynamically render the form"></label>' +
+
         '</ng-form>'
       );
 
