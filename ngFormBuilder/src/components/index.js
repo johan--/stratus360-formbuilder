@@ -49,3 +49,4 @@ require('./panel')(app);
 //require('./dpanel')(app);
 require('./table')(app);
 require('./well')(app);
+require('./progress')(app);
