@@ -6,6 +6,7 @@ module.exports = function(app) {
       ) {
         formioComponentsProvider.register('progress', {
           title: 'Progress',
+          fieldName: '',
           template: 'formio/components/progress.html',
           group: 'advanced',
           settings: {
@@ -55,13 +56,19 @@ module.exports = function(app) {
             '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Name\' | formioTranslate}}</label>' +
             '<input id="label" name="label" type="text" ng-model="component.label" placeholder="Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
             '</div>' +
+
+            '<div class="form-group">' +
+            '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Field API Name\' | formioTranslate}}</label>' +
+            '<input id="label" name="label" type="text" ng-model="component.fieldName" placeholder="Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
+            '</div>' +
+
            '<div class="form-group">' +
              '<label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Attributes\' | formioTranslate}}</label>' +
              '<table class="table table-condensed">' +
               '<thead>' +
                  '<tr>' +
-                   '<th class="col-xs-2">{{\'Field (API Name)\' | formioTranslate}}</th>' +
-                   '<th class="col-xs-2">{{\'Display Caption\' | formioTranslate}}</th>' +
+                   '<th class="col-xs-2">{{\'Option Label\' | formioTranslate}}</th>' +
+                   '<th class="col-xs-2">{{\'Field Value\' | formioTranslate}}</th>' +
                    '<th class="col-xs-1"></th>' +
                  '</tr>' +
               '</thead>' +
