@@ -12,6 +12,7 @@ module.exports = function(app) {
             name:'progress',
             input: false,
             dependents: [],
+            ProgressPathImagePreview: ''
           },
           viewTemplate: 'formio/componentsView/progress.html',
           onEdit: ['$scope', function($scope) {
@@ -37,22 +38,16 @@ module.exports = function(app) {
       '$templateCache',
       function($templateCache) {
         $templateCache.put('formio/components/progress.html',
-        '<div class="form-group>' +
-        '<img src="../../images/path-slds.png/>'+
-        '</div>'
-         );
-  
-        $templateCache.put('formio/componentsView/progress.html',
-        '<div class="form-group>' +
-        '<img src="../../images/path-slds.png/>'+
-        '</div>'
-         );
+                               '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
+                              );
+
+        $templateCache.put('formio/componentsView/progoress.html',
+                              '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
+                             );
   
         $templateCache.put('formio/formbuilder/progress.html',
-        '<div class="form-group>' +
-        '<img src="../../images/path-slds.png/>'+
-        '</div>'
-         );
+                             '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
+                            );
   
         $templateCache.put('formio/components/progress/display.html',
          '<ng-form>' +
