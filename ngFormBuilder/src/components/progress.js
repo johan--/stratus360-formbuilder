@@ -9,6 +9,7 @@ module.exports = function(app) {
           fieldName: '',
           template: 'formio/components/progress.html',
           group: 'advanced',
+          linear: '',
           settings: {
             name:'progress',
             input: false,
@@ -42,12 +43,12 @@ module.exports = function(app) {
                                '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
                               );
 
-        $templateCache.put('formio/componentsView/progoress.html',
+        $templateCache.put('formio/componentsView/progress.html',
                               '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
                              );
   
         $templateCache.put('formio/formbuilder/progress.html',
-                             '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
+                '<img style="width: 250px;" src="{{component.ProgressPathImagePreview}}">'
                             );
   
         $templateCache.put('formio/components/progress/display.html',
@@ -56,13 +57,16 @@ module.exports = function(app) {
             '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Name\' | formioTranslate}}</label>' +
             '<input id="label" name="label" type="text" ng-model="component.label" placeholder="Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
             '</div>' +
-
+            
             '<div class="form-group">' +
             '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Field API Name\' | formioTranslate}}</label>' +
             '<input id="label" name="label" type="text" ng-model="component.fieldName" placeholder="Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
             '</div>' +
-
-           '<div class="form-group">' +
+            '<div class="custom-control custom-checkbox">'+
+            '<label style="font-size:14px; padding-right:10px; padding-bottom:4px">Linear?</label>'+
+            '<input type="checkbox" ng-model="component.linear" ng-true-value="\'YES\'" ng-false-value="\'NO\'" checked>'+
+            '</div>'+
+            '<div class="form-group">' +
              '<label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Attributes\' | formioTranslate}}</label>' +
              '<table class="table table-condensed">' +
               '<thead>' +
