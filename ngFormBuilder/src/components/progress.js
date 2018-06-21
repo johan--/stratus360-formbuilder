@@ -80,7 +80,7 @@ module.exports = function(app) {
                '</tr>' +
               '</tbody>' +
              '</table>' +
-             '<button type="button" class="btn btn-default" ng-click="addColumn()">{{\'Add Dependent\' | formioTranslate}}</button>' +
+             '<button type="button" class="btn btn-default" ng-click="addColumn()">{{\'Add Stage\' | formioTranslate}}</button>' +
            '</div>' +
          '</ng-form>'
          );
