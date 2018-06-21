@@ -63,12 +63,12 @@ module.exports = function(app) {
             '<input type="checkbox" ng-model="component.linear" ng-true-value="\'YES\'" ng-false-value="\'NO\'" checked>'+
             '</div>'+
             '<div class="form-group">' +
-             '<label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Attributes\' | formioTranslate}}</label>' +
+             '<label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Stages\' | formioTranslate}}</label>' +
              '<table class="table table-condensed">' +
               '<thead>' +
                  '<tr>' +
-                   '<th class="col-xs-2">{{\'Option Label\' | formioTranslate}}</th>' +
-                   '<th class="col-xs-2">{{\'Field Value\' | formioTranslate}}</th>' +
+                   '<th class="col-xs-2">{{\'Stage Label\' | formioTranslate}}</th>' +
+                   '<th class="col-xs-2">{{\'Field Value (to enable stage)\' | formioTranslate}}</th>' +
                    '<th class="col-xs-1"></th>' +
                  '</tr>' +
               '</thead>' +
