@@ -5,7 +5,7 @@ module.exports = function(app) {
         formioComponentsProvider
       ) {
         formioComponentsProvider.register('progress', {
-          title: 'Progress',
+          title: 'Progress Path',
           fieldName: '',
           template: 'formio/components/progress.html',
           group: 'advanced',
@@ -26,7 +26,7 @@ module.exports = function(app) {
             };
           }],
           fbtemplate: 'formio/formbuilder/progress.html',
-          icon: 'fa fa-chart-bar',
+          icon: 'fa fa-flag-checkered',
           views: [
           {
             name: 'Display',
@@ -53,11 +53,7 @@ module.exports = function(app) {
   
         $templateCache.put('formio/components/progress/display.html',
          '<ng-form>' +
-            '<div class="form-group">' +
-            '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Name\' | formioTranslate}}</label>' +
-            '<input id="label" name="label" type="text" ng-model="component.label" placeholder="Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
-            '</div>' +
-            
+           
             '<div class="form-group">' +
             '<label for="Name" form-builder-tooltip="This is the action to be performed by this button.">{{\'Field API Name\' | formioTranslate}}</label>' +
             '<input id="label" name="label" type="text" ng-model="component.fieldName" placeholder="Name" property="example" label-validator="" required="required" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched">' +
