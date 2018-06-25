@@ -91,6 +91,7 @@
      *
      */
     generatorMapping: function(component, item){
+			debugger;
         var formPattern = component.get('v.FormPattern');
 
         if(item.type === 'textfield'){
@@ -147,6 +148,8 @@
             this.generateLightningEmbedded(component, item);
         }else if(item.type === 'attachment'){
             this.generateAttachment(component, item);
+        }else if(item.type === 'progress'){
+            this.generateProgressPath(component, item);
         }
     },
 
@@ -177,7 +180,7 @@
                 "PlaceholderText": config.placeholder ? config.placeholder : '',
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate ? config.validate.required : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Value": value,
                 "Data": component.getReference('v.Data'),
                 "Class": config.customClass ? config.customClass : '',
@@ -185,6 +188,8 @@
                 "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
                 "JsonLogic": config.validate ? config.validate.json : '',
                 "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
+								"BroadcastRender" : config.broadcastRender,
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -219,9 +224,10 @@
                 "PlaceholderText": config.placeholder ? config.placeholder : '',
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate ? config.validate.required : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Value": value,
-                "Class": config.customClass ? config.customClass : ''
+                "Class": config.customClass ? config.customClass : '',
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -256,9 +262,10 @@
                 "PlaceholderText": config.placeholder ? config.placeholder : '',
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate ? config.validate.required : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Value": value,
-                "Class": config.customClass ? config.customClass : ''
+                "Class": config.customClass ? config.customClass : '',
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -585,9 +592,9 @@
                 "InputLabel": config.label ? config.label : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].label ? serverFieldInfo[config.key].label : '') : ''),
                 "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
                 "PlaceholderText": config.placeholder ? config.placeholder : '',
-                "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
+                "IsHidden": config.hidden ? config.hidden : false,
                 "IsRequired": config.validate.required,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
                 "Value": value,
                 "Class": config.customClass ? config.customClass : '',
@@ -628,12 +635,13 @@
                 "PlaceholderText": config.placeholder ? config.placeholder : '',
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate ? config.validate.required : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Value": value,
                 "Class": config.customClass ? config.customClass : '',
                 "MaxLength": config.validate ? config.validate.maxLength : undefined,
                 "Json": config.validate ? config.validate.json : '',
-                "Data": component.getReference('v.Data')
+                "Data": component.getReference('v.Data'),
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -694,12 +702,14 @@
                 "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate ? config.validate.required : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "IsChecked": value,
                 "InputClass": config.customClass ? config.customClass : '',
                 "Json": config.validate ? config.validate.json : '',
                 "Data": component.getReference('v.Data'),
-                "LabelPosition" : config.labelPosition
+                "LabelPosition" : config.labelPosition,
+								"BroadcastRender": config.broadcastRender,
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -764,7 +774,7 @@
                 "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate ? config.validate.required : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "PicklistKV": picklistKeyVal,
                 "Value": value,
                 "SObjectName": sobject,
@@ -775,7 +785,9 @@
                 "Multiple" : config.multiple ? true : false,
                 "JsonLogic": config.validate ? config.validate.json : '',
                 "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
-                "Data": component.getReference('v.Data')
+                "Data": component.getReference('v.Data'),
+								"BroadcastRender": config.broadcastRender,
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -799,7 +811,7 @@
                 "CompId": config.key,
                 "ButtonLabel": config.label,
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Class": config.customClass ? config.customClass : ''
             },
             function(newComponent, status, errorMessage){
@@ -1098,21 +1110,28 @@
      *
      */
     generatePanel : function(component, config){
+        debugger;
+        var serverFieldInfo = component.get('v.FieldInfo');
         var self = this;
+        console.log("CUSTOM" +config.customClass);
         $A.createComponent(
-                'c:S360_Base_PanelCmp',
-                {
-                    "aura:id": config.key,
-                    "Title": config.title ? config.title : '',
-                    "Class": config.customClass ? config.customClass : ''
-                },
-                function(newComponent, status, errorMessage){
-                    self.callbackHandler(config, component, newComponent, status, errorMessage);
-                    config.components.forEach(function(item){
-                        self.generatorMapping(component, item);
-                    });
-                }
-            );
+            'c:S360_Base_PanelCmp',
+            {
+                "aura:id": config.key,
+                "Title": config.title ? config.title : '',
+                "Class": config.customClass ? config.customClass : '',
+                //"IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : true,
+                "JsonLogic": config.render? config.render : {},
+                "JsonData": component.getReference('v.Data'),
+                "Keys": config.values?  config.values: {}
+            },
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+                config.components.forEach(function(item){
+                    self.generatorMapping(component, item);
+                });
+            }
+        );
     },
 
     /*
@@ -1137,7 +1156,7 @@
         component.set('v.RelatedData['+ formName + '|' + relatedField +']', []);
         var relatedRef = component.getReference('v.RelatedData['+ formName + '|' + relatedField +']');
 
-        debugger;
+        //debugger;
 
         var self = this;
         $A.createComponent(
@@ -1214,10 +1233,11 @@
                 "HelpText": config.tooltip ? config.tooltip : (serverFieldInfo[config.key] ? (serverFieldInfo[config.key].helpText ? serverFieldInfo[config.key].helpText : '') : ''),
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate.required,
-                "IsDisabled": config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Date": value,
                 "Class": config.customClass ? config.customClass : '',
-                "DefaultDate": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue
+                "DefaultDate": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
+								"input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -1233,7 +1253,7 @@
     generateInputFile : function(component, config){
         //debugger;
         var self = this;
-        
+
         var deletem =  component.get('v.FormConfig');
         $A.createComponent(
                 'c:S360_Base_FileUploadTableContainer',
@@ -1293,6 +1313,29 @@
                 "message": config.message,
                 "master": config.master,
                 "parentId": parentId
+
+            },
+            function(newComponent, status, errorMessage){
+                self.callbackHandler(config, component, newComponent, status, errorMessage);
+            });
+    },
+    
+    generateProgressPath: function(component, config){
+
+        var self = this;
+        var parentId = component.getReference('v.Data.Id');
+
+        // add to temporary flow data
+        $A.createComponent(
+            'c:S360_Base_ProgressPath',
+            {
+                "aura:id": config.key,
+                "CompId": config.key,
+                "FieldName": config.fieldName,
+                "Linear": config.linear,
+                "paths":config.dependents,
+                "parentId": parentId,
+                "primaryObject":component.get('v.FormConfig').S360_FA__Primary_Object__c
 
             },
             function(newComponent, status, errorMessage){
@@ -1670,20 +1713,24 @@
 
     submitEvent: function(component, sender){
         debugger;
+				//console.log("FORM PATTER" +JSON.stringify(component.get("v.formPattern")));
         var isAllValid = true;
         // validate fields before submit
         if(jsonLogic != undefined && jsonLogic != ''){
             var componentData = component.get('v.componentData');
             for(var key in componentData){
+							debugger;
                 if(componentData.hasOwnProperty(key)){
-
                     if(componentData[key].get('v.input') === true){
                         // check is required
-                        if(componentData[key].get('v.IsRequired') == true && !componentData[key].get('v.Value')){
+												var val = componentData[key].get('v.Value');
+                        if(componentData[key].get('v.IsRequired') == true && !componentData[key].get('v.Value') && componentData[key].get('v.panelShow')){
                             componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
                             isAllValid = false;
                             continue;
-                        }
+                        } else {
+													componentData[key].validationSuccess();
+												}
 
                         // check validation
                         if(componentData[key].get('v.JsonLogic')){
@@ -1700,7 +1747,7 @@
                                 isAllValid = false;
                                 componentData[key].validationFail();
                             }
-                        }
+                       }
                     }else if(componentData[key].get('v.typeAttachment') === true){
                         // check is required
                         if(componentData[key].get('v.IsRequired') == true && componentData[key].get('v.objectWrapper').length == 0){
@@ -1711,10 +1758,10 @@
 
                         // create new record operation
                         if(!component.get('v.Data')['Id']){
-                            component.set('v.AttachmentsData', 
+                            component.set('v.AttachmentsData',
                                 componentData[key].get('v.objectWrapper').map(x => x.payload));
                         }
-                        
+
                     }
                 }
             }

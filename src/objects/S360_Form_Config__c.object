@@ -79,6 +79,25 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>AutoSave_Record_Interval__c</fullName>
+        <externalId>false</externalId>
+        <label>AutoSave Record Interval</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AutoSave_Record__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>AutoSave Record</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>AutoSave__c</fullName>
         <defaultValue>true</defaultValue>
         <externalId>false</externalId>
@@ -121,6 +140,15 @@
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Field__c</fullName>
@@ -188,6 +216,15 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Lock_Logic__c</fullName>
+        <externalId>false</externalId>
+        <label>Lock Logic</label>
+        <length>50000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Primary_Object__c</fullName>
         <description>Primary Object API Name</description>
         <externalId>false</externalId>
@@ -227,6 +264,14 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Save_to_Storage__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Save to Storage</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>SelectedVersion__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
@@ -249,34 +294,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Version__c</fullName>
-        <externalId>false</externalId>
-        <label>Version</label>
-        <picklist>
-            <picklistValues>
-                <fullName>1</fullName>
-                <default>true</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>3</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>4</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>5</fullName>
-                <default>false</default>
-            </picklistValues>
-            <restrictedPicklist>true</restrictedPicklist>
-            <sorted>false</sorted>
-        </picklist>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
     </fields>
     <label>Form Config</label>
     <listViews>

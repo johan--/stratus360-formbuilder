@@ -113,7 +113,7 @@
                      &nbsp;
                      <apex:commandButton styleClass="btn btn-primary btn-md" value="Save As" onclick="saveAsM()" action="{!saveAs}"/>
                      &nbsp;
-                    
+
                     <div class="form-group">
                         <br/>
                         <label> <font size="4">Version Number</font> </label>
@@ -214,7 +214,7 @@
             updateVersion();
             getUsedFields();
         }
-		
+
         function updateVersion(){
             refreshPageAF();
             window.location.reload();
@@ -296,12 +296,15 @@
             }];
 
 
-            formioComponents.components.container.title = 'Related List';
-            formioComponents.components.fieldset.title = 'Panel';
-            formioComponents.components.panel.title = 'Wizard';
+            // formioComponents.components.container.title = 'Related List';
+            //formioComponents.components.fieldset.title = 'Panel';
+            //formioComponents.components.panel.title = 'Wizard';
 
             // set captcha image
            	formioComponents.components.captcha.settings.captchaImagePreview = '{!URLFOR($Resource.CaptchaImage)}';
+            
+            // set Progress Path Image
+           	formioComponents.components.progress.settings.ProgressPathImagePreview = '{!URLFOR($Resource.ProgressPathImage)}';
 
             //disabled components
             formioComponents.components.textarea.disabled = true;
@@ -497,6 +500,8 @@
             var RecordTypeField = document.getElementById('j_id0:j_id2:Form_Record_Type');
             var recordTypeSelection = document.getElementById('j_id0:j_id2:recordTypeSelection');
             var config = formConfig;
+            console.log("Fields"+JSON.stringify(fieldsConfig));
+            console.log("Config"+JSON.stringify(config));
             var fields = collectField(config);
             if(fields.indexOf('Name') == -1){
                 //Not sure why we add name here
@@ -613,11 +618,13 @@
 
         function setAPIs(){
             var primaryObject = '{!JSENCODE(S360_Form_Config__c.Primary_Object__c)}';
+            console.log(primaryObject);
             JSFORCE_CONN.sobject(primaryObject).describe(function(err, meta) {
              	if (err) { return console.error(err); }
                 while(allApis.length > 0) {
    				 allApis.pop();
 				}
+        //console.log(JSON.stringify(meta.fields));
                 for(var i = 0; i < meta.fields.length; i++){
                     allApis[i] = meta.fields[i].name;
                 }

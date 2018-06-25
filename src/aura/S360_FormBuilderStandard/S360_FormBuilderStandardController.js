@@ -15,9 +15,11 @@
             component.set('v.Data', params.data);
             component.set('v.FieldInfo', params.fieldInfo);
             component.set('v.ObjectInfo', params.objectInfo);
+            component.set('v.Lockdown', params.valid);
            debugger;
 
             if(params.config.S360_FA__JSON__c != '' && params.config.S360_FA__JSON__c != undefined){
+              
              	var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;
                 debugger;
                 if(configComponents.length != 0){
@@ -47,8 +49,11 @@
             return;
         }
 
-
+        console.log(JSON.stringify(actionButton));
         var evt = actionButton[event.getParam('CompId')];
+        console.log(evt.actionName);
+        console.log(evt.actionTarget);
+
         if(evt != undefined){
             //stop bubble event
             event.stopPropagation();

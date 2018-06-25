@@ -33,16 +33,16 @@ public class S360_Form_Builder_Controller {
         if(formName != null && formName != '')
         {
 
-            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c  from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c, S360_FA__AutoSave_Record_Interval__c , S360_FA__AutoSave_Record__c , S360_FA__Lock_Logic__c from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
 
         }else
         {
-            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c, S360_FA__AutoSave_Record_Interval__c, S360_FA__AutoSave_Record__c, S360_FA__Lock_Logic__c  from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
         }
 
         //Just in case language was not selected, get the blank language.
         if(formConfigs.size()==0){
-			formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c from S360_FA__S360_Form_Config__c where id = :formId limit 1];
+			formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__AutoSave_Record_Interval__c, S360_FA__AutoSave_Record__c, S360_FA__Lock_Logic__c  from S360_FA__S360_Form_Config__c where id = :formId limit 1];
         }
 
         // initialize server response
@@ -172,7 +172,7 @@ public class S360_Form_Builder_Controller {
                             serverResponse.put('data', data[0]);
                         }
                     }
-                    
+
 
                     serverResponse.put('status', true);
 
@@ -190,7 +190,7 @@ public class S360_Form_Builder_Controller {
     }
 
     @AuraEnabled
-    public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData, 
+    public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData,
         boolean isSignatureEnabled, string signatureData, boolean isSaveToStorage){
         System.debug(data);
         System.debug(relatedData);
@@ -304,7 +304,7 @@ public class S360_Form_Builder_Controller {
                             sObj.put(relatedField, parentId);
                             for(object fname : tmpRe.keySet()){
                                 System.debug((string)fname);
-                                if((string)fname != 'sobjectType' && (string)fname != 'S360_FA__Parent__c' && 
+                                if((string)fname != 'sobjectType' && (string)fname != 'S360_FA__Parent__c' &&
                                     (string)fname != 'Id'){
                                     finalTmpRe.put((string)fname, tmpRe.get((string)fname));
                                 }else if((string)fname == 'Id'){
@@ -406,7 +406,7 @@ public class S360_Form_Builder_Controller {
     }
 
     @AuraEnabled
-    public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) { 
+    public static Id saveTheChunk(Id parentId, String fileName, String base64Data, String contentType, String fileId) {
         if (fileId == '') {
             fileId = S360_Base_FileUploadController.saveTheFile(parentId, fileName, base64Data, contentType);
         } else {
