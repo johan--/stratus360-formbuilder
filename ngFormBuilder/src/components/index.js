@@ -40,6 +40,7 @@ require('./lightningflow')(app);
 require('./flowbutton')(app);
 require('./recordtype')(app);
 require('./recordtypeselect')(app);
+require('./language')(app);
 // Layout
 require('./columns')(app);
 require('./fieldset')(app);
