@@ -1,10 +1,11 @@
 ({
-    
+
     doInit: function(component, event, helper){
         helper.setDefaultValue(component);
     },
-    
+
     onValueChange: function(component, event, helper){
+        debugger;
         helper.setDefaultValue(component);
 
         // validate required field
@@ -23,5 +24,10 @@
             message = params.message || component.get('v.FailureValidationMessage');
         }
         helper.toggleErrorMessage(component, false, message);
-    }
+    },
+
+    handleValidationSuccess: function(component, event, helper) {
+      component.set('v.Valid', true);
+      component.set('v.Message', "");
+    },
 })

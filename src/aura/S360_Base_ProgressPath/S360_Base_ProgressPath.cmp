@@ -1,0 +1,85 @@
+<aura:component controller="S360_Base_ProgressPathController">
+    <aura:attribute name="CompId" type="string" default=""/>
+    <aura:attribute name="paths" type="Object[]" default="[]"/>
+    <aura:attribute name="FieldName" type="String" default=""/>
+    <aura:attribute name="Linear" type="String" default=""/>
+    <aura:attribute name="parentId" type="String" default=""/>
+    <aura:attribute name="renderPaths" type="Object[]" default="[]"/>
+    <aura:attribute name="primaryObject" type="String" default=""/>
+
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div class="slds-path">
+      <div class="slds-grid slds-path__track">
+
+          <div class="slds-path__scroller" role="application">
+             	
+
+            
+               
+              <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+
+				<aura:if isTrue= "{! v.Linear=='NO'}">                
+                    <aura:iteration items="{!v.renderPaths}" var="item">
+                       <aura:if isTrue= "{! item.status=='incomplete'}">
+                        <li class="slds-path__item slds-is-incomplete" role="presentation">
+                          <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                            <span class="slds-path__title">{!item.field}</span>
+                          </a>
+                        </li>
+                       </aura:if>
+                        
+                       <aura:if isTrue= "{! item.status=='selected'}">
+                        <li class="slds-path__item slds-is-incomplete slds-is-current" role="presentation">
+                          <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" role="option" tabindex="0">
+                            <span class="slds-path__title">{!item.field}</span>
+                          </a>
+                        </li>
+                       </aura:if>
+                                
+                    </aura:iteration>
+                  </aura:if>
+                  
+                  <aura:if isTrue= "{! v.Linear=='YES'}">                
+                    <aura:iteration items="{!v.renderPaths}" var="item">
+                       <aura:if isTrue= "{! item.status=='incomplete'}">
+                        <li class="slds-path__item slds-is-incomplete" role="presentation">
+                          <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" role="option" tabindex="-1">
+                            <span class="slds-path__title">{!item.field}</span>
+                          </a>
+                        </li>
+                       </aura:if>
+                        
+                       <aura:if isTrue= "{! item.status=='complete'}">
+                        <li class="slds-path__item slds-is-complete" role="presentation">
+                          <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" role="option" tabindex="0">
+                              <lightning:icon class="icn" iconName="utility:check" size="x-small" />
+
+                            <span class="slds-path__title">{!item.field}</span>
+                          </a>
+                        </li>
+                       </aura:if>
+                      <aura:if isTrue= "{! item.status=='selected'}">
+                        <li class="slds-path__item slds-is-active slds-is-current" role="presentation">
+                          <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" role="option" tabindex="0">
+                            <span class="slds-path__title">{!item.field}</span>
+                          </a>
+                        </li>
+                       </aura:if>
+                                
+                                
+                    </aura:iteration>
+                  </aura:if>
+
+
+              </ul>
+
+
+
+        </div>
+      </div>
+    </div>
+    
+    <button onclick="{!c.clicked}">Hello</button>
+</aura:component>

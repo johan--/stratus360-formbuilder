@@ -14,6 +14,7 @@
     <aura:attribute name="FailureValidationMessage" type="string" default=""/>
 
     <!-- validation attribute -->
+    <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
     <aura:attribute name="Message" type="string" default="" access="private"/>
 
@@ -58,6 +59,7 @@
     </aura:method>
 
     <!-- validation method -->
+    <aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
         <aura:attribute name="message" type="String" default=""/>

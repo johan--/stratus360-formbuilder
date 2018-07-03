@@ -105,13 +105,17 @@
         <!-- BROWSE HAPPY ENDS HERE -->
 
         <apex:form >
-            <apex:pageBlock mode="edit">
-                <apex:pageBlockButtons >
+            <apex:pageBlock mode="edit" >
+                <apex:pageBlockButtons location="top">
                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Save" action="{!save}" onclick="getUsedFields()"/>
                      &nbsp;
                      <apex:commandButton styleClass="btn btn-primary btn-md" value="Populate APIs" onclick="setAPIs()" reRender="none"/>
                      &nbsp;
                      <apex:commandButton styleClass="btn btn-primary btn-md" value="Save As" onclick="saveAsM()" action="{!saveAs}"/>
+                     &nbsp;
+                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Launch" onclick="openTab()" reRender="none"/>
+                     &nbsp;
+                     <apex:commandButton styleClass="btn btn-primary btn-md" value="Clone" action="{!cloneForm}"/>
                      &nbsp;
 
                     <div class="form-group">
@@ -119,6 +123,9 @@
                         <label> <font size="4">Version Number</font> </label>
                     	<apex:selectList styleClass="form-control" size="1" onchange="refreshPageAF()" value="{!selectedVersion}">
                        		<apex:selectOptions value="{!versionList}"/>
+                    	</apex:selectList>
+                      <apex:selectList styleClass="form-control" size="1" onchange="refreshPageAF()" value="{!selectedLanguage}">
+                       		<apex:selectOptions value="{!languageList}"/>
                     	</apex:selectList>
                     </div>
                     <apex:outputPanel id="autoSaveStatus">
@@ -150,6 +157,8 @@
                 <apex:inputField id="SelectedInputFieldsInFlow" value="{!S360_Form_Config__c.Returned_Flow_Field__c}" /> <p/>
                 <apex:inputField id="InputFlowMap" value="{!S360_Form_Config__c.Input_Flow_Map__c}" /> <p/>
                 <apex:inputText id="Form_Config_JSON" value="{!jsonConfig}" /> <p/>
+                <apex:inputText id="Form_Config_Lang" value="{!language}" /> <p/>
+                <apex:inputText id="Form_Config_FR" value="{!frAttach}" /> <p/>
                 <apex:inputField id="recordTypeSelection" value="{!S360_Form_Config__c.Record_Type__c}"/> <p/>
                 <!-- load field -->
                 <apex:inputField id="autoSaveInterval" value="{!S360_Form_Config__c.AutoSave_Interval__c}" /> <p/>
@@ -194,7 +203,8 @@
         <apex:includeScript value="{!URLFOR($Resource.ngFormBuilder, 'ngFormBuilder-full.min.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/lodash.min.4.17.4.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.formio, '/js/angular-json-explorer.min.js')}"/>
-		<apex:includeScript value="{!URLFOR($Resource.securefilters)}"/>
+		    <apex:includeScript value="{!URLFOR($Resource.securefilters)}"/>
+        <apex:includeScript value="{!URLFOR($Resource.lodash)}"/>
 
         <script type="text/javascript">
         var formConfig = '';
@@ -266,7 +276,7 @@
 
 
         // start auto save
-        autoSave();
+        //autoSave();
         // end of start auto save
 
             angular
@@ -302,7 +312,7 @@
 
             // set captcha image
            	formioComponents.components.captcha.settings.captchaImagePreview = '{!URLFOR($Resource.CaptchaImage)}';
-            
+
             // set Progress Path Image
            	formioComponents.components.progress.settings.ProgressPathImagePreview = '{!URLFOR($Resource.ProgressPathImage)}';
 
@@ -484,15 +494,21 @@
             });
         }
 
+        function openTab(){
+          window.open('{!thisurl}'+'/apex/S360_FormBuilder2?id=' + '{!thisID}');
+        }
 
         function getUsedFields(){
-
+          debugger;
+          console.log("Saving...");
             var jsonFieldElement = document.getElementById('j_id0:j_id2:Form_Config_JSON');
 
             if(formConfig != '' && formConfig != undefined){
                 jsonFieldElement.value = JSON.stringify(formConfig);
             }
 
+            var lang = document.getElementById('j_id0:j_id2:Form_Config_Lang');
+            var frAttach = document.getElementById('j_id0:j_id2:Form_Config_FR');
             var fieldsConfig = document.getElementById('j_id0:j_id2:Form_Config_Field');
             var formHasFlowController = document.getElementById('j_id0:j_id2:Form_Config_Has_FLow');
             var selectedInputFieldsInFlow = document.getElementById('j_id0:j_id2:SelectedInputFieldsInFlow');
@@ -500,8 +516,8 @@
             var RecordTypeField = document.getElementById('j_id0:j_id2:Form_Record_Type');
             var recordTypeSelection = document.getElementById('j_id0:j_id2:recordTypeSelection');
             var config = formConfig;
-            console.log("Fields"+JSON.stringify(fieldsConfig));
-            console.log("Config"+JSON.stringify(config));
+            // console.log("Fields"+JSON.stringify(fieldsConfig));
+            // console.log("Config"+JSON.stringify(config));
             var fields = collectField(config);
             if(fields.indexOf('Name') == -1){
                 //Not sure why we add name here
@@ -514,6 +530,65 @@
             InputFlowMapField.value = inputFlowMap;
             RecordTypeField.value = recordTypeMap;
             recordTypeSelection.value = recordType;
+            console.log(lang.value);
+
+            if(lang.value == 'en'){
+              var frMerge = {};
+              if(frAttach && frAttach.value){
+                frMerge = JSON.parse(frAttach.value);
+              }
+              var enMerge = JSON.parse(jsonFieldElement.value);
+              frMap = {};
+              for(var i in frMerge.components){
+                console.log(frMerge.components[i].$$hashKey);
+                frMapTo = {};
+                if(frMerge.components[i].label){
+                  frMapTo["label"] =  frMerge.components[i].label;
+                }
+                if(frMerge.components[i].placeholder){
+                  frMapTo["placeholder"] =  frMerge.components[i].placeholder;
+                }
+                if(frMerge.components[i].description){
+                  frMapTo["description"] =  frMerge.components[i].description;
+                }
+                if(frMerge.components[i].title){
+                  frMapTo["title"] =  frMerge.components[i].title;
+                }
+                if(frMerge.components[i].legend){
+                  frMapTo["legend"] =  frMerge.components[i].legend;
+                }
+                if(frMerge.components[i].errorLabel){
+                  frMapTo["errorLabel"] =  frMerge.components[i].errorLabel;
+                }
+                if(frMerge.components[i].errorMessage){
+                  frMapTo["errorMessage"] =  frMerge.components[i].errorMessage;
+                }
+                if(frMerge.components[i].successMessage){
+                  frMapTo["successMessage"] =  frMerge.components[i].successMessage;
+                }
+                if(frMerge.components[i].data && frMerge.components[i].data.values){
+                  frMapTo["data.values"] =  frMerge.components[i].data.values;
+                }
+                if(frMerge.components[i].values){
+                  frMapTo["values"] =  frMerge.components[i].values;
+                }
+                frMap[frMerge.components[i].$$hashKey] = frMapTo;
+              }
+              frMerge = enMerge;
+              for(var i in frMerge.components){
+                for(var item in frMap[frMerge.components[i].$$hashKey]){
+                  frMerge.components[i][item] = frMap[frMerge.components[i].$$hashKey][item];
+                }
+              }
+              // _.mergeWith(frMerge, enMerge, function(objValue, srcValue, key, object, source, stack){
+              //   if(key == 'label'){
+  	          //      return objValue;
+              //    }
+              // });
+              frAttach.value = JSON.stringify(frMerge);
+              console.log(JSON.stringify(frMerge));
+              console.log(JSON.stringify(enMerge));
+            }
         }
 
         function collectField(data){

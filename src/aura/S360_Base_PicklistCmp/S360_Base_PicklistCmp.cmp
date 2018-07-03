@@ -2,7 +2,7 @@
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
     <aura:attribute name="input" type="boolean" default="true"/>
-
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="InputLabel" type="string" default=""/>
     <aura:attribute name="HelpText" type="string" default=""/>
@@ -19,25 +19,30 @@
     <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="JsonLogic" type="string" default=""/>
     <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+    <aura:attribute name="BroadcastRender" type="Boolean" default="false"/>
+
 
     <!-- validation attribute -->
     <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
     <aura:attribute name="Message" type="string" default="" access="private"/>
- 
+
     <!-- additional attributes -->
     <aura:attribute name="Class" type="String" default=""/>
     <aura:attribute name="SideClass" type="String" default=""/>
     <aura:attribute name="ShowBlank" type="boolean" default="false"/>
-    
+
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
-    
+    <aura:registerEvent name="renderUpdate" type="c:S360_Base_renderChange" />
+
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler name="change" value="{!v.Value}" action="{!c.changeValue}"/>
     <aura:handler event="c:NotifyPicklistCmp" action="{!c.handleNotify}" />
-    
+
     <!-- define methods -->
-    <aura:method name="invalidatePicklist" action="{!c.methodHandleNotify}" access="public" 
+    <aura:method name="invalidatePicklist" action="{!c.methodHandleNotify}" access="public"
                  description="method to invalidate picklist comp"/>
+
+    <aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
 
     <!-- validation method -->
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
@@ -45,22 +50,22 @@
         <aura:attribute name="message" type="String" default=""/>
     </aura:method>
 
-    
+
     	<article class="{!(v.IsHidden ? 'slds-hide slds-is-relative' : 'slds-show slds-is-relative ' + v.Class)}">
             <div aura:id="picklistID" class="{!v.SideClass}">
         		<label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-show slds-form-element__label ')}" for="{!v.CompId}">
                     <aura:unescapedHTML value="{!v.InputLabel}"> </aura:unescapedHTML>
-                    <abbr class="slds-required" 
+                    <abbr class="slds-required"
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
-                    	
+
                 </label>
-                
+
                 <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
-                
+
                 <div class="slds-form-element__control minSize" id="{!v.CompId}">
-                    <ui:inputSelect aura:id="InputSelectId" required="{!v.IsRequired}" 
-                                    disabled="{!v.IsDisabled}" class="{! 'slds-select ' + (v.Multiple ? '' : 'heightAdjustment')}" 
-                                    labelClass="slds-form-element__label" 
+                    <ui:inputSelect aura:id="InputSelectId" required="{!v.IsRequired}"
+                                    disabled="{!v.IsDisabled}" class="{! 'slds-select ' + (v.Multiple ? '' : 'heightAdjustment')}"
+                                    labelClass="slds-form-element__label"
                                     change="{!c.onSelectChangeExpType}" multiple="{!v.Multiple}">
                     </ui:inputSelect>
                 </div>
@@ -78,10 +83,10 @@
                     <aura:unescapedHtml value="{!v.Message}"/>
                 </ui:message>
             </aura:renderIf>
-        
+
         </article>
-        
-    
-    
+
+
+
 
 </aura:component>

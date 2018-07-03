@@ -19,7 +19,7 @@
            debugger;
 
             if(params.config.S360_FA__JSON__c != '' && params.config.S360_FA__JSON__c != undefined){
-              
+              console.log(params.config.S360_FA__JSON__c);
              	var configComponents = JSON.parse(params.config.S360_FA__JSON__c).components;
                 debugger;
                 if(configComponents.length != 0){

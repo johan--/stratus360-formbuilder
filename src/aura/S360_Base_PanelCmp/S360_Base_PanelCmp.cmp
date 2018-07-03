@@ -1,17 +1,23 @@
 <aura:component >
     <aura:attribute name="Title" type="String" default=""/>
     <aura:attribute name="Class" type="String" default=""/>
-    
+
     <aura:attribute name="displayPosition" type="Integer" default="0"/>
     <aura:attribute name="counter" type="Integer" default="0"/>
     <aura:attribute name="isReady" type="boolean" default="false"/>
-    
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="JsonData" type="Object" default="{}"/>
+    <aura:attribute name="JsonLogic" type="Object" default="{}"/>
+    <aura:attribute name="Keys" type="Object" default="{}"/>
+
     <aura:handler name="change" value="{!v.body}" action="{!c.onChange}"/>
     <aura:handler name="change" value="{!v.counter}" action="{!c.onChange}"/>
-    
+    <aura:handler event="c:S360_Base_renderChange" action="{!c.handleOnChange}" />
+
     <aura:method name="next" action="{!c.next}"/>
     <aura:method name="previous" action="{!c.previous}"/>
-    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
     <article class="{!'slds-card ' + v.Class}">
         <div class="slds-card__header slds-grid">
             <header class="slds-media slds-media_center slds-has-flexi-truncate">
@@ -30,6 +36,7 @@
             <div style="{!'display:' + (v.isReady ? 'none' : 'block') }">Loading...</div>
             <div style="{!'display:' + (v.isReady ? 'block' : 'none') }">{!v.body}</div>
         </div>
-        
+
     </article>
+  </div>
 </aura:component>

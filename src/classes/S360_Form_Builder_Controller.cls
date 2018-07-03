@@ -5,7 +5,7 @@ public class S360_Form_Builder_Controller {
      * recordId act as S360_Form_Config__c id when we run it on form config wizard preview
      * recordId act as (object to preview) when we run it outsite the form config wizard preview
      */
-    public static Map<String, Object> getComponentConfig(String formName, String recordId){
+    public static Map<String, Object> getComponentConfig(String formName, String recordId, String language){
         String formId = ''; // S360_Form_Config__c id
         String dataId = ''; // object to preview id
 
@@ -33,11 +33,11 @@ public class S360_Form_Builder_Controller {
         if(formName != null && formName != '')
         {
 
-            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c, S360_FA__AutoSave_Record_Interval__c , S360_FA__AutoSave_Record__c , S360_FA__Lock_Logic__c from S360_FA__S360_Form_Config__c where name = :formName AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c, S360_FA__AutoSave_Record_Interval__c , S360_FA__AutoSave_Record__c , S360_FA__Lock_Logic__c from S360_FA__S360_Form_Config__c where name = :formName limit 1];
 
         }else
         {
-            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c, S360_FA__AutoSave_Record_Interval__c, S360_FA__AutoSave_Record__c, S360_FA__Lock_Logic__c  from S360_FA__S360_Form_Config__c where id = :formId AND S360_FA__Language__c = :strLanguage limit 1];
+            formConfigs = [select S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, S360_FA__JSON__c, S360_FA__Primary_Object__c, S360_FA__Field__c, S360_FA__Component_Type__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Input_Flow_Map__c, S360_FA__Record_Type_Mapping__c, S360_FA__Record_Type__c, S360_FA__AutoSave_Record_Interval__c, S360_FA__AutoSave_Record__c, S360_FA__Lock_Logic__c  from S360_FA__S360_Form_Config__c where id = :formId limit 1];
         }
 
         //Just in case language was not selected, get the blank language.
@@ -60,8 +60,13 @@ public class S360_Form_Builder_Controller {
             // replace config json__c with attachemnt value
             // our new version use attachment to save json config to avoid json string overflow
             //Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where ParentId = :formConfigs[0].Id];
-            Attachment[] tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+formConfigs[0].S360_FA__SelectedVersion__c)];
-
+            Attachment[] tmp;
+            System.debug(language);
+            if(strLanguage == 'en'){
+              tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+String.valueOf(formConfigs[0].S360_FA__SelectedVersion__c).leftPad(3, '0'))];
+            } else {
+              tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+String.valueOf(formConfigs[0].S360_FA__SelectedVersion__c).leftPad(3, '0') + '_FR')];
+            }
            if(tmp.size() > 0){
             	if(tmp[0].Body != null){
                     formConfigs[0].S360_FA__JSON__c = tmp[0].Body.toString();

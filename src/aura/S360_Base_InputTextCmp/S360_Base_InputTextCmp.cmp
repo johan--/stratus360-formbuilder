@@ -2,7 +2,7 @@
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
     <aura:attribute name="input" type="boolean" default="true"/>
-    
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="InputLabel" type="string" default=""/>
     <aura:attribute name="HelpText" type="string" default=""/>
@@ -18,43 +18,53 @@
     <aura:attribute name="Class" type="String" default=""
                     description="Style of input container"/>
     <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="BroadcastRender" type="Boolean" default="false"/>
+
+    <aura:attribute name="RenderValues" type="Object" default="{}"/>
 
     <!-- validation attribute -->
     <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
     <aura:attribute name="Message" type="string" default="" access="private"/>
-    
+
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
     <aura:registerEvent name="OnBlur" type="c:S360_Base_onBlur" />
-    
+    <aura:registerEvent name="renderUpdate" type="c:S360_Base_renderChange" />
+
     <!-- Component Handler -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <aura:handler name="change" value="{!v.Value}" action="{!c.onValueChange}"/>
+
+    <aura:handler name="updateLogic" event = "c:S360_Base_logicUpdate" action="{!c.validateUpdate}"/>
+
+    <aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
 
     <!-- validation method -->
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
         <aura:attribute name="message" type="String" default=""/>
     </aura:method>
- 	
+
     <div>
 	<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
             <aura:unescapedHtml value="{!v.InputLabel}"/>
-            <abbr class="slds-required" 
+            <abbr class="slds-required"
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
         </label>
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
 
         <div class="slds-form-element__control">
-            <ui:inputText required="{!v.IsRequired}" 
-                          aura:id="inputText" 
-                          disabled="{!v.IsDisabled}" 
-                          class="slds-input" 
-                          placeholder="{!v.PlaceholderText}" 
-                          value="{!v.Value}" 
+            <ui:inputText required="{!v.IsRequired}"
+                          aura:id="inputText"
+                          disabled="{!v.IsDisabled}"
+                          class="slds-input"
+                          placeholder="{!v.PlaceholderText}"
+                          value="{!v.Value}"
                           blur="{!c.handleOnBlur}"
                           maxlength="{!v.MaxLength ? v.MaxLength : 10000000000000}"/>
         </div>
+        
+        <!--input type="text" onblur="{!c.test}"/-->
         <aura:renderIf isTrue="{!v.Valid != true}">
             <ui:message title="Warning" severity="warning" closable="false">
                 <aura:unescapedHtml value="{!v.Message}"/>

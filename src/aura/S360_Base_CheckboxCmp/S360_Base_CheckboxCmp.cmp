@@ -1,7 +1,9 @@
 <aura:component >
-    
+
+    <!-- input equal to true means that we able to set/modify value of this component -->
+    <aura:attribute name="input" type="boolean" default="true"/>
     <aura:attribute name="CompId" type="string" default="" required="true"
-                    description="Unique Id for this component. This id used to identity 
+                    description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when change checkbox value"/>
     <aura:attribute name="InputLabel" type="string" default=""
                     description="Label that display to user"/>
@@ -13,36 +15,40 @@
                     description="disable the component"/>
     <aura:attribute name="IsChecked" type="boolean" default="false"
                     description="Set checkbox value"/>
+                    <aura:attribute name="Value" type="boolean" default="false"
+                                    description="Set checkbox value"/>
     <aura:attribute name="InputClass" type="String" default=""
                     description="Set input checkbox style"/>
     <aura:attribute name="HelpText" type="string" default=""/>
-    <aura:attribute name="Valid" type="boolean" default="true"/>
-    <aura:attribute name="Message" type="string" default=""/>
-    <aura:attribute name="Json" type="string" default=""/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    
+    <aura:attribute name="BroadcastRender" type="Boolean" default="false"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
     <aura:attribute name="LabelPosition" type="String" default="right"/>
     
+    <!-- validation attribute -->
+    <aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="Valid" type="boolean" default="true"/>
+    <aura:attribute name="Message" type="string" default=""/>
+
     <!-- additional event registration -->
     <aura:registerEvent name="OnClick" type="c:S360_Base_onClick" />
-    
-    <div class="{!v.IsHidden ? 'slds-hide' : 'slds-show slds-form-element'}">	
-        <!--div>
-            <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
-                <abbr class="slds-required" 
-                      style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
-                <aura:unescapedHtml value="{!v.InputLabel}"/>	
-            </label>
-            <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
-        </div-->
-        
+
+
+    <!-- validation method -->
+	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
+
+    <div class="{!v.IsHidden ? 'slds-hide' : 'slds-show slds-form-element'}">
+
         <div class="slds-form-element__control">
             <span class="slds-checkbox">
-                <input type="checkbox" name="options" id="{!v.CompId}" checked="{!v.IsChecked}" disabled="{!v.IsDisabled}" 
+                <input type="checkbox" name="options" id="{!v.CompId}" checked="{!v.IsChecked}" disabled="{!v.IsDisabled}"
                        onclick="{!c.onClick}" aura:id="checkbox" class="{!v.InputClass}"/>
-                <!--label class="slds-checkbox__label" for="{!v.CompId}">
-                    <span class="slds-checkbox-|-faux"></span>
-                </label-->
+                
                 <label class="slds-checkbox__label" for="{!v.CompId}">
                     <span class="slds-checkbox_faux" style="{! 'display:' + (v.LabelPosition == 'top' || v.LabelPosition == 'left' ? 'none' : '')}"></span>
                     
@@ -58,10 +64,10 @@
         </div>
 
         <aura:renderIf isTrue="{!v.Valid != true}">
-            <ui:message title="Warning" severity="warning" closable="true">
+            <ui:message title="Warning" severity="warning" closable="false">
                 <aura:unescapedHtml value="{!v.Message}"/>
             </ui:message>
         </aura:renderIf>
-    </div>	
-    
+    </div>
+
 </aura:component>

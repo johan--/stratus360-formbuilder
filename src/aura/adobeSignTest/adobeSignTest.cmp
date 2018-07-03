@@ -1,5 +1,0 @@
-<aura:component controller="HttpCallOutTest">
-    <!-- <ltng:require scripts="/resource/adobesignsdk/dist/adobe-sign-sdk.min.js"/> -->
-    <lightning:button name="init" label="init" onclick="{!c.publish}"/>
-	<!-- <iframe src='https://secure.na2.echosign.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhAWz6HFwnHentXEU1hHsb4P4GNCaxbjw2oFWK2PPAICkR6QAaMwyM-TwnJTCfv5yVw' width="100%" height="100%" frameborder="0" style="border: 0; overflow: hidden; min-height: 500px; min-width: 600px;"></iframe> -->
-</aura:component>

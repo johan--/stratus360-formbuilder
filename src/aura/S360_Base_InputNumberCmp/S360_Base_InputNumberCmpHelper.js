@@ -40,7 +40,8 @@
         // validate field
         var jsonLogicData = {
             "value": component.get('v.Value'),
-            "name": component.get('v.CompId')
+            "name": component.get('v.CompId'),
+            "data": component.get('v.Data')
         }
 
         if(jsonLogic != undefined && jsonLogic != ''){

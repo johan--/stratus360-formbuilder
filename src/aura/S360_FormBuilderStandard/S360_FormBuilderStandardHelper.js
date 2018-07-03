@@ -166,6 +166,7 @@
         component.set('v.Data['+ config.key +']',
                       component.get('v.Data') ? (component.get('v.Data')[config.key] ? component.get('v.Data')[config.key] : undefined) : undefined);
         var value = component.getReference('v.Data['+ config.key +']');
+        debugger;
 
         // add to temporary flow data
         this.add2TmpFlowData(component, config.key, value);
@@ -227,7 +228,9 @@
                 "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Value": value,
                 "Class": config.customClass ? config.customClass : '',
-								"input": config.input
+                "Data": component.getReference('v.Data'),
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -265,7 +268,10 @@
                 "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "Value": value,
                 "Class": config.customClass ? config.customClass : '',
-								"input": config.input
+                "input": config.input,
+                "Data": component.getReference('v.Data'),
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -705,11 +711,12 @@
                 "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
                 "IsChecked": value,
                 "InputClass": config.customClass ? config.customClass : '',
-                "Json": config.validate ? config.validate.json : '',
                 "Data": component.getReference('v.Data'),
                 "LabelPosition" : config.labelPosition,
-								"BroadcastRender": config.broadcastRender,
-								"input": config.input
+                "BroadcastRender": config.broadcastRender,
+                "input": config.input,
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -786,8 +793,8 @@
                 "JsonLogic": config.validate ? config.validate.json : '',
                 "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
                 "Data": component.getReference('v.Data'),
-								"BroadcastRender": config.broadcastRender,
-								"input": config.input
+                "BroadcastRender": config.broadcastRender,
+                "input": config.input
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -1121,7 +1128,7 @@
                 "Title": config.title ? config.title : '',
                 "Class": config.customClass ? config.customClass : '',
                 //"IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : true,
-                "JsonLogic": config.render? config.render : {},
+                "JsonLogic": config.render,
                 "JsonData": component.getReference('v.Data'),
                 "Keys": config.values?  config.values: {}
             },
@@ -1265,6 +1272,7 @@
                     "IsRequired": config.validate ? config.validate.required : false,
                     "JsonLogic": config.validate ? config.validate.json : '',
                     "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
+                    "Data": component.getReference('v.Data'),
                     //"FileLabel": config.label,
                     //"Class": config.customClass ? config.customClass : '',
                 },
@@ -1713,41 +1721,43 @@
 
     submitEvent: function(component, sender){
         debugger;
-				//console.log("FORM PATTER" +JSON.stringify(component.get("v.formPattern")));
+        //console.log("FORM PATTER" +JSON.stringify(component.get("v.formPattern")));
         var isAllValid = true;
         // validate fields before submit
         if(jsonLogic != undefined && jsonLogic != ''){
             var componentData = component.get('v.componentData');
             for(var key in componentData){
-							debugger;
+                debugger;
                 if(componentData.hasOwnProperty(key)){
                     if(componentData[key].get('v.input') === true){
                         // check is required
-												var val = componentData[key].get('v.Value');
+                        var val = componentData[key].get('v.Value');
                         if(componentData[key].get('v.IsRequired') == true && !componentData[key].get('v.Value') && componentData[key].get('v.panelShow')){
                             componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
                             isAllValid = false;
                             continue;
                         } else {
-													componentData[key].validationSuccess();
-												}
-
+                            componentData[key].validationSuccess();
+                        }
+                        
                         // check validation
                         if(componentData[key].get('v.JsonLogic')){
                             var jsonLogicData = {
-                                "value": componentData[key].get('v.Value'),
-                                "name": key
+                                "value": componentData[key].get('v.Value') ? componentData[key].get('v.Value') : '',
+                                "name": key,
+                                "data": component.get('v.Data')
                             }
-
+                            
+                            debugger;
                             //JSLogic Validation
                             var validateJson = componentData[key].get('v.JsonLogic');
                             var isValid = jsonLogic.apply(validateJson, jsonLogicData);
-
+                            
                             if(!isValid){
                                 isAllValid = false;
                                 componentData[key].validationFail();
                             }
-                       }
+                        }
                     }else if(componentData[key].get('v.typeAttachment') === true){
                         // check is required
                         if(componentData[key].get('v.IsRequired') == true && componentData[key].get('v.objectWrapper').length == 0){
@@ -1755,27 +1765,47 @@
                             isAllValid = false;
                             continue;
                         }
-
+                        
                         // create new record operation
                         if(!component.get('v.Data')['Id']){
                             component.set('v.AttachmentsData',
-                                componentData[key].get('v.objectWrapper').map(x => x.payload));
+                                          componentData[key].get('v.objectWrapper').map(x => x.payload));
                         }
-
+                        
+                        // check validation
+                        if(componentData[key].get('v.JsonLogic')){
+                            var jsonLogicData = {
+                                "count": componentData[key].get('v.objectWrapper').length,
+                                "name": key,
+                                "data": component.get('v.Data')
+                            }
+                            
+                            //JSLogic Validation
+                            var validateJson = componentData[key].get('v.JsonLogic');
+                            var isValid = jsonLogic.apply(validateJson, jsonLogicData);
+                            
+                            if(!isValid){
+                                isAllValid = false;
+                                componentData[key].validationFail();
+                            }else {
+                                componentData[key].validationSuccess();
+                            }
+                        }
+                        
                     }
                 }
             }
         }
-
+        
         if(!isAllValid){
             return;
         }
-
+        
         if(component.get('v.isCaptchaEnabled') && !component.get('v.isCaptchaSuccess')){
             this.showToast(component, 'warning', $A.get("$Label.c.S360_base_captcha_message"));
             return;
         }
-
+        
         var evt = component.getEvent('S360_FormBuilderEvt');
         evt.setParams({
             "sender": sender,

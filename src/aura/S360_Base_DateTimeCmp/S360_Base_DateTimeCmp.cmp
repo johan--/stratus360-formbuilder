@@ -1,10 +1,11 @@
 <aura:component >
     <aura:attribute name="CompId" type="string" default="DateId" required="true"
-                    description="Unique Id for this component. This id used to identity 
+                    description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when date changed"/>
-    <aura:attribute name="InputLabel" type="string" default="" 
+    <aura:attribute name="InputLabel" type="string" default=""
                     description="Label to display to user"/>
     <aura:attribute name="HelpText" type="string" default=""/>
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
     <aura:attribute name="IsHidden" type="boolean" default="false"
                     description="Hide the component"/>
     <aura:attribute name="IsRequired" type="boolean" default="false"
@@ -13,6 +14,8 @@
                     description="Disable component"/>
     <aura:attribute name="Date" type="Date" default=""
                     description="Date to supply by user"/>
+                    <aura:attribute name="Value" type="Boolean" default="false"
+                                    description="Date to supply by user"/>
     <aura:attribute name="Class" type="String" default=""
                     description="style for date component container"/>
     <aura:attribute name="InitDate" type="Date" default=""/>
@@ -21,26 +24,39 @@
     <aura:attribute name="Message" type="string" default=""/>
     <aura:attribute name="Json" type="string" default=""/>
     <aura:attribute name="Data" type="Object" default="{}"/>
-    
+    <aura:attribute name="input" type="Boolean" default="false"/>
+
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
+
+    <aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
+
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
-    
+
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
-    
+
     <div class="{!(v.IsHidden ? 'slds-hide ' : 'slds-show slds-form-element ' + v.Class) }">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
-            <abbr class="slds-required" 
+            <abbr class="slds-required"
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
             <aura:unescapedHtml value="{!v.InputLabel}"/>
         </label>
-        
+
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
-        
+
 		<div class="slds-form-element__control label-inactive">
-            <ui:inputDateTime class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input" 
-                              required="{!v.IsRequired}" value="{!v.Date}" displayDatePicker="true" 
+            <ui:inputDateTime class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input"
+                              required="{!v.IsRequired}" value="{!v.Date}" displayDatePicker="true"
                               disabled="{!v.IsDisabled}" aura:id="{!v.CompId}" label="" focus="{!c.handleOnChange}"/>
         </div>
 	</div>
-    
-    
+
+  <aura:renderIf isTrue="{!v.Valid != true}">
+      <ui:message title="Warning" severity="warning" closable="true">
+          <aura:unescapedHtml value="{!v.Message}"/>
+      </ui:message>
+  </aura:renderIf>
+
 </aura:component>

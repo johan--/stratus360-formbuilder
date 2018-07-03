@@ -2,12 +2,12 @@
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
     <aura:attribute name="input" type="boolean" default="true"/>
-
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
     <aura:attribute name="CompId" type="string" default=""/>
     <aura:attribute name="InputLabel" type="string" default=""/>
     <aura:attribute name="HelpText" type="string" default=""/>
     <aura:attribute name="PlaceholderText" type="string" default=""/>
-    <aura:attribute name="Format" type="string" default="" 
+    <aura:attribute name="Format" type="string" default=""
                     description="number format"/>
     <aura:attribute name="IsHidden" type="boolean" default="false"/>
     <aura:attribute name="IsError" type="boolean" default="false"/>
@@ -31,29 +31,32 @@
 
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
 
+
+    <aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
     <!-- validation method -->
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
         <aura:attribute name="message" type="String" default=""/>
     </aura:method>
- 
+
 	<div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
-            <aura:unescapedHtml value="{!v.InputLabel}"/>			
-            <abbr class="slds-required" 
+            <aura:unescapedHtml value="{!v.InputLabel}"/>
+            <abbr class="slds-required"
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
         </label>
-        
+
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
-        
+
         <div class="{!'slds-form-element__control ' + (v.IsError ? 'slds-has-error' : '')}">
-            <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}" class="slds-input textRightAlign" placeholder="{!v.PlaceholderText}" value="{!v.Value}" format="{!v.Format}"/>
+            <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}" 
+                            class="slds-input textRightAlign" placeholder="{!v.PlaceholderText}" value="{!v.Value}" format="{!v.Format}"/>
         </div>
         <aura:renderIf isTrue="{!v.Valid != true}">
             <ui:message title="Warning" severity="warning" closable="false">
                 <aura:unescapedHtml value="{!v.Message}"/>
             </ui:message>
         </aura:renderIf>
-	</div>	
+	</div>
 
 </aura:component>

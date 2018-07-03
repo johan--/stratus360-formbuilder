@@ -164,6 +164,7 @@
         $rootScope.renderForm = true;
         $rootScope.$on('formUpdate', function(event, form) {
           angular.merge($rootScope.form, form);
+          debugger;
           $rootScope.renderForm = false;
           setTimeout(function() {
             $rootScope.renderForm = true;

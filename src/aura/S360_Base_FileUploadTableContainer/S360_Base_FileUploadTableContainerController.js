@@ -48,6 +48,11 @@
                 break;
         }
 	},
+    
+    handleValidationSuccess: function(component, event, helper) {
+      component.set('v.Valid', true);
+      component.set('v.Message', "");
+    },
 
     handleValidationFail: function(component, event, helper){
         var params = event.getParam('arguments');

@@ -2,7 +2,7 @@
     <!-- Bootstrap Styling -->
     <!--
 	<ltng:require styles="{!join(',',
-                           $Resource.Jquery224 , 
+                           $Resource.Jquery224 ,
     $Resource.Bootstrap + '/css/bootstrap.min.css',
     $Resource.Bootstrap + '/css/font-awesome.min.css',
     $Resource.Bootstrap + '/css/OpenSans.css',
@@ -10,7 +10,12 @@
     afterScriptsLoaded="{!c.scriptsLoaded}" />
 	-->
     
+	<!-- static value -->
+    <!-- input equal to true means that we able to set/modify value of this component -->
+    <aura:attribute name="input" type="boolean" default="true"/>
+    
     <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
     <aura:attribute name="InputLabel" type="string" default="Input Label"/>
     <aura:attribute name="PlaceholderText" type="string" default=""/>
     <aura:attribute name="IsHidden" type="boolean" default="false"/>
@@ -20,21 +25,41 @@
     <aura:attribute name="Value" type="string" default=""/>
     <aura:attribute name="Class" type="String" default=""/>
     <aura:attribute name="HelpText" type="string" default=""/>
+    
+    <!-- validation attribute -->
+	<aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
+    <aura:attribute name="Message" type="string" default="" access="private"/>
+
+    <!-- validation method -->
+	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
 
     <aura:registerEvent name="OnChange" type="c:onChange" />
 
     <div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ' + v.Class)}">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label ')}" for="{!v.CompId}">
             <aura:unescapedHtml value="{!v.InputLabel}"/>
-            <abbr class="slds-required" 
+            <abbr class="slds-required"
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
         </label>
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
-        
+
         <div class="slds-form-element__control">
-            <ui:inputText required="{!v.IsRequired}" aura:id="CompId" disabled="{!v.IsDisabled || v.IsReadOnly}" 
+            <ui:inputText required="{!v.IsRequired}" aura:id="CompId" disabled="{!v.IsDisabled || v.IsReadOnly}"
                           class="slds-input"  placeholder="{!v.PlaceholderText}" change="{!c.handleOnChange}" value="{!v.Value}"/>
         </div>
     </div>
+
+    <aura:renderIf isTrue="{!v.Valid != true}">
+        <ui:message title="Warning" severity="warning" closable="true">
+            <aura:unescapedHtml value="{!v.Message}"/>
+        </ui:message>
+    </aura:renderIf>
 
 </aura:component>

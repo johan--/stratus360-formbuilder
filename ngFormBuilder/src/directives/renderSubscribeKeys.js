@@ -55,7 +55,7 @@ module.exports = function() {
       };
 
       if ($scope.data.length === 0) {
-        $scope.addValue();
+        //$scope.addValue();
       }
 
       // if (!attrs.noAutocompleteValue) {
