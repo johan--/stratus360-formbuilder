@@ -143,6 +143,8 @@
         var inputElement = cmp.find('lookup-div');
         $A.util.addClass(inputElement, 'slds-has-selection');
 
+        
+        //this.validateRequireField(cmp);
     },
 
     /**
@@ -178,6 +180,8 @@
         // Lookup Div has no selection
         var inputElement = cmp.find('lookup-div');
         $A.util.removeClass(inputElement, 'slds-has-selection');
+        
+        //this.validateRequireField(cmp);
     },
 
     /**
@@ -217,6 +221,7 @@
 
         if (prepId != "")
         {
+            
             // Hide the Lookup List
             var lookupList = cmp.find("lookuplist");
             $A.util.addClass(lookupList, 'slds-hide');
@@ -232,7 +237,7 @@
 
             // Lookup Div has selection
             var inputElement = cmp.find('lookup-div');
-            $A.util.addClass(inputElement, 'slds-has-selection');      
+            $A.util.addClass(inputElement, 'slds-has-selection');
         }
         else
         {
@@ -282,6 +287,47 @@
         }else{
             $A.util.removeClass(lookupList, 'slds-dropdown_right');
             $A.util.addClass(lookupList, 'slds-dropdown_left');
+        }
+    },
+    
+    toggleErrorMessage: function(component, status, message){
+        if(status === true){
+            component.set('v.Valid', true);
+        }else {
+            component.set('v.Valid', false);
+            component.set('v.Message', message);
+        }
+    },
+
+    validateRequireField: function(component){
+        // validate required field
+        debugger;
+        if(!component.get('v.Value') && component.get('v.IsRequired') && component.get('v.panelShow')){
+            this.toggleErrorMessage(component, false, $A.get("$Label.c.S360_Field_Required"));
+        }else{
+            this.toggleErrorMessage(component, true);
+            this.validateField(component);
+        }
+    },
+
+    validateField: function(component){
+        // validate field
+        var jsonLogicData = {
+            "value": component.get('v.Value'),
+            "name": component.get('v.CompId'),
+			"data": component.get('v.Data')
+        }
+
+        if(jsonLogic != undefined && jsonLogic != ''){
+            
+            //JSLogic Validation
+            var validateJson = component.get('v.JsonLogic');
+            
+            if(validateJson != undefined && validateJson != "") {
+                var valid = jsonLogic.apply(validateJson, jsonLogicData);
+                
+                this.toggleErrorMessage(component, valid, component.get('v.FailureValidationMessage'));
+            }   
         }
     }
 

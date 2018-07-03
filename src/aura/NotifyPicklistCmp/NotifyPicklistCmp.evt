@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="event to notify component that data ready">
+    <aura:attribute name="CompId" type="string" required="true"/>
+</aura:event>

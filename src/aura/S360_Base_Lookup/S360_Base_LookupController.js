@@ -27,7 +27,6 @@
         //console.log("old value: " + event.getParam("oldValue"));
         //console.log("current value: " + event.getParam("value"));
         //cmp.set("v.searchString", 'XXX');
-        console.log('prep id');
         helper.valuechange(cmp, event);
     },
     
@@ -74,6 +73,25 @@
         }
         
         console.log('yy = ' + comp.get('v.isInitSearchString'));
+    },
+    
+    handleValidationFail: function(component, event, helper){
+        debugger;
+        var params = event.getParam('arguments');
+        var message = '';
+        if (params) {
+            message = params.message || component.get('v.FailureValidationMessage');
+        }
+        helper.toggleErrorMessage(component, false, message);
+    },
+
+    handleValidationSuccess: function(component, event, helper) {
+      component.set('v.Valid', true);
+      component.set('v.Message', "");
+    },
+    
+    handleOnChange: function(component, event, helper){
+        helper.validateRequireField(component);
     }
 
 })

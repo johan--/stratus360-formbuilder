@@ -322,7 +322,14 @@
                 "searchString" : component.get('v.Data')[field] ? component.get('v.Data')[field].Name : '',
                 "dependantField" : dependantField.join(','),
                 "dependantFieldType" : dependantFieldType.join(','),
-                "dependantFieldValue" : dependantFieldValue.join(',')
+                "dependantFieldValue" : dependantFieldValue.join(','),
+                "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
+                "IsRequired": config.validate ? config.validate.required : false,
+                "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
+                "Data": component.getReference('v.Data'),
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "Value": value1,
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 if(component.get('v.Data') && component.get('v.Data')[config.key]){
@@ -1241,10 +1248,12 @@
                 "IsHidden": serverFieldInfo[config.key] ? !serverFieldInfo[config.key].isAccessible : false,
                 "IsRequired": config.validate.required,
                 "IsDisabled": component.get("v.Lockdown") ? component.get("v.Lockdown") : (config.disabled ? config.disabled : serverFieldInfo[config.key] ? (component.get('v.Data') && component.get('v.Data').Id ? !serverFieldInfo[config.key].isUpdateable : !serverFieldInfo[config.key].isCreateable) : false),
-                "Date": value,
+                "Value": value,
                 "Class": config.customClass ? config.customClass : '',
-                "DefaultDate": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
-								"input": config.input
+                "DefaultValue": self.getUrlParam(config.key) ? self.getUrlParam(config.key) : config.defaultValue,
+                "Data": component.getReference('v.Data'),
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -1792,6 +1801,34 @@
                             }
                         }
                         
+                    }else if(componentData[key].get('v.lookup') === true){
+                        // check is required
+                        if(componentData[key].get('v.IsRequired') == true && !component.get('v.Data')[key] && componentData[key].get('v.panelShow')){
+                            componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
+                            isAllValid = false;
+                            continue;
+                        } else {
+                            componentData[key].validationSuccess();
+                        }
+                        
+                        // check validation
+                        if(componentData[key].get('v.JsonLogic')){
+                            var jsonLogicData = {
+                                "value": component.get('v.Data')[key] ? component.get('v.Data')[key] : '',
+                                "name": key,
+                                "data": component.get('v.Data')
+                            }
+                            
+                            debugger;
+                            //JSLogic Validation
+                            var validateJson = componentData[key].get('v.JsonLogic');
+                            var isValid = jsonLogic.apply(validateJson, jsonLogicData);
+                            
+                            if(!isValid){
+                                isAllValid = false;
+                                componentData[key].validationFail();
+                            }
+                        }
                     }
                 }
             }

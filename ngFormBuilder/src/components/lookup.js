@@ -31,12 +31,12 @@ module.exports = function(app) {
           template: 'formio/components/lookup/display.html'
         },
         {
-          name: 'API',
-          template: 'formio/components/common/apiNew.html'
-        },
-        {
           name: 'Validate',
           template: 'formio/components/lookup/validate.html'
+        },
+        {
+          name: 'API',
+          template: 'formio/components/common/apiNew.html'
         }
         ]  
       });
@@ -47,7 +47,7 @@ module.exports = function(app) {
     function($templateCache) {
       $templateCache.put('formio/components/lookup.html',
        '<div class="form-group">' +
-        '<label>{{component.label}}</label>' +
+        '<label class="control-label ng-binding ng-scope" ng-class="{\'field-required\': component.validate.required}">{{component.label}}</label>' +
         '<div class="input-group" id="inputsLabelPosition">' +
           '<input type="text" class="form-control"/>' +
           '<span class="input-group-addon">' +
@@ -59,7 +59,7 @@ module.exports = function(app) {
 
       $templateCache.put('formio/componentsView/lookup.html',
        '<div class="form-group">' +
-        '<label>{{component.label}}</label>' +
+        '<label class="control-label ng-binding ng-scope" ng-class="{\'field-required\': component.validate.required}">{{component.label}}</label>' +
         '<div class="input-group" id="inputsLabelPosition">' +
           '<input type="text" class="form-control"/>' +
           '<span class="input-group-addon">' +
@@ -71,7 +71,7 @@ module.exports = function(app) {
 
       $templateCache.put('formio/formbuilder/lookup.html',
        '<div class="form-group">' +
-        '<label>{{component.label}}</label>' +
+        '<label class="control-label ng-binding ng-scope" ng-class="{\'field-required\': component.validate.required}">{{component.label}}</label>' +
         '<div class="input-group" id="inputsLabelPosition">' +
           '<input type="text" class="form-control"/>' +
           '<span class="input-group-addon">' +

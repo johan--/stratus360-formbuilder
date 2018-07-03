@@ -4,6 +4,13 @@
     <!--ltng:require styles="/resource/SLDSv213/assets/styles/salesforce-lightning-design-system.css" /-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Attributes -->
+    
+    
+    <!-- static value -->
+    <!-- lookup equal to true means that we able to set/modify lookup type value of this component -->
+    <aura:attribute name="lookup" type="boolean" default="true"/>
+    
+    
      <aura:attribute name="CompId" type="String" required="true" 
         description="The unique name of the Lookup Component" />
     <aura:attribute name="sObjectAPIName" type="String" required="true" 
@@ -49,11 +56,29 @@
     <aura:attribute name="oldSearchString" type="string" default=""/>
     <aura:attribute name="isInitSearchString" type="boolean" default="true"/>
     
+    <!-- validation attribute -->
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
+    <aura:attribute name="Value" type="Object" default="{}"/>
+	<aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
+    <aura:attribute name="Message" type="string" default="" access="private"/>
+    
     <!-- define methods -->
     <aura:method name="clearLookup" action="{!c.methodHandleClearLookup}" access="public" 
                  description="method to clear lookup comp"/>
     <aura:method name="prepareLookup" action="{!c.methodHandlePrepare}" access="public" 
                  description="method to prepare comp"/>
+    
+    <!-- validation method -->
+	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
+    
+    <aura:handler name="change" value="{!v.Value}" action="{!c.handleOnChange}"/>
    
     <!-- Lookup Markup : See https://www.lightningdesignsystem.com/components/lookups -->
     <div class="{!'slds ' + (v.IsHidden ? 'slds-hide' : 'slds-show')}">
@@ -61,8 +86,8 @@
             <!-- This is the Input form markup -->
             <div class="slds-form-element">
                 <label class="{!(v.label == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
-                    <abbr class="{! 'slds-required ' + (v.IsRequired ? '' : 'slds-hide')}" title="required">*</abbr>
                     {! v.label}
+                    <abbr class="{! 'slds-required ' + (v.IsRequired ? '' : 'slds-hide')}" title="required">*</abbr>
                 </label>
                 <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
                     <!-- This markup is for when an item is currently selected -->
@@ -109,5 +134,11 @@
 
             </div>
         </div>
+        
+        <aura:renderIf isTrue="{!v.Valid != true}">
+            <ui:message title="Warning" severity="warning" closable="false">
+                <aura:unescapedHtml value="{!v.Message}"/>
+            </ui:message>
+        </aura:renderIf>
     </div>
 </aura:component>
