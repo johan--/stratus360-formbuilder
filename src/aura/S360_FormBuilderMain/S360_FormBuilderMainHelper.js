@@ -32,7 +32,7 @@
       child = component.find('S360_FormBuilderCustom');
     }
     try {
-      var isSignatureEnabled = component.get('v.isSignatureEnabled');
+      /*var isSignatureEnabled = component.get('v.isSignatureEnabled');
       var canvasDataUrl;
 
       if (isSignatureEnabled) {
@@ -41,7 +41,10 @@
           isSignatureEnabled = false;
         }
         canvasDataUrl = canvasDataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
-      }
+      }*/
+       	// code above already handled in startdard/custom component in submitEvent helper
+       	var isSignatureEnabled = component.get('v.isSignatureEnabled');
+        var canvasDataUrl = component.get('v.canvasDataUrl');
 
       var action = component.get('c.saveUpsertRecord');
       //debugger;

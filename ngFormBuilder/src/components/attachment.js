@@ -21,7 +21,11 @@ module.exports = function (app) {
                     {
                         name: 'Display',
                         template: 'formio/components/attachment/display.html'
-                    }
+                    },
+                    {
+                        name: 'Validation',
+                        template: 'formio/components/attachment/validate.html'
+                    },
                 ]
             });
         }
@@ -81,6 +85,14 @@ module.exports = function (app) {
 
                 '</ng-form>'
             );
+
+            // Create the Validation markup.
+            $templateCache.put('formio/components/attachment/validate.html',
+                '<ng-form>' +
+                '<form-builder-field-attachment-validation></form-builder-field-attachment-validation>' +
+                '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
+                '</ng-form>'
+                );
 
         }
     ]);

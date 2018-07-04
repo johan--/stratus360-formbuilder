@@ -29,6 +29,7 @@
     <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
     <aura:attribute name="signatureData" type="Object"/>
     <aura:attribute name="canvas" type="Object"/>
+    <aura:attribute name="canvasDataUrl" type="String"/>
 
     <!-- Input parameter -->
     <aura:attribute name="formConfigName" type="String" default="" access="global"/>
@@ -86,6 +87,7 @@
                                     	  isSignatureEnabled="{!v.isSignatureEnabled}"
                                           signatureData="{!v.signatureData}"
                                     	  canvas="{!v.canvas}"
+                                    	  canvasDataUrl="{!v.canvasDataUrl}"
                                     	  availableFlowAction="{!v.availableFlowAction}"
                                     	  flowData="{!v.flowData}"
                                     	  inputFlow="{!v.inputFlow}"

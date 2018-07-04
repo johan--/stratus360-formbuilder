@@ -510,7 +510,11 @@
                 "recordId": id,
                 "signaturePad" : signatureData,
                 "canvas" : canvas,
-                "showControllButton" : false
+                "showControllButton" : false,
+                "IsRequired" : config.validate ? config.validate.required : false,
+                "Data": component.getReference('v.Data'),
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 component.set('v.isSignatureEnabled', true);
@@ -1730,6 +1734,7 @@
 
     submitEvent: function(component, sender){
         debugger;
+        var self = this;
         //console.log("FORM PATTER" +JSON.stringify(component.get("v.formPattern")));
         var isAllValid = true;
         // validate fields before submit
@@ -1815,6 +1820,51 @@
                         if(componentData[key].get('v.JsonLogic')){
                             var jsonLogicData = {
                                 "value": component.get('v.Data')[key] ? component.get('v.Data')[key] : '',
+                                "name": key,
+                                "data": component.get('v.Data')
+                            }
+                            
+                            debugger;
+                            //JSLogic Validation
+                            var validateJson = componentData[key].get('v.JsonLogic');
+                            var isValid = jsonLogic.apply(validateJson, jsonLogicData);
+                            
+                            if(!isValid){
+                                isAllValid = false;
+                                componentData[key].validationFail();
+                            }
+                        }
+                    }else if(componentData[key].get('v.signature') === true){
+                        var isSignatureEnabled = component.get('v.isSignatureEnabled');
+                        var canvasDataUrl;
+                        
+                        //componentData[key].setValidating(true);
+                        
+                        canvasDataUrl = self.getExactSignatureDataUrl(component.get('v.canvas'));
+                        
+                        //componentData[key].setValidating(false);
+                        
+                        
+                        if (!canvasDataUrl) {
+                            isSignatureEnabled = false;
+                            component.get('v.isSignatureEnabled', isSignatureEnabled);
+                        }
+                        
+                        if (!canvasDataUrl && componentData[key].get('v.IsRequired') == true) {
+                            componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
+                            isAllValid = false;
+                            continue;
+                        }else {
+                            componentData[key].validationSuccess();
+                        }
+                        
+                        canvasDataUrl = canvasDataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
+                        component.set('v.canvasDataUrl', canvasDataUrl);
+                        
+                        // check validation
+                        if(componentData[key].get('v.JsonLogic')){
+                            var jsonLogicData = {
+                                "length": canvasDataUrl ? canvasDataUrl.length : 0,
                                 "name": key,
                                 "data": component.get('v.Data')
                             }
@@ -1930,5 +1980,56 @@
         }
 
         component.set('v.outputFlow', JSON.stringify(outputFlow));
-    }
+    },
+    
+    getExactSignatureDataUrl: function(canvas) {
+        var ctx = canvas.getContext('2d');
+        
+        var w = canvas.width,
+            h = canvas.height,
+            pix = {
+                x: [],
+                y: []
+            },
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height),
+            x, y, index;
+        
+        for (y = 0; y < h; y++) {
+            for (x = 0; x < w; x++) {
+                index = (y * w + x) * 4;
+                if (imageData.data[index + 3] > 0) {
+                    
+                    pix.x.push(x);
+                    pix.y.push(y);
+                    
+                }
+            }
+        }
+        pix.x.sort(function(a, b) {
+            return a - b
+        });
+        pix.y.sort(function(a, b) {
+            return a - b
+        });
+        var n = pix.x.length - 1;
+        
+        w = pix.x[n] - pix.x[0];
+        h = pix.y[n] - pix.y[0];
+        
+        if(w && h){
+            debugger;
+            var cut = ctx.getImageData(pix.x[0], pix.y[0], w, h);
+            
+            
+            var hl = document.createElement('canvas');
+            hl.width = w;
+            hl.height = h;
+            
+            hl.getContext('2d').putImageData(cut, 0, 0);
+            
+            return hl.toDataURL();    
+        }else{
+            return '';
+        }
+    },
 })

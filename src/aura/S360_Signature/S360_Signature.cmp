@@ -2,23 +2,55 @@
         controller="S360_Signature_Ctrl" access="global">
     <ltng:require scripts="{!$Resource.SignaturePad}" afterScriptsLoaded="{!c.doInit}" />
     
+    <!-- static value -->
+    <!-- input equal to true means that we able to set/modify value of this component -->
+    <aura:attribute name="signature" type="boolean" default="true"/>
+    
     <!-- Id of the Account the page hosting this component is showing -->
     <aura:attribute name="recordId" type="Id" />
     <aura:attribute name="signaturePad" type="Object" />
     <aura:attribute name="canvas" type="Object" />
     
+    <aura:attribute name="IsValidating" type="boolean" default="false"/>
     <aura:attribute name="showControllButton" type="boolean" default="true"/>
     
-    <div class="slds slds-grid slds-wrap" style="margin-bottom:4px;">
-        <!--ui:outputText value="aaa"/-->
-    </div>
-    <div class="slds slds-grid slds-wrap">
-        <div class="slds-size--1-of-1">
+    <aura:attribute name="IsHidden" type="boolean" default="false"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    
+    <!-- validation attribute -->
+	<aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
+    <aura:attribute name="Message" type="string" default="" access="private"/>
+    
+    <!-- validation method -->
+	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
+    
+    <aura:method name="setValidating" action="{!c.handleSetValidating}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="status" type="boolean" default=""/>
+    </aura:method>
+    
+    <div class="{!(v.IsHidden ? 'slds-hide' : 'slds-show slds slds-grid slds-wrap')}">
+        <div class="slds-size--1-of-1" style="position:relative">
             <button class="slds-button slds-button_icon btn-refresh" onclick="{!c.clearSignatureOnClick}">
-                @
-                <!--S360_FA:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#refresh'}"  Name="refresh" Category="utility" Size="small"/>
-                <span class="slds-assistive-text">Refresh</span-->
+                <lightning:icon iconName="action:remove" alternativeText="Remove" size="xx-small"/>
             </button>
+            
+            <label class="abbr-required" style="{! 'display:' + (v.IsRequired ? 'block' : 'none')}">
+                <lightning:icon iconName="utility:frozen" variant="error" alternativeText="Remove" size="xx-small"/>
+            </label>
+            
+            <aura:if isTrue="{!v.IsValidating}">
+                <div class="canvas-validation">Validating Signature...</div>
+            </aura:if>
+            
             <canvas id="signature-pad" aura:id="signature-pad"></canvas>
             
         </div>
@@ -31,5 +63,11 @@
                 <button class="slds-size--1-of-1 slds-button slds-button--neutral" onclick="{!c.saveSignatureOnClick}">test2</button>
             </div>
         </aura:if>
+        
+        <aura:renderIf isTrue="{!v.Valid != true}">
+            <ui:message title="Warning" severity="warning" closable="false">
+                <aura:unescapedHtml value="{!v.Message}"/>
+            </ui:message>
+        </aura:renderIf>
     </div>
 </aura:component>

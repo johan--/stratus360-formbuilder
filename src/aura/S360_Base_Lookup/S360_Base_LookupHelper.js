@@ -329,6 +329,6 @@
                 this.toggleErrorMessage(component, valid, component.get('v.FailureValidationMessage'));
             }   
         }
-    }
+    },
 
 })
