@@ -20,6 +20,7 @@
             //"dataId" : component.get('v.dataId') ? component.get('v.dataId') : (helper.getUrlParam('id') ? helper.getUrlParam('id') : '')
         });
         action.setCallback(this, function(response){
+          debugger;
             if(component.isValid() && response.getState() == 'SUCCESS'){
                 var res = response.getReturnValue();
                 console.log(res);
@@ -206,17 +207,6 @@
       component.set("v.language", lang);
       var init = component.get('c.init');
       $A.enqueueAction(init);
-    },
-    
-    jsonLogicLibrary: function(component){
-        if(jsonLogic != undefined && jsonLogic != ''){
-            jsonLogic.add_operation("Math", Math);
-            jsonLogic.add_operation("Date", Date);
-            var dateParse = function(data2parse){
-                return Date.parse(data2parse);
-            }
-            jsonLogic.add_operation("dateParse", dateParse);
-        }
     }
 
     // autoSave: function(component, event, helper){
