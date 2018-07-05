@@ -537,58 +537,112 @@
               if(frAttach && frAttach.value){
                 frMerge = JSON.parse(frAttach.value);
               }
-              var enMerge = JSON.parse(jsonFieldElement.value);
-              frMap = {};
-              for(var i in frMerge.components){
-                console.log(frMerge.components[i].$$hashKey);
-                frMapTo = {};
-                if(frMerge.components[i].label){
-                  frMapTo["label"] =  frMerge.components[i].label;
-                }
-                if(frMerge.components[i].placeholder){
-                  frMapTo["placeholder"] =  frMerge.components[i].placeholder;
-                }
-                if(frMerge.components[i].description){
-                  frMapTo["description"] =  frMerge.components[i].description;
-                }
-                if(frMerge.components[i].title){
-                  frMapTo["title"] =  frMerge.components[i].title;
-                }
-                if(frMerge.components[i].legend){
-                  frMapTo["legend"] =  frMerge.components[i].legend;
-                }
-                if(frMerge.components[i].errorLabel){
-                  frMapTo["errorLabel"] =  frMerge.components[i].errorLabel;
-                }
-                if(frMerge.components[i].errorMessage){
-                  frMapTo["errorMessage"] =  frMerge.components[i].errorMessage;
-                }
-                if(frMerge.components[i].successMessage){
-                  frMapTo["successMessage"] =  frMerge.components[i].successMessage;
-                }
-                if(frMerge.components[i].data && frMerge.components[i].data.values){
-                  frMapTo["data.values"] =  frMerge.components[i].data.values;
-                }
-                if(frMerge.components[i].values){
-                  frMapTo["values"] =  frMerge.components[i].values;
-                }
-                frMap[frMerge.components[i].$$hashKey] = frMapTo;
-              }
-              frMerge = enMerge;
-              for(var i in frMerge.components){
-                for(var item in frMap[frMerge.components[i].$$hashKey]){
-                  frMerge.components[i][item] = frMap[frMerge.components[i].$$hashKey][item];
-                }
-              }
-              // _.mergeWith(frMerge, enMerge, function(objValue, srcValue, key, object, source, stack){
-              //   if(key == 'label'){
-  	          //      return objValue;
-              //    }
-              // });
-              frAttach.value = JSON.stringify(frMerge);
+              var frMap = createFRMap(frMerge);
+              console.log("MAPPING");
+              console.log(JSON.stringify(frMap));
               console.log(JSON.stringify(frMerge));
+              var enMerge = JSON.parse(jsonFieldElement.value);
               console.log(JSON.stringify(enMerge));
+              frMerge = enMerge;
+
+              frMerge = merge(frMap, frMerge);
+              //console.log(JSON.stringify(frMerge));
+              console.log(frMerge);
+              frAttach.value = JSON.stringify(frMerge) ;
+              // console.log(JSON.stringify(frMerge));
+              // console.log(JSON.stringify(enMerge));
             }
+        }
+
+        function merge(frMap1, frMerge1){
+          debugger;
+          console.log(JSON.stringify(frMap1));
+          console.log(JSON.stringify(frMerge1));
+          for(var i in frMerge1.components){
+              for(var item in frMap1[frMerge1.components[i].$$hashKey]){
+                if(item == "columns"){
+                  for(var j in frMap1[frMerge1.components[i].$$hashKey][item]){
+                    frMerge1.components[i][item][j] = merge(frMap1[frMerge1.components[i].$$hashKey][item][j].components, frMerge1.components[i][item][j]);
+                  }
+                } else if(item == "components"){
+                  frMerge1.components[i] = merge(frMap1[frMerge1.components[i].$$hashKey].components, frMerge1.components[i]);
+                } else if (item == "rows"){
+                  for(var j in frMap1[frMerge1.components[i].$$hashKey][item]){
+                    for(var k in frMap1[frMerge1.components[i].$$hashKey][item][j]){
+                      frMerge1.components[i][item][j][k] = merge(frMap1[frMerge1.components[i].$$hashKey][item][j][k].components, frMerge1.components[i][item][j][k]);
+                    }
+                  }
+                } else {
+                  frMerge1.components[i][item] = frMap1[frMerge1.components[i].$$hashKey][item];
+              }
+            }
+          }
+          return frMerge1;
+        }
+
+        function createFRMap(frMerge){
+          debugger;
+          var frMap = {};
+          for(var i in frMerge.components){
+            var frMapTo = {};
+            // console.log(JSON.stringify(frMerge.components[i]));
+            if(frMerge.components[i].label){
+              frMapTo["label"] =  frMerge.components[i].label;
+            }
+            if(frMerge.components[i].placeholder){
+              frMapTo["placeholder"] =  frMerge.components[i].placeholder;
+            }
+            if(frMerge.components[i].description){
+              frMapTo["description"] =  frMerge.components[i].description;
+            }
+            if(frMerge.components[i].title){
+              frMapTo["title"] =  frMerge.components[i].title;
+            }
+            if(frMerge.components[i].legend){
+              frMapTo["legend"] =  frMerge.components[i].legend;
+            }
+            if(frMerge.components[i].errorLabel){
+              frMapTo["errorLabel"] =  frMerge.components[i].errorLabel;
+            }
+            if(frMerge.components[i].errorMessage){
+              frMapTo["errorMessage"] =  frMerge.components[i].errorMessage;
+            }
+            if(frMerge.components[i].successMessage){
+              frMapTo["successMessage"] =  frMerge.components[i].successMessage;
+            }
+            if(frMerge.components[i].data && frMerge.components[i].data.values){
+              frMapTo["data.values"] =  frMerge.components[i].data.values;
+            }
+            if(frMerge.components[i].values){
+              frMapTo["values"] =  frMerge.components[i].values;
+            }
+            if(frMerge.components[i].components){
+              frMapTo["components"] = createFRMap(frMerge.components[i]);
+            }
+            if(frMerge.components[i].columns){
+              // console.log(JSON.stringify(frMerge.components[i].columns));
+              frMapTo["columns"] = [];
+              // console.log(frMapTo["columns"]);
+              for(var j in frMerge.components[i].columns){
+                // console.log(JSON.stringify(frMerge.components[i].columns[j]));
+                console.log(JSON.stringify(createFRMap(frMerge.components[i].columns[j])));
+                frMapTo["columns"][j] = ({"components" : createFRMap(frMerge.components[i].columns[j])});
+              }
+            }
+            if(frMerge.components[i].rows){
+              // console.log(JSON.stringify(frMerge.components[i].rows));
+              frMapTo["rows"] = []
+              for(var j in frMerge.components[i].rows){
+                frMapTo["rows"][j] = [];
+                for(var k in frMerge.components[i].rows[j]){
+                  frMapTo["rows"][j][k] = {components : createFRMap(frMerge.components[i].rows[j][k])};
+                }
+              }
+            }
+            frMap[frMerge.components[i].$$hashKey] = frMapTo;
+          }
+          console.log(JSON.stringify(frMap));
+          return frMap;
         }
 
         function collectField(data){

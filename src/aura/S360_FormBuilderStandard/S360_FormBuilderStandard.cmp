@@ -17,6 +17,7 @@
     <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
 
     <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
+    <aura:attribute name="signatureCompId" type="String"/>
     <aura:attribute name="signatureData" type="Object"/>
     <aura:attribute name="canvas" type="Object"/>
     <aura:attribute name="canvasDataUrl" type="String"/>

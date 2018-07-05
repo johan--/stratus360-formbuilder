@@ -78,6 +78,7 @@
         "data": data1,
         "relatedData": component.get('v.RelatedData'),
         "isSignatureEnabled": isSignatureEnabled,
+        "signatureCompId": component.get('v.signatureCompId'),
         "signatureData": canvasDataUrl,
         "isSaveToStorage": component.get("v.FormConfig").S360_FA__Save_to_Storage__c
       });

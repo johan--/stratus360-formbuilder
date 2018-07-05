@@ -19,9 +19,15 @@
 }
 
 
-.THIS.slds-show {
+/*.THIS.slds-show {
     border-radius: 10px;
     width:600px;
   	background-color: #f7f7d9;
 
+}*/
+
+.THIS.background{
+    border-radius: 10px;
+    width:600px;
+  	background-color: #f7f7d9;
 }

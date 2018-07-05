@@ -8,6 +8,7 @@
     
     <!-- Id of the Account the page hosting this component is showing -->
     <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="CompId" type="String" default=""/>
     <aura:attribute name="signaturePad" type="Object" />
     <aura:attribute name="canvas" type="Object" />
     

@@ -28,6 +28,7 @@
     <!-- signature attributes -->
     <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
     <aura:attribute name="signatureData" type="Object"/>
+    <aura:attribute name="signatureCompId" type="String"/>
     <aura:attribute name="canvas" type="Object"/>
     <aura:attribute name="canvasDataUrl" type="String"/>
 
@@ -85,6 +86,7 @@
                                           isCaptchaEnabled="{!v.isCaptchaEnabled}"
                                           isCaptchaSuccess="{!v.isCaptchaSuccess}"
                                     	  isSignatureEnabled="{!v.isSignatureEnabled}"
+                                    	  signatureCompId="{!v.signatureCompId}"
                                           signatureData="{!v.signatureData}"
                                     	  canvas="{!v.canvas}"
                                     	  canvasDataUrl="{!v.canvasDataUrl}"

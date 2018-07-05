@@ -89,6 +89,7 @@ module.exports = function (app) {
             // Create the Validation markup.
             $templateCache.put('formio/components/attachment/validate.html',
                 '<ng-form>' +
+                '<form-builder-option property="validate.required"></form-builder-option>' +
                 '<form-builder-field-attachment-validation></form-builder-field-attachment-validation>' +
                 '<form-builder-option-custom-validation></form-builder-option-custom-validation>' +
                 '</ng-form>'

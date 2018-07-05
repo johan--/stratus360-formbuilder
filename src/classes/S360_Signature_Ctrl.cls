@@ -51,12 +51,13 @@ public class S360_Signature_Ctrl {
     
     
     @AuraEnabled
-    public static String upsertSignature(String demoReportId, String b64SignData){
+    public static String upsertSignature(String CompId, String parentId, String b64SignData){
         try {
-            String fileName = 'Sig__' + String.valueOf(System.now()) + '__' + demoReportId;
+            //String fileName = 'Sig__' + String.valueOf(System.now()) + '__' + parentId;
+            String fileName = 'Sig__' + CompId + '__' + parentId;
             
             //get content document link
-           	List<ContentDocumentLink> lcdl = [select ContentDocumentId from ContentDocumentLink where LinkedEntityId = :demoReportId];
+           	List<ContentDocumentLink> lcdl = [select ContentDocumentId from ContentDocumentLink where LinkedEntityId = :parentId];
             if(lcdl.size() > 0){
             	// insert cv
                 ContentVersion cvToInsert = new ContentVersion();
@@ -78,7 +79,7 @@ public class S360_Signature_Ctrl {
                 // Insert Content Document Link
                 ContentDocumentLink cdl = new ContentDocumentLink();
                 cdl.ContentDocumentId = conDocId;
-                cdl.LinkedEntityId = demoReportId;
+                cdl.LinkedEntityId = parentId;
                 cdl.ShareType = 'V';
                 cdl.Visibility = 'AllUsers';
                 
@@ -102,10 +103,11 @@ public class S360_Signature_Ctrl {
     }
     
     @AuraEnabled
-    public static String getSignature(string parentId){
+    public static String getSignature(string CompId, string parentId){
+        String fileName = 'Sig__' + CompId + '__' + parentId;
         List<ContentDocumentLink> lcdl = [select Id, ContentDocumentId, LinkedEntityId from ContentDocumentLink where LinkedEntityId = :parentId];
         if(lcdl.size() > 0){
-            List<ContentVersion> cv = [select Id, title, pathOnClient, versionData from ContentVersion where ContentDocumentId = :lcdl[0].ContentDocumentId and IsLatest = true limit 1];
+            List<ContentVersion> cv = [select Id, title, pathOnClient, versionData from ContentVersion where title = :fileName and ContentDocumentId = :lcdl[0].ContentDocumentId and IsLatest = true limit 1];
             if(cv.size() > 0){
              	return EncodingUtil.base64Encode(cv[0].VersionData);   
             }

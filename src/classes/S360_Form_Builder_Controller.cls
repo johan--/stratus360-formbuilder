@@ -196,7 +196,7 @@ public class S360_Form_Builder_Controller {
 
     @AuraEnabled
     public static Map<String, Object> saveUpsertRecord(sobject data, Map<String, List<object>> relatedData,
-        boolean isSignatureEnabled, string signatureData, boolean isSaveToStorage){
+        boolean isSignatureEnabled, string signatureCompId, string signatureData, boolean isSaveToStorage){
         System.debug(data);
         System.debug(relatedData);
 
@@ -331,7 +331,7 @@ public class S360_Form_Builder_Controller {
 
             // upsert signature data
             if(isSignatureEnabled){
-                String res = S360_Signature_Ctrl.upsertSignature(data.Id, signatureData);
+                String res = S360_Signature_Ctrl.upsertSignature(signatureCompId, data.Id, signatureData);
 
                 if(res != ''){
             		serverResponse.put('status', false);

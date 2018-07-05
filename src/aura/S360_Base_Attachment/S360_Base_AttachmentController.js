@@ -87,22 +87,49 @@
         component.set("v.fileQueue", fileQueue);
     },
     showDiv : function(component, event, helper) {
-        component.set("v.start","true");
+        var whichFired = event.getSource().getLocalId();
+        var whichRequired = component.get('v.RequiredFieldAttachment');
+        
         var displayDiv = component.find('uploadDiv')
-        $A.util.toggleClass(displayDiv, "slds-show");
+        
+        if(whichFired == '0' && whichRequired == 'yes'){
+            $A.util.removeClass(displayDiv, "slds-hide");
+        }else if(whichFired == '0' && whichRequired != 'yes'){
+            $A.util.addClass(displayDiv, "slds-hide");
+        }
+        
+        if(whichFired == '1' && whichRequired == 'no'){
+            $A.util.removeClass(displayDiv, "slds-hide");
+        }else if(whichFired == '1' && whichRequired != 'no'){
+            $A.util.addClass(displayDiv, "slds-hide");
+        }
+        
+        if(whichRequired == 'all' || whichRequired == 'none'){
+        	$A.util.toggleClass(displayDiv, "slds-hide");
+        }
+        
+        component.set('v.Value', whichFired);
+        
+        /*component.set("v.start","true");
+        var displayDiv = component.find('uploadDiv')
+        $A.util.toggleClass(displayDiv, "slds-hide");
+        $A.util.toggleClass(displayDiv, "slds-show");*/
 	},
 
     hideDiv : function(component, event, helper){
         if(component.get("v.start")=="true"	){
             var displayDiv = component.find('uploadDiv')
             $A.util.toggleClass(displayDiv, "slds-show");
+            $A.util.toggleClass(displayDiv, "slds-hide");
+            
         }
 	},
     
     showModal: function(component, event, helper){
         	helper.getFiles(component);
     		var displayDiv = component.find('modalWindow')
-            $A.util.toggleClass(displayDiv, "slds-show");
+            $A.util.toggleClass(displayDiv, "slds-hide");
+        	$A.util.toggleClass(displayDiv, "slds-show");
 	},
     
     closeModal: function(component, event, helper){
@@ -110,11 +137,27 @@
         	component.set("v.fileQueue",[]);
     		var displayDiv = component.find('modalWindow')
             $A.util.toggleClass(displayDiv, "slds-show");
+        	$A.util.toggleClass(displayDiv, "slds-hide");
 	},
     
     saveModal: function(component, event, helper){
         	
     		var displayDiv = component.find('modalWindow')
             $A.util.toggleClass(displayDiv, "slds-show");
-	}
+       		$A.util.toggleClass(displayDiv, "slds-hide");
+	},
+    
+    handleValidationFail: function(component, event, helper){
+        var params = event.getParam('arguments');
+        var message = '';
+        if (params) {
+            message = params.message || component.get('v.FailureValidationMessage');
+        }
+        helper.toggleErrorMessage(component, false, message);
+    },
+
+    handleValidationSuccess: function(component, event, helper) {
+      component.set('v.Valid', true);
+      component.set('v.Message', "");
+    },
 })

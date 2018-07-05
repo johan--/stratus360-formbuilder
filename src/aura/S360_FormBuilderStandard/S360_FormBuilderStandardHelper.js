@@ -507,6 +507,7 @@
             'c:S360_Signature',
             {
                 "aura:id": config.key,
+                "CompId": config.key,
                 "recordId": id,
                 "signaturePad" : signatureData,
                 "canvas" : canvas,
@@ -518,6 +519,7 @@
             },
             function(newComponent, status, errorMessage){
                 component.set('v.isSignatureEnabled', true);
+                component.set('v.signatureCompId', config.key);
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             });
     },
@@ -1331,10 +1333,14 @@
                 "aura:id": config.key,
                 "CompId": config.key,
                 "fieldName": config.label,
-                "message": config.message,
+                "Label": config.message,
                 "master": config.master,
-                "parentId": parentId
-
+                "parentId": parentId,
+                "IsRequired":config.validate.required,
+                "RequiredFieldAttachment":config.validate.fieldRequired,
+                "Data": component.getReference('v.Data'),
+                "JsonLogic": config.validate ? config.validate.json : '',
+                "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
             },
             function(newComponent, status, errorMessage){
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
@@ -1741,7 +1747,6 @@
         if(jsonLogic != undefined && jsonLogic != ''){
             var componentData = component.get('v.componentData');
             for(var key in componentData){
-                debugger;
                 if(componentData.hasOwnProperty(key)){
                     if(componentData[key].get('v.input') === true){
                         // check is required
@@ -1762,7 +1767,6 @@
                                 "data": component.get('v.Data')
                             }
                             
-                            debugger;
                             //JSLogic Validation
                             var validateJson = componentData[key].get('v.JsonLogic');
                             var isValid = jsonLogic.apply(validateJson, jsonLogicData);
@@ -1879,6 +1883,46 @@
                                 componentData[key].validationFail();
                             }
                         }
+                    }else if(componentData[key].get('v.fieldAttachment') === true){
+                        // check is required
+                        debugger;
+                        var val = componentData[key].get('v.Value');
+                        if(componentData[key].get('v.IsRequired') == true && !componentData[key].get('v.Value') && componentData[key].get('v.panelShow')){
+                            componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
+                            isAllValid = false;
+                            continue;
+                        } else {
+                            var whichRequired = componentData[key].get('v.RequiredFieldAttachment');
+                            var myFilesList = componentData[key].get('v.myFilesList');
+                            var isFailed = false;
+                            var errorMessage = '';
+                            if(whichRequired == 'yes' && val == '0'){
+                                if(myFilesList.length == 0){
+                                    isFailed = true;
+                                    errorMessage = 'Attachment is required if you choose Yes';
+                                }
+                            }else if(whichRequired == 'no' && val == '1'){
+                                if(myFilesList.length == 0){
+                                    isFailed = true;
+                                    errorMessage = 'Attachment is required if you choose No';
+                                }
+                            }else if(whichRequired == 'all'){
+                                if(myFilesList.length == 0){
+                                    isFailed = true;
+                                    errorMessage = 'Attachment is required for this field';
+                                }
+                            }
+                            
+                            if(isFailed){
+                                componentData[key].validationFail(errorMessage);
+                                isAllValid = false;
+                                continue;
+                            }else{
+                            	componentData[key].validationSuccess();    
+                            }
+                            
+                        }
+                        
                     }
                 }
             }

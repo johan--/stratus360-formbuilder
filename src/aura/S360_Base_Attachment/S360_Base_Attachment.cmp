@@ -1,9 +1,12 @@
 <aura:component controller="S360_Base_FileUploadController">
     
+    <!-- static value -->
+    <!-- fieldAttachment equal to true means that this component is fieldAttachment type -->
+    <aura:attribute name="fieldAttachment" type="boolean" default="true"/>
+    
     <aura:attribute name="master" type="string" default="" />
     
     <aura:attribute name="FileList" type="String[]"/>
-    <aura:attribute name="message" type="String"/>
     <aura:attribute name="allFilesList" type="Object[]"/>
     <aura:attribute name="myFilesList" type="Object[]"/>
     <aura:attribute name="fileQueue" type="Object[]"/>
@@ -13,9 +16,29 @@
     <aura:attribute name="start" type="string" default="false" />
     <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
     <aura:attribute name="statusFLS" type="String"/>
+    <aura:attribute name="IsRequired" type="Boolean" default="false"/>
+    <aura:attribute name="RequiredFieldAttachment" type="String"/>
+    <aura:attribute name="Value" type="String" default=""/>
+    <aura:attribute name="Label" type="String" default=""/>
+    <aura:attribute name="panelShow" type="boolean" default="true"/>
+    
+    <!-- validation attribute -->
+	<aura:attribute name="JsonLogic" type="string" default=""/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
+    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
+    <aura:attribute name="Message" type="string" default="" access="private"/>
+    
+    <!-- validation method -->
+	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
+    <aura:method name="validationFail" action="{!c.handleValidationFail}">
+        <!-- error message that pass through this method -->
+        <aura:attribute name="message" type="String" default=""/>
+    </aura:method>
+    
 	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 	<div style="position:relative;left:20px;">
-        <b>{!v.message}</b>
+        <b>{!v.Label}</b>
         <br/>
         <br/>
         <div style="width:100px">
@@ -25,18 +48,26 @@
                     <p>Yes</p>
                   </td>
                   <td>
-                    <div><ui:inputRadio aura:id="0" name="{!v.CompId}" change="{!c.showDiv}"/></div>
+                    <!--div><ui:inputRadio aura:id="0" name="{!v.CompId}" change="{!c.showDiv}"/></div-->
+                      <div><ui:inputRadio aura:id="0" name="{!v.CompId}" change="{!c.showDiv}"/></div>
                   </td>
                   &nbsp;&nbsp;
                   <td>
                     <p>No</p>
                   </td>
                   <td>
-                    <div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.hideDiv}"/></div>
+                    <!--div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.hideDiv}"/></div-->
+                      <div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.showDiv}"/></div>
                   </td>
               </tr>
           </table>
     	</div>
+        
+        <aura:renderIf isTrue="{!v.Valid != true}">
+            <ui:message title="Warning" severity="warning" closable="false">
+                <aura:unescapedHtml value="{!v.Message}"/>
+            </ui:message>
+        </aura:renderIf>
     </div>
     <br></br>
 

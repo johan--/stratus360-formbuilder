@@ -32,7 +32,8 @@
         var action = component.get("c.upsertSignature");
         var sig = component.get("v.signaturePad");
         action.setParams({
-            "demoReportId": component.get("v.recordId"),
+            "CompId" : component.get('v.CompId'),
+            "parentId": component.get("v.recordId"),
             "b64SignData": sig.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "")
         });
         action.setCallback(this, function(response) {
@@ -76,6 +77,7 @@
         
 		var action = component.get("c.getSignature");
         action.setParams({
+            "CompId" : component.get('v.CompId'),
             "parentId": component.get('v.recordId'),
         });
         action.setCallback(this, function(response) {
