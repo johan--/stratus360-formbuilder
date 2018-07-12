@@ -1325,7 +1325,12 @@
 
         var self = this;
         var parentId = component.getReference('v.Data.Id');
-
+				var PicklistKeyVal = {};
+				config.values.forEach(function(item){
+            if(item.label != '' && item.value != ''){
+             	PicklistKeyVal[item.label] = item.value;
+            }
+        });
         // add to temporary flow data
         $A.createComponent(
             'c:S360_Base_Attachment',
@@ -1336,8 +1341,10 @@
                 "Label": config.message,
                 "master": config.master,
                 "parentId": parentId,
-                "IsRequired":config.validate.required,
-                "RequiredFieldAttachment":config.validate.fieldRequired,
+								"picklist": config.picklist? config.picklist : false,
+								"KeyVal": PicklistKeyVal,
+                "IsRequired":config.validate ? config.validate.required : false,
+                //"RequiredFieldAttachment":config.validate.fieldRequired,
                 "Data": component.getReference('v.Data'),
                 "JsonLogic": config.validate ? config.validate.json : '',
                 "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
@@ -1346,7 +1353,7 @@
                 self.callbackHandler(config, component, newComponent, status, errorMessage);
             });
     },
-    
+
     generateProgressPath: function(component, config){
 
         var self = this;
@@ -1758,7 +1765,7 @@
                         } else {
                             componentData[key].validationSuccess();
                         }
-                        
+
                         // check validation
                         if(componentData[key].get('v.JsonLogic')){
                             var jsonLogicData = {
@@ -1766,11 +1773,11 @@
                                 "name": key,
                                 "data": component.get('v.Data')
                             }
-                            
+
                             //JSLogic Validation
                             var validateJson = componentData[key].get('v.JsonLogic');
                             var isValid = jsonLogic.apply(validateJson, jsonLogicData);
-                            
+
                             if(!isValid){
                                 isAllValid = false;
                                 componentData[key].validationFail();
@@ -1783,13 +1790,13 @@
                             isAllValid = false;
                             continue;
                         }
-                        
+
                         // create new record operation
                         if(!component.get('v.Data')['Id']){
                             component.set('v.AttachmentsData',
                                           componentData[key].get('v.objectWrapper').map(x => x.payload));
                         }
-                        
+
                         // check validation
                         if(componentData[key].get('v.JsonLogic')){
                             var jsonLogicData = {
@@ -1797,11 +1804,11 @@
                                 "name": key,
                                 "data": component.get('v.Data')
                             }
-                            
+
                             //JSLogic Validation
                             var validateJson = componentData[key].get('v.JsonLogic');
                             var isValid = jsonLogic.apply(validateJson, jsonLogicData);
-                            
+
                             if(!isValid){
                                 isAllValid = false;
                                 componentData[key].validationFail();
@@ -1809,7 +1816,7 @@
                                 componentData[key].validationSuccess();
                             }
                         }
-                        
+
                     }else if(componentData[key].get('v.lookup') === true){
                         // check is required
                         if(componentData[key].get('v.IsRequired') == true && !component.get('v.Data')[key] && componentData[key].get('v.panelShow')){
@@ -1819,7 +1826,7 @@
                         } else {
                             componentData[key].validationSuccess();
                         }
-                        
+
                         // check validation
                         if(componentData[key].get('v.JsonLogic')){
                             var jsonLogicData = {
@@ -1827,12 +1834,12 @@
                                 "name": key,
                                 "data": component.get('v.Data')
                             }
-                            
+
                             debugger;
                             //JSLogic Validation
                             var validateJson = componentData[key].get('v.JsonLogic');
                             var isValid = jsonLogic.apply(validateJson, jsonLogicData);
-                            
+
                             if(!isValid){
                                 isAllValid = false;
                                 componentData[key].validationFail();
@@ -1841,19 +1848,19 @@
                     }else if(componentData[key].get('v.signature') === true){
                         var isSignatureEnabled = component.get('v.isSignatureEnabled');
                         var canvasDataUrl;
-                        
+
                         //componentData[key].setValidating(true);
-                        
+
                         canvasDataUrl = self.getExactSignatureDataUrl(component.get('v.canvas'));
-                        
+
                         //componentData[key].setValidating(false);
-                        
-                        
+
+
                         if (!canvasDataUrl) {
                             isSignatureEnabled = false;
                             component.get('v.isSignatureEnabled', isSignatureEnabled);
                         }
-                        
+
                         if (!canvasDataUrl && componentData[key].get('v.IsRequired') == true) {
                             componentData[key].validationFail($A.get("$Label.c.S360_Field_Required"));
                             isAllValid = false;
@@ -1861,10 +1868,10 @@
                         }else {
                             componentData[key].validationSuccess();
                         }
-                        
+
                         canvasDataUrl = canvasDataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
                         component.set('v.canvasDataUrl', canvasDataUrl);
-                        
+
                         // check validation
                         if(componentData[key].get('v.JsonLogic')){
                             var jsonLogicData = {
@@ -1872,12 +1879,12 @@
                                 "name": key,
                                 "data": component.get('v.Data')
                             }
-                            
+
                             debugger;
                             //JSLogic Validation
                             var validateJson = componentData[key].get('v.JsonLogic');
                             var isValid = jsonLogic.apply(validateJson, jsonLogicData);
-                            
+
                             if(!isValid){
                                 isAllValid = false;
                                 componentData[key].validationFail();
@@ -1912,31 +1919,31 @@
                                     errorMessage = 'Attachment is required for this field';
                                 }
                             }
-                            
+
                             if(isFailed){
                                 componentData[key].validationFail(errorMessage);
                                 isAllValid = false;
                                 continue;
                             }else{
-                            	componentData[key].validationSuccess();    
+                            	componentData[key].validationSuccess();
                             }
-                            
+
                         }
-                        
+
                     }
                 }
             }
         }
-        
+
         if(!isAllValid){
             return;
         }
-        
+
         if(component.get('v.isCaptchaEnabled') && !component.get('v.isCaptchaSuccess')){
             this.showToast(component, 'warning', $A.get("$Label.c.S360_base_captcha_message"));
             return;
         }
-        
+
         var evt = component.getEvent('S360_FormBuilderEvt');
         evt.setParams({
             "sender": sender,
@@ -2025,10 +2032,10 @@
 
         component.set('v.outputFlow', JSON.stringify(outputFlow));
     },
-    
+
     getExactSignatureDataUrl: function(canvas) {
         var ctx = canvas.getContext('2d');
-        
+
         var w = canvas.width,
             h = canvas.height,
             pix = {
@@ -2037,15 +2044,15 @@
             },
             imageData = ctx.getImageData(0, 0, canvas.width, canvas.height),
             x, y, index;
-        
+
         for (y = 0; y < h; y++) {
             for (x = 0; x < w; x++) {
                 index = (y * w + x) * 4;
                 if (imageData.data[index + 3] > 0) {
-                    
+
                     pix.x.push(x);
                     pix.y.push(y);
-                    
+
                 }
             }
         }
@@ -2056,22 +2063,22 @@
             return a - b
         });
         var n = pix.x.length - 1;
-        
+
         w = pix.x[n] - pix.x[0];
         h = pix.y[n] - pix.y[0];
-        
+
         if(w && h){
             debugger;
             var cut = ctx.getImageData(pix.x[0], pix.y[0], w, h);
-            
-            
+
+
             var hl = document.createElement('canvas');
             hl.width = w;
             hl.height = h;
-            
+
             hl.getContext('2d').putImageData(cut, 0, 0);
-            
-            return hl.toDataURL();    
+
+            return hl.toDataURL();
         }else{
             return '';
         }

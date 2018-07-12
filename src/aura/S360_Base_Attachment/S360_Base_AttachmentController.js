@@ -1,6 +1,24 @@
 ({
     doInit: function(component, event, helper){
+      debugger;
         helper.getFiles(component);
+        if(component.get("v.picklist")){
+          var opts = [];
+          var keyvals = component.get("v.KeyVal");
+          var first = true;
+          for(var i in keyvals){
+            if(first){
+              opts.push({ "class": "optionClass", label: i, value: keyvals[i], selected: "true"});
+              component.set("v.Value", keyvals[i]);
+              first = false;
+            } else {
+              opts.push({ "class": "optionClass", label: i, value: keyvals[i]});
+            }
+          }
+          component.find("pickSelectList").set("v.options", opts);
+        }
+
+        helper.jsonValidate(component);
     },
 
     deleteFile: function(component, event, help){
@@ -8,7 +26,7 @@
         var fileList = component.get("v.myFilesList");
         var file = fileList[identification];
         var valid = true;
-        
+
         var action=component.get("c.deleteAttachmentMapper");
         action.setParams({
             parentId: component.get("v.parentId"),
@@ -16,9 +34,9 @@
             attachId: file.S360_FA__attachId__c,
             customObject:  component.get("v.master")
         });
-                
+
         action.setCallback(this, function(response){
-            var state = response.getState();  
+            var state = response.getState();
             if (state ==="ERROR"){
                 valid = response.getReturnValue();
                 var errors = response.getError();
@@ -37,21 +55,21 @@
             }
         });
         $A.enqueueAction(action);
-        
-        
+
+
     },
-    
+
     removeFromView: function(component, event, helper){
         var identification = event.currentTarget.id;
         var fileNames = component.get("v.FileList");
         fileNames.splice(identification, 1);
         component.set("v.FileList", fileNames);
-        
+
 		var fileQueue = component.get("v.fileQueue");
         fileQueue.splice(identification,1);
         component.set("v.fileQueue", fileQueue);
-	},	
-    
+	},
+
     bindCheckBoxValues: function(component, event, helper){
         var fileList = component.get("v.allFilesList");
         var fieldName = component.get("v.fieldName");
@@ -67,14 +85,14 @@
     doSave: function(component, event, helper) {
         var fileInput = component.get("v.fileQueue");
         var lenOfFileInput = fileInput.length;
-        
+
         if (fileInput.length > 0) {
             helper.uploadHelper(component, event, fileInput, lenOfFileInput, 0);
         } else {
             alert('Please Select a Valid File');
         }
     },
- 
+
     handleFilesChange: function(component, event, helper) {
         var fileInput = component.find("fileId").get("v.files");
         var fileNames = component.get("v.FileList");
@@ -87,29 +105,34 @@
         component.set("v.fileQueue", fileQueue);
     },
     showDiv : function(component, event, helper) {
-        var whichFired = event.getSource().getLocalId();
+      component.set("v.radio", true);
+      helper.jsonValidate(component);
+        // var displayDiv = component.find('uploadDiv')
+        // $A.util.toggleClass(displayDiv, "slds-hide");
+        // $A.util.toggleClass(displayDiv, "slds-show");
+        /*var whichFired = event.getSource().getLocalId();
         var whichRequired = component.get('v.RequiredFieldAttachment');
-        
+
         var displayDiv = component.find('uploadDiv')
-        
+
         if(whichFired == '0' && whichRequired == 'yes'){
             $A.util.removeClass(displayDiv, "slds-hide");
         }else if(whichFired == '0' && whichRequired != 'yes'){
             $A.util.addClass(displayDiv, "slds-hide");
         }
-        
+
         if(whichFired == '1' && whichRequired == 'no'){
             $A.util.removeClass(displayDiv, "slds-hide");
         }else if(whichFired == '1' && whichRequired != 'no'){
             $A.util.addClass(displayDiv, "slds-hide");
         }
-        
+
         if(whichRequired == 'all' || whichRequired == 'none'){
         	$A.util.toggleClass(displayDiv, "slds-hide");
         }
-        
+
         component.set('v.Value', whichFired);
-        
+
         /*component.set("v.start","true");
         var displayDiv = component.find('uploadDiv')
         $A.util.toggleClass(displayDiv, "slds-hide");
@@ -117,21 +140,23 @@
 	},
 
     hideDiv : function(component, event, helper){
-        if(component.get("v.start")=="true"	){
-            var displayDiv = component.find('uploadDiv')
-            $A.util.toggleClass(displayDiv, "slds-show");
-            $A.util.toggleClass(displayDiv, "slds-hide");
-            
-        }
+        //if(component.get("v.start")=="true"	){
+            // var displayDiv = component.find('uploadDiv')
+            // $A.util.toggleClass(displayDiv, "slds-show");
+            // $A.util.toggleClass(displayDiv, "slds-hide");
+
+        //}
+        component.set("v.radio", false);
+        helper.jsonValidate(component);
 	},
-    
+
     showModal: function(component, event, helper){
         	helper.getFiles(component);
     		var displayDiv = component.find('modalWindow')
             $A.util.toggleClass(displayDiv, "slds-hide");
         	$A.util.toggleClass(displayDiv, "slds-show");
 	},
-    
+
     closeModal: function(component, event, helper){
         	component.set("v.FileList",[]);
         	component.set("v.fileQueue",[]);
@@ -139,14 +164,14 @@
             $A.util.toggleClass(displayDiv, "slds-show");
         	$A.util.toggleClass(displayDiv, "slds-hide");
 	},
-    
+
     saveModal: function(component, event, helper){
-        	
+
     		var displayDiv = component.find('modalWindow')
             $A.util.toggleClass(displayDiv, "slds-show");
        		$A.util.toggleClass(displayDiv, "slds-hide");
 	},
-    
+
     handleValidationFail: function(component, event, helper){
         var params = event.getParam('arguments');
         var message = '';
@@ -160,4 +185,15 @@
       component.set('v.Valid', true);
       component.set('v.Message', "");
     },
+
+    handleOnChange : function(component, event, helper) {
+      var data = (component.get("v.Data"));
+      if(component.get("v.picklist")){
+        data[component.get("v.CompId")] = component.get("v.Value");
+      } else {
+        data[component.get("v.CompId")] = component.get("v.radio");
+      }
+      helper.jsonValidate(component);
+    },
+
 })

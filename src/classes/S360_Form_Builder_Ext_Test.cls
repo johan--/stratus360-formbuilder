@@ -16,7 +16,7 @@ public class S360_Form_Builder_Ext_Test {
         // add jsonconfig
         a.jsonConfig = 'test';
         a.save();
-        
+        a.saveAs();
         ApexPages.StandardController stdCtrlb = new ApexPages.StandardController(testFormConfig);
         S360_Form_Builder_Ext b = new S360_Form_Builder_Ext(stdCtrlb);
         
@@ -27,7 +27,8 @@ public class S360_Form_Builder_Ext_Test {
         
         ApexPages.StandardController stdCtrlc = new ApexPages.StandardController(testFormConfig);
         S360_Form_Builder_Ext c = new S360_Form_Builder_Ext(stdCtrlc);
-        
+        a.refreshPage();
+        a.cloneForm();
         System.assertEquals('test-dummy', c.jsonConfig);
     }
     

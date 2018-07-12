@@ -1,13 +1,13 @@
 <aura:component >
-    
+
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
     <aura:attribute name="input" type="boolean" default="true"/>
-    
+
     <aura:attribute name="CompId" type="string" default="DateId" required="true"
-                    description="Unique Id for this component. This id used to identity 
+                    description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when date changed"/>
-    <aura:attribute name="InputLabel" type="string" default="" 
+    <aura:attribute name="InputLabel" type="string" default=""
                     description="Label to display to user"/>
     <aura:attribute name="HelpText" type="string" default=""/>
     <aura:attribute name="IsHidden" type="boolean" default="false"
@@ -22,58 +22,58 @@
                     description="style for date component container"/>
     <aura:attribute name="DefaultValue" type="Date" default=""/>
     <aura:attribute name="panelShow" type="boolean" default="true"/>
-    
+
     <!-- validation attribute -->
 	<aura:attribute name="JsonLogic" type="string" default=""/>
     <aura:attribute name="FailureValidationMessage" type="string" default=""/>
     <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
     <aura:attribute name="Message" type="string" default="" access="private"/>
-    
+
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
-    
+
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     <aura:handler name="change" value="{!v.Value}" action="{!c.handleOnChange}"/>
-    
+
     <!-- validation method -->
 	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
         <aura:attribute name="message" type="String" default=""/>
     </aura:method>
-    
+
     <div class="{!(v.IsHidden ? 'slds-hide ' : 'slds-show slds-form-element ' + v.Class) }">
         <label class="{!(v.InputLabel == '' ? 'slds-hide slds-is-relative' : 'slds-form-element__label')}" for="{!v.CompId}">
-            <abbr class="slds-required" 
+            <abbr class="slds-required"
                   style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
             <aura:unescapedHtml value="{!v.InputLabel}"/>
         </label>
-        
+
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
-        
+
 		<div class="slds-form-element__control label-inactive">
-            <!--ui:inputDate class="DateWidth slds-input input uiInput uiInputText uiInput-|-default uiInput-|-input" required="{!v.IsRequired}" 
-			value="{!v.Date}" displayDatePicker="true" disabled="{!v.IsDisabled}" 
+            <!--ui:inputDate class="DateWidth slds-input input uiInput uiInputText uiInput-|-default uiInput-|-input" required="{!v.IsRequired}"
+			value="{!v.Date}" displayDatePicker="true" disabled="{!v.IsDisabled}"
 			aura:id="{!v.CompId}" label="" focus="{!c.handleOnChange}"/-->
-            
+
             <aura:if isTrue="{!v.IsDisabled}">
                 <ui:outputDate class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input"
                                value="{!v.Date}" format="MMM dd, yyyy"/>
-                
+
                 <aura:set attribute="else">
-                    <ui:inputDate class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input" 
+                    <ui:inputDate class="DateWidth slds-input input uiInput uiInputText uiInput--default uiInput--input"
                                   required="{!v.IsRequired}" 
-                          value="{!v.Value}" displayDatePicker="true" aura:id="{!v.CompId}" 
+                          value="{!v.Value}" displayDatePicker="true" aura:id="{!v.CompId}"
                           label="" format="MMM dd, yyyy"/>
                 </aura:set>
             </aura:if>
         </div>
 	</div>
-    
+
     <aura:renderIf isTrue="{!v.Valid != true}">
         <ui:message title="Warning" severity="warning" closable="false">
             <aura:unescapedHtml value="{!v.Message}"/>
         </ui:message>
     </aura:renderIf>
-    
+
 </aura:component>

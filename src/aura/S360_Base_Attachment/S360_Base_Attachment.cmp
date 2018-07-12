@@ -1,11 +1,11 @@
 <aura:component controller="S360_Base_FileUploadController">
-    
+
     <!-- static value -->
     <!-- fieldAttachment equal to true means that this component is fieldAttachment type -->
     <aura:attribute name="fieldAttachment" type="boolean" default="true"/>
-    
+
     <aura:attribute name="master" type="string" default="" />
-    
+
     <aura:attribute name="FileList" type="String[]"/>
     <aura:attribute name="allFilesList" type="Object[]"/>
     <aura:attribute name="myFilesList" type="Object[]"/>
@@ -21,27 +21,33 @@
     <aura:attribute name="Value" type="String" default=""/>
     <aura:attribute name="Label" type="String" default=""/>
     <aura:attribute name="panelShow" type="boolean" default="true"/>
-    
+    <aura:attribute name="IsHidden" type="boolean" default="true"/>
+    <aura:attribute name="radio" type="boolean" default="false"/>
+    <aura:attribute name="picklist" type="boolean" default="false"/>
+    <aura:attribute name="pickVal" type="String" default=""/>
+    <aura:attribute name="KeyVal" type="Object" default="{}"/>
+    <aura:handler event="c:S360_Base_renderChange" action="{!c.handleOnChange}" />
+
     <!-- validation attribute -->
 	<aura:attribute name="JsonLogic" type="string" default=""/>
     <aura:attribute name="FailureValidationMessage" type="string" default=""/>
     <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
     <aura:attribute name="Message" type="string" default="" access="private"/>
-    
+
     <!-- validation method -->
 	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
         <aura:attribute name="message" type="String" default=""/>
     </aura:method>
-    
+
 	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 	<div style="position:relative;left:20px;">
         <b>{!v.Label}</b>
         <br/>
         <br/>
-        <div style="width:100px">
+        <div style="width:100px" class = "{!(v.picklist ? 'slds-hide' : 'slds-show')}">
           <table>
               <tr>
                   <td>
@@ -57,12 +63,19 @@
                   </td>
                   <td>
                     <!--div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.hideDiv}"/></div-->
-                      <div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.showDiv}"/></div>
+                      <div><ui:inputRadio aura:id="1" name="{!v.CompId}" change="{!c.hideDiv}"/></div>
                   </td>
               </tr>
           </table>
     	</div>
-        
+
+      <div style="width:100px" class = "{!(v.picklist ? 'slds-show' : 'slds-hide')}">
+        <table>
+          <ui:inputSelect class="slds-select" aura:id="pickSelectList" value ="{!v.Value}"
+            change="{!c.handleOnChange}" />
+        </table>
+    </div>
+
         <aura:renderIf isTrue="{!v.Valid != true}">
             <ui:message title="Warning" severity="warning" closable="false">
                 <aura:unescapedHtml value="{!v.Message}"/>
@@ -71,14 +84,14 @@
     </div>
     <br></br>
 
-    
+
     <!--Start of Yellow Div and button that calls the modal that manages your files-->
-    <div aura:id="uploadDiv" class="slds-hide" style="position:relative;left:20px;">
+    <div aura:id="uploadDiv" class="{!(v.IsHidden ? 'slds-hide' : 'slds-show ')}" style="position:relative;left:20px;">
         <br/>
-        
+
         <p style="color:#8c965a"><b>&nbsp;&nbsp;List of Attachments:</b></p>
         <br/>
-        
+
               	<ol>
                     <aura:iteration items="{!v.myFilesList}" var="item" indexVar="i">
 						<table style="table-layout: fixed;">
@@ -93,7 +106,7 @@
                 		</table>
                   	</aura:iteration>
 
-                  
+
                 </ol>
         &nbsp;&nbsp;<span class="slds-file-selector__button slds-button slds-button_neutral" style="margin-top:15px; margin-bottom:15px" onclick = "{!c.showModal}">
                     <div class="uploadIcon">
@@ -102,11 +115,11 @@
                        &nbsp;&nbsp;Manage Files
         </span>
         <div id="divFLSDelete" class="hidden"><p style="color:red"><b>&nbsp;&nbsp;{!v.statusFLS}</b></p><br/><br/></div>
-    	
+
     </div>
-    
+
     <!--File Manager Modal-->
-    
+
     <div aura:id="modalWindow" class="slds-hide" style="height: 640px;">
       <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
         <div class="slds-modal__container">
@@ -119,23 +132,23 @@
           </header>
           <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
             <!--Inside of the Modal Form Begins-->
-              
+
               <div class="slds-box" style="background-color:#e8eef7;">
               	<p>Supported file types: PDF, JPG, GIF, PNG, DOC, DOCX, ZIP</p>
                 <br/>
                 <p>Maximum file size of 4.5 MB</p>
               </div>
-              
+
               <br/>
-              
+
               <lightning:input aura:id="fileId" type="file" label="Attachment" name="file" multiple="true" accept="image/png, .zip, .pdf, .docx, .doc, .jpeg, .jpg, .gif" onchange="{!c.handleFilesChange }"/>
               <br/>
               <button class="slds-button slds-button_brand" onclick="{!c.doSave}">Upload Attachment</button>
               <div id="divFLS" class="hidden"><br/><p style="color:red"><b>{!v.statusFLS}</b></p></div>
 			 <div>
                  <table>
-                 
-                     
+
+
                      <aura:iteration items="{!v.FileList}" var="item" indexVar="i">
                          <tr>
                              <td>
@@ -150,65 +163,65 @@
                              </td>
                          </tr>
                      </aura:iteration>
-                     
-                     
-                 
+
+
+
                  </table>
              </div>
 			 <aura:if isTrue="{!v.showLoadingSpinner}">
-                  <div class="slds-text-body_small slds-text-color_error">Uploading... 
+                  <div class="slds-text-body_small slds-text-color_error">Uploading...
                      <img src="/auraFW/resources/aura/images/spinner.gif" class="spinner-img" alt="Loading"/>'
                   </div>
-             </aura:if>              
-              
-              
+             </aura:if>
+
+
               <hr/>
-              
+
               <div class="slds-box">
                   <p><b>Linked Files:</b></p>
                   <br/>
-                  
+
               	<ol>
                     <aura:iteration items="{!v.myFilesList}" var="item">
 
                         <li> {!item.S360_FA__fileName__c}</li>
-                
+
                   	</aura:iteration>
 
-                  
+
                 </ol>
               </div>
-              
-              
+
+
               <hr/>
-              
-              
+
+
               <p><b> Choose from a previously uploaded attachment</b></p>
-               <table class = "slds-table" style="width:100% border-color: #c9d2e0; " border="1"> 
+               <table class = "slds-table" style="width:100% border-color: #c9d2e0; " border="1">
                   <tr>
                     <th></th>
                     <th>File name</th>
-                      
-                  </tr>               
-                   
+
+                  </tr>
+
                  <aura:iteration items="{!v.allFilesList}" var="item">
                       <tr style = "height: 20px;">
                     <td height ="50" width="20">
                           <lightning:input name="Selected" type="checkbox" checked="{!item.selected}" />
-                          
+
                     </td>
-                    <td height = "50">{!item.S360_FA__fileName__c}</td>                    
+                    <td height = "50">{!item.S360_FA__fileName__c}</td>
                   </tr>
-                     
+
               </aura:iteration>
               </table>
               <br/>
               <button class="slds-button slds-button_brand" onclick="{!c.bindCheckBoxValues}">Add</button>
-              
-              
+
+
             <!--Inside of the Modal Form Ends-->
-              
-              
+
+
           </div>
           <footer class="slds-modal__footer">
             <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
@@ -218,7 +231,7 @@
       </section>
       <div class="slds-backdrop slds-backdrop_open"></div>
     </div>
-    
 
-    
+
+
 </aura:component>

@@ -16,9 +16,9 @@ public class S360_Form_Builder_Controller_Test {
         String testFormName = test.Name;
         String testRecordId = String.valueOf(test.Id);
 
-        S360_Form_Builder_Controller.getComponentConfig(testFormName, testRecordId);
-        S360_Form_Builder_Controller.getComponentConfig('', testRecordId);
-        S360_Form_Builder_Controller.getComponentConfig('', '');
+        S360_Form_Builder_Controller.getComponentConfig(testFormName, testRecordId,'en');
+        S360_Form_Builder_Controller.getComponentConfig('', testRecordId,'en');
+        S360_Form_Builder_Controller.getComponentConfig('', '','en');
     }
 
     @isTest
@@ -34,7 +34,7 @@ public class S360_Form_Builder_Controller_Test {
 
         testList.add(testChild);
         testMap.put('Child|id|Test', testList);
-        S360_Form_Builder_Controller.saveUpsertRecord(testAcc, testMap, false, '');
+        S360_Form_Builder_Controller.saveUpsertRecord(testAcc, testMap, false,'','', false);
     }
 
     @isTest

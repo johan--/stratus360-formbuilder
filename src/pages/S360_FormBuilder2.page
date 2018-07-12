@@ -552,6 +552,7 @@
               // console.log(JSON.stringify(frMerge));
               // console.log(JSON.stringify(enMerge));
             }
+            console.log("DONE");
         }
 
         function merge(frMap1, frMerge1){

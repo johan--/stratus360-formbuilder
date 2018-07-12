@@ -119,7 +119,7 @@ global with sharing class S360_Form_Builder_Ext {
     }
 
     public PageReference save(){
-
+      System.debug('Start');
 
         if(Schema.sObjectType.S360_FA__S360_Form_Config__c.isUpdateable()){
             update formConfig;
@@ -133,7 +133,7 @@ global with sharing class S360_Form_Builder_Ext {
                 }
        			update jsonAttachment;
             }
-            if(language == 'en'){
+            if(language == 'en' && frAttach != null){
               System.debug(frAttach);
               if(frAttaches.size() == 0){
                 Attachment jsonAttachmentFR = new Attachment();
@@ -155,7 +155,7 @@ global with sharing class S360_Form_Builder_Ext {
         		insert jsonAttachment;
             }
 
-            if(language == 'en'){
+            if(language == 'en' && frAttach != null){
               Attachment jsonAttachmentFR = new Attachment();
               jsonAttachmentFR.ParentId = formConfig.Id;
               jsonAttachmentFR.Body = blob.valueOf(frAttach);
@@ -193,7 +193,11 @@ global with sharing class S360_Form_Builder_Ext {
         }
         Attachment jsonAttachmentFrench = new Attachment();
         jsonAttachmentFrench.ParentId = jsonAttachment.ParentId;
-        jsonAttachmentFrench.Body = blob.valueOf(frAttach);
+        if(frAttach!=null){
+        	jsonAttachmentFrench.Body = blob.valueOf(frAttach);
+        } else {
+            jsonAttachmentFrench.Body = blob.valueOf('');
+        }
         jsonAttachmentFrench.Name = 'form_' + formConfig.Id + '_v' + (String.valueOf(versionField+1).leftPad(3, '0')) + '_FR';
         insert jsonAttachmentFrench;
         List<S360_FA__S360_Form_Config__c> versionConfig = [SELECT S360_FA__Version_No__c from S360_FA__S360_Form_Config__c where id =:formConfig.Id];

@@ -1,49 +1,49 @@
 ({
-    MAX_FILE_SIZE: 4500000, //Max file size 4.5 MB 
-    CHUNK_SIZE: 750000,      //Chunk Max size 750Kb 
-    
+    MAX_FILE_SIZE: 4500000, //Max file size 4.5 MB
+    CHUNK_SIZE: 750000,      //Chunk Max size 750Kb
+
     uploadHelper: function(component, event, fileInput, lenOfFileInput, currIndex) {
         component.set("v.showLoadingSpinner", true);
         //Get the array of files
-        
+
         //Get first file
         var self = this;
-       
+
             var file = fileInput[currIndex];
-            
+
             if (file.size > self.MAX_FILE_SIZE) {
                 component.set("v.showLoadingSpinner", false);
                 alert('File size cannot exceed ' + self.MAX_FILE_SIZE + ' bytes.\n' + ' Selected file size: ' + file.size);
                 return;
             }
-     
-            // create a FileReader object 
+
+            // create a FileReader object
             var objFileReader = new FileReader();
-            // set onload function of FileReader object   
+            // set onload function of FileReader object
             objFileReader.onload = $A.getCallback(function() {
                 var fileContents = objFileReader.result;
                 var base64 = 'base64,';
                 var dataStart = fileContents.indexOf(base64) + base64.length;
-     
+
                 fileContents = fileContents.substring(dataStart);
-                // call the uploadProcess method 
+                // call the uploadProcess method
                 var done = self.uploadProcess(component, file, fileContents, fileInput, lenOfFileInput, currIndex);
             });
-     
+
             objFileReader.readAsDataURL(file);
     },
- 
+
     uploadProcess: function(component, file, fileContents, fileInput, lenOfFileInput, currIndex) {
-        // set a default size or startpostiton as 0 
+        // set a default size or startpostiton as 0
         var startPosition = 0;
-        // calculate the end size or endPostion using Math.min() function which is return the min. value   
+        // calculate the end size or endPostion using Math.min() function which is return the min. value
         var endPosition = Math.min(fileContents.length, startPosition + this.CHUNK_SIZE);
- 
+
         // start with the initial chunk, and set the attachId is null in begin
         this.uploadInChunk(component, file, fileContents, startPosition, endPosition, '', fileInput, lenOfFileInput, currIndex);
     },
- 
- 
+
+
     uploadInChunk: function(component, file, fileContents, startPosition, endPosition, attachId, fileInput, lenOfFileInput, currIndex) {
         // call the apex method 'saveTheChunk'
         var getchunk = fileContents.substring(startPosition, endPosition);
@@ -55,17 +55,17 @@
             contentType: file.type,
             fileId: attachId
         });
- 		
+
         var createNewAttachmentMapperAction = component.get("c.createNewAttachmentMapper");
-       
-        
-        // set call back 
+
+
+        // set call back
             action.setCallback(this, function(response) {
-                // store the response / Attachment Id   
+                // store the response / Attachment Id
                 attachId = response.getReturnValue();
                 var state = response.getState();
-                
-                
+
+
                 createNewAttachmentMapperAction.setParams({
                     parentId: component.get("v.parentId"),
                     attachId: attachId,
@@ -73,7 +73,7 @@
                     fileName: file.name,
                     customObject: component.get("v.master")
                 });
-                
+
                 createNewAttachmentMapperAction.setCallback(this, function(response){
                     var valid = response.getReturnValue();
                     if(!valid){
@@ -81,27 +81,27 @@
                         var divFLS = document.getElementById("divFLS");
                         divFLS.className="unhidden";
                     }
-                    var state = response.getState();  
+                    var state = response.getState();
                     if (state ==="ERROR"){
                         var errors = response.getError();
                         console.log(errors);
                     }
                 });
                 $A.enqueueAction(createNewAttachmentMapperAction);
-                
+
             if (state === "SUCCESS") {
                 // update the start position with end postion
                 startPosition = endPosition;
                 endPosition = Math.min(fileContents.length, startPosition + this.CHUNK_SIZE);
-                // check if the start postion is still less then end postion 
-                // then call again 'uploadInChunk' method , 
+                // check if the start postion is still less then end postion
+                // then call again 'uploadInChunk' method ,
                 // else, diaply alert msg and hide the loading spinner
-                
-                
+
+
                 if (startPosition < endPosition) {
                     this.uploadInChunk(component, file, fileContents, startPosition, endPosition, attachId);
                 } else {
-                    
+
                     if((currIndex+1)<lenOfFileInput){
                     	this.uploadHelper(component, event, fileInput, lenOfFileInput, currIndex+1);
                         return;
@@ -112,9 +112,9 @@
                         this.getFiles(component);
                         return;
                     }
-                    
+
                 }
-                // handel the response errors        
+                // handel the response errors
             } else if (state === "INCOMPLETE") {
                 alert("From server: " + response.getReturnValue());
             } else if (state === "ERROR") {
@@ -131,12 +131,12 @@
         // enqueue the action
         $A.enqueueAction(action);
     },
-    
-    
+
+
     createAttachmentMapperFromExistingFile: function(component, fieldName, fileList, fileListLength, currIndex){
     	var file = fileList[currIndex];
         var createNewAttachmentMapperAction = component.get("c.createNewAttachmentMapper");
-        
+
         createNewAttachmentMapperAction.setParams({
                     parentId: component.get("v.parentId"),
                     attachId: file.S360_FA__attachId__c,
@@ -144,10 +144,10 @@
                     fileName: file.S360_FA__fileName__c,
             		customObject: component.get("v.master")
                 });
-                
+
                 createNewAttachmentMapperAction.setCallback(this, function(response){
-                    var state = response.getState();  
-                    
+                    var state = response.getState();
+
                     if (state ==="ERROR"){
                         var errors = response.getError();
                         console.log(errors);
@@ -160,7 +160,7 @@
                                 this.getFiles(component);
                                 return;
                             }
-                        }else{ 
+                        }else{
                             component.set("v.statusFLS", "You do not have permission to perform this action");
                             var divFLS = document.getElementById("divFLS");
                             divFLS.className="unhidden";
@@ -216,14 +216,14 @@
                         }
                         component.set("v.allFilesList", allFiles);
                     }
-                    
+
                 });
                 $A.enqueueAction(action2);
             }
         });
         $A.enqueueAction(action);
     },
-    
+
     toggleErrorMessage: function(component, status, message){
         if(status === true){
             component.set('v.Valid', true);
@@ -242,15 +242,42 @@
         }
 
         if(jsonLogic != undefined && jsonLogic != ''){
-            
+
             //JSLogic Validation
             var validateJson = component.get('v.JsonLogic');
-            
+
             if(validateJson != undefined && validateJson != "") {
                 var valid = jsonLogic.apply(validateJson, jsonLogicData);
-                
+
                 this.toggleErrorMessage(component, valid, component.get('v.FailureValidationMessage'));
-            }   
+            }
+        }
+    },
+
+    jsonValidate: function(component){
+      debugger;
+      var self = this;
+      var JsonData =component.get("v.Data");
+      if(jsonLogic != undefined && jsonLogic != ''){
+
+          //JSLogic Validation
+          var validateJson = component.get('v.JsonLogic');
+
+          if(validateJson != undefined && validateJson != "" && JsonData != undefined && JsonData != {}) {
+              var valid = jsonLogic.apply(validateJson, JsonData);
+              if(valid || component.get("v.radio")){
+                //var displayDiv = component.find('uploadDiv')
+                // $A.util.toggleClass(displayDiv, "slds-hide");
+                // $A.util.toggleClass(displayDiv, "slds-show");
+                component.set("v.IsHidden", false);
+              } else {
+                //var displayDiv = component.find('uploadDiv')
+                component.set("v.IsHidden", true);
+                // $A.util.toggleClass(displayDiv, "slds-show");
+                // $A.util.toggleClass(displayDiv, "slds-hide");
+                  //this.toggleErrorMessage(component, valid, component.get('v.FailureValidationMessage'));
+              }
+          }
         }
     }
 })
