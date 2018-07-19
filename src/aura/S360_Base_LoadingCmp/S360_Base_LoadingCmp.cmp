@@ -1,10 +1,12 @@
 <aura:component >
-    <aura:attribute name="Show" type="boolean" default="false"/>
-    <aura:attribute name="CompId" type="String"/>
+    <aura:attribute name="Show" type="boolean" default="false"
+      description="Component is visible if true"/>
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored"/>
     <aura:method name="showLoading" action="{!c.setLoading}" access="public">
         <aura:attribute name="isShow" type="boolean"/>
     </aura:method>
-    
+
     <style>
         .slds-spinner_container{
         	<!--position: fixed !important;-->
@@ -18,5 +20,5 @@
             <div class="slds-spinner__dot-b"></div>
         </div>
     </div>
-	
+
 </aura:component>

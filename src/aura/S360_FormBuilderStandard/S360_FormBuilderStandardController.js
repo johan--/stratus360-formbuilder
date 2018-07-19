@@ -36,7 +36,7 @@
 
 
     handleButtonClick: function(component, event, helper){
-
+      debugger;
        	var actionButton = component.get('v.actionButton');
 
         if(event.getParam('Payload') != undefined && event.getParam('Payload').action != 'FLOW'){
@@ -82,8 +82,12 @@
      */
     handleAfterSubmit: function(component, event, helper){
         var params = event.getParam('arguments');
-        //debugger;
+        debugger;
         if(params){
+          console.log("Params");
+          console.log(params.message);
+          console.log(params.sender);
+          console.log(JSON.stringify(component.get('v.configMapping')));
             // check response status, if error or incomplete, throw it
             if(params.status == 'ERROR'){
                 if(component.get('v.configMapping')[params.sender] && component.get('v.configMapping')[params.sender].errorMessage){

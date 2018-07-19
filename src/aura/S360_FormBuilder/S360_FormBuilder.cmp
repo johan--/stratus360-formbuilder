@@ -8,22 +8,30 @@
     scripts="{!$Resource.jsLibraries + '/js/70c0b494a4.js'}"
      />
 
-    <aura:attribute name="cssCode" type="String" default="/css/style.css"/>
+    <aura:attribute name="cssCode" type="String" default="/css/style.css"
+      description="url for css to be loaded"/>
 
     <!-- Input parameter -->
-    <aura:attribute name="formConfigName" type="String" default=""/>
-    <aura:attribute name="formConfigID" type="String" default=""/>
-    <aura:attribute name="dataId" type="String" default="" />
+    <aura:attribute name="formConfigName" type="String" default=""
+      description="Form Name"/>
+    <aura:attribute name="formConfigID" type="String" default=""
+      description="Form record Id"/>
+    <aura:attribute name="dataId" type="String" default=""
+      description="Record ID"/>
 
     <!-- component parameter -->
-    <aura:attribute name="Value" type="Object" default="{}"/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    <aura:attribute name="FieldInfo" type="Object" default="{}"/>
+    <aura:attribute name="Value" type="Object" default="{}"
+      description="Value of form"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+  description="JSON data for all the components"/>
+    <aura:attribute name="FieldInfo" type="Object" default="{}"
+      description="Field to be sent to the apex for retrieval for information for the form"/>
 
 	<!-- this object stores all components rendered in the form
 		 use Field API name to access the component
 	 -->
-    <aura:attribute name="componentData" type="Object"/>
+    <aura:attribute name="componentData" type="Object"
+      description="Data of all the components in the form"/>
 
     <!-- Handler -->
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>

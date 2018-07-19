@@ -1,9 +1,10 @@
 <aura:component >
-    
+
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
-    <aura:attribute name="input" type="boolean" default="true"/>
-    
+    <aura:attribute name="input" type="boolean" default="true"
+  description="If true component value is modifiable"/>
+
     <aura:attribute name="CompId" type="string" default="DateId" required="true"
                     description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when date changed"/>
@@ -22,7 +23,7 @@
     <aura:attribute name="Class" type="String" default=""
                     description="style for date component container"/>
     <aura:attribute name="DefaultValue" type="Date" default=""/>
-    
+
     <!-- validation attribute -->
 	<aura:attribute name="JsonLogic" type="string" default=""/>
     <aura:attribute name="FailureValidationMessage" type="string" default=""/>
@@ -40,7 +41,7 @@
     <aura:registerEvent name="OnChange" type="c:S360_Base_onChange" />
 
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
-    
+
     <aura:handler name="change" value="{!v.Value}" action="{!c.handleOnChange}"/>
 
     <div class="{!(v.IsHidden ? 'slds-hide ' : 'slds-show slds-form-element ' + v.Class) }">

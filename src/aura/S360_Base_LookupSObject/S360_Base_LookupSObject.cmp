@@ -4,27 +4,27 @@
     <!--ltng:require styles="/resource/SLDSv213/assets/styles/salesforce-lightning-design-system.css" /-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Attributes -->
-     <aura:attribute name="CompId" type="String" required="true" 
-        description="The unique name of the Lookup Component" />
-    <aura:attribute name="sObjectAPIName" type="String" required="true" 
+     <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored" required="true" />
+    <aura:attribute name="sObjectAPIName" type="String" required="true"
         description="The API name of the SObject to search" />
-    <aura:attribute name="instanceId" type="String" required="true" 
+    <aura:attribute name="instanceId" type="String" required="true"
         description="An id to identify the instance the component" />
-    <aura:attribute name="label" type="String" required="true" 
+    <aura:attribute name="label" type="String" required="true"
         description="The label to assign to the lookup, eg: Account" />
     <aura:attribute name="pluralLabel" type="String"
         description="The plural label to assign to the lookup, eg: Accounts" />
-    <aura:attribute name="listIconSVGPath" type="String" default="/resource/SLDSv213/assets/icons/custom-sprite/svg/symbols.svg#custom11" 
+    <aura:attribute name="listIconSVGPath" type="String" default="/resource/SLDSv213/assets/icons/custom-sprite/svg/symbols.svg#custom11"
         description="The static resource path to the svg icon to use." />
-    <aura:attribute name="listIconClass" type="String" default="slds-icon-custom-11" 
+    <aura:attribute name="listIconClass" type="String" default="slds-icon-custom-11"
         description="The SLDS class to use for the icon." />
     <aura:attribute name="searchString" type="String"
         description="The search string to find." />
     <aura:attribute name="matches" type="Object[]"
         description="The resulting matches returned by the Apex controller." />
-    <aura:attribute name="prepId" type="String" 
+    <aura:attribute name="prepId" type="String"
         description="The prepopulated Id." />
-    <aura:attribute name="labelClass" type="String" 
+    <aura:attribute name="labelClass" type="String"
         description="The label Class" />
     <aura:attribute name="dependantField" type="String" default="" description="comma separated list of dependant field "/>
     <aura:attribute name="dependantFieldType" type="String" default="" description="comma separated list of dependant field Type correspond to dependantField"/>
@@ -32,29 +32,35 @@
 
     <aura:attribute name="displayField" type="String" default="" description="comma separated list of field displayed on search after name"/>
 
-    <aura:attribute name="IsHidden" type="boolean" default="false"/>
-    <aura:attribute name="IsRequired" type="boolean" default="false"/>
-    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+  description="If true component is hidden else component is visible"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+  description="If true input is required to submit else input can be left blank"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+  description="If true input box is disabled else input is enabled"/>
 
     <!--test to blur-->
-    <aura:attribute name="isSelected" type="boolean" default="false"/>
+    <aura:attribute name="isSelected" type="boolean" default="false"
+      description="True if component is selected"/>
 
     <!-- Events -->
-	<aura:registerEvent name="LookupSObjectUpdateEvt" type="c:LookupSObjectUpdateEvt"/>    
-    <aura:registerEvent name="LookupSObjectClearIdEvt" type="c:LookupSObjectClearIdEvt"/>    
- 
+	<aura:registerEvent name="LookupSObjectUpdateEvt" type="c:LookupSObjectUpdateEvt"/>
+    <aura:registerEvent name="LookupSObjectClearIdEvt" type="c:LookupSObjectClearIdEvt"/>
+
     <aura:handler name="change" value="{!v.prepId}" action="{!c.handleValueChange}"/>
-    
+
     <!--aura:handler name="change" value="{!v.searchString}" action="{!c.handleSearchStringChange}"/-->
-    <aura:attribute name="oldSearchString" type="string" default=""/>
-    <aura:attribute name="isInitSearchString" type="boolean" default="true"/>
-    
+    <aura:attribute name="oldSearchString" type="string" default=""
+      description="Previous search string"/>
+    <aura:attribute name="isInitSearchString" type="boolean" default="true"
+      description="If string is equal to the init search string"/>
+
     <!-- define methods -->
-    <aura:method name="clearLookup" action="{!c.methodHandleClearLookup}" access="public" 
+    <aura:method name="clearLookup" action="{!c.methodHandleClearLookup}" access="public"
                  description="method to clear lookup comp"/>
-    <aura:method name="prepareLookup" action="{!c.methodHandlePrepare}" access="public" 
+    <aura:method name="prepareLookup" action="{!c.methodHandlePrepare}" access="public"
                  description="method to prepare comp"/>
-   
+
     <!-- Lookup Markup : See https://www.lightningdesignsystem.com/components/lookups -->
     <div class="{!'slds ' + (v.IsHidden ? 'slds-hide' : 'slds-show')}">
         <div aura:id="lookup-div" class="slds-lookup" data-select="single" data-scope="single" data-typeahead="true">

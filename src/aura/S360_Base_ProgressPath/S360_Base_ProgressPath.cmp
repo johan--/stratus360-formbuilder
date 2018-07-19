@@ -1,11 +1,11 @@
 <aura:component controller="S360_Base_ProgressPathController">
-    <aura:attribute name="CompId" type="string" default=""/>
-    <aura:attribute name="paths" type="Object[]" default="[]"/>
-    <aura:attribute name="FieldName" type="String" default=""/>
-    <aura:attribute name="Linear" type="String" default=""/>
-    <aura:attribute name="parentId" type="String" default=""/>
-    <aura:attribute name="renderPaths" type="Object[]" default="[]"/>
-    <aura:attribute name="primaryObject" type="String" default=""/>
+    <aura:attribute name="CompId" description='Unique Id for this component' type="string" default=""/>
+    <aura:attribute name="paths" description="Holds all of the stages that were defined in the configuration as an array" type="Object[]" default="[]"/>
+    <aura:attribute name="FieldName" description="Holds the field name on the primary object upon which progress paths will be tracked" type="String" default=""/>
+    <aura:attribute name="Linear" description="Describes whether the component will follow the 'linear' style or 'non-linear' style" type="String" default=""/>
+    <aura:attribute name="parentId" description="Holds the ID of the parent record under which this component falls" type="String" default=""/>
+    <aura:attribute name="renderPaths" description="Holds the list of paths modified according to the logic that we actually want to render" type="Object[]" default="[]"/>
+    <aura:attribute name="primaryObject" description="Holds the name of the Parent (Primary) Object" type="String" default=""/>
 
     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -80,6 +80,5 @@
         </div>
       </div>
     </div>
-    
-    <button onclick="{!c.clicked}">Hello</button>
+
 </aura:component>

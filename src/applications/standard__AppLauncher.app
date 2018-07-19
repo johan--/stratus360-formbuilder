@@ -3,4 +3,5 @@
     <defaultLandingTab>standard-home</defaultLandingTab>
     <tab>standard-AppLauncher</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
 </CustomApplication>

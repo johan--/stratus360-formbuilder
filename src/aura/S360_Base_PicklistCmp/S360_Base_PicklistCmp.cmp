@@ -1,33 +1,55 @@
 <aura:component controller="PicklistDescriber">
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
-    <aura:attribute name="input" type="boolean" default="true"/>
-    <aura:attribute name="panelShow" type="boolean" default="true"/>
-    <aura:attribute name="CompId" type="string" default=""/>
-    <aura:attribute name="InputLabel" type="string" default=""/>
-    <aura:attribute name="HelpText" type="string" default=""/>
-    <aura:attribute name="IsHidden" type="boolean" default="false"/>
-    <aura:attribute name="IsRequired" type="boolean" default="false"/>
-    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
-    <aura:attribute name="PicklistKV" type="string" default=""/>
-    <aura:attribute name="Value" type="string" />
-    <aura:attribute name="OldValue" type="string" />
-    <aura:attribute name="SObjectName" type="string" default=""/>
-    <aura:attribute name="RecordTypeName" type="string" default=""/>
-    <aura:attribute name="FieldName" type="string" default=""/>
-    <aura:attribute name="Multiple" type="boolean" default="false"/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    <aura:attribute name="JsonLogic" type="string" default=""/>
-    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
-    <aura:attribute name="BroadcastRender" type="Boolean" default="false"/>
+    <aura:attribute name="input" type="boolean" default="true"
+  description="If true component value is modifiable"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"
+  description="If true parent panel is visible if false parent panel is hidden"/>
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored" default=""/>
+    <aura:attribute name="InputLabel" type="string" default=""
+      description="Text displayed as label on the component"/>
+    <aura:attribute name="HelpText" type="string" default=""
+  description="Text displayed in the tooltip"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+  description="If true component is hidden else component is visible"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+  description="If true input is required to submit else input can be left blank"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+  description="If true input box is disabled else input is enabled"/>
+    <aura:attribute name="PicklistKV" type="string" default=""
+      description="Contains the picklist key value pairs"/>
+    <aura:attribute name="Value" type="string"
+      description="Contains the value selected in the picklist"/>
+    <aura:attribute name="OldValue" type="string"
+      description="Contains the previously selected value of the picklist"/>
+    <aura:attribute name="SObjectName" type="string" default=""
+      description="Contains the type of the picklist options"/>
+    <aura:attribute name="RecordTypeName" type="string" default=""
+      description="Contains the recordType of the picklist options"/>
+    <aura:attribute name="FieldName" type="string" default=""
+      description="Conatins the picklist field names"/>
+    <aura:attribute name="Multiple" type="boolean" default="false"
+      description="If true multi-select is enabled on the picklist"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+  description="JSON data for all the components"/>
+    <aura:attribute name="JsonLogic" type="string" default=""
+  description="JSONLogic used to verify the validity of the text inputted"/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""
+  description="Message displayed on pop-up when validation fails on submit"/>
+    <aura:attribute name="BroadcastRender" type="Boolean" default="false"
+      description="If true change in picklist values updates dynamically rendered panels"/>
 
 
     <!-- validation attribute -->
-    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
-    <aura:attribute name="Message" type="string" default="" access="private"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"
+  description="If true input is valid else input is invalid"/>
+    <aura:attribute name="Message" type="string" default="" access="private"
+  description="Message displayed on validation failure on the form"/>
 
     <!-- additional attributes -->
-    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="Class" type="String" default=""
+  description="CSS class for the input box"/>
     <aura:attribute name="SideClass" type="String" default=""/>
     <aura:attribute name="ShowBlank" type="boolean" default="false"/>
 
@@ -47,7 +69,8 @@
     <!-- validation method -->
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
-        <aura:attribute name="message" type="String" default=""/>
+        <aura:attribute name="Message" type="string" default="" access="private"
+description="Message displayed on validation failure on the form"/>
     </aura:method>
 
 

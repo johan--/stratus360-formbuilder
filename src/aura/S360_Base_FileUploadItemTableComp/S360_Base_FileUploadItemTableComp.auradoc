@@ -1,6 +1,3 @@
 <aura:documentation>
-	<aura:description>Documentation</aura:description>
-	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
-		Example Description
-	</aura:example>
+	<aura:description>Files are displayed in the table using this component.</aura:description>
 </aura:documentation>

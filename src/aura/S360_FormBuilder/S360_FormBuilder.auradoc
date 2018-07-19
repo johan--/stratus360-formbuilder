@@ -1,0 +1,5 @@
+<aura:documentation>
+	<aura:description>component to render lightning component base on created json
+
+</aura:description>
+</aura:documentation>

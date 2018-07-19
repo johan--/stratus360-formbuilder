@@ -1,14 +1,23 @@
 <aura:component >
-    <aura:attribute name="Title" type="String" default=""/>
-    <aura:attribute name="Class" type="String" default=""/>
+    <aura:attribute name="Title" type="String" default=""
+      description="Text displayed as the title of the panel"/>
+    <aura:attribute name="Class" type="String" default=""
+  description="CSS class for the input box"/>
 
-    <aura:attribute name="displayPosition" type="Integer" default="0"/>
-    <aura:attribute name="counter" type="Integer" default="0"/>
-    <aura:attribute name="isReady" type="boolean" default="false"/>
-    <aura:attribute name="IsHidden" type="boolean" default="false"/>
-    <aura:attribute name="JsonData" type="Object" default="{}"/>
-    <aura:attribute name="JsonLogic" type="Object" default="{}"/>
-    <aura:attribute name="Keys" type="Object" default="{}"/>
+    <aura:attribute name="displayPosition" type="Integer" default="0"
+      description="Determines the position for the label on the component"/>
+    <aura:attribute name="counter" type="Integer" default="0"
+      description="Counts the number of components inside the panel"/>
+    <aura:attribute name="isReady" type="boolean" default="false"
+      description="Determines if the panel is loaded"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+  description="If true component is hidden else component is visible"/>
+    <aura:attribute name="JsonData" type="Object" default="{}"
+      description="Contains the JsonData that contains the components rendered in the current form"/>
+    <aura:attribute name="JsonLogic" type="Object" default="{}"
+      description="Contains the logic on which the component is dynamically rendered"/>
+    <aura:attribute name="Keys" type="Object" default="{}"
+      description="Contains the keys of the components in the panel"/>
 
     <aura:handler name="change" value="{!v.body}" action="{!c.onChange}"/>
     <aura:handler name="change" value="{!v.counter}" action="{!c.onChange}"/>

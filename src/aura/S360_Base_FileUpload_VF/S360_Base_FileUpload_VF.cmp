@@ -1,18 +1,23 @@
 <aura:component description="FileUploadContainer" access="global" implements="flexipage:availableForAllPageTypes,force:hasRecordId" >
 
-    <aura:attribute name="frameWidth" type="String" default="500" /><!--250-->
-    <aura:attribute name="frameHeight" type="String" default="130" /><!--30-->
+    <aura:attribute name="frameWidth" type="String" default="500"
+      description="Width of the fram"/><!--250-->
+    <aura:attribute name="frameHeight" type="String" default="130"
+      description="Height of the fram"/><!--30-->
 
-    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="recordId" type="Id"
+      description="Record id currently loaded on the form"/>
 
     <!-- Needed to send messages to VF page. But we will get it from VF itself -->
-    <aura:attribute name="vfHost" type="String" default="" />
+    <aura:attribute name="vfHost" type="String" default=""
+      description="Needed to send messages to VF page."/>
     <!-- Domain of LC for VF to send message -->
-    <aura:attribute name="lcHost" type="String" />
+    <aura:attribute name="lcHost" type="String"
+      description="Domain of LC for VF to send message"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
-    <aura:attribute name="frameSrc" type="String" />
+    <aura:attribute name="frameSrc" type="String"/>
 
     <div class="slds">
         <div aura:id="uiMessage">{!v.body}</div>

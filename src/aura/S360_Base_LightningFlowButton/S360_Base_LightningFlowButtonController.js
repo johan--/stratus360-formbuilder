@@ -15,8 +15,9 @@
             }
         }
 	},
-    
+
     onButtonPressed : function(component, event, helper){
+			debugger;
         var evt = component.getEvent('OnClick');
         evt.setParams({
             "CompId": component.get('v.CompId'),

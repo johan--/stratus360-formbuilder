@@ -17,6 +17,7 @@
 
   upsert: function(component, sender, callback) {
     //debugger;
+    console.log(JSON.stringify(component.get("v.Data")));
     console.log('data to save');
     for(var i in component.get('v.Data')){
          if(component.get('v.Data').hasOwnProperty(i))
@@ -110,6 +111,7 @@
               }
             }
           } else {
+            console.log("ERRRRRROR " + response.getReturnValue().message)
             child.afterSubmit(sender, 'ERROR', response.getReturnValue().message);
           }
 
@@ -306,6 +308,8 @@
   },
 
   navigateFlow: function(component, event) {
+    debugger;
+    console.log(event.getParam('Payload').payload );
     var self = this;
     // refresh output flow value with its real data
     if (event.getParam('Payload').payload === 'NEXT' || event.getParam('Payload').payload === 'FINISH') {

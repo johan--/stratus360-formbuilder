@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Component that handles phone number input.</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

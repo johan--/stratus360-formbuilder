@@ -5,17 +5,20 @@
                     description="style class for Tag, sepereta the class by space"/>
     <aura:attribute name="Attributes" type="List" default="[]"
                     description="list of type key,value pair as html attribute and its value, ex: [[value, v1], [width, 0]]"/>
-    <aura:attribute name="Content" type="String" default=""/>
-    
+    <aura:attribute name="Content" type="String" default=""
+      description="Part of the text displayed on the HTML component"/>
+
     <!-- private attribute -->
-    <aura:attribute name="Value" type="String" default="" access="private"/>
-    <aura:attribute name="Parent" type="Object" default="" access="private"/>
-    
+    <aura:attribute name="Value" type="String" default="" access="private"
+      description="The HTML text to be displayed on the HTML component"/>
+    <aura:attribute name="Parent" type="Object" default="" access="private"
+      description="Tag to be rendered as the HTML component"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <aura:handler name="change" value="{!v.Content}" action="{!c.onChange}"/>
-    
+
     <div>
         <aura:unescapedHtml aura:id="container" value="{!v.Value}"/>
     </div>
-    
+
 </aura:component>

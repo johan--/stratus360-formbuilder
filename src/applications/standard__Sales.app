@@ -16,4 +16,5 @@
     <tab>standard-report</tab>
     <tab>standard-Dashboard</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
 </CustomApplication>

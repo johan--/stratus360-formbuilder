@@ -9,53 +9,78 @@
 
 
     <!-- config attributes -->
-    <aura:attribute name="FormConfig" type="Object" default="{}"/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    <aura:attribute name="RelatedData" type="Object" default="{}"/>
-    <aura:attribute name="AttachmentsData" type="Object[]" default="[]"/>
-    <aura:attribute name="FieldInfo" type="Object" default="{}"/>
-    <aura:attribute name="ObjectInfo" type="Object" default="{}"/>
-    <aura:attribute name="autoSaveInterval" type="Integer" default="10"/>
-    <aura:attribute name="autoSaveOn" type="Boolean" default="true"/>
-    <aura:attribute name="lockLogic" type="Object" default="{}"/>
-    <aura:attribute name="language" type="String" default="en"/>
+    <aura:attribute name="FormConfig" type="Object" default="{}"
+      description="Contains the configuration settings of the current form"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+  description="JSON data for all the components"/>
+    <aura:attribute name="RelatedData" type="Object" default="{}"
+      description="Contains the related data for all the components"/>
+    <aura:attribute name="AttachmentsData" type="Object[]" default="[]"
+      description="Contains data of attachment form configs"/>
+    <aura:attribute name="FieldInfo" type="Object" default="{}"
+      description="Contains field information for current form"/>
+    <aura:attribute name="ObjectInfo" type="Object" default="{}"
+      description="Contains object information for current form"/>
+    <aura:attribute name="autoSaveInterval" type="Integer" default="10"
+      description="Interval between saves for the autosave feature"/>
+    <aura:attribute name="autoSaveOn" type="Boolean" default="true"
+      description="Will autosave if true"/>
+    <aura:attribute name="lockLogic" type="Object" default="{}"
+      description="JSONlogic for disabling input components on the form"/>
+    <aura:attribute name="language" type="String" default="en"
+      description="Current language selected"/>
     <aura:attribute name="Standard" type="Aura.Component"/>
 
     <!-- captcha attributes -->
-    <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
-    <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
+    <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"
+      description="If true captache is enabled"/>
+    <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"
+      description="If captcha was completed will be set to true"/>
 
     <!-- signature attributes -->
-    <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
-    <aura:attribute name="signatureData" type="Object"/>
-    <aura:attribute name="signatureCompId" type="String"/>
-    <aura:attribute name="canvas" type="Object"/>
-    <aura:attribute name="canvasDataUrl" type="String"/>
+    <aura:attribute name="isSignatureEnabled" type="boolean" default="false"
+      description="If signature is enabled will be set to true"/>
+    <aura:attribute name="signatureData" type="Object"
+      description="Contains data of signature"/>
+    <aura:attribute name="signatureCompId" type="String"
+      description="Contains field where signature data will be stored"/>
+    <aura:attribute name="canvas" type="Object"
+      description="Contains object where signature will be drawn"/>
+    <aura:attribute name="canvasDataUrl" type="String"
+      description="URL of canvas"/>
 
     <!-- Input parameter -->
-    <aura:attribute name="formConfigName" type="String" default="" access="global"/>
-    <aura:attribute name="formConfigID" type="String" default="" access="global"/>
+    <aura:attribute name="formConfigName" type="String" default="" access="global"
+      description="Contains name of form currently loaded"/>
+    <aura:attribute name="formConfigID" type="String" default="" access="global"
+      description="Contains ID of form currently loaded"/>
     <!-- this could be form record id or object to display id -->
-    <aura:attribute name="recordId" type="String" default="" access="global"/>
+    <aura:attribute name="recordId" type="String" default="" access="global"
+      description="Contains recordID if form was loaded with a record"/>
 
     <!--aura:attribute name="dataId" type="String" default="" /-->
 
     <!-- Component style type -->
-    <aura:attribute name="componentType" type="String" default="" />
+    <aura:attribute name="componentType" type="String" default=""
+      description="Contains form component type either custom or standard"/>
 
 	<!-- this object stores all components rendered in the form
 		 use Field API name to access the component
 	 -->
-    <aura:attribute name="componentData" type="Object"/>
+    <aura:attribute name="componentData" type="Object"
+      description="Contains component data"/>
     <aura:attribute name="submittedStandardButton" type="string[]" default="[]"
                     description="compid of button that has submit type. this one that able to create/update without external handling"/>
     <aura:attribute name="submittedCustomButton" type="string[]" default="[]"
                     description="compid of button that has submit type. this one that able to create/update without external handling"/>
 
     <!-- Lightning flow action attribute -->
-    <aura:attribute name="availableFlowAction" type="String[]"/>
-    <aura:attribute name="formFlowAction" type="String"/>
-    <aura:attribute name="flowData" type="Object"/>
+    <aura:attribute name="availableFlowAction" type="String[]"
+      description="List of flow actions available in the formConfig"/>
+    <aura:attribute name="formFlowAction" type="String"
+      description="Current flow action selected"/>
+    <aura:attribute name="flowData" type="Object"
+      description="Data from the flow"/>
     <aura:attribute name="inputFlow" type="String" access="global"/>
     <aura:attribute name="outputFlow" type="String" access="global"/>
 

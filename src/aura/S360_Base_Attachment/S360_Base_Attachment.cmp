@@ -2,44 +2,71 @@
 
     <!-- static value -->
     <!-- fieldAttachment equal to true means that this component is fieldAttachment type -->
-    <aura:attribute name="fieldAttachment" type="boolean" default="true"/>
+    <aura:attribute name="fieldAttachment" type="boolean" default="true"
+      description="If true component is fieldAttachment type"/>
 
-    <aura:attribute name="master" type="string" default="" />
+    <aura:attribute name="master" type="string" default=""
+      description="Primary Object of the form"/>
 
-    <aura:attribute name="FileList" type="String[]"/>
-    <aura:attribute name="allFilesList" type="Object[]"/>
-    <aura:attribute name="myFilesList" type="Object[]"/>
-    <aura:attribute name="fileQueue" type="Object[]"/>
-    <aura:attribute name="CompId" type="string" default=""/>
-    <aura:attribute name="fieldName" type="string" default=""/>
-    <aura:attribute name="parentId" type="Id" default="" />
-    <aura:attribute name="start" type="string" default="false" />
-    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
-    <aura:attribute name="statusFLS" type="String"/>
-    <aura:attribute name="IsRequired" type="Boolean" default="false"/>
-    <aura:attribute name="RequiredFieldAttachment" type="String"/>
-    <aura:attribute name="Value" type="String" default=""/>
-    <aura:attribute name="Label" type="String" default=""/>
-    <aura:attribute name="panelShow" type="boolean" default="true"/>
-    <aura:attribute name="IsHidden" type="boolean" default="true"/>
-    <aura:attribute name="radio" type="boolean" default="false"/>
-    <aura:attribute name="picklist" type="boolean" default="false"/>
-    <aura:attribute name="pickVal" type="String" default=""/>
-    <aura:attribute name="KeyVal" type="Object" default="{}"/>
+    <aura:attribute name="FileList" type="String[]"
+      description="List of files to be uploaded in the pop-up"/>
+    <aura:attribute name="allFilesList" type="Object[]"
+      description="List of previous files uploaded"/>
+    <aura:attribute name="myFilesList" type="Object[]"
+      description="List of files uploaded displayed in the form"/>
+    <aura:attribute name="fileQueue" type="Object[]"
+      description="Upload queue for files being uploaded"/>
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored" default=""/>
+    <aura:attribute name="fieldName" type="string" default=""
+      description="Name of field on which the attachment is mapped to"/>
+    <aura:attribute name="parentId" type="Id" default=""
+      description="Parent Id of the attachments"/>
+    <aura:attribute name="start" type="string" default="false"
+      description="If true uploaded has begun"/>
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false"
+      description="If true loading spinner is beign displayed and upload is in process"/>
+    <aura:attribute name="statusFLS" type="String"
+      description="Current status of upload"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+  description="If true input is required to submit else input can be left blank"/>
+    <!--<aura:attribute name="RequiredFieldAttachment" type="String"/>-->
+    <aura:attribute name="Value" type="string" default=""
+  description="Value in the input box"/>
+    <aura:attribute name="Label" type="String" default=""
+      description="Text displayed as label of the component"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"
+  description="If true parent panel is visible if false parent panel is hidden"/>
+    <aura:attribute name="IsHidden" type="boolean" default="true"
+      description="If true component is hidden"/>
+    <aura:attribute name="radio" type="boolean" default="false"
+      description="IF true radio buttons are active for displaying file list"/>
+    <aura:attribute name="picklist" type="boolean" default="false"
+      description="If true picklist is active for validation to display file list"/>
+    <aura:attribute name="pickVal" type="String" default=""
+      description="String of picklist values"/>
+    <aura:attribute name="KeyVal" type="Object" default="{}"
+      description="String of key values"/>
     <aura:handler event="c:S360_Base_renderChange" action="{!c.handleOnChange}" />
 
     <!-- validation attribute -->
-	<aura:attribute name="JsonLogic" type="string" default=""/>
-    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
-    <aura:attribute name="Message" type="string" default="" access="private"/>
+	<aura:attribute name="JsonLogic" type="string" default=""
+  description="JSONLogic used to verify the validity of the text inputted"/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""
+  description="Message displayed on pop-up when validation fails on submit"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+  description="JSON data for all the components"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"
+  description="If true input is valid else input is invalid"/>
+    <aura:attribute name="Message" type="string" default="" access="private"
+  description="Message displayed on validation failure on the form"/>
 
     <!-- validation method -->
 	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
-        <aura:attribute name="message" type="String" default=""/>
+        <aura:attribute name="Message" type="string" default="" access="private"
+description="Message displayed on validation failure on the form"/>
     </aura:method>
 
 	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>

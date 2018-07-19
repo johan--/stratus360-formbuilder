@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Component to handle lightning flow on a form.</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

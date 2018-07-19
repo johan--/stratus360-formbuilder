@@ -1,5 +1,5 @@
 <aura:component >
-    <aura:attribute name="CompId" type="string" default="InputTextId"/>
+    <aura:attribute name="CompId" description='Unique Id for this component. This id used to identity the component when event fired, exp: when click event fired' type="string" default="InputTextId"/>
     <aura:attribute name="InputLabel" type="string" default=""/>
     <aura:attribute name="PlaceholderText" type="string" default=""/>
     <aura:attribute name="IsHidden" type="boolean" default="false"/>

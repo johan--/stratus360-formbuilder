@@ -1746,6 +1746,7 @@
     },
 
     submitEvent: function(component, sender){
+				console.log("Sender" + sender);
         debugger;
         var self = this;
         //console.log("FORM PATTER" +JSON.stringify(component.get("v.formPattern")));
@@ -1953,6 +1954,7 @@
     },
 
     showToast: function(comp, type, message){
+				console.log(message);
         comp.set('v.TextMessage', message);
         comp.set('v.ToastType', type);
         var toastValue = comp.get('v.showToast');

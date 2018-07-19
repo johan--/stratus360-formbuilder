@@ -9,6 +9,10 @@
         <value>Storage</value>
     </caseValues>
     <fields>
+        <label><!-- Heroku Id --></label>
+        <name>Heroku_Id__c</name>
+    </fields>
+    <fields>
         <label><!-- Parent --></label>
         <name>Parent__c</name>
         <relationshipLabel><!-- Storage --></relationshipLabel>

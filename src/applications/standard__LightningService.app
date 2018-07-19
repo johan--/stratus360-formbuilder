@@ -8,4 +8,5 @@
     <tab>standard-Dashboard</tab>
     <tab>standard-Chatter</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
 </CustomApplication>

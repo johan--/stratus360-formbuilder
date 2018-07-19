@@ -1,6 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
     <!-- attribute definition -->
-    <aura:attribute name='CompId' type='String'/>
+    <aura:attribute name='CompId' description='Unique Id for this component' type='String'/>
     <aura:attribute name='Lang' type='String' default=''/>
     <aura:attribute name='SiteKey' type='String' default=''/>
     

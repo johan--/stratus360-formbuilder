@@ -1,0 +1,3 @@
+<aura:documentation>
+	<aura:description>Component that renders a carousel with both image and video capability on a form.</aura:description>
+</aura:documentation>

@@ -1,39 +1,47 @@
 <aura:component controller="S360_Base_FileUploadTableController">
-    <aura:attribute name="allData" type="Object[]" />
-    <aura:attribute name="data" type="Object" />
-    <aura:attribute name="index" type="object"/>
-    <aura:attribute name="CompId" type="string"/>
-    
+    <aura:attribute name="allData" type="Object[]"
+      description="Data for the files"/>
+    <aura:attribute name="data" type="Object"
+      description="Data for the current file"/>
+    <aura:attribute name="index" type="object"
+      description="Current index in the array"/>
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored"/>
+
     <!--Toast Attribute -->
-    <aura:attribute name="TextMessage" type="String" default=""/>
-    <aura:attribute name="ToastType" type="String" default=""/>
-    <aura:attribute name="showToast" type="String" default="True"/>
-    
+    <aura:attribute name="TextMessage" type="String" default=""
+      description="Message displayed on the toast"/>
+    <aura:attribute name="ToastType" type="String" default=""
+      description="Type of toast being displayed"/>
+    <aura:attribute name="showToast" type="String" default="True"
+      description="Toast is visible when true"/>
+
     <!-- loading attribute -->
-    <aura:attribute name="showLoading" type="boolean" default="false"/>
-    
+    <aura:attribute name="showLoading" type="boolean" default="false"
+      description="If true loading symbol will be visible"/>
+
     <!-- handler on click component -->
     <aura:handler name="OnClick" event="c:onClick" action="{!c.handleOnClick}"/>
-    
+
     <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" svgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" showToast="{!v.showToast}"/>
-    
+
     <tr class="slds-hint-parent">
-        
+
         <td role="gridcell" class="slds-text-align--left">
             <div class="slds-truncate" title="{!v.index + 1}">
                 {!v.index + 1}
             </div>
         </td>
-        
+
         <td role="gridcell" class="slds-text-align--center">
             <c:ButtonCmp ButtonLabel="Delete" IsHidden="false"
                                      IsDisabled="false" ButtonClass="slds-button"  CompId="{! 'btn_delete_attach_' + v.CompId}"/>
         </td>
-        
+
         <td role="gridcell" class="slds-text-align--left">
             <a target="_blank" href="{!'/servlet/servlet.FileDownload?file='+v.data.objects.Id}">{!v.data.objects.Name}</a>
         </td>
     </tr>
-    
+
     <c:LightningLoadingComponent show="{!v.showLoading}" CompId="{!'E_Rep_View_loading'}"/>
 </aura:component>

@@ -1,7 +1,8 @@
 <aura:component >
 
     <!-- input equal to true means that we able to set/modify value of this component -->
-    <aura:attribute name="input" type="boolean" default="true"/>
+    <aura:attribute name="input" type="boolean" default="true"
+      description="Ability to set/modify the value of this component when true"/>
     <aura:attribute name="CompId" type="string" default="" required="true"
                     description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when change checkbox value"/>
@@ -19,17 +20,27 @@
                                     description="Set checkbox value"/>
     <aura:attribute name="InputClass" type="String" default=""
                     description="Set input checkbox style"/>
-    <aura:attribute name="HelpText" type="string" default=""/>
-    <aura:attribute name="BroadcastRender" type="Boolean" default="false"/>
-    <aura:attribute name="panelShow" type="boolean" default="true"/>
-    <aura:attribute name="LabelPosition" type="String" default="right"/>
-    
+    <aura:attribute name="HelpText" type="string" default=""
+      description="Text displayed in the tooltip when enable"/>
+    <aura:attribute name="BroadcastRender" type="Boolean" default="false"
+      description="Enables this component for dynamic rendering of panels"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"
+      description="Panel is visible when true and hidden when false"/>
+    <aura:attribute name="LabelPosition" type="String" default="right"
+      description="Position on the component where the label is displayed.
+      Available options are Top, Left, Right and Bottom. By default set to the Right."/>
+
     <!-- validation attribute -->
-    <aura:attribute name="JsonLogic" type="string" default=""/>
-    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    <aura:attribute name="Valid" type="boolean" default="true"/>
-    <aura:attribute name="Message" type="string" default=""/>
+    <aura:attribute name="JsonLogic" type="string" default=""
+      description="Sets the JsonLogic for custom validation of input"/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""
+      description="Temporary pop-up message displayed when validation failed on submit"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+      description="Formbuilder JSON mapping of all the data for the current form"/>
+    <aura:attribute name="Valid" type="boolean" default="true"
+      description="Used to verify if input is valid or invalid"/>
+    <aura:attribute name="Message" type="string" default=""
+      description="Message displayed on the form when validation of input fails"/>
 
     <!-- additional event registration -->
     <aura:registerEvent name="OnClick" type="c:S360_Base_onClick" />
@@ -48,16 +59,16 @@
             <span class="slds-checkbox">
                 <input type="checkbox" name="options" id="{!v.CompId}" checked="{!v.IsChecked}" disabled="{!v.IsDisabled}"
                        onclick="{!c.onClick}" aura:id="checkbox" class="{!v.InputClass}"/>
-                
+
                 <label class="slds-checkbox__label" for="{!v.CompId}">
                     <span class="slds-checkbox_faux" style="{! 'display:' + (v.LabelPosition == 'top' || v.LabelPosition == 'left' ? 'none' : '')}"></span>
-                    
+
                     <div class="{! (v.LabelPosition == 'top' ? 'label-top': (v.LabelPosition == 'left' ? 'label-left' : (v.LabelPosition == 'right' ? 'label-right' : '')))}">
                         <abbr class="slds-required" style="{! 'display:' + (v.IsRequired ? 'inline' : 'none')}" title="required">*</abbr>
                         <span class="slds-form-element__label"><aura:unescapedHtml value="{!v.InputLabel}"/></span>
                         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
                     </div>
-                    
+
                     <span class="slds-checkbox_faux" style="{! 'display:' + (and(v.LabelPosition != 'top', v.LabelPosition != 'left') ? 'none' : '')}"></span>
                 </label>
             </span>

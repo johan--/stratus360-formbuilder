@@ -1,5 +1,7 @@
 <aura:documentation>
-	<aura:description>Documentation</aura:description>
+	<aura:description>Lightning Component helper to render the Lightning Design System sprited icons
+
+</aura:description>
 	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
 		Example Description
 	</aura:example>

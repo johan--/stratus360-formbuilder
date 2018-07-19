@@ -1,19 +1,25 @@
 <aura:component >
-    <aura:attribute name="CompId" type="string" default=""/>
-    
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored" default=""/>
+
     <!-- Lightning flow action attribute -->
-    <aura:attribute name="availableFlowAction" type="String[]"/>
-    
+    <aura:attribute name="availableFlowAction" type="String[]"
+      description="Contains the list of available flow action"/>
+
     <!-- Determine which actions are available -->
-    <aura:attribute name="canPause" type="Boolean" default="false"/>
-    <aura:attribute name="canBack" type="Boolean" default="false"/>
-    <aura:attribute name="canNext" type="Boolean" default="false"/>
-    <aura:attribute name="canFinish" type="Boolean" default="false"/>
-    
+    <aura:attribute name="canPause" type="Boolean" default="false"
+      description="Determines if button can pause"/>
+    <aura:attribute name="canBack" type="Boolean" default="false"
+      description="Determines if the button can go back"/>
+    <aura:attribute name="canNext" type="Boolean" default="false"
+      description="Determines if the button can go forward"/>
+    <aura:attribute name="canFinish" type="Boolean" default="false"
+      description="Determines if the button can finish"/>
+
     <aura:registerEvent name="OnClick" type="c:S360_Base_onClick" />
-    
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-    
+
     <div aura:id="actionButtonBar" class="slds-clearfix slds-p-top_medium">
         <!-- If Previous is available, display to the left -->
         <div class="slds-float_left">
@@ -29,7 +35,7 @@
                                   variant="neutral" onclick="{!c.onButtonPressed}" />
             </aura:if>
             <aura:if isTrue="{!v.canNext}">
-                <lightning:button aura:id="NEXT" label="Next" 
+                <lightning:button aura:id="NEXT" label="Next"
                                   variant="brand" onclick="{!c.onButtonPressed}" />
             </aura:if>
             <aura:if isTrue="{!v.canFinish}">

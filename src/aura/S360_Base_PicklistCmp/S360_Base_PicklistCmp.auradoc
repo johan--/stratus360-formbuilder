@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Standard picklist component with multi-select and dynamic rendering support</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

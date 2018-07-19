@@ -8,30 +8,38 @@
                                $Resource.S360_FA__jszip315,
                            $Resource.S360_FA__mammoth + '/mammoth/mammoth/js/mammoth.browser.js')}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" /-->
-    
+
     <ltng:require scripts="{!join(',',
                                $Label.c.FormbuilderRepo + 'docx.js',
                                $Label.c.FormbuilderRepo + 'jszip315.js',
                            	   $Label.c.FormbuilderRepo + 'mammoth/mammoth/js/mammoth.browser.js',
                            	   'https://raw.githubusercontent.com/jonathantneal/svg4everybody/master/dist/svg4everybody.min.js')}"
                       afterScriptsLoaded="{!c.scriptsLoaded}" />
-    
-    <aura:attribute name="ParentID" type="String" default=""/>
-    <aura:attribute name="TemplateID" type="String" default=""/>
-    <aura:attribute name="TemplateName" type="String" default=""/>
-    <aura:attribute name="DataToInject" type="Object"/>
-    <aura:attribute name="Token" type="String" default=""/>
-    <aura:attribute name="HerokuLink" type="String" default=""/>
-    <aura:attribute name="TemplateData" type="String" default=""/>
+
+    <aura:attribute name="ParentID" type="String" default=""
+      description="Id of form"/>
+    <aura:attribute name="TemplateID" type="String" default=""
+      description="Template ID of file / attachment"/>
+    <aura:attribute name="TemplateName" type="String" default=""
+      description="Templat name used to render the docx"/>
+    <aura:attribute name="DataToInject" type="Object"
+      description="Data used to inject into the template form"/>
+    <aura:attribute name="Token" type="String" default=""
+      description="Token used to access docx server"/>
+    <aura:attribute name="HerokuLink" type="String" default=""
+      description="Heroku server link"/>
+    <aura:attribute name="TemplateData" type="String" default=""
+      description="Template data stored after retrieved"/>
     <aura:attribute name="PrintType" type="String" default=""
                     description="[pdf|docx]"/>
     <aura:attribute name="PrintAction" type="String" default=""
                     description="[download|saveAsAttachment]"/>
-    
+
     <aura:attribute name="Class" type="String" default=""
                     description="CSS class to style the button container"/>
-    <aura:attribute name="CompId" type="string" default="ButtonId"	required="true"
-                    description="Unique Id for this component. This id used to identity 
+    <aura:attribute name="CompId" type="string"
+default="ButtonId"	required="true"
+                    description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when click event fired"/>
     <aura:attribute name="ButtonLabel" type="string" default="Button Label" required="true"
                     description="Label to display on button"/>
@@ -39,27 +47,31 @@
                     description="Hide the button by change display to none"/>
     <aura:attribute name="IsDisabled" type="boolean" default="false"
                     description="Disable the button"/>
-    
+
     <!--Toast Attribute -->
-    <aura:attribute name="TextMessage" type="String" default=""/>
-    <aura:attribute name="ToastType" type="String" default=""/>
-    <aura:attribute name="showToast" type="Boolean" default="false"/>
-    <aura:attribute name="cssLoaded" type="Boolean" default="true"/>
-    
-    
-    <button class="{!'slds-button ' + (v.Class ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}" 
+    <aura:attribute name="TextMessage" type="String" default=""
+      description="Toast Message"/>
+    <aura:attribute name="ToastType" type="String" default=""
+      description="Type of toast"/>
+    <aura:attribute name="showToast" type="Boolean" default="false"
+      description="Toast visible if true"/>
+    <aura:attribute name="cssLoaded" type="Boolean" default="true"
+      description="True if css has finished loading "/>
+
+
+    <button class="{!'slds-button ' + (v.Class ? v.Class : ' slds-button--neutral ') + (v.IsHidden ? ' slds-hide ' : ' slds-show ')}"
             disabled="{!v.IsDisabled}" onclick="{!c.onClick}">
-        <!--c:S360_Base_SvgIconCmp SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS222/assets/icons/utility-sprite/svg/symbols.svg#summary'}" 
+        <!--c:S360_Base_SvgIconCmp SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS222/assets/icons/utility-sprite/svg/symbols.svg#summary'}"
                                 Class="slds-button__icon slds-button__icon_left"
                                 Name="summary" Category="utility" Size="x-small"/-->
-        <c:S360_Base_Icon Path="{!$Label.c.FormbuilderRepo + 'SLDS222/assets/icons/utility/summary_60.png'}" 
+        <c:S360_Base_Icon Path="{!$Label.c.FormbuilderRepo + 'SLDS222/assets/icons/utility/summary_60.png'}"
                                 Class="slds-button__icon slds-button__icon_left"
                       			Size="x-small"/>
         {!v.ButtonLabel}
     </button>
-    
-    <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" 
-                                  SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}" 
+
+    <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}"
+                                  SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}"
                                   Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}"/>
-    
+
 </aura:component>

@@ -7,7 +7,7 @@
       debugger;
     helper.setDefaultValue(component);
 
-    // validate required field
+    // validate required field 
     helper.validateRequireField(component);
     // validate field
     helper.validateField(component);

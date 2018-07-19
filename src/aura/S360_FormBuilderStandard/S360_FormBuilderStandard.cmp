@@ -4,59 +4,83 @@
 
 
     <!-- component parameter -->
-    <aura:attribute name="FormConfig" type="Object" default="{}"/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="FormConfig" type="Object" default="{}"
+      description="Form configuration settings for the current form"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+  description="JSON data for all the components"/>
     <!-- save related data by formName|relatedField as the key -->
     <aura:attribute name="RelatedData" type="Object" default="{}" />
-    <aura:attribute name="AttachmentsData" type="Object[]" default="[]"/>
-    <aura:attribute name="FieldInfo" type="Object" default="{}"/>
-    <aura:attribute name="ObjectInfo" type="Object" default="{}"/>
-    <aura:attribute name="Lockdown" type="Boolean" default="false"/>
+    <aura:attribute name="AttachmentsData" type="Object[]" default="[]"
+      description="Array of JSON configs in the form attachment data for the current form"/>
+    <aura:attribute name="FieldInfo" type="Object" default="{}"
+      description="Field information included in the current form"/>
+    <aura:attribute name="ObjectInfo" type="Object" default="{}"
+      description="Object information in the current form"/>
+    <aura:attribute name="Lockdown" type="Boolean" default="false"
+      description="If true input fields are disabled"/>
 
-    <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"/>
-    <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"/>
+    <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"
+      description="If true captcha is enabled"/>
+    <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"
+      description="If true captcha was completed"/>
 
-    <aura:attribute name="isSignatureEnabled" type="boolean" default="false"/>
-    <aura:attribute name="signatureCompId" type="String"/>
-    <aura:attribute name="signatureData" type="Object"/>
-    <aura:attribute name="canvas" type="Object"/>
-    <aura:attribute name="canvasDataUrl" type="String"/>
+    <aura:attribute name="isSignatureEnabled" type="boolean" default="false"
+      description="IF true signatrue is enabled"/>
+    <aura:attribute name="signatureCompId" type="String"
+      description="API key for the signature"/>
+    <aura:attribute name="signatureData" type="Object"
+      description="Signature data is stored here"/>
+    <aura:attribute name="canvas" type="Object"
+      description="Cavas on which the signature is drawn"/>
+    <aura:attribute name="canvasDataUrl" type="String"
+      description="Canvas URL"/>
 
     <!--
 		form pattern mapping
 		used to map position and child parent position
 	 -->
-    <aura:attribute name="FormPattern" type="Object" default="{}"/>
+    <aura:attribute name="FormPattern" type="Object" default="{}"
+      description="Contains a list of all the components rendered on screen for the current form"/>
 
-    <aura:attribute name="configMapping" type="Object" default="{}"/>
+    <aura:attribute name="configMapping" type="Object" default="{}"
+      description="Maps component hash key to component"/>
 
 	<!-- this object stores all components rendered in the form
 		 use Field API name to access the component
 	 -->
-    <aura:attribute name="componentData" type="Object" default="{}"/>
+    <aura:attribute name="componentData" type="Object" default="{}"
+      description="JSON Data of the components"/>
     <!-- save button id which has submit as its action type -->
-    <aura:attribute name="submittedButton" type="string[]"/>
+    <aura:attribute name="submittedButton" type="string[]"
+      description="Saves the button id which has submit as its action type"/>
 
     <!--
 	Show component when CSS is loaded
 	Set to true because we never call afterScriptsLoaded
 	-->
-    <aura:attribute name="cssLoaded" type="Boolean" default="true"/>
+    <aura:attribute name="cssLoaded" type="Boolean" default="true"
+      description="If true shows the component as the CSS is loaded"/>
 
     <!-- save button id which has action other than sumbit -->
     <!-- if action equal to event save like this pattern {compAPI : {actionType, actionName, actionTarget}} -->
     <!-- if action equal to custom save like this pattern {compAPI : {actionType, action}} -->
-    <aura:attribute name="actionButton" type="Object"/>
+    <aura:attribute name="actionButton" type="Object"
+      description="Savw the button id which has an action besides submit"/>
     <!-- mapping button who trigger next and previous panel -->
-    <aura:attribute name="slidingPanelButton" type="sObject" default="{}"/>
+    <aura:attribute name="slidingPanelButton" type="sObject" default="{}"
+      description="Mapping that contains the button which will trigger the next and previous panel"/>
 
     <!--Toast Attribute -->
-    <aura:attribute name="TextMessage" type="String" default=""/>
-    <aura:attribute name="ToastType" type="String" default=""/>
-    <aura:attribute name="showToast" type="Boolean" default="false"/>
+    <aura:attribute name="TextMessage" type="String" default=""
+      description="Text to be displayed on the Toast"/>
+    <aura:attribute name="ToastType" type="String" default=""
+      description="Saves the type of Toast to be displayed"/>
+    <aura:attribute name="showToast" type="Boolean" default="false"
+      description="Toast is visible if true"/>
 
     <!-- Lightning flow action attribute -->
-    <aura:attribute name="availableFlowAction" type="String[]"/>
+    <aura:attribute name="availableFlowAction" type="String[]"
+      description="List of available flow actions"/>
     <aura:attribute name="formFlowAction" type="String"/>
     <aura:attribute name="flowData" type="Object"/>
     <aura:attribute name="inputFlow" type="String"/>
@@ -90,11 +114,10 @@
         <!-- status is server operation status, it could be true or false -->
         <aura:attribute name="status" type="string" default=""/>
         <!-- message is server message -->
-        <aura:attribute name="message" type="string" default=""/>
+        <aura:attribute name="message" type="string" default="" access="private"/>
     </aura:method>
 
-    <aura:method name="showToastMethod" action="{!c.handleShowToast}"
-                 description="display toast message">
+    <aura:method name="showToastMethod" action="{!c.handleShowToast}">
         <aura:attribute name="type" type="string"/>
         <aura:attribute name="message" type="string" />
     </aura:method>

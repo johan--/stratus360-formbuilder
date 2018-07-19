@@ -1,29 +1,46 @@
 <aura:component >
     <!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
-    <aura:attribute name="input" type="boolean" default="true"/>
-    <aura:attribute name="panelShow" type="boolean" default="true"/>
-    <aura:attribute name="CompId" type="string" default=""/>
-    <aura:attribute name="InputLabel" type="string" default=""/>
-    <aura:attribute name="HelpText" type="string" default=""/>
-    <aura:attribute name="PlaceholderText" type="string" default=""/>
+    <aura:attribute name="input" type="boolean" default="true"
+      description="If true component value is modifiable"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"
+      description="If true parent panel is visible else parent panel is hidden"/>
+    <aura:attribute name="CompId" type="string" default=""
+      description="Stores the filed on which this component will stores it value on submit"/>
+    <aura:attribute name="InputLabel" type="string" default=""
+      description="Text displayed as the label for the input box"/>
+    <aura:attribute name="HelpText" type="string" default=""
+      description="Text displayed in tooltip"/>
+    <aura:attribute name="PlaceholderText" type="string" default=""
+      description="Text displayed as placeholder in the input box"/>
     <aura:attribute name="Format" type="string" default=""
                     description="number format"/>
-    <aura:attribute name="IsHidden" type="boolean" default="false"/>
-    <aura:attribute name="IsError" type="boolean" default="false"/>
-    <aura:attribute name="IsRequired" type="boolean" default="false"/>
-    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
-    <aura:attribute name="Value" type="string" default=""/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+      description="If true component is hidden else visible"/>
+    <aura:attribute name="IsError" type="boolean" default="false"
+      description="If true there was an error on submitting"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+      description="If true input is required for submit"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+      description="If true component is disabled"/>
+    <aura:attribute name="Value" type="string" default=""
+      description="Stores the value of the input"/>
     <aura:attribute name="Class" type="String" default=""
                     description="Style for input container"/>
-    <aura:attribute name="DefaultValue" type="String" default="0"/>
-    <aura:attribute name="JsonLogic" type="string" default=""/>
-    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
+    <aura:attribute name="DefaultValue" type="String" default="0"
+      description="Stores the default value of the input"/>
+    <aura:attribute name="JsonLogic" type="string" default=""
+      description="Stores the JSONLogic used for custom validation of input"/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""
+      description="Message displayed if validation fails on submit"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+      description="Stores JSON Data of components for the current form"/>
 
     <!-- validation attribute -->
-    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
-    <aura:attribute name="Message" type="string" default="" access="private"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"
+      description="If true component input is valid else input is invalid"/>
+    <aura:attribute name="Message" type="string" default="" access="private"
+      description="Message displayed on pop-up if validation fails"/>
 
     <!-- Component init handler -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -49,7 +66,7 @@
         <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
 
         <div class="{!'slds-form-element__control ' + (v.IsError ? 'slds-has-error' : '')}">
-            <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}" 
+            <ui:inputNumber required="{!v.IsRequired}" aura:id="{v.CompId}" disabled="{!v.IsDisabled}"
                             class="slds-input textRightAlign" placeholder="{!v.PlaceholderText}" value="{!v.Value}" format="{!v.Format}"/>
         </div>
         <aura:renderIf isTrue="{!v.Valid != true}">

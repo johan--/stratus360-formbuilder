@@ -1,16 +1,21 @@
 <aura:component >
 	<aura:attribute name="CompId" type="string" default="CheckboxId"/>
 	<aura:attribute name="InputLabel" type="string" default=""/>
-	<aura:attribute name="IsHidden" type="boolean" default="false"/>
-	<aura:attribute name="IsRequired" type="boolean" default="false"/>
-	<aura:attribute name="IsDisabled" type="boolean" default="false"/>
+	<aura:attribute name="IsHidden" type="boolean" default="false"
+  description="If true component is hidden else component is visible"/>
+	<aura:attribute name="IsRequired" type="boolean" default="false"
+  description="If true input is required to submit else input can be left blank"/>
+	<aura:attribute name="IsDisabled" type="boolean" default="false"
+  description="If true input box is disabled else input is enabled"/>
 	<aura:attribute name="IsChecked" type="boolean" default="false"/>
-	<aura:attribute name="IsReadOnly" type="boolean" default="false"/>
+	<aura:attribute name="IsReadOnly" type="boolean" default="false"
+  description="If true input cannot be modified"/>
 	<aura:attribute name="ReadOnlyValue" type="string" default="false"/>
 	<aura:attribute name="Value" type="string" default="" description="Salesforce Record Id" />
 	<aura:attribute name="ShowRecordDeletion" type="Boolean" default="false" />
-	<aura:attribute name="class" type="string" default=""/>
-	
+	<aura:attribute name="Class" type="String" default=""
+  description="CSS class for the input box"/>
+
 	<!-- additional event registration -->
 	<aura:registerEvent name="OnChange" type="c:S360_B_Base_Evt_onChange" />
 	<aura:registerEvent name="OnClick" type="c:S360_B_Base_Evt_onClick" />
@@ -33,7 +38,7 @@
 					<label class="" for="{!v.CompId}">
 	<!--
 					<label class="slds-checkbox__label" for="{!v.CompId}">
-						<span class="slds-checkbox~~faux"></span> 
+						<span class="slds-checkbox~~faux"></span>
 						<span class="slds-form-element__label"> {!v.InputLabel}</span>
 	-->
 						<span style="{!v.class == 'text-white' ? 'color:white' : ''}">&nbsp;{!v.InputLabel}</span>

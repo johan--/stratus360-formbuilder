@@ -1,0 +1,3 @@
+<aura:documentation>
+	<aura:description>Component that stays hidden when rendered in a form.</aura:description>
+</aura:documentation>

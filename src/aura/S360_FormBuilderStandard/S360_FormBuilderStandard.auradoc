@@ -1,0 +1,8 @@
+<aura:documentation>
+	<aura:description>standard styling form builder(slds)
+
+</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

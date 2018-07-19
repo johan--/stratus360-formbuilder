@@ -1,34 +1,48 @@
 <aura:component controller="S360_Form_Builder_Controller">
-    <aura:attribute name="Title" type="String" default=""/>
-    <aura:attribute name="Class" type="String" default=""/>
-    
-    <aura:attribute name="ParentId" type="String" default=""/>
-    <aura:attribute name="FormName" type="String" default=""/>
+    <aura:attribute name="Title" type="String" default=""
+      description="Text displayed as title of the component"/>
+    <aura:attribute name="Class" type="String" default=""
+  description="CSS class for the input box"/>
+
+    <aura:attribute name="ParentId" type="String" default=""
+      description="contains the parent Id of the component"/>
+    <aura:attribute name="FormName" type="String" default=""
+      description="Contains the name of the form currently loaded"/>
     <aura:attribute name="RelatedField" type="String" default=""/>
     <!--aura:attribute name="FormConfig" type="sobject[]" default="[]"/-->
     <!--aura:attribute name="FieldInfo" type="sobject[]" default="[]"/-->
-    <aura:attribute name="Data" type="sobject[]" default="[]"/>
-    
-    <aura:attribute name="FormConfigTemplate" type="sobject" default="{}"/>
-    <aura:attribute name="FieldInfoTemplate" type="sobject" default="{}"/>
-    <aura:attribute name="ObjectInfoTemplate" type="sobject" default="{}"/>
-    <aura:attribute name="DataTemplate" type="sobject" default="{}"/>
-    <aura:attribute name="IsReady" type="boolean" default="true"/>
-    
-    <aura:attribute name="componentData" type="Object"/>
-    
+    <aura:attribute name="Data" type="sobject[]" default="[]"
+      description="Contains a list of all the components in the current form"/>
+
+    <aura:attribute name="FormConfigTemplate" type="sobject" default="{}"
+      description="Contains the FormConfig for the current form"/>
+    <aura:attribute name="FieldInfoTemplate" type="sobject" default="{}"
+      description="Contains the FieldInfo for the current form"/>
+    <aura:attribute name="ObjectInfoTemplate" type="sobject" default="{}"
+      description="Contains ObjectInfo for the current form"/>
+    <aura:attribute name="DataTemplate" type="sobject" default="{}"
+      description="Contains a list of all the components in the current form"/>
+    <aura:attribute name="IsReady" type="boolean" default="true"
+      description="If true component is done loading"/>
+
+    <aura:attribute name="componentData" type="Object"
+      description="Data from the component related list"/>
+
     <!--Toast Attribute -->
-    <aura:attribute name="TextMessage" type="String" default=""/>
-    <aura:attribute name="ToastType" type="String" default=""/>
-    <aura:attribute name="showToast" type="Boolean" default="false"/>
-    
+    <aura:attribute name="TextMessage" type="String" default=""
+      description="Toast Message"/>
+    <aura:attribute name="ToastType" type="String" default=""
+      description="Type of toast"/>
+    <aura:attribute name="showToast" type="Boolean" default="false"
+      description="Toast visible when true"/>
+
     <aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.handleButtonClick}"/>
-    
+
     <aura:handler name="change" value="{!v.FormConfigTemplate}" action="{!c.handleTemplateRetrieved}"/>
-    
+
     <div>
         <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="true"/>
-        
+
         <article class="{!'slds-card ' + v.Class}">
             <div class="slds-card__header slds-grid">
                 <header class="slds-media slds-media_center slds-has-flexi-truncate">
@@ -49,7 +63,7 @@
                         <div>
                             <aura:iteration items="{!v.body}" var="b" indexVar="index">
                                 <div class="slds-border_bottom slds-m-around_xx-small">
-                                    
+
                                     <div class="slds-grid slds-wrap">
                                         <div class="slds-size_1-of-1 slds-large-size_11-of-12">
                                             <div class="slds-p-around_xxx-small">
@@ -65,21 +79,21 @@
                                     </div>
                                 </div>
                             </aura:iteration>
-                            
-                            <c:S360_Base_ButtonCmp ButtonLabel="+ add" CompId="{! 'new_' + v.FormName + '_' + v.ParentId}" 
+
+                            <c:S360_Base_ButtonCmp ButtonLabel="+ add" CompId="{! 'new_' + v.FormName + '_' + v.ParentId}"
                                                    aura:id="btnAdd" Class="slds-button slds-button_brand slds-m-top_small"
                                                    IsDisabled="{! !v.ObjectInfoTemplate.isCreateable}"/>
                         </div>
-                        
+
                         <aura:set attribute="else">
                             <h2>Loading...</h2>
                         </aura:set>
                     </aura:if>
-                    
-                    
+
+
                     <!-- gain the template -->
                     <div style="display:none">
-                        <c:S360_FormBuilderMain formConfigName="{!v.FormName}" 
+                        <c:S360_FormBuilderMain formConfigName="{!v.FormName}"
                                                 componentData="{!v.componentData}"
                                                 FormConfig="{!v.FormConfigTemplate}"
                                                 FieldInfo="{!v.FieldInfoTemplate}"
@@ -87,10 +101,10 @@
                                                 Data="{!v.DataTemplate}"/>
                     </div>
                 </aura:if>
-                
+
             </div>
-            
+
         </article>
     </div>
-    
+
 </aura:component>

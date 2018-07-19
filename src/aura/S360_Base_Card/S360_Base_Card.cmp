@@ -1,7 +1,7 @@
 <aura:component >
-    <aura:attribute name="Title" type="String" default=""/>
-    <aura:attribute name="Class" type="String" default=""/>
-    
+    <aura:attribute name="Title" type="String" default="" description="Text used for the card header"/>
+    <aura:attribute name="Class" type="String" default="" description="CSS class to style the card component"/>
+
     <article class="{!'slds-card ' + v.Class}">
         <div class="slds-card__header slds-grid">
             <header class="slds-media slds-media_center slds-has-flexi-truncate">
@@ -19,6 +19,6 @@
         <div class="slds-card__body slds-card__body_inner">
             {!v.body}
         </div>
-        
+
     </article>
 </aura:component>

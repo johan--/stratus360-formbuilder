@@ -1,16 +1,24 @@
 <aura:component controller="S360_Base_FileUploadController">
 	<!-- Component Parameter -->
-    <aura:attribute name="CompId" type="string"/>
-	<aura:attribute name="ShowImage" type="boolean" default="false"/>
-	<aura:attribute name="ImageClass" type="string" default=""/>
-	<aura:attribute name="Class" type="string" default=""/>
-    
-    <aura:attribute name="FileLabel" type="String" default="Choose File"/>
-    <aura:attribute name="InitFileLabel" type="String" default="Choose File"/>
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored"/>
+	<aura:attribute name="ShowImage" type="boolean" default="false"
+    description="Shows image when true"/>
+	<aura:attribute name="ImageClass" type="string" default=""
+    description="Class of image to be displayed"/>
+	<aura:attribute name="Class" type="String" default=""
+  description="CSS class for the input box"/>
 
-    <aura:attribute name="ParentId" type="Id"/>
-    <aura:attribute name="ImageId" type="Id"/>
-    
+    <aura:attribute name="FileLabel" type="String" default="Choose File"
+      description="Text displayed as file label"/>
+    <aura:attribute name="InitFileLabel" type="String" default="Choose File"
+      description="File label on initialization"/>
+
+    <aura:attribute name="ParentId" type="Id"
+      description="ParentId of attachment/files"/>
+    <aura:attribute name="ImageId" type="Id"
+      description="Id of the file being uploaded"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
     <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
     <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
@@ -25,13 +33,13 @@
       <div class="slds-col slds-size--7-of-9">
         <!--input type="file" class="file uiButton-|-default slds-button-|-neutral" aura:id="fileSelected" onchange="{!c.save}"/-->
         <!--ui:spinner aura:id="spinner"/-->
-          
+
           <div class="slds-file-selector slds-file-selector_files">
               <div class="slds-file-selector__dropzone">
                   <input aura:id="fileSelected" type="file" class="slds-file-selector__input slds-assistive-text" id="{!v.CompId}" aria-describedby="{!v.CompId}" onchange="{!c.save}"/>
                   <label class="slds-file-selector__body" for="{!v.CompId}">
                       <span class="slds-file-selector__button slds-button slds-button_neutral">
-                          <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#upload'}" 
+                          <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#upload'}"
                                      Class="slds-button__icon slds-button__icon_left icon-color"
                                      Name="upload" Category="utility" Size="xx-small"/>
                           <aura:unescapedHtml value="{!v.FileLabel}"/>
@@ -39,7 +47,7 @@
                   </label>
               </div>
           </div>
-          
+
           <div class="slds-spinner_container slds-hide" aura:id="spinner">
               <div role="status" class="slds-spinner slds-spinner--x-small">
                   <span class="slds-assistive-text">Loading</span>
@@ -48,7 +56,7 @@
               </div>
           </div>
       </div>
-    </div>    
+    </div>
 
     <!--div aura:id="displayImageDiv"  class="{!v.ImageClass + ' ' + (v.ShowImage ? 'slds-show slds-is-relative' : 'slds-hide slds-is-relative')}">
         <aura:if isTrue="{!v.ImageId != null}" >

@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Button that handles transffering field information into an docx template</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

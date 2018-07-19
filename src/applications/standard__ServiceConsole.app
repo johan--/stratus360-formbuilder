@@ -173,9 +173,13 @@
     <tab>standard-Opportunity</tab>
     <tab>standard-Lead</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
     <workspaceMappings>
         <mapping>
             <tab>Carousel_Config__c</tab>
+        </mapping>
+        <mapping>
+            <tab>Storage__c</tab>
         </mapping>
         <mapping>
             <tab>standard-Account</tab>

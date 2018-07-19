@@ -1,26 +1,43 @@
 <aura:component >
 	<!-- static value -->
     <!-- input equal to true means that we able to set/modify value of this component -->
-    <aura:attribute name="input" type="boolean" default="true"/>
-    
-    <aura:attribute name="CompId" type="string" default="InputTextId"/>
-    <aura:attribute name="panelShow" type="boolean" default="true"/>
-    <aura:attribute name="InputLabel" type="string" default="Input Label"/>
-    <aura:attribute name="PlaceholderText" type="string" default=""/>
-    <aura:attribute name="IsHidden" type="boolean" default="false"/>
-    <aura:attribute name="IsRequired" type="boolean" default="false"/>
-    <aura:attribute name="IsReadOnly" type="boolean" default="false"/>
-    <aura:attribute name="IsDisabled" type="boolean" default="false"/>
-    <aura:attribute name="Value" type="string" default=""/>
-    <aura:attribute name="Class" type="String" default=""/>
-    <aura:attribute name="HelpText" type="string" default=""/>
-    
+    <aura:attribute name="input" type="boolean" default="true"
+      description="If true the input is editable / modifiable"/>
+
+    <aura:attribute name="CompId" type="string" default="InputTextId"
+      description="API key for the field where the input from this component will be stored"/>
+    <aura:attribute name="panelShow" type="boolean" default="true"
+      description="If true parent panel is visible if false parent panel is hidden"/>
+    <aura:attribute name="InputLabel" type="string" default="Input Label"
+      description="Text displayed as the label for the component"/>
+    <aura:attribute name="PlaceholderText" type="string" default=""
+      description="PlaceholderText displayed in the iput bar"/>
+    <aura:attribute name="IsHidden" type="boolean" default="false"
+      description="If true component is hidden else component is visible"/>
+    <aura:attribute name="IsRequired" type="boolean" default="false"
+      description="If true input is required to submit else input can be left blank"/>
+    <aura:attribute name="IsReadOnly" type="boolean" default="false"
+      description="If true input cannot be modified"/>
+    <aura:attribute name="IsDisabled" type="boolean" default="false"
+      description="If true input box is disabled else input is enabled"/>
+    <aura:attribute name="Value" type="string" default=""
+      description="Value in the input box"/>
+    <aura:attribute name="Class" type="String" default=""
+      description="CSS class for the input box"/>
+    <aura:attribute name="HelpText" type="string" default=""
+      description="Text displayed in the tooltip"/>
+
     <!-- validation attribute -->
-	<aura:attribute name="JsonLogic" type="string" default=""/>
-    <aura:attribute name="FailureValidationMessage" type="string" default=""/>
-    <aura:attribute name="Data" type="Object" default="{}"/>
-    <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
-    <aura:attribute name="Message" type="string" default="" access="private"/>
+	<aura:attribute name="JsonLogic" type="string" default=""
+    description="JSONLogic used to verify the validity of the text inputted"/>
+    <aura:attribute name="FailureValidationMessage" type="string" default=""
+      description="Message displayed on pop-up when validation fails on submit"/>
+    <aura:attribute name="Data" type="Object" default="{}"
+      description="JSON data for all the components"/>
+    <aura:attribute name="Valid" type="boolean" default="true" access="private"
+      description="If true input is valid else input is invalid"/>
+    <aura:attribute name="Message" type="string" default="" access="private"
+      description="Message displayed on validation failure on the form"/>
 
     <!-- validation method -->
 	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>

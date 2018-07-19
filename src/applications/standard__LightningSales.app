@@ -17,4 +17,5 @@
     <tab>standard-Case</tab>
     <tab>standard-Forecasting3</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
 </CustomApplication>

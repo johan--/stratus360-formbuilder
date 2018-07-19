@@ -12,12 +12,5 @@
         
         helper.getAndSetFlags(component, pathsList);
 
-    },
-    
-    clicked : function(component, event, helper) {
-        console.log(component.get("v.paths"));
-        console.log(component.get("v.Name"));
-        console.log(component.get("v.FieldName"));
-        console.log(component.get("v.Linear"));
-	}
+    }
 })

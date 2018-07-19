@@ -1,12 +1,16 @@
 <aura:component >
-    <aura:attribute name="CompId" type="string" default=""/>
-    <aura:attribute name="label" type="string" default=""/>
-    <aura:attribute name="Attributes" type="Object" default="{}"/>    
-    <aura:attribute name="data" type="Object"/>
-    
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored" default=""/>
+    <aura:attribute name="label" type="string" default=""
+      description="Text displayed as label of the component"/>
+    <aura:attribute name="Attributes" type="Object" default="{}"
+      description="List of user defined attributes"/>
+    <aura:attribute name="data" type="Object"
+      description="List of components in current form"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    
+
     {!v.body}
-    
+
     <button onclick="{!c.check}">Check</button>
 </aura:component>

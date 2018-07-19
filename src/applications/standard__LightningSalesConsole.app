@@ -14,4 +14,5 @@
     <tab>standard-CollaborationGroup</tab>
     <tab>standard-File</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
 </CustomApplication>

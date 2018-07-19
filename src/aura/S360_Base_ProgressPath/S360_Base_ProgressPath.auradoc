@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Progress path component that displays progress of the form</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

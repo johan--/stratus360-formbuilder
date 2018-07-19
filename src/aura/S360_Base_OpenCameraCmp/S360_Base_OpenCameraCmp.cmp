@@ -1,13 +1,17 @@
 <aura:component >
-    <aura:attribute name="Class" type="String" default=""/>
-    <aura:attribute name="Label" type="String" default=""/>
-    <aura:attribute name="CompId" type="String" default=""/>
-    <aura:attribute name="ButtonId" type="String" default="{!v.CompId + '_OpenCameraButton'}"/>
-    
+    <aura:attribute name="Class" type="String" default=""
+  description="CSS class for the input box"/>
+    <aura:attribute name="Label" type="String" default=""
+      description="Text displayed as the label"/>
+    <aura:attribute name="CompId" type="string"
+description="API key for the field where the input from this component will be stored" default=""/>
+    <aura:attribute name="ButtonId" type="String" default="{!v.CompId + '_OpenCameraButton'}"
+      description="Id of the button"/>
+
     <aura:handler name="OnClick" event="c:onClick" action="{!c.handleOnClick}"/>
-    
+
     <aura:registerEvent name="OnChange" type="c:onChange" />
-    
+
 	<c:ButtonCmp Class="{!v.Class}" ButtonLabel="{!v.Label}" CompId="{!v.ButtonId}"/>
     <input type="file" id="{!v.CompId}" onchange="{!c.onFileChanged}" class="input_file"/>
 </aura:component>

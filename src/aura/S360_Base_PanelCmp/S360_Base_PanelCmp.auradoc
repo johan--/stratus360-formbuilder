@@ -1,0 +1,6 @@
+<aura:documentation>
+    <aura:description>Panel component that can hold components inside it. Can be used for dynamic rendering (hide/show based on field values).</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example Description
+	</aura:example>
+</aura:documentation>

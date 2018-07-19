@@ -1,0 +1,5 @@
+<aura:documentation>
+	<aura:description>main component to load config and decide which style type will use
+
+</aura:description>
+</aura:documentation>

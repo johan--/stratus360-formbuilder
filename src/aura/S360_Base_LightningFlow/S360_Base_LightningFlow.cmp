@@ -1,10 +1,12 @@
 <aura:component >
-    <aura:attribute name="FlowName" type="string"/>
-    <aura:attribute name="FlowData" type="object[]" default="[]"/>
+    <aura:attribute name="FlowName" type="string"
+      description="Name of the flow implemented"/>
+    <aura:attribute name="FlowData" type="object[]" default="[]"
+      description="Data being passed into the flow"/>
     <aura:attribute name="CompId" type="string" default="ButtonId"	required="true"
-                    description="Unique Id for this component. This id used to identity 
+                    description="Unique Id for this component. This id used to identity
                                  the component when event fired, exp: when click event fired"/>
-    
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <lightning:flow aura:id="flowData" onstatuschange="{!c.handleStatusChange}"/>
 </aura:component>

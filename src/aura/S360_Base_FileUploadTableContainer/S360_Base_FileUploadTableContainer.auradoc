@@ -1,5 +1,5 @@
 <aura:documentation>
-	<aura:description>Documentation</aura:description>
+	<aura:description>Table for the file upload component displaying all the files uploaaded and to be uploaded.</aura:description>
 	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
 		Example Description
 	</aura:example>

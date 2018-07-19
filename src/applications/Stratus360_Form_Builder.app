@@ -4,4 +4,5 @@
     <label>Stratus360 Form Builder</label>
     <tab>S360_Form_Config__c</tab>
     <tab>Carousel_Config__c</tab>
+    <tab>Storage__c</tab>
 </CustomApplication>
