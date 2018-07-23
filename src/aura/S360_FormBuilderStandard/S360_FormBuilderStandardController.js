@@ -51,8 +51,8 @@
 
         console.log(JSON.stringify(actionButton));
         var evt = actionButton[event.getParam('CompId')];
-        console.log(evt.actionName);
-        console.log(evt.actionTarget);
+        // console.log(evt.actionName);
+        // console.log(evt.actionTarget);
 
         if(evt != undefined){
             //stop bubble event

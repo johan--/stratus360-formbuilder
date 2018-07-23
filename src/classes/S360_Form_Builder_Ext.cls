@@ -308,7 +308,7 @@ global with sharing class S360_Form_Builder_Ext {
     public void cloneForm(){
       S360_FA__S360_Form_Config__c clone = new S360_FA__S360_Form_Config__c();
       System.debug(clone);
-      S360_FA__S360_Form_Config__c curr = [select S360_FA__AutoSave_Record__c, S360_FA__AutoSave_Record_Interval__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Description__c, S360_FA__Flow_Returns_Data__c, S360_FA__Has_Flow_Controller__c, 	S360_FA__Input_Flow_Map__c, 	S360_FA__Language__c, S360_FA__Lock_Logic__c, 	S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, 	S360_FA__Version_No__c, 	S360_FA__Record_Type__c, S360_FA__Record_Type_Mapping__c, 	S360_FA__Returned_Flow_Field__c from S360_FA__S360_Form_Config__c where id=:formConfig.Id limit 1	];
+      S360_FA__S360_Form_Config__c curr = [select S360_FA__Component_Type__c,S360_FA__AutoSave_Record__c, S360_FA__AutoSave_Record_Interval__c, S360_FA__Custom_Css__c, S360_FA__Custom_Script__c, S360_FA__Description__c, S360_FA__Flow_Returns_Data__c, S360_FA__Has_Flow_Controller__c, 	S360_FA__Input_Flow_Map__c, 	S360_FA__Language__c, S360_FA__Lock_Logic__c, 	S360_FA__Save_to_Storage__c, S360_FA__SelectedVersion__c, 	S360_FA__Version_No__c, 	S360_FA__Record_Type__c, S360_FA__Record_Type_Mapping__c, 	S360_FA__Returned_Flow_Field__c from S360_FA__S360_Form_Config__c where id=:formConfig.Id limit 1	];
       clone.Name = formConfig.Name+ '-Clone';
       clone.S360_FA__AutoSave__c = formconfig.S360_FA__AutoSave__c;
       clone.S360_FA__AutoSave_Interval__c = formconfig.S360_FA__AutoSave_Interval__c;
@@ -330,6 +330,10 @@ global with sharing class S360_Form_Builder_Ext {
       clone.S360_FA__Record_Type__c= curr.S360_FA__Record_Type__c;
       clone.S360_FA__Record_Type_Mapping__c= curr.S360_FA__Record_Type_Mapping__c;
       clone.S360_FA__Returned_Flow_Field__c= curr.S360_FA__Returned_Flow_Field__c;
+      clone.S360_FA__Component_Type__c= curr.S360_FA__Component_Type__c;
+        
+        
+        
       System.debug(clone);
       insert clone;
       String cloneID = clone.id;
