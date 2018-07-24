@@ -1,13 +1,15 @@
 ({
 	getAndSetFlags : function(component, pathsList) {
-       
+       debugger;
         var action = component.get("c.checkFieldValue");
+				console.log(component.get("v.parentId"));
         action.setParams({ fieldName : component.get("v.FieldName") ,
                            parentId: component.get("v.parentId"),
                            primaryObject: component.get("v.primaryObject")
                          });
 
         action.setCallback(this, function(response) {
+					debugger;
             var state = response.getState();
             if (state === "SUCCESS") {
                 var currentPickListValue = response.getReturnValue();
@@ -18,7 +20,7 @@
                         pathsList[i].status='selected';
                     }
                 }
-                
+
 
                 if(component.get("v.Linear")=="YES"){
                     console.log("YESSSSS");
@@ -39,7 +41,7 @@
                 var errors = response.getError();
                 if (errors) {
                     if (errors[0] && errors[0].message) {
-                        console.log("Error message: " + 
+                        console.log("Error message: " +
                                  errors[0].message);
                     }
                 } else {

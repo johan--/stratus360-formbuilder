@@ -743,6 +743,7 @@
      *
      */
     generateInputSelect : function(component, config){
+        debugger;
         var arrPicklistKeyVal = [];
         var picklistKeyVal = "";
         // construct defined key value picklist
@@ -1366,7 +1367,7 @@
                 "aura:id": config.key,
                 "CompId": config.key,
                 "FieldName": config.fieldName,
-                "Linear": config.linear,
+                "Linear": config.linear? config.linear : "NO",
                 "paths":config.dependents,
                 "parentId": parentId,
                 "primaryObject":component.get('v.FormConfig').S360_FA__Primary_Object__c

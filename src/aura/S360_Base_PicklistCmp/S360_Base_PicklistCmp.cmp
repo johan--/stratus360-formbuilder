@@ -39,6 +39,8 @@ description="API key for the field where the input from this component will be s
   description="Message displayed on pop-up when validation fails on submit"/>
     <aura:attribute name="BroadcastRender" type="Boolean" default="false"
       description="If true change in picklist values updates dynamically rendered panels"/>
+ <aura:attribute name="Options" type="Object[]" default="[]"
+      description="picklist options to display"/>
 
 
     <!-- validation attribute -->
@@ -69,9 +71,10 @@ description="API key for the field where the input from this component will be s
     <!-- validation method -->
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
-        <aura:attribute name="Message" type="string" default="" access="private"
+        <aura:attribute name="message" type="string" default="" access="private"
 description="Message displayed on validation failure on the form"/>
     </aura:method>
+
 
 
     	<article class="{!(v.IsHidden ? 'slds-hide slds-is-relative' : 'slds-show slds-is-relative ' + v.Class)}">
@@ -86,11 +89,25 @@ description="Message displayed on validation failure on the form"/>
                 <lightning:helptext class="{!v.HelpText != '' ? 'show-tooltip' : 'hide-tooltip'}" content="{!v.HelpText}"/>
 
                 <div class="slds-form-element__control minSize" id="{!v.CompId}">
-                    <ui:inputSelect aura:id="InputSelectId" required="{!v.IsRequired}"
+                    <!--ui:inputSelect aura:id="InputSelectId" required="{!v.IsRequired}"
                                     disabled="{!v.IsDisabled}" class="{! 'slds-select ' + (v.Multiple ? '' : 'heightAdjustment')}"
                                     labelClass="slds-form-element__label"
                                     change="{!c.onSelectChangeExpType}" multiple="{!v.Multiple}">
-                    </ui:inputSelect>
+                    </ui:inputSelect-->
+                    
+                    <select aura:id="InputSelectId" required="{!v.IsRequired}" disabled="{!v.IsDisabled}" multiple="{!v.Multiple}"
+                            class="{! 'slds-select ' + (v.Multiple ? '' : 'heightAdjustment')}" onchange="{!c.onSelectChangeExpType}">
+                        <aura:iteration items="{!v.Options}" var="option">
+                            <aura:if isTrue="{!option.selected}">
+                                <option value="{!option.value}" selected='true'>{!option.label}</option>
+                                
+                                <aura:set attribute="else">
+                                	<option value="{!option.value}">{!option.label}</option>    
+                                </aura:set>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </select>
                 </div>
     	    </div>
             <div aura:id="loadingIcon" class="slds-spinner_container" >
@@ -106,10 +123,7 @@ description="Message displayed on validation failure on the form"/>
                     <aura:unescapedHtml value="{!v.Message}"/>
                 </ui:message>
             </aura:renderIf>
-
+            
         </article>
-
-
-
 
 </aura:component>

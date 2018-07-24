@@ -486,6 +486,37 @@
             "xmlName": "SiteDotCom"
         },
         {
+            "directoryName": "networks",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "network",
+            "xmlName": "Network"
+        },
+        {
+            "childXmlNames": [
+                "ManagedTopic"
+            ],
+            "directoryName": "managedTopics",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "managedTopics",
+            "xmlName": "ManagedTopics"
+        },
+        {
+            "directoryName": "moderation",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "keywords",
+            "xmlName": "KeywordList"
+        },
+        {
+            "directoryName": "moderation",
+            "inFolder": false,
+            "metaFile": false,
+            "suffix": "rule",
+            "xmlName": "ModerationRule"
+        },
+        {
             "directoryName": "samlssoconfigs",
             "inFolder": false,
             "metaFile": false,

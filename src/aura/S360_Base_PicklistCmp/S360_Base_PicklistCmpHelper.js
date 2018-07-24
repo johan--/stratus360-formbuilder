@@ -117,7 +117,9 @@
                 component.set("v.PicklistKV",picklistKV);
                 
                 var opts2 = helper.createJSON(component, picklistKV, Value);
-        		component.find("InputSelectId").set("v.options", opts2);
+                component.set('v.Options', opts2);
+                
+        		/*component.find("InputSelectId").set("v.options", opts2);
                 if(Value){
                 	component.find("InputSelectId").set("v.value", Value);
                 }else{
@@ -126,8 +128,8 @@
                         //component.find("InputSelectId").set("v.value", opts2[0].value);
                         //component.set("v.OldValue", opts2[0].value);
                     }
-                }
-                helper.onChange(component);
+                }*/
+                //helper.onChange(component);
                 
         		//Stop spinner
         		helper.stopStartLoading(component, event, helper);
@@ -186,7 +188,9 @@
                 component.set("v.PicklistKV",picklistKV);
 				
                 var opts2 = helper.createJSON(component, picklistKV, Value);
-        		component.find("InputSelectId").set("v.options", opts2);
+                component.set('v.Options', opts2);
+                
+        		/*component.find("InputSelectId").set("v.options", opts2);
                 if(Value){
                 	component.find("InputSelectId").set("v.value", Value);
                 }else{
@@ -195,9 +199,9 @@
                         //component.set("v.Value", opts2[0].value);
                         //component.set("v.OldValue", opts2[0].value);
                     }
-                }
+                }*/
                 
-                helper.onChange(component);
+                //helper.onChange(component);
                 
         		//Stop spinner
         		helper.stopStartLoading(component, event, helper);
@@ -213,9 +217,15 @@
     
     onChange : function(component){
         // push to attribute value
-        component.set('v.Value', component.find('InputSelectId').get('v.value'));
-
-
+        //component.set('v.Value', component.find('InputSelectId').get('v.value'));
+        
+        var Value = component.get("v.Value");
+        var picklistKV = component.get("v.PicklistKV");
+        var opts2 = this.createJSON(component, picklistKV, Value);
+        
+        //component.find("InputSelectId").set("v.options", opts2);
+        component.set('v.Options', opts2)
+        
         // validate required field
         this.validateRequireField(component);
         // validate field
@@ -224,7 +234,7 @@
         var evt = component.getEvent('OnChange');
         evt.setParams({
             "CompId": component.get('v.CompId'),
-            "Payload": component.find('InputSelectId').get('v.value')
+            "Payload": component.get('v.Value')
         });
         evt.fire();
     },
@@ -241,8 +251,9 @@
             }else{
              	var opts2 = self.createJSON(comp, picklistKV, Value);
             
-                comp.find("InputSelectId").set("v.options", opts2);
-                comp.find("InputSelectId").set("v.value", Value);
+                //comp.find("InputSelectId").set("v.options", opts2);
+                //comp.find("InputSelectId").set("v.value", Value);
+                component.set('v.Options', opts2);
 
                 if(Value != '' && Value != 'null'){
                     self.onChange(comp);
@@ -262,7 +273,7 @@
 
     validateRequireField: function(component){
         // validate required field
-        if(!component.get('v.Value')){
+        if(!component.get('v.Value') && component.get('v.IsRequired')){
             this.toggleErrorMessage(component, false, $A.get("$Label.c.S360_Field_Required"));
         }else{
             this.toggleErrorMessage(component, true);

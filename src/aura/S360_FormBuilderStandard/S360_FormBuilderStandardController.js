@@ -84,10 +84,10 @@
         var params = event.getParam('arguments');
         debugger;
         if(params){
-          console.log("Params");
-          console.log(params.message);
-          console.log(params.sender);
-          console.log(JSON.stringify(component.get('v.configMapping')));
+          // console.log("Params");
+          // console.log(params.message);
+          // console.log(params.sender);
+          // console.log(JSON.stringify(component.get('v.configMapping')));
             // check response status, if error or incomplete, throw it
             if(params.status == 'ERROR'){
                 if(component.get('v.configMapping')[params.sender] && component.get('v.configMapping')[params.sender].errorMessage){

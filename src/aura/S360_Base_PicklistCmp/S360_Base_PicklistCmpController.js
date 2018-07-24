@@ -1,6 +1,6 @@
 ({
     doInit: function(component, event, helper) {
-		//debugger;
+		debugger;
         //GetPicklistValue if not provided
         if(component.get("v.SObjectName")=="" || component.get("v.SObjectName")==undefined)
         {
@@ -10,11 +10,14 @@
             var picklistKV = component.get("v.PicklistKV");
 
             var opts2 = helper.createJSON(component, picklistKV, Value);
-            component.find("InputSelectId").set("v.options", opts2);
-            component.find("InputSelectId").set("v.value", Value);
+            
+            //component.find("InputSelectId").set("v.options", opts2);
+            //component.find("InputSelectId").set("v.value", Value);
+            
+            component.set('v.Options', opts2)
 
             if(Value != '' && Value != 'null'){
-                helper.onChange(component);
+                //helper.onChange(component);
             }
         }
         else
@@ -35,8 +38,8 @@
     },
 
     onSelectChangeExpType: function(component, event, helper){
-      debugger;
-        helper.onChange(component);
+        component.set('v.Value', component.find("InputSelectId").getElement().value);
+        
         if (component.get("v.BroadcastRender")) {
           var evt2 = $A.get("e.c:S360_Base_renderChange");
           evt2.setParams({
@@ -52,7 +55,9 @@
             var Value = component.get("v.Value");
             var picklistKV = component.get("v.PicklistKV");
             var opts2 = helper.createJSON(component, picklistKV, Value);
-            component.find("InputSelectId").set("v.options", opts2);
+            
+            //component.find("InputSelectId").set("v.options", opts2);
+            component.set('v.Options', opts2)
         	//helper.onChange(component);
         }
     },
@@ -61,14 +66,17 @@
         helper.handleNotify(component);
     },
 
-    changeValue : function(component){
+    changeValue : function(component, event, helper){
         if(component.get('v.Value') == ''){
             component.set('v.Value', component.get('v.OldValue'));
         }
+        
+        helper.onChange(component);
     },
 
     handleValidationFail: function(component, event, helper){
         var params = event.getParam('arguments');
+        debugger;
         var message = '';
         if (params) {
             message = params.message || component.get('v.FailureValidationMessage');

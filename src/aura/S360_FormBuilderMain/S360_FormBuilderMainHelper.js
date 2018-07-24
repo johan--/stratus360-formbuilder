@@ -93,6 +93,7 @@
             component.set("v.Data", dataup);
             child = component.find('S360_FormBuilderStandard');
             child.set("v.Data", dataup);
+            debugger;
             console.log(component.get("v.Data.Id"));
 
             // refresh the data
@@ -109,6 +110,10 @@
                   callback(response.getReturnValue().data);
                 }
               }
+            } else {
+              if (callback != undefined) {
+                  callback(response.getReturnValue().data);
+                }
             }
           } else {
             console.log("ERRRRRROR " + response.getReturnValue().message)
@@ -332,6 +337,7 @@
         });
       } else if (component.get('v.formFlowAction') === 'save_and_pass') {
         self.upsert(component, undefined, function(data) {
+
           component.set('v.outputFlow', JSON.stringify(data));
 
           var navigate = component.get('v.navigateFlow');

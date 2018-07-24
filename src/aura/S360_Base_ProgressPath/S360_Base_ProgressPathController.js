@@ -1,5 +1,6 @@
 ({
     doInit : function(component, event, helper){
+      debugger;
         var pathsList = component.get("v.paths");
         var fieldName = component.get("v.FieldName");
         console.log(pathsList);
@@ -8,8 +9,8 @@
             (pathsList[i])["status"] = 'incomplete';
             (pathsList[i])["fieldName"] = fieldName;
         }
-        
-        
+
+
         helper.getAndSetFlags(component, pathsList);
 
     }
