@@ -8,6 +8,10 @@
             component.set('v.componentType', component.get('v.FormConfig').S360_FA__Component_Type__c);
             return;
         }
+        
+        if(!component.get('v.herokuOwner')){
+         	component.set('v.herokuOwner', (helper.getUrlParam('ho') ? helper.getUrlParam('ho') : ''));   
+        }
 
         // get availbale flow action
         helper.getAvailableFlowActions(component);
@@ -135,6 +139,17 @@
                     }else if(formConfig.S360_FA__Component_Type__c == 'Custom'){
                         alert(res.message);
                     }*/
+                }
+            }else if (response.getState() === "ERROR") {
+                debugger;
+                var errors = response.getError();
+                if (errors) {
+                    if (errors[0] && errors[0].message) {
+                        console.log("Error message: " + 
+                                 errors[0].message);
+                    }
+                } else {
+                    console.log("Unknown error");
                 }
             }
         });

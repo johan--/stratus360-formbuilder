@@ -1,0 +1,11 @@
+<aura:component >
+    <aura:attribute name="value" type="string"/>
+    <aura:attribute name="payload" type="string"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+	<aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.clicked}"/>
+    
+    <c:S360_Base_InputTextCmp Value="{!v.value}"/>
+    <c:S360_Base_ButtonCmp CompId="btn" ButtonLabel="Update" Payload="{!v.payload}"/>
+</aura:component>

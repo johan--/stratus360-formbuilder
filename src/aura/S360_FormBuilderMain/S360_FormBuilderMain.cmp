@@ -12,7 +12,9 @@
     <aura:attribute name="FormConfig" type="Object" default="{}"
       description="Contains the configuration settings of the current form"/>
     <aura:attribute name="Data" type="Object" default="{}"
-  description="JSON data for all the components"/>
+  		description="JSON data for all the components"/>
+    <aura:attribute name="StringData" type="string" default=""
+ 		description="string JSON data for all the components"/>
     <aura:attribute name="RelatedData" type="Object" default="{}"
       description="Contains the related data for all the components"/>
     <aura:attribute name="AttachmentsData" type="Object[]" default="[]"
@@ -30,6 +32,9 @@
     <aura:attribute name="language" type="String" default="en"
       description="Current language selected"/>
     <aura:attribute name="Standard" type="Aura.Component"/>
+    
+    <aura:attribute name="StringAttachments" type="string" default=""
+  		description="string attachment json"/>
 
     <!-- captcha attributes -->
     <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"
@@ -83,6 +88,9 @@
       description="Data from the flow"/>
     <aura:attribute name="inputFlow" type="String" access="global"/>
     <aura:attribute name="outputFlow" type="String" access="global"/>
+    
+    <!-- heroku -->
+    <aura:attribute name="herokuOwner" type="String"/>
 
     <!-- Handler -->
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>

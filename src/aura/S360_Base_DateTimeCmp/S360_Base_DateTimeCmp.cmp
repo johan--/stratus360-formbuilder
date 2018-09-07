@@ -29,7 +29,7 @@
     <aura:attribute name="FailureValidationMessage" type="string" default=""/>
     <aura:attribute name="Data" type="Object" default="{}"/>
     <aura:attribute name="Valid" type="boolean" default="true" access="private"/>
-    <aura:attribute name="Message" type="string" default="" access="private"/>
+    <aura:attribute name="message" type="string" default="" access="private"/>
 
     <!-- validation method -->
 	<aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>

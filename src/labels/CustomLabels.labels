@@ -88,7 +88,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>S360 base captcha domain</shortDescription>
-        <value>https://s360-fa-dev-ed.lightning.force.com</value>
+        <value>https://flow360-dev-ed.lightning.force.com</value>
     </labels>
     <labels>
         <fullName>S360_base_captcha_loading_message</fullName>

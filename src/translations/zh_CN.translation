@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customApplications>
+        <label><!-- Stratus360 Form Builder --></label>
+        <name>Stratus360_Form_Builder</name>
+    </customApplications>
+    <customLabels>
+        <label><!-- FormNotFound --></label>
+        <name>FormNotFound</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- FormbuilderRepo --></label>
+        <name>FormbuilderRepo</name>
+    </customLabels>
+    <customLabels>
+        <label>zh_CN</label>
+        <name>Language</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotAccessible --></label>
+        <name>ObjectNotAccessible</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotCreatable --></label>
+        <name>ObjectNotCreatable</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotDeletable --></label>
+        <name>ObjectNotDeletable</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotFound --></label>
+        <name>ObjectNotFound</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ObjectNotUpdatable --></label>
+        <name>ObjectNotUpdatable</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 Attachment Required --></label>
+        <name>S360_Attachment_Required</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 Empty Carousel --></label>
+        <name>S360_Empty_Carousel</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Field_Required --></label>
+        <name>S360_Field_Required</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha domain --></label>
+        <name>S360_base_captcha_domain</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha loading message --></label>
+        <name>S360_base_captcha_loading_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha message --></label>
+        <name>S360_base_captcha_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base captcha site key --></label>
+        <name>S360_base_captcha_site_key</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base default error message --></label>
+        <name>S360_base_default_error_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base default success message --></label>
+        <name>S360_base_default_success_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base error message --></label>
+        <name>S360_base_error_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360 base offline message --></label>
+        <name>S360_base_offline_message</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- greeting --></label>
+        <name>greeting</name>
+    </customLabels>
+    <quickActions>
+        <label><!-- LogACall --></label>
+        <name>LogACall</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewAccount --></label>
+        <name>NewAccount</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewCase --></label>
+        <name>NewCase</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewContact --></label>
+        <name>NewContact</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewEvent --></label>
+        <name>NewEvent</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewGroup --></label>
+        <name>NewGroup</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewLead --></label>
+        <name>NewLead</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewNote --></label>
+        <name>NewNote</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewOpportunity --></label>
+        <name>NewOpportunity</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewTask --></label>
+        <name>NewTask</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- SendEmail --></label>
+        <name>SendEmail</name>
+    </quickActions>
+</Translations>

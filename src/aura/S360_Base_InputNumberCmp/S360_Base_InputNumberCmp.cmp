@@ -39,7 +39,7 @@
     <!-- validation attribute -->
     <aura:attribute name="Valid" type="boolean" default="true" access="private"
       description="If true component input is valid else input is invalid"/>
-    <aura:attribute name="Message" type="string" default="" access="private"
+    <aura:attribute name="message" type="string" default="" access="private"
       description="Message displayed on pop-up if validation fails"/>
 
     <!-- Component init handler -->

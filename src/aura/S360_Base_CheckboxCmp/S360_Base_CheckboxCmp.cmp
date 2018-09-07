@@ -39,7 +39,7 @@
       description="Formbuilder JSON mapping of all the data for the current form"/>
     <aura:attribute name="Valid" type="boolean" default="true"
       description="Used to verify if input is valid or invalid"/>
-    <aura:attribute name="Message" type="string" default=""
+    <aura:attribute name="message" type="string" default=""
       description="Message displayed on the form when validation of input fails"/>
 
     <!-- additional event registration -->

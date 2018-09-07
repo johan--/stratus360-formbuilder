@@ -8,18 +8,12 @@
         <plural>true</plural>
         <value>Storage</value>
     </caseValues>
-    <fields>
-        <label><!-- Heroku Id --></label>
-        <name>Heroku_Id__c</name>
-    </fields>
-    <fields>
-        <label><!-- Parent --></label>
-        <name>Parent__c</name>
-        <relationshipLabel><!-- Storage --></relationshipLabel>
-    </fields>
-    <fields>
-        <label><!-- Record --></label>
-        <name>Record__c</name>
-    </fields>
+    <layouts>
+        <layout>Storage Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

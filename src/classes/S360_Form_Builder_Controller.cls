@@ -65,7 +65,7 @@ public class S360_Form_Builder_Controller {
             if(strLanguage == 'en'){
               tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+String.valueOf(formConfigs[0].S360_FA__SelectedVersion__c).leftPad(3, '0'))];
             } else {
-              tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+String.valueOf(formConfigs[0].S360_FA__SelectedVersion__c).leftPad(3, '0') + '_FR')];
+              tmp = [select id, Name, Body, ParentId from Attachment where  Name = :('form_' + formConfigs[0].Id+'_v'+String.valueOf(formConfigs[0].S360_FA__SelectedVersion__c).leftPad(3, '0') + '_' + strLanguage.touppercase())];
             }
            if(tmp.size() > 0){
             	if(tmp[0].Body != null){

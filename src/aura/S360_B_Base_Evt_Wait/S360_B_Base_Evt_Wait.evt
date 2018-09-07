@@ -2,6 +2,6 @@
 
 	<aura:attribute name="CompId" type="string" />
     <aura:attribute name="ShowModal" type="Boolean"/>
-    <aura:attribute name="Message" type="string"/>
+    <aura:attribute name="message" type="string"/>
 
 </aura:event>

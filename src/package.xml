@@ -22,6 +22,7 @@
     </types>
     <types>
         <members>Account</members>
+        <members>AccountBrand</members>
         <members>AccountCleanInfo</members>
         <members>AccountContactRole</members>
         <members>Activity</members>
@@ -32,6 +33,9 @@
         <members>CampaignMember</members>
         <members>Case</members>
         <members>CaseContactRole</members>
+        <members>ChannelProgram</members>
+        <members>ChannelProgramLevel</members>
+        <members>ChannelProgramMember</members>
         <members>CollaborationGroup</members>
         <members>CollaborationGroupMember</members>
         <members>Contact</members>
@@ -53,6 +57,7 @@
         <members>Macro</members>
         <members>MacroAction</members>
         <members>MacroInstruction</members>
+        <members>NetworkMember</members>
         <members>Opportunity</members>
         <members>OpportunityCompetitor</members>
         <members>OpportunityContactRole</members>
@@ -60,6 +65,10 @@
         <members>Order</members>
         <members>OrderItem</members>
         <members>OrgDeleteRequest</members>
+        <members>PartnerFundAllocation</members>
+        <members>PartnerFundClaim</members>
+        <members>PartnerFundRequest</members>
+        <members>PartnerMarketingBudget</members>
         <members>PartnerRole</members>
         <members>Pricebook2</members>
         <members>PricebookEntry</members>
@@ -72,7 +81,6 @@
         <members>Site</members>
         <members>SocialPersona</members>
         <members>Solution</members>
-        <members>Storage__c</members>
         <members>StreamingChannel</members>
         <members>Task</members>
         <members>Test_Event__e</members>

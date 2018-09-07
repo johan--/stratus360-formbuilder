@@ -4,4 +4,6 @@
     <design:attribute name="recordId" label="Record Id" />
     <design:attribute name="inputFlow" label="INPUT_DATA" />
     <design:attribute name="outputFlow" label="OUTPUT_DATA" />
+    <design:attribute name="StringData" label="DATA" />
+    <design:attribute name="StringAttachments" label="ATTACHMENTS" />
 </design:component>
