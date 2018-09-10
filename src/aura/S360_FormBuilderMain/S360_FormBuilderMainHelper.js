@@ -458,8 +458,21 @@
         }
     },
     generateJSONString: function(component){
-        debugger;
         component.set('v.StringData', JSON.stringify(component.get('v.Data')))
+        debugger;
+        
+        var base64Mark = 'base64,';
+        var dataStart = '';
+        var fileContents = '';
+        component.get('v.AttachmentsData').forEach(item => {
+            if(!item.id){
+            	dataStart = item.contents.indexOf(base64Mark) + base64Mark.length;
+                fileContents = item.contents.substring(dataStart);
+                item.contents = fileContents
+        	}
+        });
+        
         component.set('v.StringAttachments', JSON.stringify(component.get('v.AttachmentsData')))
+        debugger;
     }
 })

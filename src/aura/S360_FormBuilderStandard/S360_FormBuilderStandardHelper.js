@@ -1289,6 +1289,7 @@
                     "JsonLogic": config.validate ? config.validate.json : '',
                     "FailureValidationMessage": config.validate ? config.validate.failureValidationMessage : '',
                     "Data": component.getReference('v.Data'),
+                    "AttachmentsData": component.getReference('v.AttachmentsData')
                     //"FileLabel": config.label,
                     //"Class": config.customClass ? config.customClass : '',
                 },

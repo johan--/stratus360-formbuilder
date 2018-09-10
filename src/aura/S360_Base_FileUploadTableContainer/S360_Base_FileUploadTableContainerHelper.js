@@ -34,18 +34,31 @@
                  	if(res.getReturnValue().status){
                         comp.set('v.length', res.getReturnValue().data.length)
                         comp.set('v.objectWrapper', res.getReturnValue().data.objectWrapper);
+                        
                         var a =res.getReturnValue().data.objectWrapper;
                         console.log('HEre');
                         for(var i in a){
                             console.log(a[i]);
                         }
-                        //debugger;
+                        
                         if(hlp){
                             setTimeout(function(){
-                                //debugger;
                             	hlp.notifyTable(comp);
                             	hlp.notifyPagination(comp);    
                             },2000);
+                        }
+                        
+                        // populate attachment data
+                        if(res.getReturnValue().data.length > 0){
+                            var tmpAttachData = [];
+                            res.getReturnValue().data.objectWrapper.forEach(function(attach){
+                                tmpAttachData.push({
+                                    name: attach.objects.Name,
+                                    id: attach.objects.Id
+                                })
+                            })
+                            debugger;
+                            comp.set('v.AttachmentsData', tmpAttachData);
                         }
                         
                         if(message){
@@ -174,6 +187,7 @@
     },
 
     putAttachment: function(component, payload){
+        debugger;
         var objectWrapper = component.get('v.objectWrapper');
         if(!objectWrapper){
             objectWrapper = [];

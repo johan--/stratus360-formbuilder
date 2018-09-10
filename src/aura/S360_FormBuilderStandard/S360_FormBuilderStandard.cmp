@@ -1,103 +1,103 @@
 <aura:component access="global" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
     <!--ltng:require styles="{!$Resource.S360_FA__SLDS231 + '/assets/styles/salesforce-lightning-design-system.min.css'}"
         afterScriptsLoaded="{!c.afterScriptLoaded}"/-->
-
-
+    
+    
     <!-- component parameter -->
     <aura:attribute name="FormConfig" type="Object" default="{}"
-      description="Form configuration settings for the current form"/>
+                    description="Form configuration settings for the current form"/>
     <aura:attribute name="Data" type="Object" default="{}"
-  description="JSON data for all the components"/>
+                    description="JSON data for all the components"/>
     <!-- save related data by formName|relatedField as the key -->
     <aura:attribute name="RelatedData" type="Object" default="{}" />
     <aura:attribute name="AttachmentsData" type="Object[]" default="[]"
-      description="Array of JSON configs in the form attachment data for the current form"/>
+                    description="Array of JSON configs in the form attachment data for the current form"/>
     <aura:attribute name="FieldInfo" type="Object" default="{}"
-      description="Field information included in the current form"/>
+                    description="Field information included in the current form"/>
     <aura:attribute name="ObjectInfo" type="Object" default="{}"
-      description="Object information in the current form"/>
+                    description="Object information in the current form"/>
     <aura:attribute name="Lockdown" type="Boolean" default="false"
-      description="If true input fields are disabled"/>
-
+                    description="If true input fields are disabled"/>
+    
     <aura:attribute name="isCaptchaEnabled" type="boolean" default="false"
-      description="If true captcha is enabled"/>
+                    description="If true captcha is enabled"/>
     <aura:attribute name="isCaptchaSuccess" type="boolean" default="false"
-      description="If true captcha was completed"/>
-
+                    description="If true captcha was completed"/>
+    
     <aura:attribute name="isSignatureEnabled" type="boolean" default="false"
-      description="IF true signatrue is enabled"/>
+                    description="IF true signatrue is enabled"/>
     <aura:attribute name="signatureCompId" type="String"
-      description="API key for the signature"/>
+                    description="API key for the signature"/>
     <aura:attribute name="signatureData" type="Object"
-      description="Signature data is stored here"/>
+                    description="Signature data is stored here"/>
     <aura:attribute name="canvas" type="Object"
-      description="Cavas on which the signature is drawn"/>
+                    description="Cavas on which the signature is drawn"/>
     <aura:attribute name="canvasDataUrl" type="String"
-      description="Canvas URL"/>
-
+                    description="Canvas URL"/>
+    
     <!--
-		form pattern mapping
-		used to map position and child parent position
-	 -->
+  form pattern mapping
+  used to map position and child parent position
+  -->
     <aura:attribute name="FormPattern" type="Object" default="{}"
-      description="Contains a list of all the components rendered on screen for the current form"/>
-
+                    description="Contains a list of all the components rendered on screen for the current form"/>
+    
     <aura:attribute name="configMapping" type="Object" default="{}"
-      description="Maps component hash key to component"/>
-
-	<!-- this object stores all components rendered in the form
-		 use Field API name to access the component
-	 -->
+                    description="Maps component hash key to component"/>
+    
+    <!-- this object stores all components rendered in the form
+   use Field API name to access the component
+  -->
     <aura:attribute name="componentData" type="Object" default="{}"
-      description="JSON Data of the components"/>
+                    description="JSON Data of the components"/>
     <!-- save button id which has submit as its action type -->
     <aura:attribute name="submittedButton" type="string[]"
-      description="Saves the button id which has submit as its action type"/>
-
+                    description="Saves the button id which has submit as its action type"/>
+    
     <!--
-	Show component when CSS is loaded
-	Set to true because we never call afterScriptsLoaded
-	-->
+ Show component when CSS is loaded
+ Set to true because we never call afterScriptsLoaded
+ -->
     <aura:attribute name="cssLoaded" type="Boolean" default="true"
-      description="If true shows the component as the CSS is loaded"/>
-
+                    description="If true shows the component as the CSS is loaded"/>
+    
     <!-- save button id which has action other than sumbit -->
     <!-- if action equal to event save like this pattern {compAPI : {actionType, actionName, actionTarget}} -->
     <!-- if action equal to custom save like this pattern {compAPI : {actionType, action}} -->
     <aura:attribute name="actionButton" type="Object"
-      description="Savw the button id which has an action besides submit"/>
+                    description="Savw the button id which has an action besides submit"/>
     <!-- mapping button who trigger next and previous panel -->
     <aura:attribute name="slidingPanelButton" type="sObject" default="{}"
-      description="Mapping that contains the button which will trigger the next and previous panel"/>
-
+                    description="Mapping that contains the button which will trigger the next and previous panel"/>
+    
     <!--Toast Attribute -->
     <aura:attribute name="TextMessage" type="String" default=""
-      description="Text to be displayed on the Toast"/>
+                    description="Text to be displayed on the Toast"/>
     <aura:attribute name="ToastType" type="String" default=""
-      description="Saves the type of Toast to be displayed"/>
+                    description="Saves the type of Toast to be displayed"/>
     <aura:attribute name="showToast" type="Boolean" default="false"
-      description="Toast is visible if true"/>
-
+                    description="Toast is visible if true"/>
+    
     <!-- Lightning flow action attribute -->
     <aura:attribute name="availableFlowAction" type="String[]"
-      description="List of available flow actions"/>
+                    description="List of available flow actions"/>
     <aura:attribute name="formFlowAction" type="String"/>
     <aura:attribute name="flowData" type="Object"/>
     <aura:attribute name="inputFlow" type="String"/>
     <aura:attribute name="outputFlow" type="String"/>
     <aura:attribute name="refOutputFlow" type="Object"/>
-
+    
     <!-- registered events -->
     <aura:registerEvent name="S360_FormBuilderEvt" type="c:S360_FormBuilderEvt" />
-
+    
     <!-- handler button click -->
     <aura:handler name="OnClick" event="c:S360_Base_onClick" action="{!c.handleButtonClick}"/>
     <aura:handler name="OnCaptcha" event="c:S360_B_Base_Evt_Captcha" action="{!c.handleCaptcha}"/>
-
+    
     <!-- handler lookup -->
     <aura:handler name="LookupSObjectUpdateEvt" event="c:LookupSObjectUpdateEvt" action="{!c.handleLookupSObjectUpdateEvt}"/>
     <aura:handler name="LookupSObjectClearIdEvt" event="c:LookupSObjectClearIdEvt" action="{!c.handleSObjectClear}"/>
-
+    
     <aura:method name="setup" action="{!c.setup}"
                  description="setup stuff to render">
         <aura:attribute name="config" type="Object"/>
@@ -106,7 +106,7 @@
         <aura:attribute name="objectInfo" type="Object" />
         <aura:attribute name="valid" type="Boolean" />
     </aura:method>
-
+    
     <!-- this method is called after S360_FormBuilderMain finish its server operation -->
     <aura:method name="afterSubmit" action="{!c.handleAfterSubmit}">
         <!-- sender is submit buttom CompId who trigger submit action -->
@@ -116,26 +116,26 @@
         <!-- message is server message -->
         <aura:attribute name="message" type="string" default="" access="private"/>
     </aura:method>
-
+    
     <aura:method name="showToastMethod" action="{!c.handleShowToast}">
         <aura:attribute name="type" type="string"/>
         <aura:attribute name="message" type="string" />
     </aura:method>
-
+    
     <aura:method name="refreshOutputFlowValue" action="{!c.handleRefreshOutputFlowValue}"
                  description="refresh output flow value with its real data rather than reference value">
     </aura:method>
-
+    
     <!-- this component body store rendered component -->
-
-        <div class='slds'>
-            {!v.body}
-            <c:S360_Base_LoadingCmp aura:id="loading" CompId="loading"/>
-            <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}"
-                                  SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}"
-                                  Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}" aura:id="S360_Base_ToastCmp"/>
-
-        </div>
-
-
+    
+    <div class='slds'>
+        {!v.body}
+        <c:S360_Base_LoadingCmp aura:id="loading" CompId="loading"/>
+        <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}"
+                              SvgPath="{!$Label.c.FormbuilderRepo + 'SLDS231/assets/icons/utility-sprite/svg/symbols.svg#close'}"
+                              Type="{!v.ToastType}" ShowToast="{!v.showToast}" cssLoaded="{!v.cssLoaded}" aura:id="S360_Base_ToastCmp"/>
+        
+    </div>
+    
+    
 </aura:component>

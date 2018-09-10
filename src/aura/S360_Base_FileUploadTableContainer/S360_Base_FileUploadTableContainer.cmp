@@ -2,68 +2,72 @@
     <!-- static value -->
     <!-- attachment equal to true means that we able to set/modify value of this component -->
     <aura:attribute name="typeAttachment" type="boolean" default="true"/>
-
+    
     <aura:attribute name="objectPermission" type="Object"
-      description="Object Permission Object"/>
+                    description="Object Permission Object"/>
     <aura:attribute name="ParentId" type="String" default=""
-      description="Parent Id of attachments/files"/>
+                    description="Parent Id of attachments/files"/>
     <aura:attribute name="FormId" type="String" default=""
-      description="ID of the form loaded"/>
+                    description="ID of the form loaded"/>
     <aura:attribute name="buttonAttachReceiptId" type="String" default="Exp_Attach_Table_buttonAttachReceiptId"/>
     <aura:attribute name="CompId" type="string"
-description="API key for the field where the input from this component will be stored" default="InputTextId"/>
+                    description="API key for the field where the input from this component will be stored" default="InputTextId"/>
     <aura:attribute name="IsRequired" type="boolean" default="false"
-  description="If true input is required to submit else input can be left blank"/>
-
+                    description="If true input is required to submit else input can be left blank"/>
+    
     <aura:attribute name="JsonLogic" type="string" default=""
-  description="JSONLogic used to verify the validity of the text inputted"/>
+                    description="JSONLogic used to verify the validity of the text inputted"/>
     <aura:attribute name="FailureValidationMessage" type="string" default=""
-  description="Message displayed on pop-up when validation fails on submit"/>
-
+                    description="Message displayed on pop-up when validation fails on submit"/>
+    
     <!-- validation attribute -->
     <aura:attribute name="Data" type="Object" default="{}"
-  description="JSON data for all the components"/>
+                    description="JSON data for all the components"/>
     <aura:attribute name="Valid" type="boolean" default="true" access="private"
-  description="If true input is valid else input is invalid"/>
+                    description="If true input is valid else input is invalid"/>
     <aura:attribute name="message" type="string" default="" access="private"
-  description="Message displayed on validation failure on the form"/>
-
+                    description="Message displayed on validation failure on the form"/>
+    
     <!-- loading attribute -->
     <aura:attribute name="showLoading" type="boolean" default="false"
-      description="Shows loading symbol when true"/>
-
+                    description="Shows loading symbol when true"/>
+    
     <!-- table management attribute -->
     <aura:attribute name="Value" type="Object[]" description="file object that selected"/>
     <aura:attribute name="objectWrapper" type="Object[]"
-      description="Wrapper for the selected files"/>
+                    description="Wrapper for the selected files"/>
     <aura:attribute name="sort" type="String" default="desc"
-      description="Type of sort ascending or descending"/>
+                    description="Type of sort ascending or descending"/>
     <aura:attribute name="orderBy" type="String" default="Name"
-      description="Field on which the list of files are sorted"/>
+                    description="Field on which the list of files are sorted"/>
     <aura:attribute name="tableReportAttachmentId" type="String" default="E_Rep_Attachment_Table_id"/>
-
+    
     <!-- pagination attribute -->
     <aura:attribute name="paginationId" type="String" default="E_Rep_Attachment_Pagination_id"/>
     <aura:attribute name="length" type="integer"
-      description="Length of pagination"/>
+                    description="Length of pagination"/>
     <aura:attribute name="offset" type="integer" default="0"
-      description="Offset of pagination"/>
+                    description="Offset of pagination"/>
     <aura:attribute name="pageSize" type="integer" default="25"
-      description="Size of the page"/>
-
+                    description="Size of the page"/>
+    
     <!--Toast Attribute -->
     <aura:attribute name="TextMessage" type="String" default=""
-      description="Message displayed on the toast"/>
+                    description="Message displayed on the toast"/>
     <aura:attribute name="ToastType" type="String" default=""
-      description="Type of toast"/>
+                    description="Type of toast"/>
     <aura:attribute name="showToast" type="String" default="True"
-      description="Shows toast if true"/>
-
+                    description="Shows toast if true"/>
+    
+    
+    <aura:attribute name="AttachmentsData" type="Object[]" default="[]"
+      				description="Array of JSON configs in the form attachment data for the current form"/>
+    
     <!-- notify pagination that data was ready -->
     <!-- aura:registerEvent name="notifyPagination" type="c:LightningAppPaginationEvent"/-->
     <!-- notify table should resize it's dimention -->
     <aura:registerEvent name="LightningAppResizeTableEvent" type="c:LightningAppResizeTableEvent"/>
-
+    
     <!-- handler -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <!-- handler when something changed in table component -->
@@ -72,43 +76,45 @@ description="API key for the field where the input from this component will be s
     <aura:handler name="paginationEvent" event="c:LightningPaginationEvent" action="{!c.handlePagination}" />
     <!-- handler on change component -->
     <aura:handler name="OnChange" event="c:onChange" action="{!c.handleOnChange}"/>
-
+    
+    <aura:handler name="change" value="{!v.objectWrapper}" action="{!c.changeAttachments}"/>
+    
     <aura:method name="invalidateHeight" action="{!c.invalidateHeight}" access="public"/>
     <aura:method name="refreshTable" action="{!c.refreshTable}" access="public">
         <aura:attribute name="message" type="string" default=""></aura:attribute>
     </aura:method>
-
+    
     <!-- validation method -->
     <aura:method name="validationSuccess" action="{!c.handleValidationSuccess}"/>
     <aura:method name="validationFail" action="{!c.handleValidationFail}">
         <!-- error message that pass through this method -->
         <aura:attribute name="message" type="string" default="" access="private"
-description="Message displayed on validation failure on the form"/>
+                        description="Message displayed on validation failure on the form"/>
     </aura:method>
-
+    
     <style>
         .footer {
-           <!--position:fixed;-->
-           left:0px;
-           bottom:0px;
-           height:50px;
-           width:100%;
-           <!--background:#e2e2e2;-->
+        <!--position:fixed;-->
+        left:0px;
+        bottom:0px;
+        height:50px;
+        width:100%;
+        <!--background:#e2e2e2;-->
         }
     </style>
-
+    
     <c:S360_Base_ToastCmp TextMessage="{!v.TextMessage}" svgPath="{!$Resource.SLDS222 + '/assets/icons/utility-sprite/svg/symbols.svg#close'}" Type="{!v.ToastType}" showToast="{!v.showToast}"/>
-
+    
     <aura:if isTrue="{!v.objectPermission.isAccessible}">
         <aura:if isTrue="{!v.objectPermission.isCreateable}">
             <div class="slds-m-around--x-small">
                 <article class="slds-card">
                     <div class="slds-p-around--small">
                         <abbr class="slds-required"
-                            style="{! 'display:' + (v.IsRequired ? 'block' : 'none')}" title="required">*attachment is required</abbr>
+                              style="{! 'display:' + (v.IsRequired ? 'block' : 'none')}" title="required">*attachment is required</abbr>
                         <c:S360_Base_OpenCameraCmp Class="inline-button" Label="New Attachment" CompId="{!v.buttonAttachReceiptId}"/>
                         <!--c:FileUpload parentId="{!v.expenseId}" CompId="E_Report_upload_file"/-->
-
+                        
                         <aura:renderIf isTrue="{!v.Valid != true}">
                             <ui:message title="Warning" severity="warning" closable="false">
                                 <aura:unescapedHtml value="{!v.Message}"/>
@@ -118,7 +124,7 @@ description="Message displayed on validation failure on the form"/>
                 </article>
             </div>
         </aura:if>
-
+        
         <div class="slds-m-left_small slds-m-right_small">
             <c:S360_Base_FileUploadTableComp data="{!v.objectWrapper}" CompId="{!v.tableReportAttachmentId}" aura:id="E_Rep_Attachment_Table_id" />
         </div>
@@ -126,6 +132,6 @@ description="Message displayed on validation failure on the form"/>
             <c:LightningPaginationComponent CompId="{!v.paginationId}" aura:id="E_Rep_Attachment_Pagination_id"/>
         </div>
     </aura:if>
-
+    
     <c:LightningLoadingComponent show="{!v.showLoading}" CompId="{!'E_Rep_View_loading'}"/>
 </aura:component>

@@ -61,5 +61,25 @@
             message = params.message || component.get('v.FailureValidationMessage');
         }
         helper.toggleErrorMessage(component, false, message);
+    },
+    
+    changeAttachments: function(component){
+        debugger;
+        if(component.get('v.objectWrapper') != null && component.get('v.objectWrapper').length > 0){
+            if(component.get('v.AttachmentsData')){
+                component.set('v.AttachmentsData', [])
+            }
+            
+            component.set('v.AttachmentsData', component.get('v.objectWrapper').map(x => {
+                if(x.payload){
+                	return x.payload
+            	}else if(x.objects){
+                   	return {
+                    	id: x.objects.Id,
+						name: x.objects.Name
+                  	}          
+                }
+            }));
+        }
     }
 })
