@@ -1,53 +1,39 @@
 <aura:component controller="S360_Base_Carousel">
     <aura:attribute type="Aura.Component[]" name="slideContents" />
-    <aura:Attribute type="String" name="height" default="300px"
-      description="Height of the carousel"/>
+    <aura:Attribute type="String" name="height" default="300px" description="Height of the carousel"/>
     <aura:Attribute type="String" name="navigator" default="" />
-    <aura:Attribute type="integer" name="position" default="0"
-      description="Position of the label on the carousel"/>
-    <aura:attribute type="Object[]" name="slidersList"
-      description="List of Images on the carousel"/>
-    <aura:attribute type="String[]" name="captionsList"
-      description="List of the captions for each image on the carousel"/>
-    <aura:attribute name="isAutoTimer" type="Boolean" default="false"
-      description="If true carousel auto timer to swap to next image is active"/>
+    <aura:Attribute type="integer" name="position" default="0" description="Position of the label on the carousel"/>
+    <aura:attribute type="Object[]" name="slidersList" description="List of Images on the carousel"/>
+    <aura:attribute type="String[]" name="captionsList" description="List of the captions for each image on the carousel"/>
+    <aura:attribute name="isAutoTimer" type="Boolean" default="false" description="If true carousel auto timer to swap to next image is active"/>
     <aura:attribute name="delay" type="Integer" default="3" description="Delay for slider change in seconds."/>
     <aura:attribute name="autoBgColor" type="String" default="false" description="Let application decide if background color should be automatically changed. If this flag is ON then bgColor in slide will not work."/>
 
 
-    <aura:Attribute name="lookupParentField" type="string" default=""
-      description="Parent field for the carousel lookup"/>
-    <aura:Attribute name="parentId" type="string" default=""
-      description="Parent ID for the attachments of the carousel"/>
-    <aura:Attribute name="carouselObject" type="string" default=""
-      description="Carousel object stored here"/>
-    <aura:Attribute name="carouselCaptionField" type="string" default=""
-      description="Caption stored in this field"/>
-    <aura:Attribute name="carouselTypeField" type="string" default=""
-      description="Image or Video on a carousel"/>
-    <aura:Attribute name="carouselImageRedirectLinkField" type="string" default=""
-      description="URL for redirection onclick for the carousel image"/>
-    <aura:Attribute name="carouselVideoTypeField" type="string" default=""
-      description="Format of carousel video"/>
-    <aura:Attribute name="carouselVideoIdField" type="string" default=""
-      description="Carousel video Id is stored in this field"/>
+    <aura:Attribute name="lookupParentField" type="string" default="" description="Parent field for the carousel lookup"/>
+    <aura:Attribute name="parentId" type="string" default="" description="Parent ID for the attachments of the carousel"/>
+    <aura:Attribute name="carouselObject" type="string" default=""  description="Carousel object stored here"/>
+    <aura:Attribute name="carouselCaptionField" type="string" default="" description="Caption stored in this field"/>
+    <aura:Attribute name="carouselTypeField" type="string" default="" description="Image or Video on a carousel"/>
+    <aura:Attribute name="carouselImageRedirectLinkField" type="string" default="" description="URL for redirection onclick for the carousel image"/>
+    <aura:Attribute name="carouselVideoTypeField" type="string" default="" description="Format of carousel video"/>
+    <aura:Attribute name="carouselVideoIdField" type="string" default="" description="Carousel video Id is stored in this field"/>
 
-    <aura:Attribute name="showThumbnails" type="boolean" default="false"
-      description="If true thumbnails will be shown"/>
-    <aura:Attribute name="thumbnailScrollPos" type="integer" default="0"
-      description="Position of thumbnail on the carousel"/>
-    <aura:Attribute name="thumbnailScrollSize" type="integer" default="182"
-      description="Size of the scroll bar on the thumbnail"/>
+    <aura:Attribute name="showThumbnails" type="boolean" default="true" description="If true thumbnails will be shown"/>
+    <aura:Attribute name="thumbnailScrollPos" type="integer" default="0" description="Offset from the left edge of the carousel (in pixels) of the thumbnail list"/>
+    <aura:Attribute name="thumbnailScrollSize" type="integer" default="182" description="Size of the scroll bar on the thumbnail"/>
 
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:handler name="change" value="{!v.body}" action="{!c.doInit}"/>
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.body}" action="{!c.doInit}"/> -->
 
     <div class="listing-carousel">
+        
         <div class="css-slider-wrapper">
 
             <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
                 <input data-selected-Index="{!i}" type="radio" name="slider" class="{# 'slide-radio'+(i+1)}" checked="{!s.isFocused}" id="{# 'slider_'+(i+1)}" />
             </aura:iteration>
+
 
             <aura:iteration items="{!v.slidersList}" var="s" indexVar="i" aura:id="iterate">
                 <div class="{# 'slider slide'+(i+1) + ' slider_' + globalId}" style="{# 'background :'+s.bgColor+';left:'+(i*100)+'%'}" aura:id="{# 'slide'+(i+1)}">

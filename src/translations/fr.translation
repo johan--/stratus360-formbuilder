@@ -41,12 +41,52 @@
         <name>S360_Attachment_Required</name>
     </customLabels>
     <customLabels>
+        <label><!-- S360_Back --></label>
+        <name>S360_Back</name>
+    </customLabels>
+    <customLabels>
         <label><!-- S360 Empty Carousel --></label>
         <name>S360_Empty_Carousel</name>
     </customLabels>
     <customLabels>
+        <label><!-- S360_ErrorGeneric --></label>
+        <name>S360_ErrorGeneric</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_ErrorGenericMessage --></label>
+        <name>S360_ErrorGenericMessage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_ErrorIncomplete --></label>
+        <name>S360_ErrorIncomplete</name>
+    </customLabels>
+    <customLabels>
         <label><!-- S360_Field_Required --></label>
         <name>S360_Field_Required</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Left_Arrow --></label>
+        <name>S360_Left_Arrow</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Loading --></label>
+        <name>S360_Loading</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Next --></label>
+        <name>S360_Next</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Open_New_Window --></label>
+        <name>S360_Open_New_Window</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Prev --></label>
+        <name>S360_Prev</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- S360_Right_Arrow --></label>
+        <name>S360_Right_Arrow</name>
     </customLabels>
     <customLabels>
         <label><!-- S360 base captcha domain --></label>

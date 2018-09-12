@@ -1,0 +1,98 @@
+<!-- Removed apex controller reference "S360_ListingAppController" -->
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId">
+    
+    <!-- Removed salesforce app exchange CSS reference: <ltng:require styles="{!$Resource.S360_AppX}" /> -->
+
+    <!-- input parameter -->
+    <aura:attribute name="showSocial" type="String"  default="true" description="Should social sharing buttons be shown?"/>
+    <aura:attribute name="recordId" type="string" description="record id of this listing"/>
+    
+    <!-- Event Handler -->
+    <!-- <aura:handler event="c:S360_RatingAutoSave" action="{!c.handleEvent}" description="handles refreshing of listing details after star rating is auto saved"/> -->
+    
+    <!-- (not used) review pagination start -->
+    <aura:attribute name="pageSize" type="integer" default="5" description=""/>
+    <aura:attribute name="page" type="integer" description=""/>
+    <aura:attribute name="pages" type="integer" description=""/>
+    <aura:attribute name="total" type="integer" description=""/>
+    <aura:attribute name="filterTotal" type="integer" description=""/>
+    <!-- <aura:attribute name="Paginationreview" type="S360_Rating__c" description=""/> -->
+
+    <!-- (not used) review page End -->
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}" description=""/>
+    <aura:attribute name="asbApp" type="asb_Listing__c" description=""/> -->
+    <aura:attribute name="fls" type="object" description=""/>
+    <!-- <aura:attribute name="MoreApp" type="asb_App__c" description=""/>
+    <aura:attribute name="asbRating" type="S360_Rating__c" description=""/> -->
+    <aura:attribute name="rate" type="integer" description=""/>
+    <aura:attribute name="Reviewcount" type="integer" default="0" description=""/>
+    <aura:attribute name="myText" type="string" description=""/>
+    <aura:attribute name="rateTitle" type="string" description=""/>
+    <aura:attribute name="reviewFlag" type="boolean" description=""/>
+    <aura:attribute name="Noreview" type="boolean" default="true" description=""/>
+    
+    <aura:attribute name="carousel" type="object[]" description="holds a list of carousel slides"/>
+    <aura:attribute name="healthtopic1" type="string" description="related health topic"/>
+    <aura:attribute name="languages1" type="string" description="Languages supported by this app"/>
+
+    <!-- back button -->
+    <!-- <ui:button class="btn" label="{! '&lt; &ensp;' + $Label.c.S360_Back}" press="{!c.redirect}" /> -->
+    <div class="slds-is-relative">        
+        <!-- loading spinner -->
+        <div class="mainSpinner">    
+        	<lightning:spinner variant="brand" aura:id="mainSpinner" alternativeText="{!$Label.c.S360_Loading}" />
+        </div>
+        
+        <!-- Page header -->
+        <!--   <aura:handler event="c:S360_ListboxEvent" action="{!c.updateEvent}" /> -->
+        <!-- <div class="slds-grid slds-gutters" style="width: 100%;">
+            <div class="slds-col slds-size_3-of-4 width100">
+                <span> 
+                    <div class='app-name'> {! v.fls.asb_App__r_Name.isAccessible ? v.asbApp.asb_App__r.App_Name_Formula__c : ''} </div>
+                    <div class="app-name">
+                        <c:S360_Header Header="{! v.fls.asb_App__r_Name.isAccessible ? v.asbApp.asb_App__r.App_Name_Formula__c : ''}" isH1="true"/>
+                    </div>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-4">
+                <span>
+                    <div  class="slds-m-top_x-large" style="font-size: 0.7rem;">{!v.asbApp.Provider__c} </div>
+                </span>
+            </div>
+        </div> -->
+        <!-- Carousel and Detail section -->
+        <div class="slds-grid slds-wrap detail-wrapper">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                <!-- carousel -->
+               <aura:if isTrue="{!v.carousel.length > 0}">
+                   <h1>Here</h1>
+                    <c:S360_Base_ListingCarousel isAutoTimer="false" autoBgColor="true" delay="1">
+                        <!-- carousel slides -->
+                        <aura:iteration items="{!v.carousel}" var="c">
+                            <button value="Test" onclick="printVal(c)"></button>
+                            <c:S360_Base_ListingCarouselPage imageURL="{!c.url}" caption="{!c.caption}"  videoType="{!c.videoType}" altText="{!c.altText}" videoEmbedId="{!c.videoEmbedId}" isImage="{!c.isImage}"/>
+                        </aura:iteration>
+                    </c:S360_Base_ListingCarousel>
+                    <!-- empty carousel -->
+                    <aura:set attribute="else">
+                        <c:S360_Base_ListingCarousel isAutoTimer="false" autoBgColor="true" delay="1">
+                        </c:S360_Base_ListingCarousel>
+                    </aura:set>
+                </aura:if> 
+            </div>
+            
+            <!-- Detail Right -->
+            <!-- <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+                    <aura:if isTrue="{!v.showSocial == 'true'}">
+                        <div class="socialMedia">
+                            <c:S360_SocialMedia />
+                        </div>
+                    </aura:if>
+                   <c:S360_ListingDetailRight asbApp="{!v.asbApp}" reviewcount1="{!v.Reviewcount}" healthTopic="{!v.healthtopic1}" />
+
+                   <c:S360_ListingDetailRight fls="{!v.fls}" asbApp="{!v.asbApp}" reviewcount1="{!v.Reviewcount}" healthTopic="{!v.healthtopic1}" languages="{!v.languages1}"/>
+            </div> -->
+        </div>        
+          {!v.body} 
+    </div>
+</aura:component>

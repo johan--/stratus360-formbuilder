@@ -70,6 +70,13 @@
         <value>Attachment is required</value>
     </labels>
     <labels>
+        <fullName>S360_Back</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Back</shortDescription>
+        <value>Back</value>
+    </labels>
+    <labels>
         <fullName>S360_Empty_Carousel</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -77,11 +84,74 @@
         <value>No view to display</value>
     </labels>
     <labels>
+        <fullName>S360_ErrorGeneric</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_ErrorGeneric</shortDescription>
+        <value>Error Generic</value>
+    </labels>
+    <labels>
+        <fullName>S360_ErrorGenericMessage</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_ErrorGenericMessage</shortDescription>
+        <value>Error Generic Message</value>
+    </labels>
+    <labels>
+        <fullName>S360_ErrorIncomplete</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_ErrorIncomplete</shortDescription>
+        <value>Error incomplete</value>
+    </labels>
+    <labels>
         <fullName>S360_Field_Required</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>S360_Field_Required</shortDescription>
         <value>Field is required</value>
+    </labels>
+    <labels>
+        <fullName>S360_Left_Arrow</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Left_Arrow</shortDescription>
+        <value>Left</value>
+    </labels>
+    <labels>
+        <fullName>S360_Loading</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>S360_Next</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>S360_Open_New_Window</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Open_New_Window</shortDescription>
+        <value>Open New Window</value>
+    </labels>
+    <labels>
+        <fullName>S360_Prev</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Prev</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>S360_Right_Arrow</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S360_Right_Arrow</shortDescription>
+        <value>Right</value>
     </labels>
     <labels>
         <fullName>S360_base_captcha_domain</fullName>

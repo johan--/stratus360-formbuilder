@@ -1,0 +1,11 @@
+<design:component > 
+	<design:attribute name="source" label="source" description="Carousel Name to display ex:CRSL-00002" />
+	<design:attribute name="ShowScrollBar" description="true to show the scrollbar"/>
+	<design:attribute name="indicatorPositionX" label="Indicator X Position" description="The X position of the slide indicators and arrows in percentage. 30 would be 30% to the right from the left of the carousel." />
+	<design:attribute name="indicatorPositionY" label="Indicator Y Position" description="The Y position of the slide indicators and arrows in percentage. 30 would be 30% down from the top of the carousel." />
+    <design:attribute name="isAutoTimer" label="isAutoTimer"  description="Set to true if carousel needs to change slides automatically on a timer (true/false)" />
+    <design:attribute name="delay" label="delay" description="delay between slide changes (ms)" />
+    <design:attribute name="ArticleBanner" description="true if this is for Article Banner, It will display a follow button"/>
+	<design:attribute name="recordId" label="recordId" description="Id of the record to follow (TopicID)" />
+	<design:attribute name="isFullWidth" label="Is full width" description="Should the carousel fill the full width of the page"/>
+</design:component>

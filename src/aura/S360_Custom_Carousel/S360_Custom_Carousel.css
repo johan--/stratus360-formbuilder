@@ -1,0 +1,146 @@
+.THIS {
+    margin: -0.75rem;
+}
+
+.THIS.custom-carousel.full-width-true{
+    display: flex;
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: -12px;
+}
+
+.THIS .in-active{
+	width: 0.8rem;
+    height: 0.8rem;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(158, 158, 158);
+    border-radius: 50%;
+}
+
+.THIS .slds-is-active {
+    width: 0.8rem;
+    height: 0.8rem;
+    background: rgb(255, 255, 255);
+    border-radius: 50%;
+}
+
+.THIS .carousel_stage{
+    width: 100%;
+    max-height: 592px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: auto;
+}
+
+.THIS .carousel_image {
+    height: auto;
+}
+
+.THIS .carousel_panel {
+    height: auto;
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative; 
+}
+
+.THIS .carousel_panels {
+    display: flex;
+    -webkit-transition: -webkit-transform 250ms ease-in;
+    transition: transform 250ms ease-in;
+    min-height: 1px;
+}
+
+.THIS .carousel_image img {
+    width: 100%;
+}
+
+.THIS .indicator-container {
+    position: absolute;
+    bottom: 20px;
+    width: auto;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.THIS .indicator-container .carousel_indicator_chevrons {
+    font-size: 1.6rem;
+    line-height: 0.45;
+}
+
+.THIS .indicator-container .carousel_indicator_chevrons:focus {
+    text-decoration: none;
+}
+
+.THIS .indicator-container .carousel_indicator_chevrons:hover {
+    text-decoration: none;
+}
+
+.THIS .indicator-container .carousel_indicator_chevrons:first-child {
+    padding-right: 7px;
+}
+
+.THIS .indicator-container .carousel_indicator_chevrons:last-child {
+    padding-left: 7px;
+}
+
+.THIS .carousel_indicator {
+    position: relative;
+    display: inline-flex;
+    margin: 0 .25rem;
+}
+
+.THIS .carousel__indicator-action:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.THIS .carousel__indicator-action.slds-is-active, .THIS .carousel__indicator-action.slds-is-active:hover {
+    background: rgb(234, 171, 0);
+    border:none;
+}
+
+.THIS .carousel-panel{
+    cursor: pointer;
+    position: relative;
+}
+
+.THIS .carousel__panel-action{
+    border-radius: 0;
+}
+
+.THIS .slds-button {
+    width: 250px;
+    height: 42px;
+    border-style: none;
+    border-radius: 30px;
+    background: #EAAB00;
+}
+
+.THIS a[href="javascript:void(0);"]{
+    cursor: default!important;
+}
+
+/* @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .THIS .slds-carousel__stage{
+        width: 169px;
+        height: auto;
+    }
+    .THIS .slds-carousel__panel{
+        height: auto;
+    }
+    .THIS .carousel-indicators{
+        z-index: 1000;
+        position: absolute;
+        bottom: 12px;
+        left: 70px;
+    }
+} */

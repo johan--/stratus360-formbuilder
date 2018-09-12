@@ -1,0 +1,174 @@
+<aura:component controller="S360_Custom_Carousel" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" > 
+    <!--Component Attributes-->
+    <aura:attribute type="Aura.Component[]" name="slideContents" description="not used"/> 
+    <aura:Attribute type="String" name="height" default="592px" description="height of Carousel"/>
+    <aura:Attribute type="String" name="source" default="" description="name of the carousel that is displayed in this component"/>
+    <aura:Attribute type="Integer" name="position" default="0" description="default position of the carousel image"/>
+    <aura:attribute type="Object[]" name="slidersList" description="holds the individual slide objects for this carousel"/> 
+    <aura:attribute name="isAutoTimer" type="Boolean" default="false" description="Does the carousel change slides based on a timer?"/>
+    <aura:attribute name="delay" type="Integer" default="3" description="Delay for slider change in seconds."/>
+    <aura:attribute name="timer" type="Object" description="Delay for slider change in seconds."/>
+    <aura:attribute name="autoBgColor" type="String" default="false" description="Let application decide if background color should be automatically changed. If this flag is ON then bgColor in slide will not work."/> 
+
+    <aura:Attribute type="String" name="ArticleBanner" description="true if this is for Article Banner, It will display the follow button"/>
+    <aura:Attribute type="String" name="ShowScrollBar" description="true to show the scroll bar"/>
+
+    <aura:Attribute type="Integer" name="indicatorPositionX" description="The X position of the slide indicators and arrows in percentage"/>
+    <aura:Attribute type="Integer" name="indicatorPositionY" description="The Y position of the slide indicators and arrows in percentage"/>
+    <aura:Attribute type="Boolean" name="isFullWidth" description="Should the carousel fill the full width of the page" default="true"/>
+    <aura:attribute name="recordId" type="string" description="Article ID"/>
+
+    <aura:attribute name="slideSize" type="Integer" default="0" description="number of slides"/>
+
+    <!--Initialization handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" description="Method executed when component initialized"/>
+    
+    <div class="{!'custom-carousel full-width-' + v.isFullWidth}">
+        <div class="carousel_stage">
+            <div class="carousel_panels" style="{!'transform:translateX('+ v.position * -100 +'%);'}">
+                <!-- loop through list of slide objects -->
+                <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
+                    <!-- if ShowScrollBar is true -->
+                    <aura:if isTrue="{!v.ShowScrollBar == 'true'}">
+                        <!-- if ArticleBanner is false -->
+                        <aura:if isTrue="{!(v.ArticleBanner == 'false') ? true : false}">
+                            <!-- if slideSize > 1 -->
+                            <aura:if isTrue="{!v.slideSize > 1 ? true:false}"> 
+                                <div id="{!'content-id-' + i}" class="carousel_panel" role="tabpanel" aria-hidden="{! s.isFocused ? false : true}" aria-labelledby="{!'indicator-id-'+i}" >
+                                    <!-- display caption -->
+                                    <div class="caption" id="{!'caption-' + i}" style="{!'position: absolute; top:' + s.captionLocTop + '%; left:' + s.captionLocLeft + '%; margin-right:' + s.captionLocLeft + '%; z-index:1;'}"></div>
+                                    <!-- if image contains a link, include link in the image -->
+                                    <aura:if isTrue="{!s.buttonUrl != undefined}">
+                                    <a href="{!s.buttonUrl}" target="_blank" class="carousel_panel-action slds-text-link_reset carousel-panel" tabindex="{! s.isFocused ? 0 : -1}">
+                                        <div class="carousel_image">
+                                            <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                        </div>
+                                        <span class="sr-only">{!$Label.c.S360_Open_New_Window}</span>
+                                    </a>
+                                    <!-- image does not contain a link -->
+                                    <aura:set attribute='else'>
+                                        <div class="carousel_image">
+                                            <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}"><div style="height: 350px; width: auto;"></div></div>
+                                        </div>
+                                    </aura:set>
+                                    </aura:if>
+                                </div>
+                                <!-- if slideSize <= 1 -->
+                                <aura:set attribute="else">
+                                    <div id="{!'content-id-' + i}" class="carousel_panel" role="tabpanel" aria-hidden="{! s.isFocused ? false : true}">
+                                        <!-- display caption -->
+                                        <div class="caption" id="{!'caption-' + i}" style="{!'position: absolute; top:' + s.captionLocTop + '%; left:' + s.captionLocLeft + '%; margin-right:' + s.captionLocLeft + '%; z-index:1;'}"></div>
+                                        <!-- if image contains a link, include link in the image -->
+                                        <aura:if isTrue="{!s.buttonUrl != undefined}">
+                                            <a href="{!s.buttonUrl}" target="_blank" class="carousel_panel-action slds-text-link_reset carousel-panel" tabindex="{! s.isFocused ? 0 : -1}">
+                                                <div class="carousel_image">
+                                                    <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                                </div>
+                                                <span class="sr-only">{!$Label.c.S360_Open_New_Window}</span>
+                                            </a>
+                                            <!-- image does not contain a link -->
+                                            <aura:set attribute='else'>
+                                                <div class="carousel_image">
+                                                    <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                                </div>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                </aura:set>
+                                
+                            </aura:if>
+                            <!-- if ArticleBanner is true -->
+                            <aura:set attribute="else">
+                                <div id="{!'content-id-' + i}" class="carousel_panel" role="tabpanel" aria-hidden="{! s.isFocused ? false : true}">
+                                    <!-- display caption -->
+                                    <div class="caption" id="{!'caption-' + i}" style="{!'position: absolute; top:' + s.captionLocTop + '%; left:' + s.captionLocLeft + '%; margin-right:' + s.captionLocLeft + '%; z-index:1;'}"></div>
+                                    <!-- if image contains a link, include link in the image -->
+                                    <aura:if isTrue="{!s.buttonUrl != undefined}">
+                                        <a href="{!s.buttonUrl}" target="_blank" class="carousel_panel-action slds-text-link_reset carousel-panel" tabindex="{! s.isFocused ? 0 : -1}">
+                                            <div class="carousel_image">
+                                                <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                            </div>
+                                            <span class="sr-only">{!$Label.c.S360_Open_New_Window}</span>
+                                        </a>
+                                        <!-- image does not contain a link -->
+                                        <aura:set attribute='else'>
+                                            <div class="carousel_image">
+                                                <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <!-- if ShowScrollBar is false -->
+                        <aura:set attribute="else">
+                            <div id="{!'content-id-' + i}" class="carousel_panel" role="tabpanel" aria-hidden="{! s.isFocused ? false : true}">
+                                <div class="caption" id="{!'caption-' + i}" style="{!'position: absolute; top:' + s.captionLocTop + '%; left:' + s.captionLocLeft + '%; margin-right:' + s.captionLocLeft + '%; z-index:1;'}"></div>
+                                <aura:if isTrue="{!s.buttonUrl != undefined}">
+                                    <a href="{!s.buttonUrl}" target="_blank" class="carousel_panel-action slds-text-link_reset carousel-panel" tabindex="{! s.isFocused ? 0 : -1}">
+                                        <div class="carousel_image">
+                                            <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                        </div>
+                                        <span class="sr-only">{!$Label.c.S360_Open_New_Window}</span>
+                                    </a>
+                                    <aura:set attribute='else'>
+                                        <div class="carousel_image">
+                                            <div style="{!'background-image: url(' + s.imageUrl + '); background-position: ' + s.focusLeft + '% ' + s.focusRight +'%; background-size:cover;'}" alt="{!s.altText}" ><div style="height: 350px; width: auto;"></div></div>
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+
+
+                    <!--div class="topicContent" data-aura-rendered-by="41:2;a" style="{! 'left: ' + v.indicatorPositionX + '%; top: ' + v.indicatorPositionY + '%;'}">
+                        <div class="topicContentImg">
+                            <img alt="{!v.Tile11Name}" src="{!$Resource.S360_DHSLabBrand + '/svg/tile1.svg'}"/>
+                        </div>
+                    </div-->  
+
+                    <!-- if we are on the last element of slidersList, indicate that we are done loading the slides and call c.carouselLoaded -->
+                    <aura:if isTrue="{! (v.slidersList.length-1) == i}">
+                        <img src="" onerror="{!c.carouselLoaded}"/>
+                    </aura:if>
+                </aura:iteration>
+            </div>
+            <!-- if ShowScrollBar is true -->
+            <aura:if isTrue="{!v.ShowScrollBar == 'true'}">
+                <!-- if ArticleBanner is false -->
+                <aura:if isTrue="{!(v.ArticleBanner == 'false') ? true : false}">
+                    <!-- if slideSize > 1 -->
+                    <aura:if isTrue="{!v.slideSize > 1 ? true:false}"> 
+                        <!-- show previous and next arrow buttons -->
+                        <div class="indicator-container" style="{! 'left: ' + v.indicatorPositionX + '%; top: ' + v.indicatorPositionY + '%;'}">
+                            <!-- previous slide button -->
+                            <a onclick="{!c.prevPage}" href="javascript:void(0);" class="carousel_indicator_chevrons" aria-label="{!$Label.c.S360_Prev}">&#8249;</a>
+                            <!-- show carousel indicators -->
+                            <ul class="carousel_indicators" role="tablist" tabindex="-1">
+                                <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
+                                    <li class="carousel_indicator" role="presentation">
+                                        <div data-selected-Index="{!i}" id="{!'indicator-id-'+i}" 
+                                        class="{!'carousel__indicator-action ' + (s.isFocused ? 'slds-is-active' : 'in-active')}" 
+                                        role="tab" tabindex="-1" 
+                                        aria-selected="{! s.isFocused ? true : false}" aria-controls="{!'content-id-'+i}" 
+                                        title="{!s.Name}">
+                                                <span class="slds-assistive-text">{!s.Name}</span>
+                                        </div>
+                                </li>
+                                </aura:iteration>
+                            </ul>
+                            <!-- next slide button -->
+                            <a onclick="{!c.nextPage}" href="javascript:void(0);" class="carousel_indicator_chevrons" aria-label="{!$Label.c.S360_Next}">&#8250;</a>
+                        </div>
+                    </aura:if>
+                    <!-- if ArticleBanner is true, display follow button -->
+                    <!-- Removed FollowButton after code migration -->
+                    <!-- <aura:set attribute="else">
+                        <c:S360_FollowButton recordId="{!v.recordId}" indicatorPositionX="{!v.indicatorPositionX}" indicatorPositionY="{!v.indicatorPositionY}" />
+                    </aura:set> -->
+                </aura:if>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

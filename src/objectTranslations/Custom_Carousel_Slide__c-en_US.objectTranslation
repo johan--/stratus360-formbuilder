@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Custom Carousel Slide</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Custom Carousel Slides</value>
+    </caseValues>
+    <fields>
+        <label><!-- Alt_Text --></label>
+        <name>Alt_Text__c</name>
+    </fields>
+    <fields>
+        <label><!-- Autoplay --></label>
+        <name>Autoplay__c</name>
+    </fields>
+    <fields>
+        <label><!-- Button_URL --></label>
+        <name>Button_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Caption_Location_Left --></label>
+        <name>Caption_Location_Left__c</name>
+    </fields>
+    <fields>
+        <label><!-- Caption_Location_Top --></label>
+        <name>Caption_Location_Top__c</name>
+    </fields>
+    <fields>
+        <label><!-- Custom Carousel --></label>
+        <name>Custom_Carousel__c</name>
+        <relationshipLabel><!-- Custom Carousel Slides --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- HTML_Text --></label>
+        <name>HTML_Text__c</name>
+    </fields>
+    <fields>
+        <label><!-- Height --></label>
+        <name>Height__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image_Focus_Location_Left --></label>
+        <name>Image_Focus_Location_Left__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image_Focus_Location_Right --></label>
+        <name>Image_Focus_Location_Right__c</name>
+    </fields>
+    <fields>
+        <label><!-- Image_URL --></label>
+        <name>Image_URL__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

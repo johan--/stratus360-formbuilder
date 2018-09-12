@@ -1,0 +1,9 @@
+<aura:component >
+    <aura:attribute name="imageURL" type="String" required="true" default="" description="url to slide image"/>
+    <aura:attribute name="caption" type="String" required="true" default="" description="slide caption"/>
+    <aura:attribute name="isFocused" type="Boolean" default="false" description="should slide be in focus?"/>
+    <aura:attribute name="isImage" type="Boolean" default="true" description="is slide an image only?"/>
+    <aura:attribute name="videoType" type="Boolean" default="true" description="the type (host) of video in this slide"/>
+    <aura:attribute name="videoEmbedId" type="Boolean" default="true" description="the id of the video in this slide"/>
+    <aura:attribute name="altText" type="String" default="the alt text for AODA"/>
+</aura:component>
