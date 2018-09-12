@@ -1192,6 +1192,8 @@
                     "RelatedField": relatedField
                 },
                 function(newComponent, status, errorMessage){
+                    console.log('error');
+                    console.error(errorMessage);
                     self.callbackHandler(config, component, newComponent, status, errorMessage);
                 }
             );

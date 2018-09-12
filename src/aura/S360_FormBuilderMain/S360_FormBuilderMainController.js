@@ -1,9 +1,9 @@
 ({
     init : function(component, event, helper) {
-        // test incoming input flow
-        // console.log(component.get('v.inputFlow'));
-        // //debugger;
-        debugger;
+        /**
+         * if this component called by related list component, ('v.FormConfig').S360_FA__Component_Type__c is already populated
+         * so we jump to changeComponentType method
+         */ 
         if(component.get('v.FormConfig').S360_FA__Component_Type__c != undefined){
             component.set('v.componentType', component.get('v.FormConfig').S360_FA__Component_Type__c);
             return;
@@ -90,13 +90,20 @@
                                     component.set('v.FieldInfo', fieldInfo2);
                                     component.set('v.ObjectInfo', objectInfo2);
                                     component.set('v.FormConfig', formConfig2);
-                                    component.set('v.componentType', formConfig2.S360_FA__Component_Type__c);
-                                    debugger;
-                                    component.set('v.Standard', component.find('S360_FormBuilderStandard'));
                                     component.set('v.autoSaveInterval', formConfig2.S360_FA__AutoSave_Record_Interval__c);
                                     component.set('v.autoSaveOn', formConfig2.S360_FA__AutoSave_Record__c);
-
-                                    helper.autoSave(component);
+                                    
+                                    /**
+                                     * NOTE always set v.componentType at very end, because we trigger S360_FormBuilder generator base on v.componentType changes
+                                     */
+                                    component.set('v.componentType', formConfig2.S360_FA__Component_Type__c);
+									
+                                    // NOTE i move below statement to changeComponentType method
+                                    //helper.autoSave(component);
+                                    
+                                    // NOTE what is the statement below used for?
+                        			// i think it's better to put it on the changeComponentType method
+                                    component.set('v.Standard', component.find('S360_FormBuilderStandard'));
                                 }
                             }
                         });
@@ -113,20 +120,27 @@
                         component.set('v.FieldInfo', fieldInfo);
                         component.set('v.ObjectInfo', objectInfo);
                         component.set('v.FormConfig', formConfig);
-                        debugger;
+                        
+                        component.set('v.autoSaveInterval', formConfig.S360_FA__AutoSave_Record_Interval__c);
+                        component.set('v.autoSaveOn', formConfig.S360_FA__AutoSave_Record__c);
 
+                        console.log(formConfig.S360_FA__Lock_Logic__c);
+                        
+                        /**
+                         * NOTE always set v.componentType at very end, because we trigger S360_FormBuilder generator base on v.componentType changes
+                         */
                         component.set('v.componentType', formConfig.S360_FA__Component_Type__c);
+                        
+                        // NOTE i move below statement to changeComponentType method
+                        //helper.autoSave(component);
+                        
+                        // NOTE what is the statement below used for?
+                        // i think it's better to put it on the changeComponentType method
                         component.set('v.Standard', component.find('S360_FormBuilderStandard').get("v.value"));
                         // console.log("TST");
                         // var value = component.get("v.Standard").get("v.value");
                         // console.log(value);
                         // console.log(JSON.stringify(value));
-                        debugger;
-                        component.set('v.autoSaveInterval', formConfig.S360_FA__AutoSave_Record_Interval__c);
-                        component.set('v.autoSaveOn', formConfig.S360_FA__AutoSave_Record__c);
-
-                        console.log(formConfig.S360_FA__Lock_Logic__c);
-                        helper.autoSave(component);
                     }
                 }else{
                     alert(res.message);
@@ -157,21 +171,32 @@
         $A.enqueueAction(action);
     },
 
-    changeComponentType: function(component, event){
+    changeComponentType: function(component, event, helper){
         debugger;
+        
         var formConfig = component.get('v.FormConfig');
         var data = component.get('v.Data');
         var fieldInfo = component.get('v.FieldInfo');
         var objectInfo = component.get('v.ObjectInfo');
         var valid = false;
+        
         if(component.get("v.lockLogic") && component.get("v.lockLogic")!= ""){
           var valid = jsonLogic.apply(JSON.parse(component.get("v.lockLogic")), data);
         }
         console.log ("JSON : " + JSON.stringify(valid));
-        if(formConfig.S360_FA__Component_Type__c == 'Standard'){
-            component.find('S360_FormBuilderStandard').setup(formConfig, data, fieldInfo, objectInfo, valid);
-        }else if(formConfig.S360_FA__Component_Type__c == 'Custom'){
-            component.find('S360_FormBuilderCustom').setup(formConfig, data, fieldInfo, undefined, valid);
+        
+        /**
+         * if we call this from related list, we don't need to generate the form. we just get the form information
+         */
+        if(!component.get('v.isCalledByRelatedList')){
+            
+         	if(formConfig.S360_FA__Component_Type__c == 'Standard'){
+                component.find('S360_FormBuilderStandard').setup(formConfig, data, fieldInfo, objectInfo, valid);
+            }else if(formConfig.S360_FA__Component_Type__c == 'Custom'){
+                component.find('S360_FormBuilderCustom').setup(formConfig, data, fieldInfo, undefined, valid);
+            }
+            
+            helper.autoSave(component);   
         }
     },
 

@@ -30,6 +30,10 @@
                     "FormConfig": component.get('v.FormConfigTemplate'),
                     "FieldInfo": component.get('v.FieldInfoTemplate'),
                     "Data": data,
+                    "ObjectInfo": component.get('v.ObjectInfoTemplate'),
+                    "lockLogic": component.get('v.lockLogicTemplate'),
+                    "autoSaveInterval": component.get('v.autoSaveIntervalTemplate'),
+                    "autoSaveOn": component.get('v.autoSaveOnTemplate')
                 },
                 function(newComponent, status, errorMessage){
                     if(status){
@@ -99,7 +103,7 @@
                         }
                         // populate the dat to field
                         record = self.populateData(component.get('v.FormConfigTemplate'), record);
-                        //debugger;
+                        debugger;
                         var body = component.get('v.body');
                         var index = component.get('v.Data').length;
                         
@@ -111,9 +115,13 @@
                             {
                                 "aura:id": 'form',
                                 "formConfigName": component.get('v.FormName'),
+                                "Data": data,
                                 "FormConfig": component.get('v.FormConfigTemplate'),
                                 "FieldInfo": component.get('v.FieldInfoTemplate'),
-                                "Data": data,
+                                "ObjectInfo": component.get('v.ObjectInfoTemplate'),
+                                "lockLogic": component.get('v.lockLogicTemplate'),
+                                "autoSaveInterval": component.get('v.autoSaveIntervalTemplate'),
+                                "autoSaveOn": component.get('v.autoSaveOnTemplate')
                             },
                             function(newComponent, status, errorMessage){
                                 if(status){

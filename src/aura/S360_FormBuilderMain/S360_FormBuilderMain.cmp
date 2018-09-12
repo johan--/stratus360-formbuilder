@@ -32,6 +32,8 @@
     <aura:attribute name="language" type="String" default="en"
       description="Current language selected"/>
     <aura:attribute name="Standard" type="Aura.Component"/>
+    <aura:attribute name="isCalledByRelatedList" type="boolean" default="false"
+      description="set this value weather this called by related list component or not"/>
     
     <aura:attribute name="StringAttachments" type="string" default=""
   		description="string attachment json"/>
