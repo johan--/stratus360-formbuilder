@@ -46,6 +46,7 @@
         <members>Custom_Carousel_Slide__c</members>
         <members>Custom_Carousel__c</members>
         <members>DandBCompany</members>
+        <members>Dummy_Object__c</members>
         <members>DuplicateRecordItem</members>
         <members>DuplicateRecordSet</members>
         <members>EmailMessage</members>

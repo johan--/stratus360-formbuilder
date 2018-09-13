@@ -221,6 +221,7 @@
         var selecIndex = component.get('v.position'); 
         var slideInfo = component.get("v.slidersList");
         var captionsList = component.get("v.captionsList");
+        alert(slideInfo.length);
         if(slideInfo){
             for (var i = 0; i < slideInfo.length; i++) {   
                 slideInfo[i].isFocused = false;

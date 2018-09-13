@@ -1,13 +1,13 @@
 <aura:component controller="S360_Base_Carousel">
-    <aura:attribute type="Aura.Component[]" name="slideContents" />
-    <aura:Attribute type="String" name="height" default="300px" description="Height of the carousel"/>
-    <aura:Attribute type="String" name="navigator" default="" />
-    <aura:Attribute type="integer" name="position" default="0" description="Position of the label on the carousel"/>
-    <aura:attribute type="Object[]" name="slidersList" description="List of Images on the carousel"/>
-    <aura:attribute type="String[]" name="captionsList" description="List of the captions for each image on the carousel"/>
-    <aura:attribute name="isAutoTimer" type="Boolean" default="false" description="If true carousel auto timer to swap to next image is active"/>
-    <aura:attribute name="delay" type="Integer" default="3" description="Delay for slider change in seconds."/>
-    <aura:attribute name="autoBgColor" type="String" default="false" description="Let application decide if background color should be automatically changed. If this flag is ON then bgColor in slide will not work."/>
+    <aura:Attribute name="slideContents" type="Aura.Component[]" />
+    <aura:Attribute name="height" type="String" default="300px" description="Height of the carousel"/>
+    <aura:Attribute name="navigator" type="String" default="" />
+    <aura:Attribute name="position" type="Integer" default="0" description="Position of the label on the carousel"/>
+    <aura:Attribute name="slidersList" type="Object[]" description="List of Images on the carousel"/>
+    <aura:Attribute name="captionsList" type="String[]" description="List of the captions for each image on the carousel"/>
+    <aura:Attribute name="isAutoTimer" type="Boolean" default="false" description="If true carousel auto timer to swap to next image is active"/>
+    <aura:Attribute name="delay" type="Integer" default="3" description="Delay for slider change in seconds."/>
+    <aura:Attribute name="autoBgColor" type="String" default="false" description="Let application decide if background color should be automatically changed. If this flag is ON then bgColor in slide will not work."/>
 
 
     <aura:Attribute name="lookupParentField" type="string" default="" description="Parent field for the carousel lookup"/>
@@ -27,62 +27,65 @@
     <aura:handler name="change" value="{!v.body}" action="{!c.doInit}"/> -->
 
     <div class="listing-carousel">
-        
+
         <div class="css-slider-wrapper">
 
             <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
-                <input data-selected-Index="{!i}" type="radio" name="slider" class="{# 'slide-radio'+(i+1)}" checked="{!s.isFocused}" id="{# 'slider_'+(i+1)}" />
+                <input data-selected-Index="{!i}" type="radio" name="slider" class="{# 'slide-radio'+(i+1)}" checked="{!s.isFocused}" id="{# 'slider_'+(i+1)}" aria-hidden="true"/>
             </aura:iteration>
 
 
-            <aura:iteration items="{!v.slidersList}" var="s" indexVar="i" aura:id="iterate">
-                <div class="{# 'slider slide'+(i+1) + ' slider_' + globalId}" style="{# 'background :'+s.bgColor+';left:'+(i*100)+'%'}" aura:id="{# 'slide'+(i+1)}">
-                        <aura:if isTrue="{!s.isImage}">
-                            <div class="scroll scrollbarStyle">
-                            	<img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>
-                                <a href="{!s.redirectURL}"/>
+            <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
+                <div class="{# 'slider slide'+(i+1)}" style="{# 'background :'+s.bgColor+';left:'+(i*100)+'%'}">
+                    <!-- check if slide is an image -->
+                    <aura:if isTrue="{!s.isImage}">
+                        <div class="scroll scrollbarStyle">
+                            <img src="{!s.imageURL}" alt="{!s.altText}" onload="{!c.configureImage}" aria-hidden="{!s.isFocused ? 'false' : 'true'}"/>  
+                        </div>
+                        <!-- slide is a video -->
+                        <aura:set attribute="else">
+                            <div class="{!'video-' + i + ' scroll scrollbarStyleVideo'}" aria-hidden="{!s.isFocused ? 'false' : 'true'}">
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'YouTube') ? true : false}">
+                                <!-- embed youtube video in iframe -->
+                                    <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId + '?enablejsapi=1'}" 
+                                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"
+                                            style="width:100%;height:100%" alt="{!s.altText}" ></iframe>
+                                </aura:if>
+                                
+                                <!-- embed vimeo video in iframe -->
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'Vimeo') ? true : false}">
+                                    <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId + '?api=1'}" 
+                                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false" alt="{!s.altText}" ></iframe>
+                                </aura:if>
+                                
+                                <!-- embed brainshark video in iframe -->
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'Brainshark') ? true : false}">
+                                    <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%" alt="{!s.altText}" ></iframe>
+                                </aura:if>
+                                
+                                <!-- embed vidyard video in iframe -->
+                                <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'VidYard') ? true : false}">
+                                    <iframe style="width:100%;height:100%"
+                                            scrolling="no"
+                                            src="{! 'https://play.vidyard.com/'+ s.videoEmbedId +'.html'}"
+                                            data-uuid="{!s.videoEmbedId}"
+                                            frameborder="0"
+                                            allowfullscreen="true"
+                                            allowtransparency="true" 
+                                            alt="{!s.altText}" >
+                                    </iframe>
+                                </aura:if>
                             </div>
-
-                            <aura:set attribute="else">
-                                <div class="scroll scrollbarStyleVideo">
-                                    <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'youtube') ? true : false}">
-                                        <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId}"
-                                                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"
-                                                style="width:100%;height:100%"></iframe>
-                                    </aura:if>
-
-                                    <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vimeo') ? true : false}">
-                                        <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId}"
-                                                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"></iframe>
-                                    </aura:if>
-
-                                    <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'brainshark') ? true : false}">
-                                        <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%"></iframe>
-                                    </aura:if>
-
-                                    <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vidyard') ? true : false}">
-                                        <iframe style="width:100%;height:100%"
-                                                scrolling="no"
-                                                src="{! 'https://play.vidyard.com/'+ s.videoEmbedId +'.html'}"
-                                                frameborder="0"
-                                                allowfullscreen="true"
-                                                allowtransparency="true">
-                                        </iframe>
-                                    </aura:if>
-                                </div>
-                            </aura:set>
-
-                        </aura:if>
-
-
-                    </div>
-            </aura:iteration>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </aura:iteration>  
 
             <aura:if isTrue="{!v.slidersList.length == 0 ? true : false}">
             	<label class="no-carousel">{!$Label.c.S360_Empty_Carousel}</label>
             </aura:if>
         </div>
-        <div class="slider-pagination forceCommunityGlobalNavigation">
+        <!-- <div class="slider-pagination forceCommunityGlobalNavigation">
             <div style="float:left;">
                 <img src="{!$Resource.carousel_left}" class="button-controll" onclick="{!c.prev}"/>
             </div>
@@ -93,68 +96,74 @@
                 <img src="{!$Resource.carousel_right}" class="button-controll" onclick="{!c.next}"/>
             </div>
 
-        </div>
+        </div> -->
 
-        <aura:if isTrue="{!v.showThumbnails}">
+        <aura:if isTrue="{!and(v.showThumbnails, v.slidersList.length > 0)}">
             <div class="carousel-thumbnails">
-                <div class="carousel-thumbnails-controll-container">
-                    <button class="carousel-thumbnails-controll carousel-thumbnails-controll-left" aura:id="thumbnailPrevBtn" onclick="{!c.prevThumbnailButton}">
-                        <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#chevronleft'}"
-                                                      Name="chevronleft" Category="utility" Size="xx-small" Class="circle-icon-button-left"/>
-                    </button>
-                    <button class="carousel-thumbnails-controll carousel-thumbnails-controll-next" aura:id="thumbnailNextBtn" onclick="{!c.nextThumbnailButton}">
-                        <c:S360_Base_SvgIconCmp SvgPath="{!$Resource.SLDS231 + '/assets/icons/utility-sprite/svg/symbols.svg#chevronright'}"
-                                                      Name="chevronright" Category="utility" Size="xx-small" Class="circle-icon-button-right"/>
-                    </button>
-                </div>
-
                 <div class="carousel-thumbnails-container" aura:id="carouselThumbnailsContainer">
                     <div class="carousel-thumbnails-scroller" aura:id="carouselThumbnailsScroller">
+                        <!-- display thumbnails -->
                         <aura:iteration items="{!v.slidersList}" var="s" indexVar="i">
+                            <!-- check if slide is an image -->
                             <aura:if isTrue="{!s.isImage}">
-                                <div class="carousel-thumbnails-item">
-                                    <img src="{!s.imageURL}"  alt="Los Angeles" onload="{!c.configureImage}"/>
-                                    <span data-selected-Index="{!i}" onclick="{!c.showInCarousel}"></span>
+                                <div class="carousel-thumbnails-item" data-selected-Index="{!i}" selected="{! i == v.position ? 1 : 0}">
+                                    <img src="{!s.imageURL}" alt="{!s.altText}" onload="{!c.configureImage}"/>  
+                                    <span data-selected-Index="{!i}" onclick="{!c.showInCarousel}" aria-hidden='true'></span>
                                 </div>
-
+                                
+                                <!-- slide is a video, embed videos in iframes as thumbnails -->
                                 <aura:set attribute="else">
-                                    <div class="carousel-thumbnails-item" data-selected-Index="{!i}" onclick="{!c.showInCarousel}" >
-                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'youtube') ? true : false}">
-                                            <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId}"
+                                    <div class="carousel-thumbnails-item" data-selected-Index="{!i}" selected="{! i == v.position ? 1 : 0}" aria-label="{!s.videoType}">
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'YouTube') ? true : false}">
+                                            <iframe src="{! 'https://www.youtube.com/embed/' + s.videoEmbedId}" 
                                                     frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"
-                                                    style="width:100%;height:100%"></iframe>
+                                                    style="width:100%;height:100%" aria-hidden="true"></iframe>
                                         </aura:if>
-
-                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vimeo') ? true : false}">
-                                            <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId}"
-                                                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false"></iframe>
+                                        
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'Vimeo') ? true : false}">
+                                            <iframe style="width:100%;height:100%" src="{! 'https://player.vimeo.com/video/' + s.videoEmbedId}" 
+                                                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="false" aria-hidden="true"></iframe>
                                         </aura:if>
-
-                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'brainshark') ? true : false}">
-                                            <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%"></iframe>
+                                        
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'Brainshark') ? true : false}">
+                                            <iframe src="{! 'https://app.brainshark.com/brainsharkinc/vu?pi=' + s.videoEmbedId}" style="width:100%;height:100%" aria-hidden="true"></iframe>
                                         </aura:if>
-
-                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'vidyard') ? true : false}">
+                                        
+                                        <aura:if isTrue="{! and(s.isImage == false, s.videoType == 'VidYard') ? true : false}">
                                             <iframe style="width:100%;height:100%"
                                                     scrolling="no"
                                                     src="{! 'https://play.vidyard.com/'+ s.videoEmbedId +'.html'}"
                                                     frameborder="0"
                                                     allowfullscreen="true"
-                                                    allowtransparency="true">
+                                                    allowtransparency="true" aria-hidden="true">
                                             </iframe>
                                         </aura:if>
-
-                                        <span data-selected-Index="{!i}" onclick="{!c.showInCarousel}"></span>
+                                        
+                                        <span data-selected-Index="{!i}" onclick="{!c.showInCarousel}" aria-hidden="true"></span>
                                     </div>
                                 </aura:set>
-
+                                
                             </aura:if>
-
+                            
+                            <!-- once we have processed the whole list of slides, we use a workaround to get the function thumbnailLoaded to be called -->
+                            <!-- (there is no standard way to make a function call after we have processed all the slides in slidersList) -->
                             <aura:if isTrue="{! (v.slidersList.length-1) == i}">
                                 <img src="" onerror="{!c.thumbnailLoaded}"/>
                             </aura:if>
                         </aura:iteration>
                     </div>
+                </div>
+                <div class="carousel-thumbnails-controll-container">
+                    <!-- previous slide button -->
+                    <button class="carousel-thumbnails-controll carousel-thumbnails-controll-left" aura:id="thumbnailPrevBtn" 
+                            onclick="{!c.prevThumbnailButton}" aria-label="{!$Label.c.S360_Prev}">
+                        <img src="{!$Resource.S360_chevronleft}" class="slds-icon slds-icon--xx-small circle-icon-button-left" alt="{!$Label.c.S360_Left_Arrow}"/>
+                    </button>
+                    <!-- next slide button -->
+                    <button class="carousel-thumbnails-controll carousel-thumbnails-controll-next" aura:id="thumbnailNextBtn" 
+                            onclick="{!c.nextThumbnailButton}" aria-label="{!$Label.c.S360_Next}">
+                        <img src="{!$Resource.S360_chevronright}" class="slds-icon slds-icon--xx-small circle-icon-button-right" alt="{!$Label.c.S360_Right_Arrow}"/>
+                    </button>
                 </div>
             </div>
         </aura:if>
