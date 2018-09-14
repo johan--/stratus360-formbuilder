@@ -60,6 +60,7 @@
                     // retrieve the response
                     success(request.response ? JSON.parse(request.response) : null);
                 } else {
+                    debugger;
                     // return status message
                     error(request);
                 }
@@ -115,6 +116,7 @@
             {
                 Origin: 'C', // 'H' for Chatter File, 'C' for Content Document
                 PathOnClient: file.name,
+                Title: file.name,
                 ContentDocumentId: '',
                 ReasonForChange: 'new document'
             },

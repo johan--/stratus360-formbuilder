@@ -1,7 +1,8 @@
 ({
 	doInit : function(comp, evt, hlp) {
         comp.set('v.uuid', hlp.generateUUID())
-        hlp.getAttachment(comp, hlp);
+        //hlp.getAttachment(comp, hlp);
+        hlp.getFiles(comp, hlp);
         
         
         window.addEventListener("message", $A.getCallback(function(event) {

@@ -246,5 +246,107 @@
         });
 
         $A.enqueueAction(action); 
-    }
+    },
+    
+    getFiles : function(comp, hlp, message){
+        comp.set('v.showLoading', true);
+        
+        var filterCondition = '';
+        if(comp.get('v.ParentId')){
+            filterCondition = "LinkedEntityId = '" + comp.get('v.ParentId')+"'";
+        }else{
+            filterCondition = 'LinkedEntityId = null';
+        }
+        var deleteme = comp.get('v.FormId');
+        var action = comp.get('c.getFiles');
+        
+        action.setStorable();
+        action.setParams({
+            "filterCondition": filterCondition,
+            "pOffset": comp.get('v.offset'),
+            "pSize": comp.get('v.pageSize'),
+            "sortDirection": comp.get('v.sort'),
+            "orderBy": 'Title',
+            "parentId": comp.get('v.ParentId'),
+            "formId": comp.get('v.FormId')
+        });
+        action.setCallback(this, function(res){
+            
+            debugger;
+            
+            if(comp.isValid() && res.getState() == 'SUCCESS'){
+                comp.set('v.objectPermission', res.getReturnValue().data.ObjectPermission);
+                
+                if(res.getReturnValue().data.ObjectPermission.isAccessible){
+                 	if(res.getReturnValue().status){
+                        var objectWrapper = [];
+                        comp.set('v.length', res.getReturnValue().data.length)
+                        
+                        // let's parse from content version
+                        if(res.getReturnValue().data.length > 0 && res.getReturnValue().data.objectWrapper){
+                            res.getReturnValue().data.objectWrapper.forEach(function(i){
+                                objectWrapper.push({
+                                    selected: false,
+                                    objects: {
+                                        Name: i.objects.Title,
+                                        Id: i.objects.ContentDocumentId
+                                    }
+                                })
+                            });
+                            
+                            comp.set('v.objectWrapper', objectWrapper);
+                        }
+                        
+                        var a =res.getReturnValue().data.objectWrapper;
+                        
+                        if(hlp){
+                            setTimeout(function(){
+                            	hlp.notifyTable(comp);
+                            	hlp.notifyPagination(comp);    
+                            },2000);
+                        }
+                        
+                        // populate attachment data
+                        if(res.getReturnValue().data.length > 0){
+                            var tmpAttachData = [];
+                            objectWrapper.forEach(function(attach){
+                                tmpAttachData.push({
+                                    name: attach.objects.Name,
+                                    id: attach.objects.Id
+                                })
+                            })
+                            
+                            comp.set('v.AttachmentsData', tmpAttachData);
+                        }
+                        
+                        if(message){
+                            hlp.showToast(comp, 'success', message);
+                        }
+                    }else{
+                        var errorMessage = [];
+                        res.getReturnValue().messages.forEach(function(e){
+                            errorMessage.push(e);
+                        });
+                        hlp.showToast(comp, 'error', 'Failed to find data : (' + errorMessage.join(',') + ')');
+                    }   
+                }else{
+                    hlp.showToast(comp, 'error', 'You don\'t have access to this object.');
+                }
+            }else if(res.getState() == 'ERROR'){
+                var errorMessage = [];
+                var error = res.getError();
+                if(error){
+                    error.forEach(function(e){
+                        errorMessage.push(e.message);
+                    });
+                    
+                    hlp.showToast(comp, 'error', 'Failed to find data : (' + errorMessage.join(',') + ')');
+                } 
+            }
+            
+            //hide loading spinner
+        	comp.set('v.showLoading', false);
+        });
+        $A.enqueueAction(action);
+    },
 })
