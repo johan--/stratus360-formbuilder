@@ -26,7 +26,6 @@ public with sharing class S360_Base_FileUploadController {
         if(Schema.sObjectType.Attachment.isCreateable()){
         	insert a;
         }
-        system.debug('aId:'+a.Id);
 
         return a.Id;
     }
@@ -206,6 +205,66 @@ public with sharing class S360_Base_FileUploadController {
             
             
             return S360_Base_ServerResult.returnMessage(false, msg);
+        }
+    }
+    
+    
+    
+    /**
+     * we migrate from salesforce attachment to salesforce file
+     * 
+     */
+    @AuraEnabled
+    public static Id save2file(Id parentId, String fileName, String base64Data) {
+        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
+        
+        ContentVersion cvToInsert = new ContentVersion();
+        cvToInsert.versionData = EncodingUtil.base64Decode(base64Data);
+        cvToInsert.title = fileName;
+        cvToInsert.pathOnClient = '/'+fileName;
+        insert cvToInsert;   
+        
+        string conDocId = [SELECT Id from ContentDocument WHERE LatestPublishedVersionId =: cvToInsert.id].Id;
+        
+        // Insert Content Document Link
+        ContentDocumentLink cdl = new ContentDocumentLink();
+        cdl.ContentDocumentId = conDocId;
+        cdl.LinkedEntityId = parentId;
+        cdl.ShareType = 'V';
+        cdl.Visibility = 'AllUsers';
+        
+        insert cdl;
+        
+        return cvToInsert.Id;
+    }
+    
+    public static void append2File(Id cvId, String base64Data) {
+        
+        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
+        
+        ContentVersion cv = [select versionData from ContentVersion where Id = :cvId];
+        String existingData = EncodingUtil.base64Encode(cv.versionData);
+        
+        if(Schema.sObjectType.ContentVersion.fields.VersionData.isUpdateable() || Schema.sObjectType.ContentVersion.fields.VersionData.isCreateable()){
+         	cv.versionData = EncodingUtil.base64Decode(existingData + base64Data);   
+        }
+        
+        if(Schema.sObjectType.ContentVersion.isUpdateable()){
+        	update cv;
+        }
+    }
+    
+    public static void linkFile2parent(string parentid, string cvid){
+        
+        List<ContentVersion> cv = [select ContentDocumentId from ContentVersion where id = :cvid];
+        if(cv.size() > 0){
+            ContentDocumentLink cdl = new ContentDocumentLink();
+            cdl.ContentDocumentId = cv[0].ContentDocumentId;
+            cdl.LinkedEntityId = parentId;
+            cdl.ShareType = 'V';
+            cdl.Visibility = 'AllUsers';
+            
+            insert cdl;   
         }
     }
 }

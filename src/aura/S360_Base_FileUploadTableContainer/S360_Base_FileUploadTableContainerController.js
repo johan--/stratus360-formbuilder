@@ -1,7 +1,26 @@
 ({
 	doInit : function(comp, evt, hlp) {
+        comp.set('v.uuid', hlp.generateUUID())
         hlp.getAttachment(comp, hlp);
         
+        
+        window.addEventListener("message", $A.getCallback(function(event) {
+            debugger;
+            var uuid = event.data[0];
+            
+            if(uuid != comp.get('v.uuid')){
+                return;
+            }
+            
+            var result = event.data[1];
+            if(result.success == true){
+                hlp.createContentDocLink(comp, result.id);
+            }else{
+                console.log(result)
+                comp.set('v.showLoading', false);
+                hlp.showToast(comp, 'error', $A.get('$Label.c.attachment_not_created'));
+            }
+        }), false);
 	},
  
  	handleTableCanged: function(comp, evt, hlp){
@@ -36,11 +55,23 @@
     },
     
     handleOnChange : function(comp, event, hlp) {
-        //debugger;
+        debugger;
 		switch(event.getParam('CompId')){
             case comp.get('v.buttonAttachReceiptId') :
                 if(comp.get('v.ParentId')){
-                    hlp.saveAttachment(comp, event.getParam('payload'));
+                    //hlp.saveAttachment(comp, event.getParam('payload'));
+                    
+                    comp.set('v.showLoading', true);
+                    
+                    var vfWindow = comp.find("vfFrame").getElement().contentWindow;
+                    var dstOrigin = $A.get("$Label.c.VF_FB_Domain") + '--s360-fa.visualforce.com';
+                    
+                    debugger;
+                    try{
+                        vfWindow.postMessage([comp.get('v.uuid'), '', event.getParam('payload')], dstOrigin);
+                    }catch(e){
+                        debugger;
+                    }
                 }else{
                     hlp.putAttachment(comp, event.getParam('payload'));
                 }

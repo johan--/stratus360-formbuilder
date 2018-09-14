@@ -210,6 +210,13 @@
         <value>You might be offline</value>
     </labels>
     <labels>
+        <fullName>VF_FB_Domain</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>VF_FB_Domain</shortDescription>
+        <value>https://s360-fa-dev-ed</value>
+    </labels>
+    <labels>
         <fullName>greeting</fullName>
         <language>en_US</language>
         <protected>true</protected>

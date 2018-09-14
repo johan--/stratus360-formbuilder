@@ -233,4 +233,78 @@ public with sharing class S360_Base_FileUploadTableController {
         }
     }
     
+    @AuraEnabled
+    public static void linkFile2parent(string parentid, string cvid){
+        S360_Base_FileUploadController.linkFile2parent(parentid, cvid);
+    }
+    
+    @AuraEnabled
+    public static Map<String, Object> getFiles(String filterCondition, decimal pOffset, decimal pSize, String sortDirection, String orderBy, String ReportId, String FormId){
+        List <S360_FA__S360_Form_Config__c> primary = [SELECT S360_FA__Primary_Object__c from S360_FA__S360_Form_Config__c where Id = :FormId];
+        System.debug(primary[0]);
+        String objwanted = primary[0].S360_FA__Primary_Object__c;
+        System.debug(objwanted);
+        String query = 'Select Id From '+objwanted+ ' Limit 10';
+		List<SObject> objL = Database.query(query);
+        
+        Map<String, Boolean> objectPermission = S360_Base_ObjectCommon.getObjectPermission(objL[0].id.getSObjectType().getDescribe());
+        Map<String, Object> data = new Map<String, Object>();
+        
+        //expenseReportPermission.put('isCreateable', false);
+        
+        if(objectPermission.get('isAccessible')){
+            integer pageOffset = (integer)pOffset;
+            integer pageSize = (integer)pSize;
+            String whereCondition = '';
+            
+            if(filterCondition != ''){
+                whereCondition = 'where ('+filterCondition+')';
+            }
+            
+            System.debug(whereCondition);
+            
+            integer count = 0;
+            try{
+                AggregateResult results = database.query('SELECT COUNT(id) result FROM ContentDocumentLink ' + whereCondition);
+                count = Integer.valueOf(results.get('result'));    
+                
+                System.debug('Count ' + count);
+            }catch(System.QueryException qe){
+                List<String> msg = new List<String>();
+                msg.add(qe.getMessage());
+                System.debug('COunt failed ' + msg);
+                return S360_Base_ServerResult.returnMessage(false, msg);
+            }
+            
+            List<ObjectWrapper> objectWrappers = new List<ObjectWrapper>();
+            Map<String, Object> result = getExpenseHelper(filterCondition, pageSize, pageOffset, orderBy, sortDirection);
+            System.debug(result);
+            if(Boolean.valueOf(result.get('status'))){
+                for(Attachment e : (List<Attachment>)result.get('data')){
+                    ObjectWrapper ew = new ObjectWrapper();
+                    ew.selected = false;
+                    ew.objects = e;
+                    
+                    objectWrappers.add(ew);
+                }
+                
+                data.put('ObjectPermission', objectPermission);
+                data.put('length', count);
+                data.put('objectWrapper', objectWrappers);
+                
+                return S360_Base_ServerResult.returnMessage(true, null, data);
+            }else{
+                data.put('ObjectPermission', objectPermission);
+                result.put('data', data);
+                
+                return result;
+            }
+        }else{
+            data.put('ObjectPermission', objectPermission);
+            return S360_Base_ServerResult.returnMessage(true, null, data);
+        }
+        
+        
+    }
+    
 }

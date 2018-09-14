@@ -10,6 +10,8 @@ public class S360_Form_Builder_Controller {
         String dataId = ''; // object to preview id
 
         System.debug(recordId);
+        System.debug('session id');
+        System.debug(UserInfo.getSessionId());
 
         //Language
         String strLanguage = Label.Language;
@@ -417,7 +419,14 @@ public class S360_Form_Builder_Controller {
         } else {
             S360_Base_FileUploadController.appendToFile(fileId, base64Data);
         }
-        system.debug('fileId:'+fileId);
+        
+        // try to use file
+        /*if (fileId == '') {
+            fileId = S360_Base_FileUploadController.save2file(parentId, fileName, base64Data);
+        } else {
+            S360_Base_FileUploadController.append2File(fileId, base64Data);
+        }*/
+        
         return Id.valueOf(fileId);
     }
 

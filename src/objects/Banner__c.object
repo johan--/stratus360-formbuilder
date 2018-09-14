@@ -55,12 +55,12 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <label>Custom Carousel</label>
+    <label>Banner</label>
     <nameField>
-        <label>Custom Carousel Name</label>
+        <label>Banner Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Custom Carousels</pluralLabel>
+    <pluralLabel>Banners</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

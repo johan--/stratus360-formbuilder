@@ -215,4 +215,36 @@
             component.set('v.Message', message);
         }
     },
+    
+    generateUUID: function(){
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    },
+    
+    createContentDocLink: function(component, cvid){
+        var action = component.get("c.linkFile2parent");
+
+        action.setParams({
+            parentid: component.get("v.ParentId"),
+            cvid: cvid
+        });        
+
+        var self = this;
+        action.setCallback(this, function(a) {
+            var state = a.getState();
+            if(state == "SUCCESS"){
+                // update attachment table
+                self.getAttachment(component, self, $A.get('$Label.c.attachment_created'));
+            }else if(state == "ERROR"){
+                component.set('v.showLoading', false);
+                self.showToast(component, 'error', $A.get('$Label.c.attachment_not_created'));
+            }
+        });
+
+        $A.enqueueAction(action); 
+    }
 })

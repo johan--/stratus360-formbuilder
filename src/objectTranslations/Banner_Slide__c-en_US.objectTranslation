@@ -2,11 +2,11 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Custom Carousel Slide</value>
+        <value>Banner Slide</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Custom Carousel Slides</value>
+        <value>Banner Slides</value>
     </caseValues>
     <fields>
         <label><!-- Alt_Text --></label>
@@ -15,6 +15,11 @@
     <fields>
         <label><!-- Autoplay --></label>
         <name>Autoplay__c</name>
+    </fields>
+    <fields>
+        <label><!-- Banner --></label>
+        <name>Banner__c</name>
+        <relationshipLabel><!-- Banner Slides --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- Button_URL --></label>
@@ -27,11 +32,6 @@
     <fields>
         <label><!-- Caption_Location_Top --></label>
         <name>Caption_Location_Top__c</name>
-    </fields>
-    <fields>
-        <label><!-- Custom Carousel --></label>
-        <name>Custom_Carousel__c</name>
-        <relationshipLabel><!-- Custom Carousel Slides --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- HTML_Text --></label>

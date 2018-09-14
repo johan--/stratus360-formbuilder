@@ -121,6 +121,10 @@
         <name>S360_base_offline_message</name>
     </customLabels>
     <customLabels>
+        <label><!-- VF_FB_Domain --></label>
+        <name>VF_FB_Domain</name>
+    </customLabels>
+    <customLabels>
         <label><!-- greeting --></label>
         <name>greeting</name>
     </customLabels>

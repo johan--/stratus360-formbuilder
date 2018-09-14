@@ -74,6 +74,18 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Banner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Banner</label>
+        <referenceTo>Banner__c</referenceTo>
+        <relationshipLabel>Banner Slides</relationshipLabel>
+        <relationshipName>Banner_Slides</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Button_URL__c</fullName>
         <externalId>false</externalId>
         <label>Button_URL</label>
@@ -102,18 +114,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Custom_Carousel__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Custom Carousel</label>
-        <referenceTo>Custom_Carousel__c</referenceTo>
-        <relationshipLabel>Custom Carousel Slides</relationshipLabel>
-        <relationshipName>Custom_Carousel_Slides</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>HTML_Text__c</fullName>
@@ -165,12 +165,12 @@
         <trackTrending>false</trackTrending>
         <type>Url</type>
     </fields>
-    <label>Custom Carousel Slide</label>
+    <label>Banner Slide</label>
     <nameField>
-        <label>Custom_Carousel_Slide Name</label>
+        <label>Banner_Slide Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Custom Carousel Slides</pluralLabel>
+    <pluralLabel>Banner Slides</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

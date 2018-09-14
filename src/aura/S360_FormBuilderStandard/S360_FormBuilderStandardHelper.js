@@ -1296,6 +1296,7 @@
                     //"Class": config.customClass ? config.customClass : '',
                 },
                 function(newComponent, status, errorMessage){
+                    debugger;
                     self.callbackHandler(config, component, newComponent, status, errorMessage);
                 }
             );

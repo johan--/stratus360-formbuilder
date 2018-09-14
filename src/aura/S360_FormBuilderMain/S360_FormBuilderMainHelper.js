@@ -33,105 +33,95 @@
             child = component.find('S360_FormBuilderCustom');
         }
         try {
-            /*var isSignatureEnabled = component.get('v.isSignatureEnabled');
-      var canvasDataUrl;
-
-      if (isSignatureEnabled) {
-        canvasDataUrl = self.getExactSignatureDataUrl(component.get('v.canvas'));
-        if (!canvasDataUrl) {
-          isSignatureEnabled = false;
-        }
-        canvasDataUrl = canvasDataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
-      }*/
-        // code above already handled in startdard/custom component in submitEvent helper
-        var isSignatureEnabled = component.get('v.isSignatureEnabled');
-        var canvasDataUrl = component.get('v.canvasDataUrl');
-        
-        var action = component.get('c.saveUpsertRecord');
-        //debugger;
-        var data1;
-        debugger;
-        // if we save it to big object
-        if (component.get("v.FormConfig").S360_FA__Save_to_Storage__c === true) {
-            data1 = component.get('v.Data');
             
-            data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
-            console.log("ID" + JSON.stringify(data1.Id));
-            var id = data1.Id;
+            var isSignatureEnabled = component.get('v.isSignatureEnabled');
+            var canvasDataUrl = component.get('v.canvasDataUrl');
             
-            delete data1.Id;
-            data1 = {
-                S360_FA__Record__c: JSON.stringify(data1),
-                sobjectType: 'S360_FA__Storage__c'
-            };
-            
-            if (id) {
-                data1.Id = id;
+            var action = component.get('c.saveUpsertRecord');
+            //debugger;
+            var data1;
+            debugger;
+            // if we save it to big object
+            if (component.get("v.FormConfig").S360_FA__Save_to_Storage__c === true) {
+                data1 = component.get('v.Data');
+                
+                data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
+                console.log("ID" + JSON.stringify(data1.Id));
+                var id = data1.Id;
+                
+                delete data1.Id;
+                data1 = {
+                    S360_FA__Record__c: JSON.stringify(data1),
+                    sobjectType: 'S360_FA__Storage__c'
+                };
+                
+                if (id) {
+                    data1.Id = id;
+                }
+                
+                data1.S360_FA__Heroku_Owner__c = component.get('v.herokuOwner');
+            } else {
+                data1 = component.get('v.Data');
+                data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
+                console.log("ID" + JSON.stringify(data1.Id));
             }
             
-            data1.S360_FA__Heroku_Owner__c = component.get('v.herokuOwner');
-        } else {
-            data1 = component.get('v.Data');
-            data1.RecordTypeId = component.get("v.FormConfig").S360_FA__Record_Type__c;
-            console.log("ID" + JSON.stringify(data1.Id));
-        }
-        
-        debugger;
-        action.setParams({
-            "data": data1,
-            "relatedData": component.get('v.RelatedData'),
-            "isSignatureEnabled": isSignatureEnabled,
-            "signatureCompId": component.get('v.signatureCompId'),
-            "signatureData": canvasDataUrl,
-            "isSaveToStorage": component.get("v.FormConfig").S360_FA__Save_to_Storage__c
-        });
-        action.setCallback(this, function(response) {
             debugger;
-            if (component.isValid() && response.getState() == 'SUCCESS') {
-                if (response.getReturnValue().status == true) {
-                    debugger;
-                    var dataup = component.get("v.Data");
-                    dataup["Id"] = response.getReturnValue().data.Id;
-                    component.set("v.Data", dataup);
-                    child = component.find('S360_FormBuilderStandard');
-                    child.set("v.Data", dataup);
-                    debugger;
-                    console.log(component.get("v.Data.Id"));
-                    
-                    // refresh the data
-                    // component.set('v.Data', response.getReturnValue().data);
-                    
-                    // if we have attachment to upload
-                    if (sender) {
-                        if (component.get('v.AttachmentsData').length > 0) {
-                            self.readFile(component, 0, child, sender, callback, response);
+            action.setParams({
+                "data": data1,
+                "relatedData": component.get('v.RelatedData'),
+                "isSignatureEnabled": isSignatureEnabled,
+                "signatureCompId": component.get('v.signatureCompId'),
+                "signatureData": canvasDataUrl,
+                "isSaveToStorage": component.get("v.FormConfig").S360_FA__Save_to_Storage__c
+            });
+            action.setCallback(this, function(response) {
+                debugger;
+                if (component.isValid() && response.getState() == 'SUCCESS') {
+                    if (response.getReturnValue().status == true) {
+                        debugger;
+                        var dataup = component.get("v.Data");
+                        dataup["Id"] = response.getReturnValue().data.Id;
+                        component.set("v.Data", dataup);
+                        child = component.find('S360_FormBuilderStandard');
+                        child.set("v.Data", dataup);
+                        debugger;
+                        console.log(component.get("v.Data.Id"));
+                        
+                        // refresh the data
+                        // component.set('v.Data', response.getReturnValue().data);
+                        
+                        // if we have attachment to upload
+                        if (sender) {
+                            if (component.get('v.AttachmentsData').length > 0) {
+                                self.readFile(component, 0, child, sender, callback, response);
+                            } else {
+                                child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));
+                                
+                                if (callback != undefined) {
+                                    callback(response.getReturnValue().data);
+                                }
+                            }
                         } else {
-                            child.afterSubmit(sender, 'SUCCESS', $A.get("$Label.c.S360_base_default_success_message"));
-                            
                             if (callback != undefined) {
                                 callback(response.getReturnValue().data);
                             }
                         }
                     } else {
-                        if (callback != undefined) {
-                            callback(response.getReturnValue().data);
-                        }
+                        console.log("ERRRRRROR " + response.getReturnValue().message)
+                        child.afterSubmit(sender, 'ERROR', response.getReturnValue().message);
                     }
-                } else {
-                    console.log("ERRRRRROR " + response.getReturnValue().message)
-                    child.afterSubmit(sender, 'ERROR', response.getReturnValue().message);
+                    
+                    
+                } else if (response.getState() == 'INCOMPLETE') {
+                    child.afterSubmit(sender, 'INCOMPLETE', $A.get("$Label.c.S360_base_offline_message"));
                 }
-                
-                
-            } else if (response.getState() == 'INCOMPLETE') {
-                child.afterSubmit(sender, 'INCOMPLETE', $A.get("$Label.c.S360_base_offline_message"));
-            }
-        });
-        $A.enqueueAction(action);
-    } catch (e) {
-        child.afterSubmit(sender, 'ERROR', $A.get("$Label.c.S360_base_offline_message"));
-    }
-  },
+            });
+            $A.enqueueAction(action);
+        } catch (e) {
+            child.afterSubmit(sender, 'ERROR', $A.get("$Label.c.S360_base_offline_message"));
+        }
+    },
     /*recordTypeMap : function(component, formConfig,data){
       //debugger;
       if(formConfig.S360_FA__Record_Type_Mapping__c && this.getUrlParam('id') && data.RecordTypeId){
@@ -436,7 +426,8 @@
             } else if (state == "ERROR") {
                 console.log(a.getError());
                 component.set('v.showLoading', false);
-                self.showToast(component, 'error', $A.get('$Label.c.attachment_not_created'));
+                alert($A.get('$Label.c.attachment_not_created'));
+                //self.showToast(component, 'error', $A.get('$Label.c.attachment_not_created'));
             }
         });
         
@@ -466,11 +457,11 @@
         var fileContents = '';
         component.get('v.AttachmentsData').forEach(item => {
             if(!item.id){
-            	dataStart = item.contents.indexOf(base64Mark) + base64Mark.length;
-                fileContents = item.contents.substring(dataStart);
-                item.contents = fileContents
-        	}
-        });
+            dataStart = item.contents.indexOf(base64Mark) + base64Mark.length;
+            fileContents = item.contents.substring(dataStart);
+            item.contents = fileContents
+        }
+                                                   });
         
         component.set('v.StringAttachments', JSON.stringify(component.get('v.AttachmentsData')))
         debugger;

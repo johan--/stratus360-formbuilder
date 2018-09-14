@@ -29,6 +29,8 @@
         <members>Asset</members>
         <members>AssetRelationship</members>
         <members>AssistantProgress</members>
+        <members>Banner_Slide__c</members>
+        <members>Banner__c</members>
         <members>Campaign</members>
         <members>CampaignMember</members>
         <members>Case</members>
@@ -43,8 +45,6 @@
         <members>ContentVersion</members>
         <members>Contract</members>
         <members>ContractContactRole</members>
-        <members>Custom_Carousel_Slide__c</members>
-        <members>Custom_Carousel__c</members>
         <members>DandBCompany</members>
         <members>Dummy_Object__c</members>
         <members>DuplicateRecordItem</members>

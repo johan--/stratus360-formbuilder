@@ -59,6 +59,7 @@
     <aura:attribute name="showToast" type="String" default="True"
                     description="Shows toast if true"/>
     
+    <aura:attribute name="uuid" type="String" default=""/>
     
     <aura:attribute name="AttachmentsData" type="Object[]" default="[]"
       				description="Array of JSON configs in the form attachment data for the current form"/>
@@ -134,4 +135,9 @@
     </aura:if>
     
     <c:LightningLoadingComponent show="{!v.showLoading}" CompId="{!'E_Rep_View_loading'}"/>
+    
+    <aura:if isTrue="{!v.uuid}">
+        <iframe aura:id="vfFrame" src="{!$Label.c.VF_FB_Domain + '--s360-fa.visualforce.com/apex/S360_FileUploader?pageid=' + v.uuid}" style="display:none"/>
+    </aura:if>
+    
 </aura:component>
