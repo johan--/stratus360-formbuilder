@@ -36,6 +36,18 @@ module.exports = function(app) {
                 carouselVideoIdField: ''
               }
           },
+          onEdit: ['$scope', function($scope) {
+            $scope.removeColumn = function(index) {
+              if($scope.component.resource === 'localDefinition'){
+                $scope.component.localDefinitions.splice(index, 1);
+              }
+            };
+            $scope.addColumn = function() {
+              if($scope.component.resource === 'localDefinition'){
+                $scope.component.localDefinitions.push({});  
+              }
+            };
+          }],
           documentation: 'http://help.form.io/userguide/#banner'
         });
       }
@@ -68,6 +80,43 @@ module.exports = function(app) {
                 '{{\'Resource\' | formioTranslate}}'+
               '</label>' +
               '<select class="form-control" id="resource" name="resource" ng-options="resource.name as resource.title | formioTranslate for resource in component.resources" ng-model="component.resource"></select>' +
+            '</div>' +
+            '<div class="form-group" ng-if="component.resource === \'localDefinition\'">' +
+              '<label form-builder-tooltip="The width, offset, push and pull settings for the columns">{{\'Dependent Field\' | formioTranslate}}</label>' +
+              '<table class="table table-condensed">' +
+                '<thead>' +
+                  '<tr>' +
+                    '<th class="col-xs-4">{{\'Caption\' | formioTranslate}}</th>' +
+                    '<th class="col-xs-3">{{\'Type\' | formioTranslate}}</th>' +
+                    '<th class="col-xs-4">{{\'Value\' | formioTranslate}}</th>' +
+                    '<th class="col-xs-1"></th>' +
+                  '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                  '<tr ng-repeat-start="row in component.localDefinitions">' +
+                    '<td class="col-xs-4"><input type="text" class="form-control" ng-model="row.caption"/></td>' +
+                    '<td class="col-xs-3"><select class="form-control" ng-options="opp.name as opp.title for opp in component.resourceType" ng-model="row.type"></select></td>' +
+                    '<td class="col-xs-4">' +
+                      '<input type="text" class="form-control" ng-if="row.type === \'image\'" ng-model="row.imageUrl" placeholder="Image url"/>' +
+                      '<div ng-if="row.type === \'video\'">' +
+                        '<select class="form-control" ng-options="vt.name as vt.title | formioTranslate for vt in component.videoResourceType" ng-model="row.videoType"></select>' +
+                      '</div>' +
+                    '</td>' +
+                    '<td class="col-xs-1"><button type="button" class="btn btn-danger btn-xs" ng-click="removeColumn($index)" tabindex="-1"><span class="glyphicon glyphicon-remove-circle"></span></button></td>' +
+                  '</tr>' +
+                  '<tr ng-repeat-end>' +
+                    '<td colspan="2" class="col-xs-7">' +
+                      '<span ng-if="row.type === \'image\'">Redirect link</span>' +
+                      '<span ng-if="row.type === \'video\'">Video ID</span>' +
+                    '</td>' +
+                    '<td class="col-xs-4">' +
+                      '<input ng-if="row.type === \'image\'" type="text" class="form-control" ng-model="row.redirectLink" placeholder="Redirect Link"/>'+
+                      '<input ng-if="row.type === \'video\'" type="text" class="form-control" ng-model="row.videoId" placeholder="Video ID"/>'+
+                    '</td>' +
+                  '</tr>' +
+                '</tbody>' +
+              '</table>' +
+              '<button type="button" class="btn btn-default" ng-click="addColumn()">{{\'Add Resource\' | formioTranslate}}</button>' +
             '</div>' +
             '<div class="form-group" ng-if="component.resource === \'salesforce\'">' +
                 '<label for="carouselObject" form-builder-tooltip="The child object related to this object which will save the carousel information">{{\'Field 1\' | formioTranslate}}</label>' +
@@ -102,4 +151,3 @@ module.exports = function(app) {
       }
     ]);
   };
-  
