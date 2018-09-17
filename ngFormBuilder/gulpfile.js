@@ -1,6 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
+var pump = require('pump');
+var uglify = require('gulp-uglify');
 //var gutil = require('gulp-util');
 var plugins = require('gulp-load-plugins')();
 plugins.source = require('vinyl-source-stream');
@@ -31,3 +33,6 @@ gulp.task('build', function(cb) {
 gulp.task('watch', require('./gulp/watch')(gulp, plugins));
 gulp.task('default', ['build', 'watch']);
 
+gulp.task('uglify-debug', function(callback) {
+  pump([gulp.src('./src/**/*.js'), uglify(), gulp.dest('./dist/')], callback);
+});

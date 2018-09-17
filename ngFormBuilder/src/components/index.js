@@ -41,6 +41,7 @@ require('./flowbutton')(app);
 require('./recordtype')(app);
 require('./recordtypeselect')(app);
 require('./language')(app);
+require('./banner')(app);
 // Layout
 require('./columns')(app);
 require('./fieldset')(app);
