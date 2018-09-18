@@ -30,4 +30,3 @@ gulp.task('build', function(cb) {
 });
 gulp.task('watch', require('./gulp/watch')(gulp, plugins));
 gulp.task('default', ['build', 'watch']);
-
